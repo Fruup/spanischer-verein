@@ -1,0 +1,10 @@
+{
+	"/": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/post/[slug]": [
+		"src/routes/post/[slug]/+page.server.ts",
+		"src/routes/+layout.ts"
+	]
+}

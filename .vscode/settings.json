@@ -1,0 +1,21 @@
+{
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true
+	},
+	"hide-files.files": [],
+	"github.copilot.enable": {
+		"*": true,
+		"plaintext": true,
+		"markdown": true
+	},
+	"cSpell.words": [
+		"Eventinformation",
+		"Eventinformationen",
+		"luxon"
+	]
+}

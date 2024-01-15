@@ -1,0 +1,18 @@
+$color-background: #1d1d1d;
+$color-text: #f1f1f1;
+
+$color-surface: adjust-color($color-background, $whiteness: 10%);
+
+@mixin surface {
+	background-color: $color-surface;
+	color: $color-text;
+}
+
+// @mixin surface-1 {
+//   background-color: $color-surface-1;
+//   color: $color-text-1;
+// }
+
+@mixin shadow {
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
