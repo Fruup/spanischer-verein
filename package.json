@@ -3,5 +3,8 @@
   "version": "0.0.1",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "svelte-preprocess": "^5.1.3"
+  }
 }

@@ -15,8 +15,6 @@ async function main() {
 	console.log('👨‍💻 Starting single-file processor...')
 
 	try {
-		// process.chdir(directory)
-
 		const html = await Bun.file(join(directory, file)).text()
 		const transformed = await transform(html, { directory })
 		Bun.write(Bun.file(join(directory, file)), transformed)

@@ -24,8 +24,6 @@
 			{post.title}
 		</h1>
 
-		<!-- <hr /> -->
-
 		{#if post.eventInfo}
 			<EventInfo eventInfo={post.eventInfo} />
 		{/if}

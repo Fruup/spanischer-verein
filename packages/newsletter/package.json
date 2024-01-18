@@ -28,8 +28,9 @@
   },
   "type": "module",
   "dependencies": {
+    "@portabletext/svelte": "^2.1.5",
     "@sanity/client": "^6.10.0",
-    "@sveltejs/adapter-static": "^3.0.1",
-    "@spanischer-verein/web": "workspace:*"
+    "@spanischer-verein/web": "workspace:*",
+    "@sveltejs/adapter-static": "^3.0.1"
   }
 }

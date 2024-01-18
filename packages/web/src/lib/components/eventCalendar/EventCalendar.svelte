@@ -1,126 +1,107 @@
 <script lang="ts">
-	import { buildMonth, isEqualDate, isItemActive, isToday } from './helpers'
-	import { page } from '$app/stores'
-	import { DateTime } from 'luxon'
-	import IconAngleDown from '../icons/IconAngleDown.svelte'
+	import { createCalendar, melt } from '@melt-ui/svelte'
+	import IconAngle from '../icons/IconAngle.svelte'
+	import { type EventCalendarItem } from './helpers'
+	import EventCalendarMonth from './EventCalendarMonth.svelte'
 
-	interface EventCalendarItem {
-		name: string
-		url: string
-		date: Date
-	}
+	const {
+		elements: { calendar, cell, grid, heading, nextButton, prevButton },
+		helpers: { isDateDisabled },
+		states: { months, headingValue, weekdays },
+	} = createCalendar({
+		fixedWeeks: true,
+		readonly: true,
+		calendarLabel: 'Veranstaltungskalender',
+		locale: 'de',
+	})
 
 	let { events } = $props<{
 		events: EventCalendarItem[]
 	}>()
-
-	let activeMonthIndex = $state(0)
-	const displayedTime = $derived(DateTime.now().plus({ month: activeMonthIndex }))
-
-	$inspect(displayedTime)
-
-	const getEvents = (item: DateTime): EventCalendarItem[] =>
-		events.filter((event) => isEqualDate(item, event.date))
-
-	const handleClickUp = async () => {
-		// await tick()
-		activeMonthIndex--
-	}
-
-	const handleClickDown = () => {
-		activeMonthIndex++
-	}
 
 	// TODO: draw cool SVG path to the linked element.
 	const handleFocus = (event: Event) => {}
 	const handleBlur = (event: Event) => {}
 </script>
 
-{#snippet month(index: number)}
-	<div class="month">
-		{#each buildMonth(index) as item, i}
-			{@const events = getEvents(item)}
+<div class="calendar" use:melt={$calendar}>
+	<div class="heading" use:melt={$heading}>
+		<button type="button" class="left" use:melt={$prevButton}>
+			<IconAngle direction="left" />
+		</button>
 
-			{#if events.length > 0}
-				<!-- {#if events.length > 1} -->
-				<!-- TODO: button that opens a popup with selections -->
-				<!-- {:else if events.length === 1} -->
-				{@const event = events[0]}
+		<div class="value">
+			{$headingValue}
+		</div>
+		<button class="right" use:melt={$nextButton}>
+			<IconAngle direction="right" />
+		</button>
+	</div>
 
-				<a
-					class="item"
-					class:current={event.url === $page.url.pathname}
-					class:active={isItemActive(item, index)}
-					class:today={isToday(item)}
-					href={event.url}
-					onfocus={handleFocus}
-					onblur={handleBlur}
-					onmouseenter={handleFocus}
-					onmouseleave={handleBlur}
-				>
-					{item.day}
-				</a>
-			{:else}
-				<div class="item" class:today={isToday(item)} class:active={isItemActive(item, index)}>
-					{item.day}
-				</div>
-			{/if}
+	<div class="weekdays">
+		{#each $weekdays as weekday}
+			<div class="cell" use:melt={$cell}>
+				{weekday}
+			</div>
 		{/each}
 	</div>
-{/snippet}
 
-<div class="event-calendar">
-	<button type="button" class="up" onclick={handleClickUp}>
-		<IconAngleDown />
-	</button>
-
-	<div class="displayed-time-container">
-		{displayedTime.toFormat('MMMM yyyy')}
-	</div>
-
-	{@render month(activeMonthIndex)}
-
-	<button type="button" class="down" onclick={handleClickDown}>
-		<IconAngleDown />
-	</button>
+	{#each $months as month}
+		<EventCalendarMonth
+			{events}
+			{cell}
+			{grid}
+			{month}
+			isDateDisabled={$isDateDisabled}
+			frozen={false}
+		/>
+	{/each}
 </div>
 
 <style lang="scss">
-	.event-calendar {
-		user-select: none;
-	}
+	.heading {
+		display: flex;
+		justify-content: space-between;
+		align-items: stretch;
 
-	.month {
-		display: grid;
-		grid-template-columns: repeat(7, 1fr);
-		grid-template-rows: repeat(6, 1fr);
-	}
-
-	button {
-		height: 1.5rem;
-		width: 100%;
-		margin: 0;
-		padding: 0;
-
-		display: grid;
-		place-content: center;
-
-		border: 1px solid grey;
-
-		&.up {
-			border-top-left-radius: 8px;
-			border-top-right-radius: 8px;
-			border-bottom-width: 0.5px;
-
-			:global(svg) {
-				transform: rotate(180deg);
-			}
+		.value {
+			text-align: center;
+			flex-grow: 1;
 		}
 
-		&.down {
-			border-bottom-left-radius: 8px;
-			border-bottom-right-radius: 8px;
-			border-top-width: 0.5px;
+		button {
+			width: 2rem;
+			height: 2rem;
+			padding: 0;
+			margin: 0;
+
+			border: 1px solid grey;
+
+			&:hover,
+			&:active {
+				background-color: rgba(0, 0, 0, 0.05);
+			}
+
+			border-radius: 12px;
+		}
+	}
+
+	.weekdays {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+		background-color: rgba(0, 0, 0, 0.05);
+
+		margin: 0.5rem 0;
+		border-radius: 12px;
+	}
+
+	hr {
+		+ hr {
+			margin-top: 0.333rem;
+		}
+
+		~ hr {
+			margin-bottom: 0;
 		}
 	}
 
@@ -134,13 +115,13 @@
 		border: 0.5px solid grey;
 	}
 
-	.item {
+	.cell {
 		display: grid;
 		place-content: center;
 
 		aspect-ratio: 1;
 		height: auto;
-		border: 0.75px solid grey;
+		// border: 0.75px solid grey;
 
 		&:not(.active) {
 			opacity: 0.5;
@@ -152,10 +133,14 @@
 			// color: white;
 			text-decoration: underline;
 			font-weight: bold;
+			border: 1px solid grey;
 		}
+
+		margin: 0.125rem;
+		border-radius: 0.5rem;
 	}
 
-	a.item {
+	a.cell {
 		// text-decoration: underline;
 		// background-color: #ff7700;
 

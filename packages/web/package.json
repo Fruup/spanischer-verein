@@ -10,7 +10,8 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check .",
     "format": "prettier --write .",
-    "test": "vitest dev --watch"
+    "test": "vitest dev --watch",
+    "build-newsletter": "RENDERING_NEWSLETTER=true vite build"
   },
   "devDependencies": {
     "@floating-ui/core": "^1.5.2",
@@ -34,10 +35,14 @@
   },
   "type": "module",
   "dependencies": {
+    "@internationalized/date": "^3.5.1",
+    "@melt-ui/pp": "^0.3.0",
+    "@melt-ui/svelte": "^0.70.0",
     "@portabletext/svelte": "^2.1.5",
     "@portabletext/types": "^2.0.8",
     "@sanity/client": "^6.10.0",
     "@sanity/core-loader": "^1.3.3",
-    "luxon": "^3.4.4"
+    "@sanity/image-url": "^1.0.2",
+    "@sveltejs/adapter-static": "^3.0.1"
   }
 }

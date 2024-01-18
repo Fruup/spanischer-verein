@@ -1,10 +1,10 @@
 <div class="event-marker">
-	<span />
+	<span class="left" />
 	Event
-	<span />
+	<span class="right" />
 </div>
 
-<style>
+<style lang="scss">
 	.event-marker {
 		display: flex;
 		align-items: center;
@@ -17,11 +17,24 @@
 		font-size: 0.9rem;
 		border-radius: 0.5rem;
 		gap: 0.5rem;
+
+		text-transform: uppercase;
+		letter-spacing: 1.5px;
 	}
 
 	span {
 		width: 2rem;
-		height: 2px;
+		height: 4px;
 		background-color: coral;
+
+		&.left {
+			border-top-left-radius: 999px;
+			border-bottom-left-radius: 999px;
+		}
+
+		&.right {
+			border-top-right-radius: 999px;
+			border-bottom-right-radius: 999px;
+		}
 	}
 </style>

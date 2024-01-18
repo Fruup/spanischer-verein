@@ -1,49 +1,59 @@
 <script lang="ts">
 	import { tick } from 'svelte'
 	import { fly } from 'svelte/transition'
+	import logo from '$assets/logo-l.png'
 
 	let activeIndex = $state<number>()
 	let overlayElement = $state<HTMLDivElement>() as HTMLDivElement
-	let cancelTimer = $state<number>()
+	let cancelTimer = $state<ReturnType<typeof setTimeout>>()
 
-	const items = [
+	interface NavigationItem {
+		label: string
+		href: string
+		children?: NavigationItem[]
+	}
+
+	const items: NavigationItem[] = [
 		{
 			label: 'Home',
 			href: '/',
 			children: [
-				{
-					label: 'Sub 1',
-					href: '/sub1',
-				},
-				{
-					label: 'Sub 2',
-					href: '/sub2',
-				},
+				// {
+				// 	label: 'Sub 1',
+				// 	href: '/sub1',
+				// },
+				// {
+				// 	label: 'Sub 2',
+				// 	href: '/sub2',
+				// },
 			],
 		},
 		{
-			label: 'AboutAboutAbout',
-			href: '/about',
+			label: 'Kurse',
+			href: '/kurse',
 			children: [
-				{
-					label: 'Sub 1',
-					href: '/sub1',
-				},
-				{
-					label: 'Sub 2',
-					href: '/sub2',
-				},
-				{
-					label: 'Sub 2',
-					href: '/sub2',
-				},
-				{
-					label: 'Sub 2',
-					href: '/sub2',
-				},
+				// {
+				// 	label: 'Sub 1',
+				// 	href: '/sub1',
+				// },
+				// {
+				// 	label: 'Sub 2',
+				// 	href: '/sub2',
+				// },
+				// {
+				// 	label: 'Sub 2',
+				// 	href: '/sub2',
+				// },
+				// {
+				// 	label: 'Sub 2',
+				// 	href: '/sub2',
+				// },
 			],
 		},
 	]
+
+	const itemsLeft = $derived(items.slice(0, Math.floor(items.length / 2)))
+	const itemsRight = $derived(items.slice(Math.floor(items.length / 2)))
 
 	const activeItem = $derived(typeof activeIndex === 'number' ? items[activeIndex] : undefined)
 
@@ -98,21 +108,37 @@
 	function onmouseleave() {
 		cancelTimer = setTimeout(() => {
 			activeIndex = undefined
-		}, 500)
+		}, 200)
 	}
 </script>
+
+{#snippet navigationItem({ item, index })}
+	{@const onmouseover = (e: Event) => setActive(e, index)}
+	{@const label = item.label}
+	{@const href = item.href}
+
+	<li>
+		<a {onmouseover} {onmouseleave} onfocus={onmouseover} onblur={onmouseleave} {href}>
+			{label}
+		</a>
+	</li>
+{/snippet}
 
 <header>
 	<nav>
 		<ul>
-			{#each items as { href, label }, i}
-				{@const onmouseover = (e: Event) => setActive(e, i)}
+			{#each itemsLeft as item, index}
+				{@render navigationItem({ item, index })}
+			{/each}
 
-				<li>
-					<a {onmouseover} onfocus={onmouseover} {onmouseleave} {href}>
-						{label}
-					</a>
-				</li>
+			<li>
+				<a href="/">
+					<img src={logo} width="200px" alt="MACHADO Logo" />
+				</a>
+			</li>
+
+			{#each itemsRight as item, index}
+				{@render navigationItem({ item, index })}
 			{/each}
 		</ul>
 	</nav>
@@ -151,15 +177,21 @@
 </header>
 
 <style lang="scss">
-	@import '../lib//styles/vars.scss';
+	@import '../../lib/styles/vars.scss';
 
 	header {
 		position: relative;
 
 		overflow: visible;
+
+		text-align: center;
+		margin-bottom: 4rem;
 	}
 
 	ul {
+		margin: auto;
+		width: fit-content;
+
 		display: flex;
 		flex-direction: row;
 		// justify-content: space-between;

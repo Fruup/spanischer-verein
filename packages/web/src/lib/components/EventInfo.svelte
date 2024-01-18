@@ -3,6 +3,7 @@
 	import IconPin from './icons/IconPin.svelte'
 	import IconTime from './icons/IconTime.svelte'
 	import EventMarker from './EventMarker.svelte'
+	import WithShadow from './icons/WithShadow.svelte'
 
 	interface EventInfoSpec {
 		admission?: string
@@ -22,12 +23,15 @@
 </script>
 
 {#if admission || eventTime || location}
-	<EventMarker />
-
 	<div class="event-info">
+		<EventMarker />
+
 		{#if eventTime}
-			<div>
+			<WithShadow>
 				<IconTime />
+			</WithShadow>
+
+			<span>
 				{new Date(eventTime).toLocaleDateString(undefined, {
 					dateStyle: 'medium',
 				})}
@@ -35,39 +39,80 @@
 				{new Date(eventTime).toLocaleTimeString(undefined, {
 					timeStyle: 'short',
 				})}
-			</div>
+			</span>
 		{/if}
 
 		{#if location}
-			<div>
+			<WithShadow>
 				<IconPin />
+			</WithShadow>
+
+			<span>
 				{@html location.address.replaceAll('\n', '<br />')}
-			</div>
+			</span>
 		{/if}
 
 		{#if admission}
-			<div>
+			<WithShadow>
 				<IconCoin />
+			</WithShadow>
+
+			<span>
 				{@html admission.replaceAll('\n', '<br />')}
-			</div>
+			</span>
 		{/if}
 	</div>
 {/if}
 
 <style lang="scss">
-	.event-info {
-		// border: 1px solid rgba(0, 0, 0, 0.1);
-		border-radius: 12px;
+	@import '../styles/vars.scss';
 
+	.event-info {
+		position: relative;
+
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 12px;
+		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
+
+		margin: 4rem auto;
 		padding: 2rem;
+		hyphens: auto;
 
 		font-size: 1rem;
-		color: #666;
+		color: #555;
 		display: grid;
-		gap: 1.5rem;
 		place-content: center;
 		text-align: center;
-		// grid-template-columns: repeat(3, 1fr);
 		grid-auto-flow: column;
+		grid-template-rows: auto auto;
+		grid-template-columns: 1fr auto 1fr;
+		column-gap: 0.5rem;
+
+		:global(.shadow-container) {
+			margin-bottom: 0.5rem;
+		}
+
+		:global(.event-marker) {
+			background-color: var(--color-surface-0);
+			padding: 0.5rem;
+			height: fit-content;
+			width: fit-content;
+
+			position: absolute;
+			top: 0;
+			left: 50%;
+			translate: -50% -50%;
+		}
+
+		@include max-md {
+			width: fit-content;
+
+			display: flex;
+			flex-direction: column;
+
+			span:not(:last-of-type) {
+				margin-bottom: 2rem;
+			}
+		}
 	}
 </style>

@@ -4,4 +4,8 @@
 	export let data
 </script>
 
+<svelte:head>
+	<title>{data.post.title} - Spanischer Verein Köln</title>
+</svelte:head>
+
 <PostPage post={data.post} />
