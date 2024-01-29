@@ -1,10 +1,12 @@
 import {SanityDocument, defineField, defineType} from 'sanity'
+import {PinIcon} from '@sanity/icons'
 // import LocationInput from '../components/LocationInput'
 
 export default defineType({
   name: 'location',
   title: 'Location',
   type: 'document',
+  icon: PinIcon,
   fields: [
     defineField({
       name: 'title',

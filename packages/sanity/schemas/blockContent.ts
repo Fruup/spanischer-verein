@@ -1,4 +1,5 @@
 import {defineType, defineArrayMember} from 'sanity'
+import {GenerateIcon} from '@sanity/icons'
 // import PostReferenceIcon from '../components/PostReferenceIcon'
 
 /**
@@ -54,13 +55,13 @@ export default defineType({
               },
             ],
           },
-          // {
-          //   name: 'post',
-          //   title: 'Post-Referenz',
-          //   type: 'reference',
-          //   to: {type: 'post'},
-          //   // icon: PostReferenceIcon,
-          // },
+          {
+            name: 'internalLink',
+            title: 'Interner Link',
+            type: 'reference',
+            to: [{type: 'event'}, {type: 'page'}],
+            icon: GenerateIcon,
+          },
         ],
       },
     }),

@@ -5,6 +5,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "svelte": "next",
     "svelte-preprocess": "^5.1.3"
   }
 }

@@ -1,4 +1,5 @@
 import {PortableTextBlock, SanityDocument, defineField, defineType, Slug, Image} from 'sanity'
+import {CalendarIcon} from '@sanity/icons'
 
 const mainFields = [
   defineField({
@@ -44,6 +45,7 @@ const eventFields = [
     title: '🗓️ Zeitpunkt',
     type: 'datetime',
     group: 'event',
+    validation: (Rule) => Rule.required(),
   }),
   defineField({
     name: 'eventLocation',
@@ -87,6 +89,7 @@ export default defineType({
   name: 'event',
   title: 'Event',
   type: 'document',
+  icon: CalendarIcon,
   groups: [
     {name: 'main', title: 'Post', default: true},
     {name: 'event', title: 'Eventinformationen'},
@@ -113,7 +116,7 @@ export interface EventSchema extends SanityDocument {
   body: PortableTextBlock[]
 
   // Event
-  eventTime?: Date
+  eventTime: Date
   eventLocation?: string
   eventAdmission?: string
 

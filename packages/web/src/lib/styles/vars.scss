@@ -1,6 +1,10 @@
 $color-background: #1d1d1d;
 $color-text: #f1f1f1;
 
+// Stadt Köln
+$color-accent: #ed1d24;
+// #ff7700
+
 $color-surface: adjust-color($color-background, $whiteness: 10%);
 
 @mixin surface {

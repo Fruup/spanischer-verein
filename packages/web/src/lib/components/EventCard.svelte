@@ -1,54 +1,97 @@
 <script lang="ts">
-	import { PortableText } from '@portabletext/svelte'
-	import type { PortableTextBlock } from '@portabletext/types'
+	import { getEventUrl } from '$lib/helpers/url'
+	import { fly } from 'svelte/transition'
 
-	let { event } = $props<{
+	let { event, introDelay } = $props<{
 		event: {
 			title: string
 			slug: string
 			imageUrl: string
-			prominentColor: string
-			excerpt: PortableTextBlock[]
+			eventTime: Date
+			mainImageMeta: {
+				prominentColor: string
+				dimensions: {
+					width: number
+					height: number
+				}
+			}
 		}
+		introDelay?: number
 	}>()
+
+	const backgroundColor = $derived(event.mainImageMeta.prominentColor)
+
+	const aspectRatio = $derived(
+		event.mainImageMeta.dimensions.width / event.mainImageMeta.dimensions.height,
+	)
+
+	const eventTime = $derived(
+		new Date(event.eventTime).toLocaleString(undefined, {
+			dateStyle: 'medium',
+			timeStyle: 'medium',
+		}),
+	)
 </script>
 
-<a href="/post/{event.slug}" class="event-card">
-	<img src={event.imageUrl} alt="" loading="lazy" style:background-color={event.prominentColor} />
+<a
+	in:fly|global={{ y: 30, delay: introDelay }}
+	href={getEventUrl(event.slug)}
+	class="event-card"
+	data-sveltekit-noscroll
+>
+	<img
+		src={event.imageUrl}
+		alt=""
+		loading="lazy"
+		style:background-color={backgroundColor}
+		style:aspect-ratio={aspectRatio}
+	/>
 
 	<div class="content">
-		<h2>{event.title}</h2>
+		<time>{eventTime}</time>
 
-		<PortableText components={{}} value={event.excerpt} />
+		<h2>{event.title}</h2>
 	</div>
 </a>
 
 <style lang="scss">
+	@use 'sass:color';
+	@import 'vars';
+
 	.event-card {
 		display: flex;
 		flex-direction: column;
 
-		border-radius: 12px;
+		border-radius: 24px;
 		overflow: hidden;
 
 		--shadow-color: rgba(0, 0, 0, 0.1);
 		border: 1px solid var(--shadow-color);
 		box-shadow: 4px 4px 1px 2px var(--shadow-color);
-		transition: box-shadow 0.2s ease;
+
+		transition: box-shadow 100ms ease;
 
 		&:hover,
 		&:focus {
-			--shadow-color: #ff7700;
+			--shadow-color: #{color.change($color-accent, $alpha: 0.75)};
+
+			box-shadow: 6px 6px 1px 4px var(--shadow-color);
 		}
 
 		img {
 			width: 100%;
 			height: auto;
-			aspect-ratio: 2 / 1;
+			aspect-ratio: 1 / 1;
+			// aspect-ratio: 2 / 1;
 
 			object-fit: cover;
 
 			margin: 0;
+		}
+
+		time {
+			font-size: 0.99rem;
+			color: #666;
 		}
 
 		.content {
@@ -56,6 +99,8 @@
 			display: flex;
 			flex-direction: column;
 			gap: 1rem;
+
+			text-align: center;
 
 			:global(> *) {
 				margin: 0;

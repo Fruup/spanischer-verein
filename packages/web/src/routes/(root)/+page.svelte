@@ -1,42 +1,46 @@
 <script lang="ts">
-	import { page } from '$app/stores'
 	import EventCard from '$lib/components/EventCard.svelte'
+	import type { PageData } from './$types'
 
-	const { posts: _posts } = $page.data
-	const posts = [..._posts, ..._posts.reverse()]
+	const { data } = $props<{ data: PageData }>()
 
-	const postsLeft = $derived(posts.slice(0, posts.length / 2))
-	const postsRight = $derived(posts.slice(posts.length / 2))
+	// This is necessary to prevent a bug.
+	$inspect(data)
+
+	const events = $derived(data.events)
+	const numColumns = 3
+
+	function getColumnEvents(columnIndex: number) {
+		return events.filter((_, i) => i % numColumns === columnIndex)
+	}
 </script>
 
 <h1 hidden>Upcoming Events</h1>
 
-<nav>
-	<ul>
-		{#each postsLeft as event, i}
-			<li>
-				<article>
-					<EventCard {event} />
-				</article>
-			</li>
-		{/each}
-	</ul>
+{#if !events.length}
+	<p style:text-align="center">Keine Veranstaltungen in nächster Zeit</p>
+{/if}
 
-	<ul>
-		{#each postsRight as event, i}
-			<li>
-				<article>
-					<EventCard {event} />
-				</article>
-			</li>
-		{/each}
-	</ul>
+<nav style:--num-columns={numColumns}>
+	{#each { length: numColumns } as _, columnIndex}
+		<ul>
+			{#each getColumnEvents(columnIndex) as event, i}
+				{@const introDelay = (columnIndex + i) * 100}
+
+				<li>
+					<article>
+						<EventCard {introDelay} {event} />
+					</article>
+				</li>
+			{/each}
+		</ul>
+	{/each}
 </nav>
 
 <style lang="scss">
 	nav {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: repeat(var(--num-columns), 1fr);
 		gap: 2rem;
 	}
 

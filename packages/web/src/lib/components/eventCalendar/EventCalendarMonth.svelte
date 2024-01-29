@@ -70,6 +70,8 @@
 </div>
 
 <style lang="scss">
+	@import 'vars';
+
 	.month {
 		display: grid;
 		grid-template-columns: repeat(7, 1fr);
@@ -97,11 +99,11 @@
 	}
 
 	a.cell {
-		box-shadow: inset 0 0 0 2px #ff7700;
-		border-color: #ff7700;
+		box-shadow: inset 0 0 0 2px $color-accent;
+		border-color: $color-accent;
 
 		&.shown {
-			background-color: #ff7700;
+			background-color: $color-accent;
 			color: white;
 		}
 	}

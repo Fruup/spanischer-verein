@@ -1,9 +1,11 @@
 import {PortableTextBlock, SanityDocument, defineField, defineType, Slug} from 'sanity'
+import {TextIcon} from '@sanity/icons'
 
 export default defineType({
   name: 'page',
   title: 'Seite',
   type: 'document',
+  icon: TextIcon,
   fields: [
     defineField({
       name: 'title',

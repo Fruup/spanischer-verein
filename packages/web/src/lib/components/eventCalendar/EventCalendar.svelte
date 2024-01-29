@@ -59,6 +59,10 @@
 </div>
 
 <style lang="scss">
+	.calendar {
+		z-index: 10000;
+	}
+
 	.heading {
 		display: flex;
 		justify-content: space-between;

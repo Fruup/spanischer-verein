@@ -15,7 +15,14 @@ const adapter = adapterStatic({
 const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
 	// for more information about preprocessors
-	preprocess: sequence([preprocess(), preprocessMeltUI()]),
+	preprocess: sequence([
+		preprocess({
+			scss: {
+				includePaths: ['src/lib/styles'],
+			},
+		}),
+		preprocessMeltUI(),
+	]),
 
 	kit: {
 		// adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.

@@ -4,14 +4,21 @@
 	import PageSearch from './PageSearch.svelte'
 	import DonationLink from '$lib/components/DonationLink.svelte'
 	import SkipNavigation from '$lib/components/SkipNavigation.svelte'
+	import { getEventUrl } from '$lib/helpers/url'
+	import type { LayoutData } from './$types'
+	import { page } from '$app/stores'
 
-	export let data
+	const { data } = $props<{ data: LayoutData }>()
 
-	$: events = data.events.map((e) => ({
-		name: e.title,
-		url: `/post/${e.slug}`,
-		date: new Date(e.eventTime),
-	}))
+	const isEventPage = $derived($page.route.id?.includes('event'))
+
+	const events = $derived(
+		data.upcomingEvents.map((e) => ({
+			name: e.title,
+			url: getEventUrl(e.slug),
+			date: new Date(e.eventTime),
+		})),
+	)
 </script>
 
 <svelte:head>
@@ -22,7 +29,13 @@
 
 <Header />
 
+<div aria-hidden class="background-effect" class:isEventPage>
+	<div />
+</div>
+
 <div class="content">
+	<aside></aside>
+
 	<main>
 		<slot />
 	</main>
@@ -44,18 +57,46 @@
 <footer>I am a footer</footer>
 
 <style lang="scss">
-	@import '../../lib/styles/vars.scss';
+	@use 'sass:color';
+	@import 'vars';
 
 	.content {
-		margin: auto;
-		max-width: 1200px;
 		display: grid;
-		grid-template-columns: 1fr max(350px, 20%);
+		grid-template-columns: 1fr min(1000px) 1fr;
 
-		gap: 6rem;
+		gap: 3rem;
 
 		@include max-md {
 			grid-template-columns: 1fr;
+		}
+	}
+
+	.background-effect {
+		z-index: -1000;
+		height: 0;
+		overflow: visible;
+
+		position: relative;
+
+		div {
+			position: absolute;
+			inset: 0;
+			height: 100px;
+			// z-index: -1000;
+
+			transform-origin: center;
+
+			transform: skewY(-3deg) translateY(-50%);
+
+			background-color: color.change($color-accent, $alpha: 1);
+			// background-color: rgba(255, 68, 0, 0.5);
+
+			transition: transform 500ms ease;
+		}
+
+		&.isEventPage div {
+			background-color: color.change($color-accent, $alpha: 1);
+			transform: scaleY(3) skewY(1deg) translateY(20%);
 		}
 	}
 

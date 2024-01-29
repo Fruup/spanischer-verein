@@ -184,8 +184,10 @@
 
 		overflow: visible;
 
+		margin: 2rem;
+		margin-bottom: 6rem;
+
 		text-align: center;
-		margin-bottom: 4rem;
 	}
 
 	ul {
