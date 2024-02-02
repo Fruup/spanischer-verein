@@ -1,11 +1,8 @@
 {
-  "name": "spanischer-verein",
-  "version": "0.0.1",
-  "workspaces": [
-    "packages/*"
-  ],
-  "dependencies": {
-    "svelte": "next",
-    "svelte-preprocess": "^5.1.3"
-  }
+	"name": "spanischer-verein",
+	"version": "0.0.1",
+	"workspaces": [
+		"packages/*"
+	],
+	"dependencies": {}
 }
