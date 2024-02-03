@@ -1,13 +1,7 @@
-<svelte:options runes={true} />
-
 <script lang="ts">
 	import EventPage from '$lib/components/EventPage.svelte'
-	import type { PageData } from './$types'
 
-	let { data } = $props<{ data: PageData }>()
-
-	// This is necessary to prevent a bug.
-	$inspect(data)
+	export let data
 </script>
 
 <svelte:head>

@@ -9,36 +9,30 @@
 		events: EventCalendarItem[]
 	}
 
-	let { month, events, frozen, cell, grid, isDateDisabled } = $props<
-		State & {
-			frozen?: boolean
-			cell: any
-			grid: any
-			isDateDisabled: any
-		}
-	>()
+	export let frozen: boolean | undefined = undefined
+	export let cell: any
+	export let grid: any
+	export let isDateDisabled: any
 
-	let state = $state<State>({
-		month,
-		events,
-	})
+	export let month: Month<DateValue>
+	export let events: EventCalendarItem[]
 
-	const pathname = $derived($page.url.pathname)
+	$: pathname = $page.url.pathname
 
-	$effect(() => {
-		if (frozen) return
+	// $effect(() => {
+	// 	if (frozen) return
 
-		state = {
-			month,
-			events,
-		}
-	})
+	// 	state = {
+	// 		month,
+	// 		events,
+	// 	}
+	// })
 </script>
 
 <div class="month" use:melt={$grid}>
-	{#each state.month.weeks as week}
+	{#each month.weeks as week}
 		{#each week as day}
-			{@const eventsForDay = getEventsForDay(day, state.events)}
+			{@const eventsForDay = getEventsForDay(day, events)}
 
 			{#if eventsForDay.length === 0}
 				<span

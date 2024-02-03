@@ -5,20 +5,17 @@
 	import DonationLink from '$lib/components/DonationLink.svelte'
 	import SkipNavigation from '$lib/components/SkipNavigation.svelte'
 	import { getEventUrl } from '$lib/helpers/url'
-	import type { LayoutData } from './$types'
 	import { page } from '$app/stores'
 
-	const { data } = $props<{ data: LayoutData }>()
+	export let data
 
-	const isEventPage = $derived($page.route.id?.includes('event'))
+	$: isEventPage = $page.route.id?.includes('event')
 
-	const events = $derived(
-		data.upcomingEvents.map((e) => ({
-			name: e.title,
-			url: getEventUrl(e.slug),
-			date: new Date(e.eventTime),
-		})),
-	)
+	$: events = data.upcomingEvents.map((e) => ({
+		name: e.title,
+		url: getEventUrl(e.slug),
+		date: new Date(e.eventTime),
+	}))
 </script>
 
 <svelte:head>

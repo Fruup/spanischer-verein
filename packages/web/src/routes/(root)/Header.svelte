@@ -3,9 +3,9 @@
 	import { fly } from 'svelte/transition'
 	import logo from '$assets/logo-l.png'
 
-	let activeIndex = $state<number>()
-	let overlayElement = $state<HTMLDivElement>() as HTMLDivElement
-	let cancelTimer = $state<ReturnType<typeof setTimeout>>()
+	let activeIndex: number | undefined
+	let overlayElement: HTMLDivElement
+	let cancelTimer: ReturnType<typeof setTimeout>
 
 	interface NavigationItem {
 		label: string
@@ -52,10 +52,10 @@
 		},
 	]
 
-	const itemsLeft = $derived(items.slice(0, Math.floor(items.length / 2)))
-	const itemsRight = $derived(items.slice(Math.floor(items.length / 2)))
+	$: itemsLeft = items.slice(0, Math.floor(items.length / 2))
+	$: itemsRight = items.slice(Math.floor(items.length / 2))
 
-	const activeItem = $derived(typeof activeIndex === 'number' ? items[activeIndex] : undefined)
+	$: activeItem = typeof activeIndex === 'number' ? items[activeIndex] : undefined
 
 	let cancelAnimation: (() => void) | undefined
 
@@ -112,7 +112,7 @@
 	}
 </script>
 
-{#snippet navigationItem({ item, index })}
+<!-- {#snippet navigationItem({ item, index })}
 	{@const onmouseover = (e: Event) => setActive(e, index)}
 	{@const label = item.label}
 	{@const href = item.href}
@@ -122,13 +122,13 @@
 			{label}
 		</a>
 	</li>
-{/snippet}
+{/snippet} -->
 
 <header>
 	<nav>
 		<ul>
 			{#each itemsLeft as item, index}
-				{@render navigationItem({ item, index })}
+				<!-- {@render navigationItem({ item, index })} -->
 			{/each}
 
 			<li>
@@ -138,7 +138,7 @@
 			</li>
 
 			{#each itemsRight as item, index}
-				{@render navigationItem({ item, index })}
+				<!-- {@render navigationItem({ item, index })} -->
 			{/each}
 		</ul>
 	</nav>
@@ -157,7 +157,7 @@
 				<div
 					in:fly={{ x: 20, duration: 500, delay: 200 }}
 					out:fly={{ x: -20, duration: 200 }}
-					onoutrostart={(e) => ((e.target as any).style.position = 'absolute')}
+					onoutrostart={(e) => ((e.target).style.position = 'absolute')}
 				>
 					<h1>{activeItem.label}</h1>
 

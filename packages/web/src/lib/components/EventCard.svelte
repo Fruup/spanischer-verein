@@ -2,35 +2,29 @@
 	import { getEventUrl } from '$lib/helpers/url'
 	import { fly } from 'svelte/transition'
 
-	let { event, introDelay } = $props<{
-		event: {
-			title: string
-			slug: string
-			imageUrl: string
-			eventTime: Date
-			mainImageMeta: {
-				prominentColor: string
-				dimensions: {
-					width: number
-					height: number
-				}
+	export let event: {
+		title: string
+		slug: string
+		imageUrl: string
+		eventTime: Date
+		mainImageMeta: {
+			prominentColor: string
+			dimensions: {
+				width: number
+				height: number
 			}
 		}
-		introDelay?: number
-	}>()
+	}
 
-	const backgroundColor = $derived(event.mainImageMeta.prominentColor)
+	export let introDelay: number
 
-	const aspectRatio = $derived(
-		event.mainImageMeta.dimensions.width / event.mainImageMeta.dimensions.height,
-	)
+	$: backgroundColor = event.mainImageMeta.prominentColor
+	$: aspectRatio = event.mainImageMeta.dimensions.width / event.mainImageMeta.dimensions.height
 
-	const eventTime = $derived(
-		new Date(event.eventTime).toLocaleString(undefined, {
-			dateStyle: 'medium',
-			timeStyle: 'medium',
-		}),
-	)
+	$: eventTime = new Date(event.eventTime).toLocaleString(undefined, {
+		dateStyle: 'medium',
+		timeStyle: 'medium',
+	})
 </script>
 
 <a

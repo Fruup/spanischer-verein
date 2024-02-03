@@ -1,17 +1,13 @@
 <script lang="ts">
-	let { direction = 'down', transition } = $props<{
-		direction?: 'up' | 'down' | 'left' | 'right'
-		transition?: boolean
-	}>()
+	export let direction: 'up' | 'down' | 'left' | 'right' = 'down'
+	export let transition: boolean | undefined = undefined
 
-	const rotate = $derived(
-		{
-			down: '0deg',
-			up: '180deg',
-			right: '-90deg',
-			left: '90deg',
-		}[direction],
-	)
+	$: rotate = {
+		down: '0deg',
+		up: '180deg',
+		right: '-90deg',
+		left: '90deg',
+	}[direction]
 </script>
 
 <svg

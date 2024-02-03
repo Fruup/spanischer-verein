@@ -1,13 +1,9 @@
 <script lang="ts">
 	import EventCard from '$lib/components/EventCard.svelte'
-	import type { PageData } from './$types'
 
-	const { data } = $props<{ data: PageData }>()
+	export let data
 
-	// This is necessary to prevent a bug.
-	$inspect(data)
-
-	const events = $derived(data.events)
+	$: events = data.events
 	const numColumns = 3
 
 	function getColumnEvents(columnIndex: number) {

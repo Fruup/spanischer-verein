@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition'
 
-	let { children, open } = $props<{ children: any; open: boolean }>()
+	export let children: any
+	export let open: boolean
 </script>
 
 <div class="backdrop">
 	{#if open}
 		<div class="modal" transition:fly={{ y: 20 }}>
-			{@render children()}
+			<!-- {@render children()} -->
 		</div>
 	{/if}
 </div>

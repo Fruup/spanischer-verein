@@ -1,9 +1,9 @@
 <script lang="ts">
-	let { children } = $props<{ children: any }>()
+	// let { children } = $props<{ children: any }>()
 </script>
 
 <div class="shadow-container">
-	{@render children()}
+	<!-- {@render children()} -->
 </div>
 
 <style lang="scss">

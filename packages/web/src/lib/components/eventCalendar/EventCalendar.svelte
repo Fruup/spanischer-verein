@@ -15,9 +15,7 @@
 		locale: 'de',
 	})
 
-	let { events } = $props<{
-		events: EventCalendarItem[]
-	}>()
+	export let events: EventCalendarItem[]
 
 	// TODO: draw cool SVG path to the linked element.
 	const handleFocus = (event: Event) => {}

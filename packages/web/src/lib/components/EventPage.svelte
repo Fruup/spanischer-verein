@@ -6,9 +6,7 @@
 	import ImageBlock from './blocks/ImageBlock.svelte'
 	import EventInfoBlock from './blocks/EventInfoBlock.svelte'
 
-	const { event } = $props<{
-		event: EventSchema
-	}>()
+	export let event: EventSchema
 
 	const components: PortableTextComponents = {
 		types: {
@@ -17,10 +15,10 @@
 		},
 	}
 
-	const body = $derived(event.body)
-	const eventInfo = $derived(event.eventInfo)
-	const title = $derived(event.title)
-	const updatedAt = $derived(event._updatedAt)
+	$: body = event.body
+	$: eventInfo = event.eventInfo
+	$: title = event.title
+	$: updatedAt = event._updatedAt
 </script>
 
 <div class="event-page" in:fly={{ y: 10 }}>

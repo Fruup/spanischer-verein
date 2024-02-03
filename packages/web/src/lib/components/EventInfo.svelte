@@ -15,11 +15,11 @@
 		}
 	}
 
-	let { eventInfo } = $props<{ eventInfo: EventInfoSpec }>()
+	export let eventInfo: EventInfoSpec
 
-	const admission = $derived(eventInfo.admission)
-	const eventTime = $derived(eventInfo.eventTime)
-	const location = $derived(eventInfo.location)
+	$: admission = eventInfo.admission
+	$: eventTime = eventInfo.eventTime
+	$: location = eventInfo.location
 </script>
 
 {#if admission || eventTime || location}
@@ -27,9 +27,9 @@
 		<EventMarker />
 
 		{#if eventTime}
-			<WithShadow>
-				<IconTime />
-			</WithShadow>
+			<!-- <WithShadow> -->
+			<IconTime />
+			<!-- </WithShadow> -->
 
 			<span>
 				{new Date(eventTime).toLocaleDateString(undefined, {
@@ -43,9 +43,9 @@
 		{/if}
 
 		{#if location}
-			<WithShadow>
-				<IconPin />
-			</WithShadow>
+			<!-- <WithShadow> -->
+			<IconPin />
+			<!-- </WithShadow> -->
 
 			<span>
 				{@html location.address.replaceAll('\n', '<br />')}
@@ -53,9 +53,9 @@
 		{/if}
 
 		{#if admission}
-			<WithShadow>
-				<IconCoin />
-			</WithShadow>
+			<!-- <WithShadow> -->
+			<IconCoin />
+			<!-- </WithShadow> -->
 
 			<span>
 				{@html admission.replaceAll('\n', '<br />')}
