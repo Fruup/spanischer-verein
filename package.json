@@ -1,8 +1,5 @@
 {
 	"name": "spanischer-verein",
 	"version": "0.0.1",
-	"workspaces": [
-		"packages/*"
-	],
 	"dependencies": {}
 }
