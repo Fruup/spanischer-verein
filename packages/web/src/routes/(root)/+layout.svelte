@@ -93,7 +93,7 @@
 
 		&.isEventPage div {
 			background-color: color.change($color-accent, $alpha: 1);
-			transform: scaleY(3) skewY(1deg) translateY(20%);
+			transform: scaleY(1.2) skewY(1.5deg) translateY(25%);
 		}
 	}
 
