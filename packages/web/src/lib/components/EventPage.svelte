@@ -40,10 +40,30 @@
 </div>
 
 <style lang="scss">
+	@import '../styles/vars';
+
 	.event-page {
 		h1 {
 			// TODO
-			color: white;
+			// color: white;
+			position: relative;
+
+			width: fit-content;
+			margin: auto;
+			padding: 1rem 2rem;
+
+			margin-bottom: 6rem;
+
+			&::before {
+				z-index: -1;
+				inset: 0;
+				position: absolute;
+				content: '';
+
+				border-radius: 999px;
+				background-color: white;
+				border: 3px solid $color-accent;
+			}
 		}
 
 		:global(> *) {
