@@ -1,15 +1,21 @@
 import adapterStatic from '@sveltejs/adapter-static'
+import adapterNetlify from '@sveltejs/adapter-netlify'
 import preprocess from 'svelte-preprocess'
 import { preprocessMeltUI, sequence } from '@melt-ui/pp'
 
-const isRenderingNewsletter = process.env.RENDERING_NEWSLETTER === 'true'
-const newsletterSlug = process.env.NEWSLETTER_SLUG
+const isRenderingNewsletter = process.env.PUBLIC_RENDERING_NEWSLETTER === 'true'
 
-if (isRenderingNewsletter && !newsletterSlug) throw Error("Missing env var 'NEWSLETTER_SLUG'")
+const adapter = (() => {
+	if (isRenderingNewsletter) {
+		if (!process.env.NEWSLETTER_SLUG) throw Error("Missing env var 'NEWSLETTER_SLUG'")
 
-const adapter = adapterStatic({
-	strict: false,
-})
+		return adapterStatic({
+			strict: false,
+		})
+	} else {
+		return adapterNetlify({})
+	}
+})()
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
