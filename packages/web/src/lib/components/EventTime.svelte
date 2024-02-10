@@ -12,7 +12,7 @@
 </script>
 
 <time class="event-time" datetime={_time.toISOString()}>
-	<IconTime />
+	<!-- <IconTime /> -->
 
 	<span>{date}</span>
 	<span>{hours}<sup>{minutes}</sup></span>
@@ -23,7 +23,7 @@
 	@import 'vars';
 
 	.event-time {
-		font-size: 0.95rem;
+		// font-size: 0.95rem;
 		color: #666;
 
 		display: flex;

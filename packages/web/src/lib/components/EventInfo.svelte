@@ -2,13 +2,11 @@
 	import IconCoin from './icons/IconCoin.svelte'
 	import IconPin from './icons/IconPin.svelte'
 	import IconTime from './icons/IconTime.svelte'
-	import EventMarker from './EventMarker.svelte'
-	import WithShadow from './icons/WithShadow.svelte'
 	import EventTime from './EventTime.svelte'
 
 	interface EventInfoSpec {
 		admission?: string
-		eventTime?: string
+		time?: string
 		location?: {
 			title: string
 			address: string
@@ -19,80 +17,62 @@
 	export let eventInfo: EventInfoSpec
 
 	$: admission = eventInfo.admission
-	$: eventTime = eventInfo.eventTime
+	$: eventTime = eventInfo.time
 	$: location = eventInfo.location
 </script>
 
 {#if admission || eventTime || location}
 	<div class="event-info">
-		<EventMarker />
-
 		{#if eventTime}
-			<EventTime time={new Date(eventTime)} />
+			<div class="item">
+				<IconTime />
 
-			<!-- <WithShadow> -->
-			<!-- <IconTime /> -->
-			<!-- </WithShadow> -->
-
-			<!-- <span>
-				{new Date(eventTime).toLocaleDateString(undefined, {
-					dateStyle: 'medium',
-				})}
-				<br />
-				{new Date(eventTime).toLocaleTimeString(undefined, {
-					timeStyle: 'short',
-				})}
-			</span> -->
+				<EventTime time={eventTime} />
+			</div>
 		{/if}
 
 		{#if location}
-			<!-- <WithShadow> -->
-			<IconPin />
-			<!-- </WithShadow> -->
+			<div class="item">
+				<IconPin />
 
-			<span>
-				{@html location.address.replaceAll('\n', '<br />')}
-			</span>
+				<span>
+					{@html location.address.replaceAll('\n', '<br />')}
+				</span>
+			</div>
 		{/if}
 
 		{#if admission}
-			<!-- <WithShadow> -->
-			<IconCoin />
-			<!-- </WithShadow> -->
+			<div class="item">
+				<IconCoin />
 
-			<span>
-				{@html admission.replaceAll('\n', '<br />')}
-			</span>
+				<span>
+					{@html admission.replaceAll('\n', '<br />')}
+				</span>
+			</div>
 		{/if}
 	</div>
 {/if}
 
 <style lang="scss">
-	@import '../styles/vars.scss';
+	@import 'vars';
 
 	.event-info {
-		position: relative;
-
-		border: 1px solid rgba(0, 0, 0, 0.1);
-		border-radius: 12px;
-		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
-
-		margin: 4rem auto;
-		padding: 2rem;
 		hyphens: auto;
 
 		font-size: 1rem;
 		color: #555;
-		display: grid;
-		place-content: center;
-		text-align: center;
-		grid-auto-flow: column;
-		grid-template-rows: auto auto;
-		grid-template-columns: 1fr auto 1fr;
-		column-gap: 0.5rem;
 
-		:global(.shadow-container) {
-			margin-bottom: 0.5rem;
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
+
+		.item {
+			flex: 1 0 0;
+
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
 		}
 
 		:global(.event-marker) {
@@ -110,7 +90,6 @@
 		@include max-md {
 			width: fit-content;
 
-			display: flex;
 			flex-direction: column;
 
 			span:not(:last-of-type) {

@@ -16,7 +16,16 @@
 	}
 
 	$: body = event.body
-	$: eventInfo = event.eventInfo
+	$: eventInfo = {
+		admission: event.eventAdmission,
+		time: event.eventTime,
+		location: event.eventLocation
+			? {
+					title: event.eventLocation,
+					address: event.eventLocation,
+				}
+			: undefined,
+	}
 	$: title = event.title
 	$: updatedAt = event._updatedAt
 </script>
@@ -40,7 +49,7 @@
 </div>
 
 <style lang="scss">
-	@import '../styles/vars';
+	@import 'vars';
 
 	.event-page {
 		h1 {
@@ -52,7 +61,7 @@
 			margin: auto;
 			padding: 1rem 2rem;
 
-			margin-bottom: 6rem;
+			margin-bottom: 2rem;
 
 			&::before {
 				z-index: -1;

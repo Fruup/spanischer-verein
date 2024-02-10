@@ -23,11 +23,6 @@
 	$: backgroundColor = event.mainImageMeta.prominentColor
 	$: aspectRatio = event.mainImageMeta.dimensions.width / event.mainImageMeta.dimensions.height
 
-	$: eventTime = new Date(event.eventTime).toLocaleString(undefined, {
-		dateStyle: 'medium',
-		timeStyle: 'medium',
-	})
-
 	const href = getEventUrl(event.slug)
 	let hover = false
 
@@ -67,7 +62,6 @@
 	/>
 
 	<div class="content">
-		<!-- <time>{eventTime}</time> -->
 		<EventTime time={event.eventTime} />
 
 		<h2>{event.title}</h2>
@@ -107,11 +101,6 @@
 			margin: 0;
 		}
 
-		time {
-			font-size: 0.99rem;
-			color: #666;
-		}
-
 		.content {
 			padding: 2rem;
 			display: flex;
@@ -123,6 +112,10 @@
 			:global(> *) {
 				margin: 0;
 			}
+		}
+
+		:global(.event-time) {
+			font-size: 0.95rem;
 		}
 	}
 </style>
