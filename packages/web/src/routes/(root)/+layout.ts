@@ -1,7 +1,10 @@
-import { sanityApi } from '$lib/sanity/client'
+import { setLocale } from '$lib/services/locale'
+import { browser } from '$app/environment'
 
-export const load = async () => {
-	return {
-		upcomingEvents: await sanityApi.getUpcomingEventsOverview(),
+export const load = async ({ data }) => {
+	if (browser) {
+		setLocale(navigator.language)
 	}
+
+	return data
 }

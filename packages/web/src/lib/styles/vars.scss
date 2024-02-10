@@ -1,11 +1,12 @@
-$color-background: #1d1d1d;
-$color-text: #f1f1f1;
+$color-background: #fff;
+$color-text: #1d1d1d;
 
 // Stadt Köln
 $color-accent: #ed1d24;
 // #ff7700
 
-$color-surface: adjust-color($color-background, $whiteness: 10%);
+// $color-surface: adjust-color($color-background, $whiteness: 10%);
+$color-surface: adjust-color($color-background, $blackness: 2%);
 
 @mixin surface {
 	background-color: $color-surface;
@@ -22,7 +23,7 @@ $color-surface: adjust-color($color-background, $whiteness: 10%);
 }
 
 @mixin max-md {
-	@media screen and (max-width: 1000px) {
+	@media screen and (max-width: 1200px) {
 		@content;
 	}
 }

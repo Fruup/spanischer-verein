@@ -3,6 +3,14 @@ import adapterNetlify from '@sveltejs/adapter-netlify'
 import preprocess from 'svelte-preprocess'
 import { preprocessMeltUI, sequence } from '@melt-ui/pp'
 
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+
+/**
+ * @param {string} path
+ */
+const resolve = (path) => join(dirname(fileURLToPath(import.meta.url)), path)
+
 const isRenderingNewsletter = process.env.PUBLIC_RENDERING_NEWSLETTER === 'true'
 
 const adapter = (() => {
@@ -24,7 +32,7 @@ const config = {
 	preprocess: sequence([
 		preprocess({
 			scss: {
-				includePaths: ['src/lib/styles'],
+				includePaths: [resolve('src/lib/styles')],
 			},
 		}),
 		preprocessMeltUI(),

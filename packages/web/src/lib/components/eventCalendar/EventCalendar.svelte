@@ -3,6 +3,7 @@
 	import IconAngle from '../icons/IconAngle.svelte'
 	import { type EventCalendarItem } from './helpers'
 	import EventCalendarMonth from './EventCalendarMonth.svelte'
+	import { locale } from '$lib/services/locale'
 
 	const {
 		elements: { calendar, cell, grid, heading, nextButton, prevButton },
@@ -12,7 +13,7 @@
 		fixedWeeks: true,
 		readonly: true,
 		calendarLabel: 'Veranstaltungskalender',
-		locale: 'de',
+		locale: $locale,
 	})
 
 	export let events: EventCalendarItem[]
@@ -59,6 +60,8 @@
 <style lang="scss">
 	.calendar {
 		z-index: 10000;
+		max-width: 350px;
+		margin: auto;
 	}
 
 	.heading {
@@ -97,16 +100,6 @@
 		border-radius: 12px;
 	}
 
-	hr {
-		+ hr {
-			margin-top: 0.333rem;
-		}
-
-		~ hr {
-			margin-bottom: 0;
-		}
-	}
-
 	.displayed-time-container {
 		display: grid;
 		place-content: center;
@@ -140,18 +133,5 @@
 
 		margin: 0.125rem;
 		border-radius: 0.5rem;
-	}
-
-	a.cell {
-		// text-decoration: underline;
-		// background-color: #ff7700;
-
-		box-shadow: inset 0 0 0 2px #ff7700;
-		border-color: #ff7700;
-
-		&.current {
-			// color: white;
-			// background-color: #ff9335;
-		}
 	}
 </style>

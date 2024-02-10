@@ -4,6 +4,7 @@
 	import IconTime from './icons/IconTime.svelte'
 	import EventMarker from './EventMarker.svelte'
 	import WithShadow from './icons/WithShadow.svelte'
+	import EventTime from './EventTime.svelte'
 
 	interface EventInfoSpec {
 		admission?: string
@@ -27,11 +28,13 @@
 		<EventMarker />
 
 		{#if eventTime}
+			<EventTime time={new Date(eventTime)} />
+
 			<!-- <WithShadow> -->
-			<IconTime />
+			<!-- <IconTime /> -->
 			<!-- </WithShadow> -->
 
-			<span>
+			<!-- <span>
 				{new Date(eventTime).toLocaleDateString(undefined, {
 					dateStyle: 'medium',
 				})}
@@ -39,7 +42,7 @@
 				{new Date(eventTime).toLocaleTimeString(undefined, {
 					timeStyle: 'short',
 				})}
-			</span>
+			</span> -->
 		{/if}
 
 		{#if location}

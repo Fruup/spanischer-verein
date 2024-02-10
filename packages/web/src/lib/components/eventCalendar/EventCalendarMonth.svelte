@@ -78,6 +78,7 @@
 
 		aspect-ratio: 1;
 		height: auto;
+		min-width: 40px;
 
 		&:not(.active) {
 			opacity: 0.5;

@@ -116,11 +116,11 @@ export interface EventSchema extends SanityDocument {
   body: PortableTextBlock[]
 
   // Event
-  eventTime: Date
+  eventTime: string
   eventLocation?: string
   eventAdmission?: string
 
   // Publishing
-  publishedAt?: Date
+  publishedAt?: string
   showInNewsletter?: boolean
 }

@@ -4,6 +4,7 @@
 
 <div class="shadow-container">
 	<!-- {@render children()} -->
+	<slot />
 </div>
 
 <style lang="scss">

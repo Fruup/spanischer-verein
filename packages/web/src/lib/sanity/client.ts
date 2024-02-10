@@ -3,6 +3,7 @@ import type { EventSchema } from '@spanischer-verein/sanity/schemas/event'
 import createImageUrlBuilder from '@sanity/image-url'
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import type { PortableTextBlock } from '@portabletext/types'
+import { env } from '$env/dynamic/private'
 
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
@@ -11,8 +12,7 @@ export const sanityClient = createClient({
 	apiHost: 'https://api.sanity.io',
 	dataset: 'production',
 	useCdn: false,
-	token:
-		'skIOafJ9K8zuoXIOJRKZlo5vB1xu0rE1htR80QIZHmfqL6d9iXxuUKNIxMyt3Hx8Br1y144bFcfdxXBkD5K8IZrzQc9KVeV1Qsg19JFR18UOVoU8KxCbNNvBPyea2zOUUhdNb8dPYAiiutgn0Zx3sCBxj0oSq3Nco8OzZ03q5nG3X6lT5Tki',
+	token: env.SANITY_TOKEN,
 })
 
 const imageUrlBuilder = createImageUrlBuilder(sanityClient)

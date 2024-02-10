@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { getEventUrl } from '$lib/helpers/url'
+	import { onMount } from 'svelte'
 	import { fly } from 'svelte/transition'
+	import EventTime from './EventTime.svelte'
 
 	export let event: {
 		title: string
 		slug: string
 		imageUrl: string
-		eventTime: Date
+		eventTime: string
 		mainImageMeta: {
 			prominentColor: string
 			dimensions: {
@@ -25,14 +27,37 @@
 		dateStyle: 'medium',
 		timeStyle: 'medium',
 	})
+
+	const href = getEventUrl(event.slug)
+	let hover = false
+
+	onMount(() => {
+		const as = document.querySelectorAll<HTMLAnchorElement>(`a[href="${href}"]`)
+
+		const setHoverValueTrue = () => (hover = true)
+		const setHoverValueFalse = () => (hover = false)
+
+		as.forEach((a) => {
+			a.addEventListener('focus', setHoverValueTrue)
+			a.addEventListener('blur', setHoverValueFalse)
+
+			a.addEventListener('mouseover', setHoverValueTrue)
+			a.addEventListener('mouseleave', setHoverValueFalse)
+		})
+
+		return () => {
+			as.forEach((a) => {
+				a.removeEventListener('focus', setHoverValueTrue)
+				a.removeEventListener('blur', setHoverValueFalse)
+
+				a.removeEventListener('mouseover', setHoverValueTrue)
+				a.removeEventListener('mouseleave', setHoverValueFalse)
+			})
+		}
+	})
 </script>
 
-<a
-	in:fly|global={{ y: 30, delay: introDelay }}
-	href={getEventUrl(event.slug)}
-	class="event-card"
-	data-sveltekit-noscroll
->
+<a in:fly|global={{ y: 30, delay: introDelay }} {href} class="event-card" class:hover>
 	<img
 		src={event.imageUrl}
 		alt=""
@@ -42,7 +67,8 @@
 	/>
 
 	<div class="content">
-		<time>{eventTime}</time>
+		<!-- <time>{eventTime}</time> -->
+		<EventTime time={event.eventTime} />
 
 		<h2>{event.title}</h2>
 	</div>
@@ -63,20 +89,18 @@
 		border: 1px solid var(--shadow-color);
 		box-shadow: 4px 4px 1px 2px var(--shadow-color);
 
-		transition: box-shadow 100ms ease;
+		transition: all 100ms ease;
 
 		&:hover,
-		&:focus {
+		&:focus,
+		&.hover {
 			--shadow-color: #{color.change($color-accent, $alpha: 0.75)};
-
-			box-shadow: 6px 6px 1px 4px var(--shadow-color);
 		}
 
 		img {
 			width: 100%;
 			height: auto;
 			aspect-ratio: 1 / 1;
-			// aspect-ratio: 2 / 1;
 
 			object-fit: cover;
 

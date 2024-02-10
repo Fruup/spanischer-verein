@@ -62,7 +62,7 @@
 
 				border-radius: 999px;
 				background-color: white;
-				border: 3px solid $color-accent;
+				// border: 3px solid $color-accent;
 			}
 		}
 

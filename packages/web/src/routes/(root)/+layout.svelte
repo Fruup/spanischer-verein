@@ -1,15 +1,12 @@
 <script lang="ts">
 	import Header from './Header.svelte'
 	import EventCalendar from '$lib/components/eventCalendar/EventCalendar.svelte'
-	import PageSearch from './PageSearch.svelte'
 	import DonationLink from '$lib/components/DonationLink.svelte'
 	import SkipNavigation from '$lib/components/SkipNavigation.svelte'
+	import BackgroundEffect from './BackgroundEffect.svelte'
 	import { getEventUrl } from '$lib/helpers/url'
-	import { page } from '$app/stores'
 
 	export let data
-
-	$: isEventPage = $page.route.id?.includes('event')
 
 	$: events = data.upcomingEvents.map((e) => ({
 		name: e.title,
@@ -26,13 +23,9 @@
 
 <Header />
 
-<div aria-hidden class="background-effect" class:isEventPage>
-	<div />
-</div>
+<BackgroundEffect />
 
 <div class="content">
-	<aside></aside>
-
 	<main>
 		<slot />
 	</main>
@@ -59,46 +52,17 @@
 
 	.content {
 		display: grid;
-		grid-template-columns: 1fr min(1000px) 1fr;
+		grid-template-columns: auto 375px;
 
-		gap: 3rem;
+		max-width: 1200px;
+
+		padding: 0 2rem;
+		margin: 0 auto;
+		gap: 5rem;
 
 		@include max-md {
 			grid-template-columns: 1fr;
 		}
-	}
-
-	.background-effect {
-		z-index: -1000;
-		height: 0;
-		overflow: visible;
-
-		position: relative;
-
-		div {
-			position: absolute;
-			inset: 0;
-			height: 100px;
-			// z-index: -1000;
-
-			transform-origin: center;
-
-			transform: skewY(-3deg) translateY(-50%);
-
-			background-color: color.change($color-accent, $alpha: 1);
-			// background-color: rgba(255, 68, 0, 0.5);
-
-			transition: transform 500ms ease;
-		}
-
-		&.isEventPage div {
-			background-color: color.change($color-accent, $alpha: 1);
-			transform: scaleY(1.2) skewY(1.5deg) translateY(25%);
-		}
-	}
-
-	main {
-		padding: 0 2rem;
 	}
 
 	.aside-content {
@@ -111,7 +75,8 @@
 
 		padding: 2rem;
 
-		background-color: rgba(0, 0, 0, 0.02);
+		@include surface;
+
 		border-radius: 24px;
 		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
 	}

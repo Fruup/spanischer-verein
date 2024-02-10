@@ -134,6 +134,8 @@
 			<li>
 				<a href="/">
 					<img src={logo} width="200px" alt="MACHADO Logo" />
+
+					<h1>Spanische Kultur in Köln</h1>
 				</a>
 			</li>
 
@@ -148,8 +150,8 @@
 			transition:fly={{ y: 10 }}
 			bind:this={overlayElement}
 			class="overlay surface-0"
-			onmouseenter={() => clearInterval(cancelTimer)}
-			{onmouseleave}
+			on:mouseenter={() => clearInterval(cancelTimer)}
+			on:mouseleave={onmouseleave}
 			tabindex="0"
 			role="menu"
 		>
@@ -157,7 +159,7 @@
 				<div
 					in:fly={{ x: 20, duration: 500, delay: 200 }}
 					out:fly={{ x: -20, duration: 200 }}
-					onoutrostart={(e) => ((e.target).style.position = 'absolute')}
+					on:outrostart={(e) => (e.target.style.position = 'absolute')}
 				>
 					<h1>{activeItem.label}</h1>
 
@@ -177,7 +179,7 @@
 </header>
 
 <style lang="scss">
-	@import '../../lib/styles/vars.scss';
+	@import 'vars';
 
 	header {
 		position: relative;
@@ -192,6 +194,8 @@
 
 	ul {
 		margin: auto;
+		padding: 0;
+
 		width: fit-content;
 
 		display: flex;
@@ -244,5 +248,11 @@
 			background: red;
 			z-index: 1;
 		}
+	}
+
+	h1 {
+		font-family: 'Old Standard TT', Georgia, serif;
+		font-weight: 300;
+		font-size: 3rem;
 	}
 </style>

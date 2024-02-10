@@ -17,6 +17,7 @@
 		"@floating-ui/core": "^1.5.2",
 		"@floating-ui/dom": "^1.5.3",
 		"@sanity/overlays": "^2.3.2",
+		"@spanischer-verein/sanity": "../sanity",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-netlify": "^4.1.0",
 		"@sveltejs/kit": "^2.5.0",

@@ -1,15 +1,27 @@
 <script lang="ts">
 	import EventCard from '$lib/components/EventCard.svelte'
+	import { onMount } from 'svelte'
 
 	export let data
 
 	$: events = data.events
-	const numColumns = 3
+	let numColumns = 2
 
 	function getColumnEvents(columnIndex: number) {
 		return events.filter((_, i) => i % numColumns === columnIndex)
 	}
+
+	function handleResize() {
+		if (window.visualViewport!.width < 666) numColumns = 1
+		else numColumns = 2
+	}
+
+	onMount(() => {
+		handleResize()
+	})
 </script>
+
+<svelte:window on:resize={handleResize} />
 
 <h1 hidden>Upcoming Events</h1>
 
@@ -38,6 +50,9 @@
 		display: grid;
 		grid-template-columns: repeat(var(--num-columns), 1fr);
 		gap: 2rem;
+
+		width: fit-content;
+		margin: auto;
 	}
 
 	ul {
@@ -45,8 +60,10 @@
 		flex-direction: column;
 		gap: 2rem;
 
-		margin: 0;
+		margin: 0 auto;
 		padding: 0;
+
+		max-width: 400px;
 	}
 
 	li {
