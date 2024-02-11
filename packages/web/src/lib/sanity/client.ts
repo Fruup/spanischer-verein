@@ -2,9 +2,10 @@ import { createClient } from '@sanity/client'
 import type { EventSchema } from '@spanischer-verein/sanity/schemas/event'
 import createImageUrlBuilder from '@sanity/image-url'
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
-import type { PortableTextBlock, PortableTextMarkDefinition } from '@portabletext/types'
+import type { PortableTextMarkDefinition } from '@portabletext/types'
 import { env } from '$env/dynamic/private'
 import type { PageSchema } from '@spanischer-verein/sanity/schemas/page'
+import type { SiteSettingsSchema } from '@spanischer-verein/sanity/schemas/siteSettings'
 import type { NavigationItem } from '$lib/components/header/Header.svelte'
 
 export const sanityClient = createClient({
@@ -196,5 +197,11 @@ export const sanityApi = {
 		await Promise.all(promises)
 
 		return page
+	},
+
+	getSiteSettings: async () => {
+		return await sanityClient.fetch<SiteSettingsSchema>(`
+			*[_id == "siteSettings"][0]
+		`)
 	},
 }

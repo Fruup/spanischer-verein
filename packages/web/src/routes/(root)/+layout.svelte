@@ -36,7 +36,7 @@
 			<EventCalendar {events} />
 
 			<h5>
-				<DonationLink />
+				<DonationLink href={data.siteSettings.donationLink} />
 			</h5>
 
 			<!-- <PageSearch /> -->

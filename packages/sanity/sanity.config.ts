@@ -37,16 +37,6 @@ export default defineConfig({
             // Page
             S.documentTypeListItem('page'),
 
-            S.divider(),
-
-            // Site settings
-            S.documentTypeListItem('siteSettings').child(
-              S.editor()
-                .schemaType('siteSettings')
-                .documentId('siteSettings')
-                .title('Seiteneinstellungen'),
-            ),
-
             // Page hierarchy
             createDeskHierarchy({
               //prop drill S and context:
@@ -78,6 +68,16 @@ export default defineConfig({
               // ❓ Optional: subarray of referenceTo, when it should not be possible to create new types from all referenceTo types
               // creatableTypes: ['page'],
             }),
+
+            S.divider(),
+
+            // Site settings
+            S.documentTypeListItem('siteSettings').child(
+              S.editor()
+                .schemaType('siteSettings')
+                .documentId('siteSettings')
+                .title('Seiteneinstellungen'),
+            ),
           ]),
     }),
     visionTool(),

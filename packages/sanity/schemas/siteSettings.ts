@@ -1,5 +1,5 @@
 import {defineField, defineType} from 'sanity'
-import {CogIcon, MenuIcon} from '@sanity/icons'
+import {CogIcon} from '@sanity/icons'
 
 export default defineType({
   name: 'siteSettings',
@@ -15,3 +15,8 @@ export default defineType({
     }),
   ],
 })
+
+export interface SiteSettingsSchema {
+  _type: 'siteSettings'
+  donationLink: string
+}
