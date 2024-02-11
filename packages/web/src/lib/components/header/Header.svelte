@@ -8,9 +8,7 @@
 
 <script lang="ts">
 	import logo from '$assets/logo-l.png'
-	import { writable } from 'svelte/store'
 	import Button from '../Button.svelte'
-	import IconBulb from '../icons/IconBulb.svelte'
 	import HeaderLinkTop from './HeaderLinkTop.svelte'
 	import MobileMenu from './MobileMenu.svelte'
 	import { page } from '$app/stores'
@@ -52,7 +50,7 @@
 		},
 		{
 			label: 'Öffnungszeiten',
-			href: '/',
+			href: '/oeffnungszeiten',
 		},
 	]
 
