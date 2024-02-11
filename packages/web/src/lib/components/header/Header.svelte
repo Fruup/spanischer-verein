@@ -8,7 +8,14 @@
 
 <script lang="ts">
 	import logo from '$assets/logo-l.png'
+	import { writable } from 'svelte/store'
+	import Button from '../Button.svelte'
+	import IconBulb from '../icons/IconBulb.svelte'
 	import HeaderLinkTop from './HeaderLinkTop.svelte'
+	import MobileMenu from './MobileMenu.svelte'
+	import { page } from '$app/stores'
+	import { pushState } from '$app/navigation'
+	import IconBurger from '../icons/IconBurger.svelte'
 
 	export let items: NavigationItem[] = [
 		{
@@ -52,13 +59,24 @@
 	const pivot = Math.floor(items.length / 2)
 	$: itemsLeft = items.slice(0, pivot)
 	$: itemsRight = items.slice(pivot)
+
+	// const isMainMenuOpen = writable(false)
+	$: isMainMenuOpen = !!$page.state.isMainMenuOpen
+
+	function openMainMenu() {
+		pushState('', { isMainMenuOpen: true })
+	}
+
+	function closeMainMenu() {
+		history.back()
+	}
 </script>
 
 <header>
 	<nav>
 		<ul class="left">
-			{#each itemsLeft as item, index}
-				<li>
+			{#each itemsLeft as item}
+				<li class="link">
 					<HeaderLinkTop navigationItem={item} />
 				</li>
 			{/each}
@@ -69,16 +87,22 @@
 		</a>
 
 		<ul class="right">
-			{#each itemsRight as item, index}
-				<li>
+			{#each itemsRight as item}
+				<li class="link">
 					<HeaderLinkTop navigationItem={item} />
 				</li>
 			{/each}
+
+			<li class="main-menu-trigger">
+				<Button icon={IconBurger} on:click={openMainMenu} />
+			</li>
 		</ul>
 	</nav>
 
 	<h1>Spanische Kultur in Köln</h1>
 </header>
+
+<MobileMenu isOpen={isMainMenuOpen} {items} close={closeMainMenu} />
 
 <style lang="scss">
 	@import 'vars';
@@ -127,5 +151,23 @@
 		font-family: 'Old Standard TT', Georgia, serif;
 		font-weight: 300;
 		font-size: 3rem;
+	}
+
+	.main-menu-trigger {
+		display: none;
+	}
+
+	@include max-md {
+		.main-menu-trigger {
+			display: initial;
+		}
+
+		ul .link {
+			display: none;
+		}
+
+		ul.right {
+			justify-content: end;
+		}
 	}
 </style>

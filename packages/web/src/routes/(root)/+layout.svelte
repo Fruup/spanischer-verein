@@ -56,13 +56,16 @@
 
 		max-width: 1200px;
 
-		padding: 0 2rem;
 		margin: 0 auto;
 		gap: 5rem;
 
 		@include max-md {
 			grid-template-columns: 1fr;
 		}
+	}
+
+	main {
+		padding: 0 2rem;
 	}
 
 	.aside-content {
@@ -79,6 +82,9 @@
 
 		border-radius: 24px;
 		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
+
+		width: fit-content;
+		margin: auto;
 	}
 
 	h5 {

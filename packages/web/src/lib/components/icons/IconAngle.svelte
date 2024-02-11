@@ -14,7 +14,7 @@
 	xmlns="http://www.w3.org/2000/svg"
 	height="1lh"
 	viewBox="0 -960 960 960"
-	stroke="currentColor"
+	fill="currentColor"
 	style:rotate
 	class:transition
 >

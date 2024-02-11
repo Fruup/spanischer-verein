@@ -43,9 +43,9 @@
 
 	<PortableText {components} value={body} />
 
-	<div class="page-footer">
+	<!-- <div class="page-footer">
 		zuletzt geändert am {new Date(updatedAt).toLocaleString()}
-	</div>
+	</div> -->
 </div>
 
 <style lang="scss">
@@ -53,8 +53,6 @@
 
 	.event-page {
 		h1 {
-			// TODO
-			// color: white;
 			position: relative;
 
 			width: fit-content;
@@ -71,7 +69,6 @@
 
 				border-radius: 999px;
 				background-color: white;
-				// border: 3px solid $color-accent;
 			}
 		}
 

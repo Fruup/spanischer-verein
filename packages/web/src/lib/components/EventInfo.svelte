@@ -87,10 +87,16 @@
 			translate: -50% -50%;
 		}
 
-		@include max-md {
+		@media screen and (max-width: 600px) {
 			width: fit-content;
+			margin: auto;
 
-			flex-direction: column;
+			// flex-direction: column;
+			flex-wrap: wrap;
+
+			> * {
+				min-width: 100px;
+			}
 
 			span:not(:last-of-type) {
 				margin-bottom: 2rem;
