@@ -31,6 +31,10 @@
 		on:mouseenter={() => ($open = true)}
 	>
 		{navigationItem.title}
+
+		<div class="angle-down">
+			<img aria-hidden="true" src={angleUrl} alt="" />
+		</div>
 	</a>
 
 	{#if $open && !!navigationItem.children?.length}
@@ -60,15 +64,16 @@
 		text-decoration: underline;
 		text-decoration-color: $color-accent;
 
-		&.has-children::after {
-			content: var(--angleUrl);
+		&:not(.has-children) .angle-down {
+			display: none;
+		}
 
+		&.has-children .angle-down {
 			position: absolute;
 			left: 0;
 			right: 0;
 			top: 80%;
 			bottom: auto;
-			height: fit-content;
 		}
 	}
 
