@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Header from './Header.svelte'
+	import Header from '../../lib/components/header/Header.svelte'
 	import EventCalendar from '$lib/components/eventCalendar/EventCalendar.svelte'
 	import DonationLink from '$lib/components/DonationLink.svelte'
 	import SkipNavigation from '$lib/components/SkipNavigation.svelte'
@@ -19,7 +19,7 @@
 	<title>Spanischer Verein Köln</title>
 </svelte:head>
 
-<SkipNavigation />
+<!-- <SkipNavigation /> -->
 
 <Header />
 
@@ -44,7 +44,7 @@
 	</aside>
 </div>
 
-<footer>I am a footer</footer>
+<footer></footer>
 
 <style lang="scss">
 	@use 'sass:color';
