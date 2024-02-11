@@ -20,34 +20,34 @@
 			label: 'Home',
 			href: '/',
 		},
-		{
-			label: 'Kurse',
-			href: '/',
-			children: [
-				{
-					label: 'Sub 1',
-					href: '/sub1',
-				},
-				{
-					label: 'Sub 2',
-					href: '/sub2',
-				},
-			],
-		},
-		{
-			label: 'Aktivitäten',
-			href: '/kurse',
-			children: [
-				{
-					label: 'Sub 1',
-					href: '/sub1',
-				},
-				{
-					label: 'Sub 2',
-					href: '/sub2',
-				},
-			],
-		},
+		// {
+		// 	label: 'Kurse',
+		// 	href: '/',
+		// 	children: [
+		// 		{
+		// 			label: 'Sub 1',
+		// 			href: '/sub1',
+		// 		},
+		// 		{
+		// 			label: 'Sub 2',
+		// 			href: '/sub2',
+		// 		},
+		// 	],
+		// },
+		// {
+		// 	label: 'Aktivitäten',
+		// 	href: '/kurse',
+		// 	children: [
+		// 		{
+		// 			label: 'Sub 1',
+		// 			href: '/sub1',
+		// 		},
+		// 		{
+		// 			label: 'Sub 2',
+		// 			href: '/sub2',
+		// 		},
+		// 	],
+		// },
 		{
 			label: 'Öffnungszeiten',
 			href: '/oeffnungszeiten',
