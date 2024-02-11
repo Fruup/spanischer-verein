@@ -65,7 +65,8 @@ export const sanityApi = {
 				(
 					!defined(publishedAt) ||
 					dateTime(now()) >= dateTime(publishedAt)
-				)
+				) &&
+				dateTime(eventTime) > dateTime(now())
 			]{
 				title,
 				"slug": slug.current,
