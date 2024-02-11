@@ -21,7 +21,7 @@
 
 <!-- <SkipNavigation /> -->
 
-<Header />
+<Header items={data.navigationTree} />
 
 <BackgroundEffect />
 

@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	export interface NavigationItem {
-		label: string
+		title: string
 		href: string
 		children?: NavigationItem[]
 	}
@@ -15,44 +15,7 @@
 	import { pushState } from '$app/navigation'
 	import IconBurger from '../icons/IconBurger.svelte'
 
-	export let items: NavigationItem[] = [
-		{
-			label: 'Home',
-			href: '/',
-		},
-		// {
-		// 	label: 'Kurse',
-		// 	href: '/',
-		// 	children: [
-		// 		{
-		// 			label: 'Sub 1',
-		// 			href: '/sub1',
-		// 		},
-		// 		{
-		// 			label: 'Sub 2',
-		// 			href: '/sub2',
-		// 		},
-		// 	],
-		// },
-		// {
-		// 	label: 'Aktivitäten',
-		// 	href: '/kurse',
-		// 	children: [
-		// 		{
-		// 			label: 'Sub 1',
-		// 			href: '/sub1',
-		// 		},
-		// 		{
-		// 			label: 'Sub 2',
-		// 			href: '/sub2',
-		// 		},
-		// 	],
-		// },
-		{
-			label: 'Öffnungszeiten',
-			href: '/oeffnungszeiten',
-		},
-	]
+	export let items: NavigationItem[]
 
 	const pivot = Math.floor(items.length / 2)
 	$: itemsLeft = items.slice(0, pivot)

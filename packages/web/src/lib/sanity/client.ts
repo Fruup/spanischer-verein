@@ -5,6 +5,7 @@ import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import type { PortableTextBlock, PortableTextMarkDefinition } from '@portabletext/types'
 import { env } from '$env/dynamic/private'
 import type { PageSchema } from '@spanischer-verein/sanity/schemas/page'
+import type { NavigationItem } from '$lib/components/header/Header.svelte'
 
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
@@ -103,10 +104,66 @@ export const sanityApi = {
 	},
 
 	getNavigationTree: async () => {
-		throw new Error('Not implemented')
+		interface FlatTreeItem {
+			_key: string
+			parent: string | null
+			value: {
+				_type: string
+				title: string
+				slug: string
+			}
+		}
+
+		const { tree: flatTree } = await sanityClient.fetch<{
+			tree: FlatTreeItem[]
+		}>(`
+			*[_id == "page-structure"][0]{
+				tree[] {
+					_key,
+					parent,
+			
+					"value": value.reference->{
+						_type,
+						"slug": slug.current,
+						title,
+					},
+				}
+			}
+		`)
+
+		type TreeItem = NavigationItem & { _key: string }
+
+		function buildSubTree(flatTree: FlatTreeItem[], parent: TreeItem | null): TreeItem[] {
+			const children: FlatTreeItem[] = []
+			const rest: FlatTreeItem[] = []
+
+			flatTree.forEach((node) => {
+				if (node.parent == parent?._key) children.push(node)
+				else rest.push(node)
+			})
+
+			return children.map((child) => {
+				const childAsParent: TreeItem = {
+					// ...child,
+					_key: child._key,
+					title: child.value.title,
+					href: parent ? `${parent.href}/${child.value.slug}` : `/${child.value.slug}`,
+					children: [], // set below
+				}
+
+				childAsParent.children = buildSubTree(rest, childAsParent)
+
+				return childAsParent
+			})
+		}
+
+		const tree = buildSubTree(flatTree, null)
+		return tree
 	},
 
-	getPage: async (slug: string) => {
+	getPage: async (pathname: string) => {
+		const slug = pathname.split('/').at(-1)
+
 		const page = await sanityClient.fetch<PageSchema | undefined>(`
 			*[_type == "page" && slug.current == "${slug}"][0]{
 				...,

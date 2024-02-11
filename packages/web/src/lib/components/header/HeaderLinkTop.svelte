@@ -30,7 +30,7 @@
 		style:--angleUrl="url({angleUrl})"
 		on:mouseenter={() => ($open = true)}
 	>
-		{navigationItem.label}
+		{navigationItem.title}
 	</a>
 
 	{#if $open && !!navigationItem.children?.length}
@@ -41,7 +41,7 @@
 				{#each navigationItem.children ?? [] as child, i}
 					<li>
 						<a use:melt={$item} href={child.href}>
-							{child.label}
+							{child.title}
 						</a>
 					</li>{/each}
 			</ul>
@@ -58,6 +58,7 @@
 		position: relative;
 
 		text-decoration: underline;
+		text-decoration-color: $color-accent;
 
 		&.has-children::after {
 			content: var(--angleUrl);

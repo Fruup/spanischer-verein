@@ -12,5 +12,6 @@ export const load = async ({ request }) => {
 	return {
 		locales,
 		upcomingEvents: await sanityApi.getUpcomingEventsOverview(),
+		navigationTree: await sanityApi.getNavigationTree(),
 	}
 }

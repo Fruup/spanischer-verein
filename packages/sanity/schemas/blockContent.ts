@@ -63,6 +63,11 @@ export default defineType({
             to: [{type: 'event'}, {type: 'page'}],
             icon: GenerateIcon,
           },
+          // TODO: Add support for mailto links
+          // {
+          //   name: 'E-Mail-Link',
+          //   type: 'mailto',
+          // },
         ],
       },
     }),

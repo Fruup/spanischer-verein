@@ -28,7 +28,7 @@
 
 			transform-origin: center;
 
-			transform: skewY(-2deg) translateY(-50%);
+			transform: skewY(-2deg) translateY(-10%);
 
 			background-color: color.change($color-accent, $alpha: 1);
 
