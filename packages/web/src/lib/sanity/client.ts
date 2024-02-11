@@ -2,8 +2,9 @@ import { createClient } from '@sanity/client'
 import type { EventSchema } from '@spanischer-verein/sanity/schemas/event'
 import createImageUrlBuilder from '@sanity/image-url'
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock, PortableTextMarkDefinition } from '@portabletext/types'
 import { env } from '$env/dynamic/private'
+import type { PageSchema } from '@spanischer-verein/sanity/schemas/page'
 
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
@@ -106,6 +107,37 @@ export const sanityApi = {
 	},
 
 	getPage: async (slug: string) => {
-		throw new Error('Not implemented')
+		const page = await sanityClient.fetch<PageSchema | undefined>(`
+			*[_type == "page" && slug.current == "${slug}"][0]{
+				...,
+				"body": body[]{
+					...,
+					asset->,
+				},
+			}
+		`)
+
+		if (!page) return
+
+		const promises = page.body.flatMap((block) =>
+			(block.markDefs as PortableTextMarkDefinition[])?.map(async (markDef) => {
+				// Resolve internal links.
+				if (markDef._type === 'internalLink') {
+					markDef.resolvedReference = await sanityClient.fetch<{
+						_type: string
+						slug: string
+					}>(`
+						*[_id == "${markDef._ref}"][0]{
+							_type,
+							"slug": slug.current,
+						}
+					`)
+				}
+			}),
+		)
+
+		await Promise.all(promises)
+
+		return page
 	},
 }

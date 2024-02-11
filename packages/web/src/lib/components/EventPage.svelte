@@ -1,19 +1,10 @@
 <script lang="ts">
-	import { PortableText, type PortableTextComponents } from '@portabletext/svelte'
 	import type { EventSchema } from '@spanischer-verein/sanity/schemas/event'
 	import { fly } from 'svelte/transition'
 	import EventInfo from './EventInfo.svelte'
-	import ImageBlock from './blocks/ImageBlock.svelte'
-	import EventInfoBlock from './blocks/EventInfoBlock.svelte'
+	import BlockContent from './blockContent/BlockContent.svelte'
 
 	export let event: EventSchema
-
-	const components: PortableTextComponents = {
-		types: {
-			image: ImageBlock,
-			eventInfo: EventInfoBlock,
-		},
-	}
 
 	$: body = event.body
 	$: eventInfo = {
@@ -27,7 +18,6 @@
 			: undefined,
 	}
 	$: title = event.title
-	$: updatedAt = event._updatedAt
 </script>
 
 <div class="event-page" in:fly={{ y: 10 }}>
@@ -41,7 +31,7 @@
 		{/if}
 	</div>
 
-	<PortableText {components} value={body} />
+	<BlockContent {body} />
 
 	<!-- <div class="page-footer">
 		zuletzt geändert am {new Date(updatedAt).toLocaleString()}
@@ -53,6 +43,8 @@
 
 	.event-page {
 		h1 {
+			text-align: center;
+
 			position: relative;
 
 			width: fit-content;
@@ -70,22 +62,6 @@
 				border-radius: 999px;
 				background-color: white;
 			}
-		}
-
-		:global(> *) {
-			margin: 2rem 0;
-		}
-
-		:global(h1) {
-			text-align: center;
-		}
-
-		:global(p) {
-			margin: 2rem 0;
-		}
-
-		:global(img) {
-			margin: 2rem 0;
 		}
 	}
 

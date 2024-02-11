@@ -57,6 +57,7 @@
 		max-width: 1200px;
 
 		margin: 0 auto;
+		padding-top: 3rem;
 		gap: 5rem;
 
 		@include max-md {

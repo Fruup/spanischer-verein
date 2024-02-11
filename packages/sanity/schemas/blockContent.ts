@@ -1,5 +1,6 @@
 import {defineType, defineArrayMember} from 'sanity'
 import {GenerateIcon} from '@sanity/icons'
+import type {PortableTextMarkDefinition} from '@portabletext/types'
 // import PostReferenceIcon from '../components/PostReferenceIcon'
 
 /**
@@ -75,3 +76,11 @@ export default defineType({
     }),
   ],
 })
+
+export interface InternalLinkMark extends PortableTextMarkDefinition {
+  _type: 'internalLink'
+  resolvedReference: {
+    _type: 'event' | 'page'
+    slug: string
+  }
+}
