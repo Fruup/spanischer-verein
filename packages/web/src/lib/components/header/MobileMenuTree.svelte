@@ -27,8 +27,8 @@
 	}
 </script>
 
-{#each items as { href, label, children }, index}
-	{@const id = label + href}
+{#each items as { href, title, children }, index}
+	{@const id = title + href}
 	{@const hasChildren = !!children?.length}
 
 	<li style:--index={index} class:shown>
@@ -38,7 +38,7 @@
 				on:click|capture|preventDefault|stopPropagation={() => goto(href)}
 				{href}
 			>
-				{label}
+				{title}
 			</a>
 
 			{#if hasChildren}
@@ -47,7 +47,6 @@
 		</div>
 
 		{#if hasChildren}
-			<!-- {#if hasChildren && $isExpanded(id)} -->
 			<ul use:melt={$group({ id })} class:shown={$isExpanded(id)}>
 				<svelte:self level={level + 1} items={children} shown={$isExpanded(id)} />
 			</ul>
@@ -66,15 +65,6 @@
 
 	li {
 		list-style: none;
-
-		translate: 50px;
-
-		transition: translate 200ms ease;
-		transition-delay: calc(var(--index) * 50ms);
-
-		.shown {
-			translate: 0;
-		}
 	}
 
 	a {

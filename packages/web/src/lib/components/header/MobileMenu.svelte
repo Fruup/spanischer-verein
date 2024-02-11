@@ -33,6 +33,8 @@
 {#if isOpen}
 	<nav use:melt={$tree} transition:fly={{ x: 50 }} class="mobile-menu">
 		<div class="header">
+			<h3>Navigation</h3>
+
 			<Button icon={IconClose} on:click={close} />
 		</div>
 
@@ -50,7 +52,7 @@
 		inset: 0 0 0 auto;
 		z-index: 1000;
 		width: min(100vw, 500px);
-		padding: 2rem;
+		padding: 3rem;
 
 		display: flex;
 		flex-direction: column;
@@ -62,7 +64,8 @@
 
 	.header {
 		display: flex;
-		justify-content: flex-end;
+		justify-content: space-between;
+		align-items: center;
 	}
 
 	.links {
