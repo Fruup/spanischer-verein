@@ -17,7 +17,7 @@ export const sanityClient = createClient({
 	useCdn: import.meta.env.PROD,
 	token: env.SANITY_TOKEN,
 })
-
+ 
 const imageUrlBuilder = createImageUrlBuilder(sanityClient)
 
 export const sanityApi = {
