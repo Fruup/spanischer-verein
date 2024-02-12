@@ -3,18 +3,18 @@ import type { EventSchema } from '@spanischer-verein/sanity/schemas/event'
 import createImageUrlBuilder from '@sanity/image-url'
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import type { PortableTextMarkDefinition } from '@portabletext/types'
-import { env } from '$env/dynamic/private'
 import type { PageSchema } from '@spanischer-verein/sanity/schemas/page'
 import type { SiteSettingsSchema } from '@spanischer-verein/sanity/schemas/siteSettings'
 import type { NavigationItem } from '$lib/components/header/Header.svelte'
+import { env } from '$env/dynamic/private'
 
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
 	projectId: '6a1nd7zb',
-	perspective: 'previewDrafts',
+	perspective: (env.SANITY_PERSPECTIVE as any) || 'published',
 	apiHost: 'https://api.sanity.io',
-	dataset: 'production',
-	useCdn: false,
+	dataset: env.SANITY_DATASET || 'development',
+	useCdn: import.meta.env.PROD,
 	token: env.SANITY_TOKEN,
 })
 
