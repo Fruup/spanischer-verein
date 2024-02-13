@@ -122,7 +122,7 @@ export const sanityApi = {
 			}
 		}
 
-		const { tree: flatTree } = await sanityClient.fetch<{
+		const result = await sanityClient.fetch<{
 			tree: FlatTreeItem[]
 		}>(`
 			*[_id == "page-structure"][0]{
@@ -138,6 +138,15 @@ export const sanityApi = {
 				}
 			}
 		`)
+
+		if (!result) {
+			throw error(404, {
+				errorCode: 'SITE_SETTINGS_NOT_FOUND',
+				message: 'Navigation structure not found',
+			})
+		}
+
+		const { tree: flatTree } = result
 
 		type TreeItem = NavigationItem & { _key: string }
 
@@ -211,7 +220,9 @@ export const sanityApi = {
 			*[_id == "siteSettings"][0]
 		`)
 
-		if (!settings) throw error(404, { errorCode: 'NOT_FOUND', message: 'Site settings not found' })
+		if (!settings) {
+			throw error(404, { errorCode: 'SITE_SETTINGS_NOT_FOUND', message: 'Site settings not found' })
+		}
 
 		return settings
 	},
