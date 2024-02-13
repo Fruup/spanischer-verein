@@ -1,10 +1,8 @@
-<a
-	href="https://www.paypal.com/donate/?hosted_button_id=QNRGMS3CC2XKU"
-	target="_blank"
-	rel="noreferrer nofollow"
->
-	Spenden via PayPal
-</a>
+<script lang="ts">
+	export let href: string
+</script>
+
+<a {href} target="_blank" rel="noreferrer nofollow"> Spenden via PayPal </a>
 
 <style lang="scss">
 	$color: #0070e0;

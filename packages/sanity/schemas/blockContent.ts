@@ -1,5 +1,6 @@
 import {defineType, defineArrayMember} from 'sanity'
 import {GenerateIcon} from '@sanity/icons'
+import type {PortableTextMarkDefinition} from '@portabletext/types'
 // import PostReferenceIcon from '../components/PostReferenceIcon'
 
 /**
@@ -62,6 +63,11 @@ export default defineType({
             to: [{type: 'event'}, {type: 'page'}],
             icon: GenerateIcon,
           },
+          // TODO: Add support for mailto links
+          // {
+          //   name: 'E-Mail-Link',
+          //   type: 'mailto',
+          // },
         ],
       },
     }),
@@ -75,3 +81,11 @@ export default defineType({
     }),
   ],
 })
+
+export interface InternalLinkMark extends PortableTextMarkDefinition {
+  _type: 'internalLink'
+  resolvedReference: {
+    _type: 'event' | 'page'
+    slug: string
+  }
+}

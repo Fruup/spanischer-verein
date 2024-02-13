@@ -30,7 +30,7 @@
 		{/if}
 	{/if}
 
-  <a href="/">Zurück</a>
+	<a href="/">Zurück</a>
 </div>
 
 <style lang="scss">
@@ -39,6 +39,6 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-    text-align: center;
+		text-align: center;
 	}
 </style>

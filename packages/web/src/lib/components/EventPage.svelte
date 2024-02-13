@@ -1,24 +1,23 @@
 <script lang="ts">
-	import { PortableText, type PortableTextComponents } from '@portabletext/svelte'
 	import type { EventSchema } from '@spanischer-verein/sanity/schemas/event'
 	import { fly } from 'svelte/transition'
 	import EventInfo from './EventInfo.svelte'
-	import ImageBlock from './blocks/ImageBlock.svelte'
-	import EventInfoBlock from './blocks/EventInfoBlock.svelte'
+	import BlockContent from './blockContent/BlockContent.svelte'
 
 	export let event: EventSchema
 
-	const components: PortableTextComponents = {
-		types: {
-			image: ImageBlock,
-			eventInfo: EventInfoBlock,
-		},
-	}
-
 	$: body = event.body
-	$: eventInfo = event.eventInfo
+	$: eventInfo = {
+		admission: event.eventAdmission,
+		time: event.eventTime,
+		location: event.eventLocation
+			? {
+					title: event.eventLocation,
+					address: event.eventLocation,
+				}
+			: undefined,
+	}
 	$: title = event.title
-	$: updatedAt = event._updatedAt
 </script>
 
 <div class="event-page" in:fly={{ y: 10 }}>
@@ -32,27 +31,27 @@
 		{/if}
 	</div>
 
-	<PortableText {components} value={body} />
+	<BlockContent {body} />
 
-	<div class="page-footer">
+	<!-- <div class="page-footer">
 		zuletzt geändert am {new Date(updatedAt).toLocaleString()}
-	</div>
+	</div> -->
 </div>
 
 <style lang="scss">
-	@import '../styles/vars';
+	@import 'vars';
 
 	.event-page {
 		h1 {
-			// TODO
-			// color: white;
+			text-align: center;
+
 			position: relative;
 
 			width: fit-content;
 			margin: auto;
 			padding: 1rem 2rem;
 
-			margin-bottom: 6rem;
+			margin-bottom: 2rem;
 
 			&::before {
 				z-index: -1;
@@ -62,24 +61,7 @@
 
 				border-radius: 999px;
 				background-color: white;
-				// border: 3px solid $color-accent;
 			}
-		}
-
-		:global(> *) {
-			margin: 2rem 0;
-		}
-
-		:global(h1) {
-			text-align: center;
-		}
-
-		:global(p) {
-			margin: 2rem 0;
-		}
-
-		:global(img) {
-			margin: 2rem 0;
 		}
 	}
 

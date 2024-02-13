@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Header from './Header.svelte'
+	import Header from '../../lib/components/header/Header.svelte'
 	import EventCalendar from '$lib/components/eventCalendar/EventCalendar.svelte'
 	import DonationLink from '$lib/components/DonationLink.svelte'
 	import SkipNavigation from '$lib/components/SkipNavigation.svelte'
@@ -19,9 +19,9 @@
 	<title>Spanischer Verein Köln</title>
 </svelte:head>
 
-<SkipNavigation />
+<!-- <SkipNavigation /> -->
 
-<Header />
+<Header items={data.navigationTree} />
 
 <BackgroundEffect />
 
@@ -36,7 +36,7 @@
 			<EventCalendar {events} />
 
 			<h5>
-				<DonationLink />
+				<DonationLink href={data.siteSettings.donationLink} />
 			</h5>
 
 			<!-- <PageSearch /> -->
@@ -44,7 +44,7 @@
 	</aside>
 </div>
 
-<footer>I am a footer</footer>
+<footer></footer>
 
 <style lang="scss">
 	@use 'sass:color';
@@ -56,13 +56,17 @@
 
 		max-width: 1200px;
 
-		padding: 0 2rem;
 		margin: 0 auto;
+		padding-top: 3rem;
 		gap: 5rem;
 
 		@include max-md {
 			grid-template-columns: 1fr;
 		}
+	}
+
+	main {
+		padding: 0 2rem;
 	}
 
 	.aside-content {
@@ -79,6 +83,9 @@
 
 		border-radius: 24px;
 		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
+
+		width: fit-content;
+		margin: auto;
 	}
 
 	h5 {

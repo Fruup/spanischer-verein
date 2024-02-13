@@ -10,7 +10,11 @@ declare global {
 		}
 
 		// interface Locals {}
-		// interface PageState {}
+
+		interface PageState {
+			isMainMenuOpen?: boolean
+		}
+
 		// interface Platform {}
 
 		interface PageData {

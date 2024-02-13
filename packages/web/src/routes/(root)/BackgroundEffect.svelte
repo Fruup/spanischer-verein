@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 
-	$: isEventPage = $page.route.id?.includes('event')
+	$: isTransformed = $page.url.pathname !== '/'
 </script>
 
-<div aria-hidden class="background-effect" class:isEventPage>
+<div aria-hidden class="background-effect" class:transformed={isTransformed}>
 	<div />
 </div>
 
@@ -28,15 +28,16 @@
 
 			transform-origin: center;
 
-			transform: skewY(-2deg) translateY(-50%);
+			transform: skewY(-2deg) translateY(-10%);
 
 			background-color: color.change($color-accent, $alpha: 1);
 
 			transition: transform 500ms ease;
 		}
 
-		&.isEventPage div {
+		&.transformed div {
 			background-color: color.change($color-accent, $alpha: 1);
+			transform: scaleY(0.5) skewY(0) translateY(-150px);
 			// transform: scaleY(1.2) skewY(1.5deg) translateY(25%);
 		}
 	}

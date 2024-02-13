@@ -5,7 +5,7 @@
 	export let data
 
 	$: events = data.events
-	let numColumns = 2
+	let numColumns = Math.min(2, events?.length)
 
 	function getColumnEvents(columnIndex: number) {
 		return events.filter((_, i) => i % numColumns === columnIndex)
@@ -13,7 +13,7 @@
 
 	function handleResize() {
 		if (window.visualViewport!.width < 666) numColumns = 1
-		else numColumns = 2
+		else numColumns = Math.min(2, events?.length)
 	}
 
 	onMount(() => {
@@ -26,7 +26,7 @@
 <h1 hidden>Upcoming Events</h1>
 
 {#if !events.length}
-	<p style:text-align="center">Keine Veranstaltungen in nächster Zeit</p>
+	<h3 class="no-events">In nächster Zeit sind keine Veranstaltungen geplant...</h3>
 {/if}
 
 <nav style:--num-columns={numColumns}>
@@ -68,5 +68,10 @@
 
 	li {
 		list-style: none;
+	}
+
+	.no-events {
+		text-align: center;
+		margin-top: 10rem;
 	}
 </style>
