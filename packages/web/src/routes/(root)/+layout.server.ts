@@ -7,7 +7,7 @@ export const load = async ({ request }) => {
 		return lang.slice(0, to < 0 ? undefined : to)
 	})
 
-	setLocale(locales[0])
+	if (locales[0]) setLocale(locales[0])
 
 	return {
 		locales,
