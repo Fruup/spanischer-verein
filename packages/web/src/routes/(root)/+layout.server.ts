@@ -1,5 +1,5 @@
 import { sanityApi } from '$lib/sanity/client'
-import { setLocale } from '$lib/services/locale.js'
+import { setLocale } from '$lib/services/locale'
 
 export const load = async ({ request }) => {
 	const locales = (request.headers.get('Accept-Language')?.split(',') ?? []).map((lang) => {

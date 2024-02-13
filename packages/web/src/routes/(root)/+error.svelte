@@ -5,6 +5,7 @@
 	$: status = $page.status
 
 	const messages: Record<App.Error['errorCode'], string> = {
+		SITE_SETTINGS_NOT_FOUND: '🚑 Die Seiteneinstellungen konnten nicht gefunden werden!',
 		NOT_FOUND: 'Der Inhalt konnte leider nicht gefunden werden... 😢',
 	}
 </script>
@@ -30,7 +31,7 @@
 		{/if}
 	{/if}
 
-  <a href="/">Zurück</a>
+	<a href="/">Zurück</a>
 </div>
 
 <style lang="scss">
@@ -39,6 +40,6 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-    text-align: center;
+		text-align: center;
 	}
 </style>

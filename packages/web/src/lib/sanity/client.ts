@@ -7,6 +7,7 @@ import type { PageSchema } from '@spanischer-verein/sanity/schemas/page'
 import type { SiteSettingsSchema } from '@spanischer-verein/sanity/schemas/siteSettings'
 import type { NavigationItem } from '$lib/components/header/Header.svelte'
 import { env } from '$env/dynamic/private'
+import { error } from '@sveltejs/kit'
 
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
@@ -206,8 +207,12 @@ export const sanityApi = {
 	},
 
 	getSiteSettings: async () => {
-		return await sanityClient.fetch<SiteSettingsSchema>(`
+		const settings = await sanityClient.fetch<SiteSettingsSchema>(`
 			*[_id == "siteSettings"][0]
 		`)
+
+		if (!settings) throw error(404, { errorCode: 'NOT_FOUND', message: 'Site settings not found' })
+
+		return settings
 	},
 }
