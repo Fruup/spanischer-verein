@@ -1,4 +1,4 @@
-import {defineConfig} from 'sanity'
+import {Config, defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {presentationTool} from '@sanity/presentation'
@@ -10,7 +10,9 @@ import {
   hierarchyTree,
 } from '@sanity/hierarchical-document-list'
 
-export default defineConfig({
+const DEV = process.env.MODE === 'development'
+
+const shared = {
   name: 'default',
   title: 'Spanischer Verein',
 
@@ -26,11 +28,13 @@ export default defineConfig({
           .title('Inhalte')
           .items([
             S.documentTypeListItem('event'),
-            S.listItem()
-              .title('Zukünftige Events')
-              .icon(CalendarIcon)
-              .child(S.documentTypeList('event').filter('dateTime(eventTime) > dateTime(now())')),
-            S.documentTypeListItem('location'),
+
+            // S.listItem()
+            //   .title('Zukünftige Events')
+            //   .icon(CalendarIcon)
+            //   .child(S.documentTypeList('event').filter('dateTime(eventTime) > dateTime(now())')),
+
+            // S.documentTypeListItem('location'),
 
             S.divider(),
 
@@ -80,14 +84,53 @@ export default defineConfig({
             ),
           ]),
     }),
-    visionTool(),
-    presentationTool({
-      previewUrl: 'http://localhost:5173',
-    }),
     hierarchicalDocumentList(),
   ],
 
   schema: {
     types: [...schemaTypes, hierarchyTree],
   },
+} satisfies Partial<Config>
+
+const developmentWorkspace = defineConfig({
+  ...shared,
+
+  name: 'development',
+  title: 'Development',
+  basePath: '/development',
+
+  dataset: 'development',
 })
+
+const defaultWorkspace = defineConfig({
+  ...shared,
+
+  name: 'default',
+  title: 'Spanischer Verein',
+  basePath: '/_',
+})
+
+const advancedWorkspace = defineConfig({
+  ...shared,
+
+  name: 'advanced',
+  title: 'Erweitert',
+  basePath: '/advanced',
+
+  plugins: [
+    ...shared.plugins,
+    visionTool(),
+    presentationTool({
+      previewUrl: 'http://localhost:5173',
+    }),
+  ],
+})
+
+const workspaces = [
+  DEV && developmentWorkspace,
+  defaultWorkspace,
+  advancedWorkspace,
+  // ...
+].filter((workspace) => !!workspace)
+
+export default workspaces

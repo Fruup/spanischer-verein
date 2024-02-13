@@ -21,7 +21,7 @@
 	export let introDelay: number
 
 	$: backgroundColor = event.mainImageMeta.prominentColor
-	$: aspectRatio = event.mainImageMeta.dimensions.width / event.mainImageMeta.dimensions.height
+	// $: aspectRatio = event.mainImageMeta.dimensions.width / event.mainImageMeta.dimensions.height
 
 	const href = getEventUrl(event.slug)
 	let hover = false
@@ -53,13 +53,8 @@
 </script>
 
 <a in:fly|global={{ y: 30, delay: introDelay }} {href} class="event-card" class:hover>
-	<img
-		src={event.imageUrl}
-		alt=""
-		loading="lazy"
-		style:background-color={backgroundColor}
-		style:aspect-ratio={aspectRatio}
-	/>
+	<img src={event.imageUrl} alt="" loading="lazy" style:background-color={backgroundColor} />
+	<!-- style:aspect-ratio={aspectRatio} -->
 
 	<div class="content">
 		<EventTime time={event.eventTime} />

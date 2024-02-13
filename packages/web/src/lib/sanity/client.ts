@@ -7,6 +7,7 @@ import type { PageSchema } from '@spanischer-verein/sanity/schemas/page'
 import type { SiteSettingsSchema } from '@spanischer-verein/sanity/schemas/siteSettings'
 import type { NavigationItem } from '$lib/components/header/Header.svelte'
 import { env } from '$env/dynamic/private'
+import { error } from '@sveltejs/kit'
 
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
@@ -87,7 +88,12 @@ export const sanityApi = {
 
 		const transformed = events.map((event) => ({
 			...event,
-			imageUrl: imageUrlBuilder.image(event.mainImage).maxWidth(512).maxHeight(512).url(),
+			imageUrl: imageUrlBuilder
+				.image(event.mainImage)
+				.maxWidth(512)
+				.maxHeight(512)
+				.crop('focalpoint')
+				.url(),
 		}))
 
 		return transformed
@@ -116,7 +122,7 @@ export const sanityApi = {
 			}
 		}
 
-		const { tree: flatTree } = await sanityClient.fetch<{
+		const result = await sanityClient.fetch<{
 			tree: FlatTreeItem[]
 		}>(`
 			*[_id == "page-structure"][0]{
@@ -132,6 +138,10 @@ export const sanityApi = {
 				}
 			}
 		`)
+
+		if (!result) return []
+
+		const { tree: flatTree } = result
 
 		type TreeItem = NavigationItem & { _key: string }
 
@@ -201,8 +211,17 @@ export const sanityApi = {
 	},
 
 	getSiteSettings: async () => {
-		return await sanityClient.fetch<SiteSettingsSchema>(`
+		const settings = await sanityClient.fetch<SiteSettingsSchema>(`
 			*[_id == "siteSettings"][0]
 		`)
+
+		if (!settings) {
+			return {
+				_type: 'siteSettings',
+				donationLink: '',
+			} as SiteSettingsSchema
+		}
+
+		return settings
 	},
 }

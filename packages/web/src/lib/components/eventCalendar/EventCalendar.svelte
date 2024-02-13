@@ -58,6 +58,8 @@
 </div>
 
 <style lang="scss">
+	@import 'vars';
+
 	.calendar {
 		z-index: 10000;
 		max-width: 350px;
@@ -81,13 +83,14 @@
 			margin: 0;
 
 			border: 1px solid grey;
+			border-radius: 0.5rem;
+
+			background-color: $color-background;
 
 			&:hover,
 			&:active {
-				background-color: rgba(0, 0, 0, 0.05);
+				border-color: $color-accent;
 			}
-
-			border-radius: 12px;
 		}
 	}
 
