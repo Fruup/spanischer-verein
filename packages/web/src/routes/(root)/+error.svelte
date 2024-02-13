@@ -5,7 +5,6 @@
 	$: status = $page.status
 
 	const messages: Record<App.Error['errorCode'], string> = {
-		SITE_SETTINGS_NOT_FOUND: '🚑 Die Seiteneinstellungen konnten nicht gefunden werden!',
 		NOT_FOUND: 'Der Inhalt konnte leider nicht gefunden werden... 😢',
 	}
 </script>

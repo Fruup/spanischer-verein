@@ -139,12 +139,7 @@ export const sanityApi = {
 			}
 		`)
 
-		if (!result) {
-			throw error(404, {
-				errorCode: 'SITE_SETTINGS_NOT_FOUND',
-				message: 'Navigation structure not found',
-			})
-		}
+		if (!result) return []
 
 		const { tree: flatTree } = result
 
@@ -221,7 +216,10 @@ export const sanityApi = {
 		`)
 
 		if (!settings) {
-			throw error(404, { errorCode: 'SITE_SETTINGS_NOT_FOUND', message: 'Site settings not found' })
+			return {
+				_type: 'siteSettings',
+				donationLink: '',
+			} as SiteSettingsSchema
 		}
 
 		return settings
