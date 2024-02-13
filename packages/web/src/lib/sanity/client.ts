@@ -87,7 +87,12 @@ export const sanityApi = {
 
 		const transformed = events.map((event) => ({
 			...event,
-			imageUrl: imageUrlBuilder.image(event.mainImage).maxWidth(512).maxHeight(512).url(),
+			imageUrl: imageUrlBuilder
+				.image(event.mainImage)
+				.maxWidth(512)
+				.maxHeight(512)
+				.crop('focalpoint')
+				.url(),
 		}))
 
 		return transformed
