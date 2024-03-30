@@ -3,8 +3,9 @@
 	import EventCalendar from '$lib/components/eventCalendar/EventCalendar.svelte'
 	import DonationLink from '$lib/components/DonationLink.svelte'
 	import SkipNavigation from '$lib/components/SkipNavigation.svelte'
-	import BackgroundEffect from './BackgroundEffect.svelte'
+	import Divider from './DividerV2.svelte'
 	import { getEventUrl } from '$lib/helpers/url'
+	import Archive from './Archive.svelte'
 
 	export let data
 
@@ -23,16 +24,18 @@
 
 <Header items={data.navigationTree} />
 
-<BackgroundEffect />
+<Divider />
 
 <div class="content">
 	<main>
 		<slot />
 	</main>
 
+	<div class="divider" />
+
 	<aside>
 		<div class="aside-content">
-			<h5>Zukünftige Veranstaltungen</h5>
+			<h2 class="calendar-heading">Kalender</h2>
 			<EventCalendar {events} />
 
 			<h5>
@@ -40,6 +43,9 @@
 			</h5>
 
 			<!-- <PageSearch /> -->
+
+			<h2 class="calendar-heading">Archiv</h2>
+			<Archive {events} />
 		</div>
 	</aside>
 </div>
@@ -52,13 +58,13 @@
 
 	.content {
 		display: grid;
-		grid-template-columns: auto 375px;
+		grid-template-columns: auto auto 375px;
 
 		max-width: 1200px;
 
 		margin: 0 auto;
 		padding-top: 3rem;
-		gap: 5rem;
+		gap: 2.5rem;
 
 		@include max-md {
 			grid-template-columns: 1fr;
@@ -75,17 +81,7 @@
 
 		display: flex;
 		flex-direction: column;
-		gap: 2rem;
-
-		padding: 2rem;
-
-		@include surface;
-
-		border-radius: 24px;
-		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
-
-		width: fit-content;
-		margin: auto;
+		gap: 3rem;
 	}
 
 	h5 {
@@ -101,5 +97,23 @@
 		min-height: 200px;
 		margin-top: 8rem;
 		background-color: rgba(0, 0, 0, 0.02);
+	}
+
+	.calendar-heading {
+		border: 2px solid $color-accent;
+		background-color: white;
+		color: $color-text;
+	}
+
+	.divider {
+		width: 2px;
+		height: 100%;
+		// background: linear-gradient(
+		// 	to bottom,
+		// 	color.adjust($color-accent, $lightness: -10%),
+		// 	$color-accent
+		// );
+
+		// background: rgba(0, 0, 0, 0.05);
 	}
 </style>
