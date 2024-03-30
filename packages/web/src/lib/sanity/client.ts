@@ -5,9 +5,8 @@ import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import type { PortableTextMarkDefinition } from '@portabletext/types'
 import type { PageSchema } from '@spanischer-verein/sanity/schemas/page'
 import type { SiteSettingsSchema } from '@spanischer-verein/sanity/schemas/siteSettings'
-import type { NavigationItem } from '$lib/components/header/Header.svelte'
+import type { NavigationItem } from '$lib/components/header/types'
 import { env } from '$env/dynamic/private'
-import { error } from '@sveltejs/kit'
 
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
