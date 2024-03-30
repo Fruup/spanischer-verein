@@ -59,7 +59,7 @@
 	<div class="content">
 		<EventTime time={event.eventTime} />
 
-		<h2>{event.title}</h2>
+		<h3>{event.title}</h3>
 	</div>
 </a>
 
@@ -89,7 +89,7 @@
 		img {
 			width: 100%;
 			height: auto;
-			aspect-ratio: 1 / 1;
+			// aspect-ratio: 1 / 1;
 
 			object-fit: cover;
 
