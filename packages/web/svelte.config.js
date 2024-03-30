@@ -12,10 +12,13 @@ import { dirname, join } from 'path'
 const resolve = (path) => join(dirname(fileURLToPath(import.meta.url)), path)
 
 const isRenderingNewsletter = process.env.PUBLIC_RENDERING_NEWSLETTER === 'true'
+const newsletterSlug = process.env.NEWSLETTER_SLUG
 
 const adapter = (() => {
 	if (isRenderingNewsletter) {
-		if (!process.env.NEWSLETTER_SLUG) throw Error("Missing env var 'NEWSLETTER_SLUG'")
+		if (!newsletterSlug) throw Error("Missing env var 'NEWSLETTER_SLUG'")
+
+		console.info(`ℹ️ Rendering newsletter with slug: ${newsletterSlug}`)
 
 		return adapterStatic({
 			strict: false,

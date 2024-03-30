@@ -1,3 +1,3 @@
-import { env } from '$env/dynamic/public'
+import { PUBLIC_RENDERING_NEWSLETTER } from '$env/static/public'
 
-export const isRenderingNewsletter = env.PUBLIC_RENDERING_NEWSLETTER === 'true'
+export const isRenderingNewsletter = PUBLIC_RENDERING_NEWSLETTER === 'true'
