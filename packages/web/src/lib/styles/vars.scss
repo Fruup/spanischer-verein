@@ -3,6 +3,7 @@ $color-text: #1d1d1d;
 
 // Stadt Köln
 $color-accent: #ed1d24;
+$color-accent-2: #1dede6;
 // #ff7700
 
 // $color-surface: adjust-color($color-background, $whiteness: 10%);
@@ -24,6 +25,12 @@ $color-surface: adjust-color($color-background, $blackness: 2%);
 
 @mixin max-md {
 	@media screen and (max-width: 1200px) {
+		@content;
+	}
+}
+
+@mixin min-md {
+	@media screen and (min-width: 1201px) {
 		@content;
 	}
 }
