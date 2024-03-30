@@ -9,6 +9,14 @@ $color-accent-2: #1dede6;
 // $color-surface: adjust-color($color-background, $whiteness: 10%);
 $color-surface: adjust-color($color-background, $blackness: 2%);
 
+@mixin font-serif {
+	font-family: 'Old Standard TT', Georgia, serif;
+}
+
+@mixin font-sans-serif {
+	font-family: 'Arial', sans-serif;
+}
+
 @mixin surface {
 	background-color: $color-surface;
 	color: $color-text;

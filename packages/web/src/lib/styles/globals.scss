@@ -1,7 +1,14 @@
 @use 'sass:color';
 @import 'vars';
+@import 'headings';
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+:root {
+	font-size: 21px;
+	line-height: 1.66;
+	@include font-sans-serif;
+}
 
 :root,
 body {
@@ -23,12 +30,6 @@ body {
 		--color-surface-0: #0f0f0f;
 		--color-surface-1: #333333;
 	}
-}
-
-body {
-	font-family: 'Arial', sans-serif;
-	font-size: 21px;
-	line-height: 1.66;
 }
 
 .no-scroll {
@@ -70,31 +71,4 @@ button {
 	// border: none;
 	display: grid;
 	place-content: center;
-}
-
-h2 {
-	position: relative;
-	width: fit-content;
-	height: fit-content;
-
-	background-color: $color-accent;
-	color: white;
-	border-radius: 8px;
-	padding: 0.25rem 0.666rem;
-
-	// &::after {
-	// 	$w: -0.25rem;
-
-	// 	content: '';
-	// 	position: absolute;
-	// 	inset: auto $w 0 $w;
-	// 	height: 10px;
-	// 	// translate: 0 -50%;
-
-	// 	z-index: -1000;
-	// 	border-radius: 4px;
-
-	// 	background-color: color.adjust($color-accent, $lightness: 0%);
-	// 	// background-color: color.change($color-accent, $lightness: 75%);
-	// }
 }

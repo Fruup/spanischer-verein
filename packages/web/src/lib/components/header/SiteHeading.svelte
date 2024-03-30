@@ -27,7 +27,7 @@
 	.main {
 		font-family: 'Old Standard TT', Georgia, serif;
 		font-weight: 300;
-		font-size: 3rem;
+		font-size: 2.5rem;
 
 		margin: 0;
 	}
@@ -35,8 +35,8 @@
 	.sub {
 		color: color.adjust($color-text, $alpha: -0.3);
 		text-align: center;
-		font-size: 1.25rem;
-		line-height: 1.5em;
+		font-size: 1rem;
+		line-height: 1.5;
 	}
 
 	@include min-md {

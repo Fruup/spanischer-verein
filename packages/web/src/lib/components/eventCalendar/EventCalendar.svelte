@@ -63,9 +63,9 @@
 	.calendar {
 		z-index: 10000;
 		width: fit-content;
-		padding: 2rem;
+		padding: 2em;
 
-		font-size: 1.05rem;
+		font-size: 0.85rem;
 
 		@include surface;
 

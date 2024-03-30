@@ -22,9 +22,9 @@
 
 <div class="event-page" in:fly={{ y: 10 }}>
 	<div class="heading-container">
-		<h1>
+		<h2>
 			{title}
-		</h1>
+		</h2>
 
 		{#if eventInfo}
 			<EventInfo {eventInfo} />
@@ -42,7 +42,10 @@
 	@import 'vars';
 
 	.event-page {
-		h1 {
+		h2 {
+			@include font-serif;
+			font-weight: normal;
+
 			text-align: center;
 
 			position: relative;

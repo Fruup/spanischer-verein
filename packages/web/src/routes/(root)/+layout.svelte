@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Header from '../../lib/components/header/Header.svelte'
 	import EventCalendar from '$lib/components/eventCalendar/EventCalendar.svelte'
-	import DonationLink from '$lib/components/DonationLink.svelte'
 	import SkipNavigation from '$lib/components/SkipNavigation.svelte'
 	import Divider from './DividerV2.svelte'
 	import { getEventUrl } from '$lib/helpers/url'
 	import Archive from './Archive.svelte'
+	import ParticipateSection from './ParticipateSection.svelte'
 
 	export let data
 
@@ -35,16 +35,16 @@
 
 	<aside>
 		<div class="aside-content">
-			<h2 class="calendar-heading">Kalender</h2>
+			<h3 class="heading-3">Kalender</h3>
 			<EventCalendar {events} />
 
-			<h5>
-				<DonationLink href={data.siteSettings.donationLink} />
-			</h5>
+			<h3 class="heading-3">Mitmachen</h3>
+
+			<ParticipateSection />
 
 			<!-- <PageSearch /> -->
 
-			<h2 class="calendar-heading">Archiv</h2>
+			<h3 class="heading-3">Archiv</h3>
 			<Archive {events} />
 		</div>
 	</aside>
@@ -63,8 +63,8 @@
 		max-width: 1200px;
 
 		margin: 0 auto;
-		padding-top: 3rem;
-		gap: 2.5rem;
+		// padding-top: 3rem;
+		gap: 4rem;
 
 		@include max-md {
 			grid-template-columns: 1fr;
@@ -72,7 +72,7 @@
 	}
 
 	main {
-		padding: 0 2rem;
+		// margin-top: 2rem;
 	}
 
 	.aside-content {
@@ -81,7 +81,7 @@
 
 		display: flex;
 		flex-direction: column;
-		gap: 3rem;
+		gap: 1rem;
 	}
 
 	h5 {
@@ -95,14 +95,8 @@
 		place-items: center;
 
 		min-height: 200px;
-		margin-top: 8rem;
+		// margin-top: 8rem;
 		background-color: rgba(0, 0, 0, 0.02);
-	}
-
-	.calendar-heading {
-		border: 2px solid $color-accent;
-		background-color: white;
-		color: $color-text;
 	}
 
 	.divider {
@@ -114,6 +108,6 @@
 		// 	$color-accent
 		// );
 
-		// background: rgba(0, 0, 0, 0.05);
+		background: rgba(0, 0, 0, 0.05);
 	}
 </style>
