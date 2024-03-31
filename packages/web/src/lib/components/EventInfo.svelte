@@ -59,7 +59,7 @@
 	.event-info {
 		hyphens: auto;
 
-		font-size: 1rem;
+		font-size: 0.8rem;
 		color: #555;
 
 		display: flex;
@@ -73,6 +73,10 @@
 			display: flex;
 			flex-direction: column;
 			gap: 0.5rem;
+
+			font-size: 0.9em;
+			line-height: 1.5;
+			letter-spacing: 0.5px;
 		}
 
 		:global(.event-marker) {

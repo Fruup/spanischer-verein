@@ -210,15 +210,19 @@ export const sanityApi = {
 	},
 
 	getSiteSettings: async () => {
-		const settings = await sanityClient.fetch<SiteSettingsSchema>(`
-			*[_id == "siteSettings"][0]
+		type Result = Pick<SiteSettingsSchema, 'donationLink'> & { imprintPageSlug?: string }
+
+		const settings = await sanityClient.fetch<Result>(`
+			*[_id == "siteSettings"][0]{
+				donationLink,
+				"imprintPageSlug": imprintPage->slug.current,
+			}
 		`)
 
 		if (!settings) {
 			return {
-				_type: 'siteSettings',
 				donationLink: '',
-			} as SiteSettingsSchema
+			} satisfies Result
 		}
 
 		return settings

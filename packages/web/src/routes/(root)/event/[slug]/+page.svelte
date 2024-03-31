@@ -8,4 +8,12 @@
 	<title>{data.event.title} - Spanischer Verein Köln</title>
 </svelte:head>
 
-<EventPage event={data.event} />
+<div class="event-page-container">
+	<EventPage event={data.event} />
+</div>
+
+<style lang="scss">
+	.event-page-container {
+		margin-top: 2rem;
+	}
+</style>

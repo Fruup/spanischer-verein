@@ -7,15 +7,23 @@
 	const alt = ''
 
 	$: width = portableText.value.asset.metadata.dimensions.width
-	$: height = portableText.value.asset.metadata.dimensions.width
-	$: ratio = height / width
+	$: height = portableText.value.asset.metadata.dimensions.height
+	$: ratio = width / height
 </script>
 
-<img src={url} {alt} style:ratio />
+<div class="image-container">
+	<img src={url} {alt} style:aspect-ratio={ratio} />
+</div>
 
 <style>
-	img {
+	.image-container {
 		width: 100%;
+
+		text-align: center;
+	}
+
+	img {
+		max-width: 500px;
 		height: auto;
 	}
 </style>

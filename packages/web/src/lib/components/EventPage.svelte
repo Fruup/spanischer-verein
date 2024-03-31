@@ -32,10 +32,6 @@
 	</div>
 
 	<BlockContent {body} />
-
-	<!-- <div class="page-footer">
-		zuletzt geändert am {new Date(updatedAt).toLocaleString()}
-	</div> -->
 </div>
 
 <style lang="scss">
@@ -45,6 +41,7 @@
 		h2 {
 			@include font-serif;
 			font-weight: normal;
+			font-size: 1.75rem;
 
 			text-align: center;
 
@@ -52,26 +49,9 @@
 
 			width: fit-content;
 			margin: auto;
-			padding: 1rem 2rem;
+			// padding: 1rem 2rem;
 
 			margin-bottom: 2rem;
-
-			&::before {
-				z-index: -1;
-				inset: 0;
-				position: absolute;
-				content: '';
-
-				border-radius: 999px;
-				background-color: white;
-			}
 		}
-	}
-
-	.page-footer {
-		text-align: end;
-		font-size: 0.9rem;
-		font-style: italic;
-		opacity: 0.8;
 	}
 </style>

@@ -18,7 +18,7 @@
 			position: absolute;
 			inset: 0;
 			height: 10px;
-			background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), white);
+			background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent);
 		}
 	}
 </style>

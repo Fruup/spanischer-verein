@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte'
 	import { fly } from 'svelte/transition'
 	import EventTime from './EventTime.svelte'
+	import IconTime from './icons/IconTime.svelte'
 
 	export let event: {
 		title: string
@@ -21,7 +22,7 @@
 	export let introDelay: number
 
 	$: backgroundColor = event.mainImageMeta.prominentColor
-	// $: aspectRatio = event.mainImageMeta.dimensions.width / event.mainImageMeta.dimensions.height
+	$: aspectRatio = event.mainImageMeta.dimensions.width / event.mainImageMeta.dimensions.height
 
 	const href = getEventUrl(event.slug)
 	let hover = false
@@ -53,13 +54,21 @@
 </script>
 
 <a in:fly|global={{ y: 30, delay: introDelay }} {href} class="event-card" class:hover>
-	<img src={event.imageUrl} alt="" loading="lazy" style:background-color={backgroundColor} />
-	<!-- style:aspect-ratio={aspectRatio} -->
+	<img
+		src={event.imageUrl}
+		alt="Title image for an event called '${event.title}'"
+		loading="lazy"
+		style:background-color={backgroundColor}
+		style:aspect-ratio={aspectRatio}
+	/>
 
 	<div class="content">
-		<EventTime time={event.eventTime} />
+		<div class="event-time-container">
+			<IconTime size={0.7} />
+			<EventTime time={event.eventTime} />
+		</div>
 
-		<h3>{event.title}</h3>
+		<h4 class="title">{event.title}</h4>
 	</div>
 </a>
 
@@ -68,6 +77,8 @@
 	@import 'vars';
 
 	.event-card {
+		font-size: 1rem;
+
 		display: flex;
 		flex-direction: column;
 
@@ -83,13 +94,13 @@
 		&:hover,
 		&:focus,
 		&.hover {
-			--shadow-color: #{color.change($color-accent, $alpha: 0.75)};
+			--shadow-color: #{color.change($color-accent)};
+			// --shadow-color: #{color.change($color-accent, $alpha: 0.75)};
 		}
 
 		img {
 			width: 100%;
 			height: auto;
-			// aspect-ratio: 1 / 1;
 
 			object-fit: cover;
 
@@ -100,6 +111,8 @@
 			padding: 2rem;
 			display: flex;
 			flex-direction: column;
+			align-items: center;
+
 			gap: 1rem;
 
 			text-align: center;
@@ -108,9 +121,31 @@
 				margin: 0;
 			}
 		}
+	}
 
-		:global(.event-time) {
-			font-size: 0.95rem;
+	.title {
+		@include font-serif;
+		font-size: 1.5em;
+		letter-spacing: 1px;
+	}
+
+	.event-time-container {
+		font-size: 0.8em;
+		letter-spacing: 1px;
+
+		width: fit-content;
+		margin: auto;
+
+		display: flex;
+		align-items: center;
+		gap: 1ch;
+
+		padding: 0.25em 0.5em;
+		background: color.adjust($color-accent, $lightness: -5%, $alpha: -0.2);
+		border-radius: 999px;
+
+		:global(*) {
+			color: white;
 		}
 	}
 </style>

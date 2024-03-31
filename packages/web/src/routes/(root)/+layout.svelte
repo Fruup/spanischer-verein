@@ -9,6 +9,8 @@
 
 	export let data
 
+	let { siteSettings } = data
+
 	$: events = data.upcomingEvents.map((e) => ({
 		name: e.title,
 		url: getEventUrl(e.slug),
@@ -50,7 +52,13 @@
 	</aside>
 </div>
 
-<footer></footer>
+<div style="scale: 1 -1">
+	<Divider />
+</div>
+
+<footer>
+	<a href="/{siteSettings.imprintPageSlug}">Impressum</a>
+</footer>
 
 <style lang="scss">
 	@use 'sass:color';
@@ -63,16 +71,11 @@
 		max-width: 1200px;
 
 		margin: 0 auto;
-		// padding-top: 3rem;
 		gap: 4rem;
 
 		@include max-md {
 			grid-template-columns: 1fr;
 		}
-	}
-
-	main {
-		// margin-top: 2rem;
 	}
 
 	.aside-content {
@@ -82,12 +85,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-	}
 
-	h5 {
-		margin: 0;
-
-		align-self: center;
+		.heading-3 {
+			margin-bottom: 0;
+		}
 	}
 
 	footer {
@@ -95,19 +96,17 @@
 		place-items: center;
 
 		min-height: 200px;
-		// margin-top: 8rem;
 		background-color: rgba(0, 0, 0, 0.02);
 	}
 
 	.divider {
 		width: 2px;
 		height: 100%;
-		// background: linear-gradient(
-		// 	to bottom,
-		// 	color.adjust($color-accent, $lightness: -10%),
-		// 	$color-accent
-		// );
-
 		background: rgba(0, 0, 0, 0.05);
+	}
+
+	main,
+	aside {
+		margin-bottom: 2rem;
 	}
 </style>
