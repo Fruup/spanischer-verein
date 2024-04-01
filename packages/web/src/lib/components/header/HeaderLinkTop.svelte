@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition'
-	import type { NavigationItem } from './Header.svelte'
+	import type { NavigationItem } from './types'
 	import { melt, createDropdownMenu } from '@melt-ui/svelte'
 	import angleUrl from '$assets/angle.svg'
 
@@ -63,6 +63,8 @@
 
 		text-decoration: underline;
 		text-decoration-color: $color-accent;
+
+		letter-spacing: 1px;
 
 		&:not(.has-children) .angle-down {
 			display: none;

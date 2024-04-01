@@ -1,19 +1,19 @@
 <script lang="ts">
-	import EventPage from '$lib/components/EventPage.svelte'
+	import Page from '$lib/components/Page.svelte'
+	import type { EventInfoSpec } from '$lib/components/EventInfo.svelte'
 
 	export let data
+	let { title, body } = data.event
+
+	$: eventInfo = {
+		admission: data.event.eventAdmission,
+		time: data.event.eventTime,
+		location: data.event.eventLocation,
+	} satisfies EventInfoSpec
 </script>
 
 <svelte:head>
 	<title>{data.event.title} - Spanischer Verein Köln</title>
 </svelte:head>
 
-<div class="event-page-container">
-	<EventPage event={data.event} />
-</div>
-
-<style lang="scss">
-	.event-page-container {
-		margin-top: 2rem;
-	}
-</style>
+<Page {title} {body} {eventInfo} />

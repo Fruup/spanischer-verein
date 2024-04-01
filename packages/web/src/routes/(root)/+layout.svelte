@@ -2,10 +2,14 @@
 	import Header from '../../lib/components/header/Header.svelte'
 	import EventCalendar from '$lib/components/eventCalendar/EventCalendar.svelte'
 	import SkipNavigation from '$lib/components/SkipNavigation.svelte'
-	import Divider from './DividerV2.svelte'
+	import Divider from './Divider.svelte'
 	import { getEventUrl } from '$lib/helpers/url'
 	import Archive from './Archive.svelte'
 	import ParticipateSection from './ParticipateSection.svelte'
+	import { navigating } from '$app/stores'
+	import Loader from '$lib/components/icons/Loader.svelte'
+	import { fly } from 'svelte/transition'
+	import { cubicOut } from 'svelte/easing'
 
 	export let data
 
@@ -51,6 +55,12 @@
 		</div>
 	</aside>
 </div>
+
+{#if $navigating}
+	<div class="navigation-indicator" transition:fly={{ x: -20, duration: 500, easing: cubicOut }}>
+		<Loader />
+	</div>
+{/if}
 
 <div style="scale: 1 -1">
 	<Divider />
@@ -107,6 +117,18 @@
 
 	main,
 	aside {
-		margin-bottom: 2rem;
+		margin-top: 4rem;
+		margin-bottom: 4rem;
+
+		:global(h3:first-of-type) {
+			margin-top: 0;
+		}
+	}
+
+	.navigation-indicator {
+		position: fixed;
+		top: 1rem;
+		left: 1rem;
+		z-index: 1000;
 	}
 </style>

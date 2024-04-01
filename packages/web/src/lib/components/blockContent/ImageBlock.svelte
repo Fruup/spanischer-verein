@@ -3,16 +3,16 @@
 
 	export let portableText: CustomBlockComponentProps
 
-	$: url = portableText.value.asset.url
-	const alt = ''
+	$: url = portableText.value.transformedImageUrl || portableText.value.asset.url
+	$: ratio = portableText.value.asset.metadata.dimensions.aspectRatio
+	const alt = '' // TODO
 
-	$: width = portableText.value.asset.metadata.dimensions.width
-	$: height = portableText.value.asset.metadata.dimensions.height
-	$: ratio = width / height
+	const width = 500
+	const height = width / ratio
 </script>
 
 <div class="image-container">
-	<img src={url} {alt} style:aspect-ratio={ratio} />
+	<img src={url} {alt} {width} {height} />
 </div>
 
 <style>
@@ -23,6 +23,7 @@
 	}
 
 	img {
+		width: 100%;
 		max-width: 500px;
 		height: auto;
 	}

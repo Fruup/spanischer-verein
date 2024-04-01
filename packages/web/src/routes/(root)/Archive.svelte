@@ -21,13 +21,15 @@
 				{month}
 			</li>
 
-			<ul>
-				{#each events as event}
-					<li>
-						<a href={event.url}>{event.name}</a>
-					</li>
-				{/each}
-			</ul>
+			<li>
+				<ul>
+					{#each events as event}
+						<li>
+							<a href={event.url}>{event.name}</a>
+						</li>
+					{/each}
+				</ul>
+			</li>
 		{/each}
 	</ul>
 </nav>

@@ -57,7 +57,6 @@
 	<img
 		src={event.imageUrl}
 		alt="Title image for an event called '${event.title}'"
-		loading="lazy"
 		style:background-color={backgroundColor}
 		style:aspect-ratio={aspectRatio}
 	/>
@@ -94,7 +93,8 @@
 		&:hover,
 		&:focus,
 		&.hover {
-			--shadow-color: #{color.change($color-accent)};
+			outline: 2px solid #{color.change($color-accent)};
+			// --shadow-color: #{color.change($color-accent)};
 			// --shadow-color: #{color.change($color-accent, $alpha: 0.75)};
 		}
 

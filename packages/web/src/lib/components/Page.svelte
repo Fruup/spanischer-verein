@@ -1,26 +1,15 @@
 <script lang="ts">
-	import type { EventSchema } from '@spanischer-verein/sanity/schemas/event'
 	import { fly } from 'svelte/transition'
-	import EventInfo from './EventInfo.svelte'
+	import EventInfo, { type EventInfoSpec } from './EventInfo.svelte'
 	import BlockContent from './blockContent/BlockContent.svelte'
+	import type { PortableTextBlock } from '@sanity/types'
 
-	export let event: EventSchema
-
-	$: body = event.body
-	$: eventInfo = {
-		admission: event.eventAdmission,
-		time: event.eventTime,
-		location: event.eventLocation
-			? {
-					title: event.eventLocation,
-					address: event.eventLocation,
-				}
-			: undefined,
-	}
-	$: title = event.title
+	export let title: string
+	export let body: PortableTextBlock[]
+	export let eventInfo: EventInfoSpec | undefined = undefined
 </script>
 
-<div class="event-page" in:fly={{ y: 10 }}>
+<div class="page" in:fly={{ y: 10 }}>
 	<div class="heading-container">
 		<h2>
 			{title}
@@ -37,7 +26,7 @@
 <style lang="scss">
 	@import 'vars';
 
-	.event-page {
+	.page {
 		h2 {
 			@include font-serif;
 			font-weight: normal;
@@ -49,8 +38,6 @@
 
 			width: fit-content;
 			margin: auto;
-			// padding: 1rem 2rem;
-
 			margin-bottom: 2rem;
 		}
 	}

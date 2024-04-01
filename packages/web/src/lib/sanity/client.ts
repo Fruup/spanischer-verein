@@ -78,10 +78,10 @@ export const sanityApi = {
 					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
 					"dimensions": mainImage.asset->metadata.dimensions,
 				},
-			}`,
+			} | order(eventTime asc)`,
 			{
-				maxAge: 31 * 24 * 60 * 60,
-				// maxAge: 1 * 24 * 60 * 60, // one days in seconds
+				// TODO: make maxAge configurable
+				maxAge: 1 * 24 * 60 * 60, // one days in seconds
 			},
 		)
 
@@ -89,9 +89,9 @@ export const sanityApi = {
 			...event,
 			imageUrl: imageUrlBuilder
 				.image(event.mainImage)
-				.maxWidth(512)
-				.maxHeight(512)
+				.width(512)
 				.crop('focalpoint')
+				.format('webp')
 				.url(),
 		}))
 
@@ -99,7 +99,7 @@ export const sanityApi = {
 	},
 
 	getEvent: async (slug: string) => {
-		return await sanityClient.fetch<EventSchema | undefined>(
+		const result = await sanityClient.fetch<EventSchema | undefined>(
 			`*[_type == "event" && slug.current == "${slug}"][0]{
 				...,
 				"body": body[]{
@@ -108,6 +108,24 @@ export const sanityApi = {
 				},
 			}`,
 		)
+
+		if (!result) return
+
+		const body = result.body.map((block) => ({
+			...block,
+			transformedImageUrl:
+				block._type === 'image' &&
+				imageUrlBuilder
+					.image((block as any).asset)
+					.width(500)
+					.format('webp')
+					.url(),
+		}))
+
+		return {
+			...result,
+			body,
+		}
 	},
 
 	getNavigationTree: async () => {
@@ -205,6 +223,17 @@ export const sanityApi = {
 		)
 
 		await Promise.all(promises)
+
+		page.body = page.body.map((block) => ({
+			...block,
+			transformedImageUrl:
+				block._type === 'image' &&
+				imageUrlBuilder
+					.image((block as any).asset)
+					.width(500)
+					.format('webp')
+					.url(),
+		}))
 
 		return page
 	},
