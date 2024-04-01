@@ -10,6 +10,7 @@
 	import Loader from '$lib/components/icons/Loader.svelte'
 	import { fly } from 'svelte/transition'
 	import { cubicOut } from 'svelte/easing'
+	import Footer from './Footer.svelte'
 
 	export let data
 
@@ -66,9 +67,7 @@
 	<Divider />
 </div>
 
-<footer>
-	<a href="/{siteSettings.imprintPageSlug}">Impressum</a>
-</footer>
+<Footer imprintUrl="/{siteSettings.imprintPageSlug}" />
 
 <style lang="scss">
 	@use 'sass:color';
@@ -99,14 +98,6 @@
 		.heading-3 {
 			margin-bottom: 0;
 		}
-	}
-
-	footer {
-		display: grid;
-		place-items: center;
-
-		min-height: 200px;
-		background-color: rgba(0, 0, 0, 0.02);
 	}
 
 	.divider {
