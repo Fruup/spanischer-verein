@@ -14,7 +14,7 @@
 
 	export let data
 
-	let { siteSettings } = data
+	$: siteSettings = data.siteSettings
 
 	$: events = data.upcomingEvents.map((e) => ({
 		name: e.title,

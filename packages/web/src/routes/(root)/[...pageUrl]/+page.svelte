@@ -2,7 +2,8 @@
 	import Page from '$lib/components/Page.svelte'
 
 	export let data
-	let { body, title } = data.page
+	$: title = data.page.title
+	$: body = data.page.body
 </script>
 
 <Page {title} {body} />

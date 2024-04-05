@@ -3,7 +3,8 @@
 	import type { EventInfoSpec } from '$lib/components/EventInfo.svelte'
 
 	export let data
-	let { title, body } = data.event
+	$: title = data.event.title
+	$: body = data.event.body
 
 	$: eventInfo = {
 		admission: data.event.eventAdmission,

@@ -3,14 +3,12 @@
 	import Page from '$lib/components/Page.svelte'
 
 	export let data
-	let {
-		event: { body, title, eventAdmission, eventLocation, eventTime },
-	} = data
-
+	$: body = data.event.body
+	$: title = data.event.title
 	$: eventInfo = {
-		admission: eventAdmission,
-		time: eventTime,
-		location: eventLocation,
+		admission: data.event.eventAdmission,
+		time: data.event.eventTime,
+		location: data.event.eventLocation,
 	} satisfies EventInfoSpec
 </script>
 
