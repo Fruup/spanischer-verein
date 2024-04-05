@@ -8,7 +8,7 @@
 	@import 'vars';
 
 	div {
-		border-top: 2px solid $color-accent;
+		border-top: 3px solid $color-accent;
 		height: 0;
 
 		position: relative;
