@@ -19,9 +19,7 @@
 		{#each Object.entries(groupedEvents) as [month, events]}
 			<li>
 				{month}
-			</li>
 
-			<li>
 				<ul>
 					{#each events as event}
 						<li>

@@ -3,7 +3,6 @@
 	import supporter1 from '$assets/integrationszentrum-koeln.png?format=webp&w=256&imagetools'
 	import supporter2 from '$assets/stadt-koeln.svg'
 	import SiteLogo from '$lib/components/header/SiteLogo.svelte'
-	// import supporter2 from '$assets/stadt-koeln.png?format=webp&w=256&imagetools'
 
 	export let imprintUrl: string
 </script>
@@ -13,6 +12,7 @@
 		<h6>Links</h6>
 		<nav>
 			<ul>
+				<!-- TODO(v2): make this configurable -->
 				<li><a href="/">Home</a></li>
 				<li><a href={imprintUrl}>Impressum</a></li>
 			</ul>
