@@ -1,0 +1,26 @@
+@import 'vars';
+
+@mixin shared {
+	width: fit-content;
+	height: fit-content;
+
+	padding: 0.25rem 0.666rem;
+	margin: 2rem 0;
+
+	border: 2px solid $color-accent;
+	border-radius: 8px;
+}
+
+.heading-2 {
+	@include shared;
+
+	background-color: $color-accent;
+	color: white;
+}
+
+.heading-3 {
+	@include shared;
+
+	background-color: white;
+	color: $color-text;
+}

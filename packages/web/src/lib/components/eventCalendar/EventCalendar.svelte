@@ -62,8 +62,18 @@
 
 	.calendar {
 		z-index: 10000;
-		max-width: 350px;
-		margin: auto;
+		width: fit-content;
+		padding: 2em;
+
+		font-size: 0.85rem;
+
+		@include surface;
+
+		border-radius: 24px;
+		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
+
+		--cell-width: 2em;
+		--cell-gap: 0.125em;
 	}
 
 	.heading {
@@ -77,8 +87,8 @@
 		}
 
 		button {
-			width: 2rem;
-			height: 2rem;
+			width: var(--cell-width);
+			height: var(--cell-width);
 			padding: 0;
 			margin: 0;
 
@@ -96,7 +106,7 @@
 
 	.weekdays {
 		display: grid;
-		grid-template-columns: repeat(7, 1fr);
+		grid-template-columns: repeat(7, var(--cell-width));
 		background-color: rgba(0, 0, 0, 0.05);
 
 		margin: 0.5rem 0;
@@ -134,7 +144,7 @@
 			border: 1px solid grey;
 		}
 
-		margin: 0.125rem;
+		margin: var(--cell-gap);
 		border-radius: 0.5rem;
 	}
 </style>

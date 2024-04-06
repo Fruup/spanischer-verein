@@ -5,9 +5,8 @@ import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import type { PortableTextMarkDefinition } from '@portabletext/types'
 import type { PageSchema } from '@spanischer-verein/sanity/schemas/page'
 import type { SiteSettingsSchema } from '@spanischer-verein/sanity/schemas/siteSettings'
-import type { NavigationItem } from '$lib/components/header/Header.svelte'
+import type { NavigationItem } from '$lib/components/header/types'
 import { env } from '$env/dynamic/private'
-import { error } from '@sveltejs/kit'
 
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
@@ -79,10 +78,10 @@ export const sanityApi = {
 					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
 					"dimensions": mainImage.asset->metadata.dimensions,
 				},
-			}`,
+			} | order(eventTime asc)`,
 			{
-				maxAge: 31 * 24 * 60 * 60,
-				// maxAge: 1 * 24 * 60 * 60, // one days in seconds
+				// TODO: make maxAge configurable
+				maxAge: 1 * 24 * 60 * 60, // one days in seconds
 			},
 		)
 
@@ -90,9 +89,9 @@ export const sanityApi = {
 			...event,
 			imageUrl: imageUrlBuilder
 				.image(event.mainImage)
-				.maxWidth(512)
-				.maxHeight(512)
+				.width(512)
 				.crop('focalpoint')
+				.format('webp')
 				.url(),
 		}))
 
@@ -100,7 +99,7 @@ export const sanityApi = {
 	},
 
 	getEvent: async (slug: string) => {
-		return await sanityClient.fetch<EventSchema | undefined>(
+		const result = await sanityClient.fetch<EventSchema | undefined>(
 			`*[_type == "event" && slug.current == "${slug}"][0]{
 				...,
 				"body": body[]{
@@ -109,6 +108,24 @@ export const sanityApi = {
 				},
 			}`,
 		)
+
+		if (!result) return
+
+		const body = result.body.map((block) => ({
+			...block,
+			transformedImageUrl:
+				block._type === 'image' &&
+				imageUrlBuilder
+					.image((block as any).asset)
+					.width(500)
+					.format('webp')
+					.url(),
+		}))
+
+		return {
+			...result,
+			body,
+		}
 	},
 
 	getNavigationTree: async () => {
@@ -207,19 +224,34 @@ export const sanityApi = {
 
 		await Promise.all(promises)
 
+		page.body = page.body.map((block) => ({
+			...block,
+			transformedImageUrl:
+				block._type === 'image' &&
+				imageUrlBuilder
+					.image((block as any).asset)
+					.width(500)
+					.format('webp')
+					.url(),
+		}))
+
 		return page
 	},
 
 	getSiteSettings: async () => {
-		const settings = await sanityClient.fetch<SiteSettingsSchema>(`
-			*[_id == "siteSettings"][0]
+		type Result = Pick<SiteSettingsSchema, 'donationLink'> & { imprintPageSlug?: string }
+
+		const settings = await sanityClient.fetch<Result>(`
+			*[_id == "siteSettings"][0]{
+				donationLink,
+				"imprintPageSlug": imprintPage->slug.current,
+			}
 		`)
 
 		if (!settings) {
 			return {
-				_type: 'siteSettings',
 				donationLink: '',
-			} as SiteSettingsSchema
+			} satisfies Result
 		}
 
 		return settings

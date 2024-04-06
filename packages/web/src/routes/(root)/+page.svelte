@@ -23,7 +23,7 @@
 
 <svelte:window on:resize={handleResize} />
 
-<h1 hidden>Upcoming Events</h1>
+<h3 class="heading-2">Kommende Veranstaltungen</h3>
 
 {#if !events.length}
 	<h3 class="no-events">In nächster Zeit sind keine Veranstaltungen geplant...</h3>

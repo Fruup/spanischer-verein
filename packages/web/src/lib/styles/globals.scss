@@ -1,6 +1,14 @@
+@use 'sass:color';
 @import 'vars';
+@import 'headings';
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+:root {
+	font-size: 21px;
+	line-height: 1.66;
+	@include font-sans-serif;
+}
 
 :root,
 body {
@@ -24,12 +32,6 @@ body {
 	}
 }
 
-body {
-	font-family: 'Roboto', sans-serif;
-	font-size: 21px;
-	line-height: 1.66;
-}
-
 .no-scroll {
 	overflow: hidden;
 }
@@ -41,6 +43,7 @@ h4,
 h5,
 h6 {
 	line-height: 1.33;
+	letter-spacing: 1px;
 }
 
 * {

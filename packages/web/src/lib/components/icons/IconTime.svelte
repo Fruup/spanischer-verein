@@ -1,5 +1,9 @@
+<script lang="ts">
+	export let size = 1
+</script>
+
 <svg
-	height="1lh"
+	height="{size}lh"
 	viewBox="0 0 24 24"
 	fill="none"
 	stroke="currentColor"

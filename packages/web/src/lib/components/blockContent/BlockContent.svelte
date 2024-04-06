@@ -41,7 +41,9 @@
 		}
 
 		:global(img) {
-			margin: 2rem 0;
+			max-width: 500px;
+			margin-left: auto;
+			margin-right: auto;
 		}
 	}
 </style>

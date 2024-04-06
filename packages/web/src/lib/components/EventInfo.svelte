@@ -1,18 +1,16 @@
+<script context="module" lang="ts">
+	export interface EventInfoSpec {
+		admission?: string
+		time?: string
+		location?: string
+	}
+</script>
+
 <script lang="ts">
 	import IconCoin from './icons/IconCoin.svelte'
 	import IconPin from './icons/IconPin.svelte'
 	import IconTime from './icons/IconTime.svelte'
 	import EventTime from './EventTime.svelte'
-
-	interface EventInfoSpec {
-		admission?: string
-		time?: string
-		location?: {
-			title: string
-			address: string
-			url?: string
-		}
-	}
 
 	export let eventInfo: EventInfoSpec
 
@@ -36,7 +34,7 @@
 				<IconPin />
 
 				<span>
-					{@html location.address.replaceAll('\n', '<br />')}
+					{@html location.replaceAll('\n', '<br />')}
 				</span>
 			</div>
 		{/if}
@@ -59,7 +57,7 @@
 	.event-info {
 		hyphens: auto;
 
-		font-size: 1rem;
+		font-size: 0.8rem;
 		color: #555;
 
 		display: flex;
@@ -73,6 +71,10 @@
 			display: flex;
 			flex-direction: column;
 			gap: 0.5rem;
+
+			font-size: 0.9em;
+			line-height: 1.5;
+			letter-spacing: 0.5px;
 		}
 
 		:global(.event-marker) {
