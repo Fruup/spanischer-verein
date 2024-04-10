@@ -14,10 +14,19 @@
 	</div>
 
 	<div class="box">
+		<p>
+			Sie möchten selbst einen Kurs oder ein Event anbieten? Schreiben Sie uns an -
+			<a href="mailto:information@spanischer-verein.com"> information@spanischer-verein.com </a>
+		</p>
+	</div>
+
+	<!--
+	<div class="box">
 		<p>Abonnieren Sie gerne unseren Newsletter, um über Neuigkeiten informiert zu werden 😊</p>
 
 		<CallToAction>Zum Newsletter anmelden</CallToAction>
 	</div>
+	-->
 </div>
 
 <style lang="scss">
@@ -37,6 +46,10 @@
 	p {
 		font-size: 0.9rem;
 		margin-top: 0;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
 	}
 
 	.box {
@@ -45,5 +58,15 @@
 		border-radius: 24px;
 		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
 		padding: 1.5rem;
+	}
+
+	a {
+		text-decoration: underline;
+		text-decoration-color: $color-accent;
+
+		&:hover,
+		&:focus {
+			color: $color-accent;
+		}
 	}
 </style>
