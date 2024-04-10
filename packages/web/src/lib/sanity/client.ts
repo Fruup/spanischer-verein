@@ -12,9 +12,10 @@ import { error } from '@sveltejs/kit'
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
 	projectId: '6a1nd7zb',
-	perspective: (env.SANITY_PERSPECTIVE as any) || 'published',
+	perspective:
+		(env.SANITY_PERSPECTIVE as any) || (import.meta.env.PROD ? 'published' : 'previewDrafts'),
 	apiHost: 'https://api.sanity.io',
-	dataset: env.SANITY_DATASET || 'development',
+	dataset: env.SANITY_DATASET || (import.meta.env.PROD ? 'production' : 'development'),
 	useCdn: import.meta.env.PROD,
 	token: env.SANITY_TOKEN,
 })
@@ -186,7 +187,7 @@ export const sanityApi = {
 			}
 		`)
 
-		if (!page) return
+		if (!page?.body) return
 
 		const promises = page.body.flatMap((block) =>
 			(block.markDefs as PortableTextMarkDefinition[])?.map(async (markDef) => {
