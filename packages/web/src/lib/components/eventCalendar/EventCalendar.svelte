@@ -63,7 +63,7 @@
 	.calendar {
 		z-index: 10000;
 		width: fit-content;
-		padding: 2em;
+		padding: 1em;
 
 		font-size: 0.85rem;
 

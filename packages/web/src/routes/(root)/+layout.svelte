@@ -4,7 +4,6 @@
 	import SkipNavigation from '$lib/components/SkipNavigation.svelte'
 	import Divider from './Divider.svelte'
 	import { getEventUrl } from '$lib/helpers/url'
-	import Archive from './Archive.svelte'
 	import ParticipateSection from './ParticipateSection.svelte'
 	import { navigating } from '$app/stores'
 	import Loader from '$lib/components/icons/Loader.svelte'
@@ -50,9 +49,6 @@
 			<ParticipateSection />
 
 			<!-- <PageSearch /> -->
-
-			<h3 class="heading-3">Archiv</h3>
-			<Archive {events} />
 		</div>
 	</aside>
 </div>
@@ -75,12 +71,13 @@
 
 	.content {
 		display: grid;
-		grid-template-columns: auto auto 375px;
+		// grid-template-columns: auto auto 375px;
+		grid-template-columns: 1fr min-content min-content;
 
 		max-width: 1200px;
 
 		margin: 0 auto;
-		gap: 4rem;
+		gap: 2.5rem;
 
 		@include max-md {
 			grid-template-columns: 1fr;
@@ -108,7 +105,7 @@
 
 	main,
 	aside {
-		margin-top: 4rem;
+		margin-top: 2.5rem;
 		margin-bottom: 4rem;
 
 		:global(h3:first-of-type) {
