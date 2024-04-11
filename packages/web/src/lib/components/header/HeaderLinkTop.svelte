@@ -91,6 +91,8 @@
 		border: 1px solid $color-border;
 		border-radius: 12px;
 
+		z-index: 1000;
+
 		@include shadow;
 	}
 

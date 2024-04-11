@@ -38,20 +38,4 @@
 		font-size: 1rem;
 		line-height: 1.5;
 	}
-
-	@include min-md {
-		.sub {
-			position: relative;
-			left: 100px;
-
-			text-align: right;
-			align-self: end;
-		}
-		// .sub {
-		// 	position: absolute;
-		// 	right: -5rem;
-		// 	bottom: 0;
-		// 	translate: 0 100%;
-		// }
-	}
 </style>
