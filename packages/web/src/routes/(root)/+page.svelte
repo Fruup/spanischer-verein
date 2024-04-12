@@ -1,6 +1,5 @@
 <script lang="ts">
 	import EventsOverview from './EventsOverview.svelte'
-	import EventsOverviewV2 from './EventsOverviewV2.svelte'
 
 	export let data
 
@@ -14,8 +13,6 @@
 {/if}
 
 <EventsOverview {events} />
-
-<!-- <EventsOverviewV2 {events} /> -->
 
 <style lang="scss">
 	.no-events {
