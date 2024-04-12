@@ -20,6 +20,9 @@
 		url: getEventUrl(e.slug),
 		date: new Date(e.eventTime),
 	}))
+
+	$: leftImageUrl = data.siteSettings.headerImageUrlLeft
+	$: rightImageUrl = data.siteSettings.headerImageUrlRight
 </script>
 
 <svelte:head>
@@ -28,7 +31,7 @@
 
 <!-- <SkipNavigation /> -->
 
-<Header items={data.navigationTree} />
+<Header items={data.navigationTree} {leftImageUrl} {rightImageUrl} />
 
 <Divider />
 

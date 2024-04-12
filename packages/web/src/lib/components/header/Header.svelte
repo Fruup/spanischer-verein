@@ -6,9 +6,10 @@
 	import type { NavigationItem } from './types'
 	import SiteLogo from './SiteLogo.svelte'
 	import SiteMenu from './SiteMenu.svelte'
-	import imageUrl from '$assets/front-page.jpg'
 
 	export let items: NavigationItem[]
+	export let leftImageUrl: string | undefined = undefined
+	export let rightImageUrl: string | undefined = undefined
 
 	$: isMainMenuOpen = !!$page.state.isMainMenuOpen
 
@@ -26,13 +27,17 @@
 	<SiteHeading />
 	<SiteMenu {items} {openMainMenu} />
 
-	<div class="image left">
-		<img src={imageUrl} alt="" />
-	</div>
+	{#if leftImageUrl}
+		<div class="image left">
+			<img src={leftImageUrl} alt="" />
+		</div>
+	{/if}
 
-	<div class="image right">
-		<img src={imageUrl} alt="" />
-	</div>
+	{#if rightImageUrl}
+		<div class="image right">
+			<img src={rightImageUrl} alt="" />
+		</div>
+	{/if}
 </header>
 
 <MobileMenu isOpen={isMainMenuOpen} {items} close={closeMainMenu} />
@@ -51,11 +56,17 @@
 		text-align: center;
 
 		.image {
+			--max-width: 33%;
+
+			@include max-md {
+				--max-width: 20%;
+			}
+
 			content: '';
 			position: absolute;
 			inset: 0;
 			left: auto;
-			max-width: 33%;
+			max-width: var(--max-width);
 			height: 100%;
 
 			z-index: -1000;

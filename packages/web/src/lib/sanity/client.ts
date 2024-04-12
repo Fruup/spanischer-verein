@@ -240,10 +240,16 @@ export const sanityApi = {
 	},
 
 	getSiteSettings: async () => {
-		type Result = Pick<SiteSettingsSchema, 'donationLink'> & { imprintPageSlug?: string }
+		type Result = Pick<SiteSettingsSchema, 'donationLink'> & {
+			imprintPageSlug?: string
+			headerImageLeft?: SanityImageSource
+			headerImageRight?: SanityImageSource
+		}
 
-		const settings = await sanityClient.fetch<Result>(`
+		const settings = await sanityClient.fetch<Result | null>(`
 			*[_id == "siteSettings"][0]{
+				headerImageLeft,
+				headerImageRight,
 				donationLink,
 				"imprintPageSlug": imprintPage->slug.current,
 			}
@@ -255,6 +261,29 @@ export const sanityApi = {
 			} satisfies Result
 		}
 
-		return settings
+		let headerImageUrlLeft: string | undefined
+		if (settings.headerImageLeft) {
+			headerImageUrlLeft = imageUrlBuilder
+				.image(settings.headerImageLeft)
+				.height(512)
+				.format('webp')
+				.url()
+		}
+
+		let headerImageUrlRight: string | undefined
+		if (settings.headerImageRight) {
+			headerImageUrlRight = imageUrlBuilder
+				.image(settings.headerImageRight)
+				.height(512)
+				.format('webp')
+				.url()
+		}
+
+		return {
+			donationLink: settings.donationLink,
+			imprintPageSlug: settings.imprintPageSlug,
+			headerImageUrlLeft,
+			headerImageUrlRight,
+		}
 	},
 }
