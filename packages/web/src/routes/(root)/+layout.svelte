@@ -15,7 +15,7 @@
 
 	$: siteSettings = data.siteSettings
 
-	$: events = data.upcomingEvents.map((e) => ({
+	$: events = data.events.map((e) => ({
 		name: e.title,
 		url: getEventUrl(e.slug),
 		date: new Date(e.eventTime),
@@ -45,6 +45,11 @@
 	<aside>
 		<div class="aside-content">
 			<h3 class="heading-3">Kalender</h3>
+
+			<p class="calendar-tutorial">
+				💡 Navigiere im Kalender, um vergangene Veranstaltungen zu durchstöbern.
+			</p>
+
 			<EventCalendar {events} />
 
 			<h3 class="heading-3">Mitmachen</h3>
@@ -121,5 +126,11 @@
 		top: 1rem;
 		left: 1rem;
 		z-index: 1000;
+	}
+
+	.calendar-tutorial {
+		font-size: 0.85rem;
+		color: var(--color-text-1);
+		margin: 0;
 	}
 </style>

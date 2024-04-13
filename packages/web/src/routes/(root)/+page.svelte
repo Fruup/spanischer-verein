@@ -1,22 +1,10 @@
 <script lang="ts">
-	import EventsOverview from './EventsOverview.svelte'
+	import EventsOverview2 from './EventsOverview2.svelte'
 
 	export let data
 
-	$: events = data.events
+	const year = new Date().getFullYear()
+	const month = new Date().getMonth() + 1
 </script>
 
-<h3 class="heading-2">Kommende Veranstaltungen</h3>
-
-{#if !events.length}
-	<h3 class="no-events">In nächster Zeit sind keine Veranstaltungen geplant...</h3>
-{/if}
-
-<EventsOverview {events} />
-
-<style lang="scss">
-	.no-events {
-		text-align: center;
-		margin-top: 10rem;
-	}
-</style>
+<EventsOverview2 events={data.events} {year} {month} />

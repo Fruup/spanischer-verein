@@ -22,30 +22,30 @@ export const sanityClient = createClient({
 const imageUrlBuilder = createImageUrlBuilder(sanityClient)
 
 export const sanityApi = {
-	getEventsOverview: async () => {
-		interface Result
-			extends Pick<EventSchema, 'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'> {
-			slug: string
-		}
+	// getEventsOverview: async () => {
+	// 	interface Result
+	// 		extends Pick<EventSchema, 'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'> {
+	// 		slug: string
+	// 	}
 
-		return await sanityClient.fetch<Result[]>(
-			`*[
-				_type == "event" &&
-				(
-					!defined(publishedAt) ||
-					dateTime(now()) >= dateTime(publishedAt)
-				)
-			]{
-				title,
-				"slug": slug.current,
-				eventTime,
-				eventLocation,
-				eventAdmission,
-			}`,
-		)
-	},
+	// 	return await sanityClient.fetch<Result[]>(
+	// 		`*[
+	// 			_type == "event" &&
+	// 			(
+	// 				!defined(publishedAt) ||
+	// 				dateTime(now()) >= dateTime(publishedAt)
+	// 			)
+	// 		]{
+	// 			title,
+	// 			"slug": slug.current,
+	// 			eventTime,
+	// 			eventLocation,
+	// 			eventAdmission,
+	// 		}`,
+	// 	)
+	// },
 
-	getUpcomingEventsOverview: async () => {
+	getEventsOverview: async (options: { year: number; month: number }) => {
 		interface Result
 			extends Pick<EventSchema, 'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'> {
 			mainImage: SanityImageSource
@@ -62,12 +62,12 @@ export const sanityApi = {
 		const events = await sanityClient.fetch<Result[]>(
 			`*[
 				_type == "event" &&
-				dateTime(now()) - $maxAge <= dateTime(eventTime) &&
 				(
 					!defined(publishedAt) ||
 					dateTime(now()) >= dateTime(publishedAt)
 				) &&
-				dateTime(eventTime) > dateTime(now())
+				dateTime(eventTime) >= dateTime($from) &&
+				dateTime(eventTime) < dateTime($to)
 			]{
 				title,
 				"slug": slug.current,
@@ -81,8 +81,8 @@ export const sanityApi = {
 				},
 			} | order(eventTime asc)`,
 			{
-				// TODO: make maxAge configurable
-				maxAge: 1 * 24 * 60 * 60, // one days in seconds
+				from: `${options.year}-${options.month.toString().padStart(2, '0')}-01T00:00:00Z`,
+				to: `${options.year}-${(options.month + 1).toString().padStart(2, '0')}-01T00:00:00Z`,
 			},
 		)
 

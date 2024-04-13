@@ -21,46 +21,41 @@
 	})
 </script>
 
-<nav style:--num-columns={numColumns}>
-	{#each { length: numColumns } as _, columnIndex}
-		<ul>
-			{#each getColumnEvents(columnIndex) as event, i}
-				{@const introDelay = (columnIndex + i) * 100}
+<nav>
+	<ul>
+		{#each events as event, i}
+			{@const introDelay = i * 100}
 
-				<li>
-					<article>
-						<EventCard {introDelay} {event} />
-					</article>
-				</li>
-			{/each}
-		</ul>
-	{/each}
+			<li>
+				<article>
+					<EventCard {introDelay} {event} />
+				</article>
+			</li>
+		{/each}
+	</ul>
 </nav>
 
 <style lang="scss">
 	nav {
-		display: grid;
-		grid-template-columns: repeat(var(--num-columns), 1fr);
-		gap: 2rem;
-
 		width: fit-content;
 		margin: auto;
 	}
 
 	ul {
-		width: 100%;
+		// width: 100%;
 
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
+		flex-wrap: wrap;
 		gap: 2rem;
 
 		margin: 0 auto;
 		padding: 0;
-
-		// max-width: 400px;
 	}
 
 	li {
 		list-style: none;
+		flex-grow: 1;
+		max-width: 230px;
 	}
 </style>

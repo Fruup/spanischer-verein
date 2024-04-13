@@ -4,11 +4,39 @@
 	import { type EventCalendarItem } from './helpers'
 	import EventCalendarMonth from './EventCalendarMonth.svelte'
 	import { locale } from '$lib/services/locale'
+	import { onMount } from 'svelte'
+	import { page } from '$app/stores'
+	import { goto } from '$app/navigation'
+	import { browser } from '$app/environment'
+	import MonthSelector from './MonthSelector.svelte'
+
+	export let events: EventCalendarItem[]
+
+	// let selected: { year: number; month: number } = {
+	// 	year: new Date().getFullYear(),
+	// 	month: new Date().getMonth() + 1,
+	// }
+
+	$: selected = {
+		year: Number($page.params.year),
+		month: Number($page.params.month),
+	}
+
+	$: next = {
+		year: selected.month === 12 ? selected.year + 1 : selected.year,
+		month: selected.month === 12 ? 1 : selected.month + 1,
+	}
+
+	$: prev = {
+		year: selected.month === 1 ? selected.year - 1 : selected.year,
+		month: selected.month === 1 ? 12 : selected.month - 1,
+	}
 
 	const {
 		elements: { calendar, cell, grid, heading, nextButton, prevButton },
-		helpers: { isDateDisabled },
-		states: { months, headingValue, weekdays },
+		helpers: { isDateDisabled, setMonth, setYear },
+		states: { months, weekdays },
+		options: {},
 	} = createCalendar({
 		fixedWeeks: true,
 		readonly: true,
@@ -16,25 +44,60 @@
 		locale: $locale,
 	})
 
-	export let events: EventCalendarItem[]
+	$: if (selected) {
+		setMonth(selected.month)
+		setYear(selected.year)
+	}
 
-	// TODO: draw cool SVG path to the linked element.
-	const handleFocus = (event: Event) => {}
-	const handleBlur = (event: Event) => {}
+	const bla = () => {
+		selected = {
+			year: $months[0].value.year,
+			month: $months[0].value.month,
+		}
+	}
+
+	// TODO: Circular dependency???
+	$: if ($months) {
+		// bla()
+	}
+
+	$: if (browser && selected) {
+		// goto(`?t=${selected.year}-${selected.month.toString().padStart(2, '0')}`, {
+		// 	replaceState: true,
+		// 	noScroll: true,
+		// })
+	}
 </script>
 
 <div class="calendar" use:melt={$calendar}>
 	<div class="heading" use:melt={$heading}>
-		<button type="button" class="left" use:melt={$prevButton}>
+		<!-- <button type="button" class="left" use:melt={$prevButton}>
 			<IconAngle direction="left" />
-		</button>
+		</button> -->
 
-		<div class="value">
-			{$headingValue}
-		</div>
-		<button class="right" use:melt={$nextButton}>
+		<a
+			href="/archiv/{prev.year}-{prev.month.toString().padStart(2, '0')}"
+			class="left"
+			data-sveltekit-noscroll
+			use:melt={$prevButton}
+		>
+			<IconAngle direction="left" />
+		</a>
+
+		<MonthSelector bind:value={selected} />
+
+		<!-- <button class="right" use:melt={$nextButton}>
 			<IconAngle direction="right" />
-		</button>
+		</button> -->
+
+		<a
+			href="/archiv/{next.year}-{next.month.toString().padStart(2, '0')}"
+			data-sveltekit-noscroll
+			class="right"
+			use:melt={$nextButton}
+		>
+			<IconAngle direction="right" />
+		</a>
 	</div>
 
 	<div class="weekdays">
@@ -80,22 +143,29 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: stretch;
+		gap: 0.25em;
 
-		.value {
-			text-align: center;
+		:global(.month-selector) {
 			flex-grow: 1;
 		}
 
-		button {
+		button,
+		a {
 			width: var(--cell-width);
 			height: var(--cell-width);
 			padding: 0;
 			margin: 0;
 
-			border: 1px solid grey;
-			border-radius: 0.5rem;
+			cursor: pointer;
 
-			background-color: $color-background;
+			border: none;
+			// border: 2px solid $color-accent;
+			border-radius: 8px;
+
+			color: white;
+
+			// background-color: $color-background;
+			background-color: $color-accent;
 
 			&:hover,
 			&:active {
