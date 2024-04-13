@@ -37,25 +37,41 @@
 
 <style lang="scss">
 	nav {
-		width: fit-content;
-		margin: auto;
+		width: 100%;
+
+		container-type: inline-size;
+
+		--num-columns: 2;
+
+		@container (width > 768px) {
+			ul {
+				--num-columns: 3;
+			}
+		}
 	}
 
 	ul {
 		// width: 100%;
 
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
+		// display: flex;
+		// flex-direction: row;
+		// flex-wrap: wrap;
 		gap: 2rem;
 
-		margin: 0 auto;
+		display: grid;
+		grid-template-columns: repeat(var(--num-columns), 1fr);
+
+		// margin: 0 auto;
+		margin: 0;
 		padding: 0;
 	}
 
 	li {
 		list-style: none;
-		flex-grow: 1;
-		max-width: 230px;
+	}
+
+	li,
+	article {
+		height: 100%;
 	}
 </style>

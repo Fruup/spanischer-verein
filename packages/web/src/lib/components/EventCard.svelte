@@ -81,6 +81,8 @@
 		display: flex;
 		flex-direction: column;
 
+		height: 100%;
+
 		border-radius: 24px;
 		overflow: hidden;
 

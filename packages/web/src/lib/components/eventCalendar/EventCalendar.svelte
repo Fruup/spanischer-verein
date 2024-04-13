@@ -18,8 +18,8 @@
 	// }
 
 	$: selected = {
-		year: Number($page.params.year),
-		month: Number($page.params.month),
+		year: Number($page.params.year) || new Date().getFullYear(),
+		month: Number($page.params.month) || new Date().getMonth() + 1,
 	}
 
 	$: next = {
