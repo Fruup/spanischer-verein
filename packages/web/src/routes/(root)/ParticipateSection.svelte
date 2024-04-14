@@ -16,7 +16,7 @@
 	<div class="box">
 		<p>
 			Sie möchten selbst einen Kurs oder ein Event anbieten? Schreiben Sie uns an -
-			<a href="mailto:information@spanischer-verein.com"> information@spanischer-verein.com </a>
+			<a href="mailto:info@spanischer-verein.com"> info@spanischer-verein.com </a>
 		</p>
 	</div>
 
@@ -57,7 +57,7 @@
 
 		border-radius: 24px;
 		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
-		padding: 1.5rem;
+		padding: 1rem;
 	}
 
 	a {

@@ -40,7 +40,7 @@
 		<SiteLogo />
 
 		<div class="attribution">
-			Made with ❤️ by <a href="https://leonscherer.com/" target="_blank">Leon</a>
+			Developed by <a href="https://leonscherer.com/" target="_blank">Leon</a>
 		</div>
 	</div>
 </footer>

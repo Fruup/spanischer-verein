@@ -4,7 +4,6 @@
 	import SkipNavigation from '$lib/components/SkipNavigation.svelte'
 	import Divider from './Divider.svelte'
 	import { getEventUrl } from '$lib/helpers/url'
-	import Archive from './Archive.svelte'
 	import ParticipateSection from './ParticipateSection.svelte'
 	import { navigating } from '$app/stores'
 	import Loader from '$lib/components/icons/Loader.svelte'
@@ -16,11 +15,14 @@
 
 	$: siteSettings = data.siteSettings
 
-	$: events = data.upcomingEvents.map((e) => ({
+	$: events = data.events.map((e) => ({
 		name: e.title,
 		url: getEventUrl(e.slug),
 		date: new Date(e.eventTime),
 	}))
+
+	$: leftImageUrl = data.siteSettings.headerImageUrlLeft
+	$: rightImageUrl = data.siteSettings.headerImageUrlRight
 </script>
 
 <svelte:head>
@@ -29,7 +31,7 @@
 
 <!-- <SkipNavigation /> -->
 
-<Header items={data.navigationTree} />
+<Header items={data.navigationTree} {leftImageUrl} {rightImageUrl} />
 
 <Divider />
 
@@ -43,6 +45,11 @@
 	<aside>
 		<div class="aside-content">
 			<h3 class="heading-3">Kalender</h3>
+
+			<p class="calendar-tutorial">
+				💡 Navigiere im Kalender, um vergangene Veranstaltungen zu durchstöbern.
+			</p>
+
 			<EventCalendar {events} />
 
 			<h3 class="heading-3">Mitmachen</h3>
@@ -50,9 +57,6 @@
 			<ParticipateSection />
 
 			<!-- <PageSearch /> -->
-
-			<h3 class="heading-3">Archiv</h3>
-			<Archive {events} />
 		</div>
 	</aside>
 </div>
@@ -75,12 +79,13 @@
 
 	.content {
 		display: grid;
-		grid-template-columns: auto auto 375px;
+		// grid-template-columns: auto auto 375px;
+		grid-template-columns: 1fr min-content min-content;
 
 		max-width: 1200px;
 
 		margin: 0 auto;
-		gap: 4rem;
+		gap: 2.5rem;
 
 		@include max-md {
 			grid-template-columns: 1fr;
@@ -108,7 +113,7 @@
 
 	main,
 	aside {
-		margin-top: 4rem;
+		margin-top: 2.5rem;
 		margin-bottom: 4rem;
 
 		:global(h3:first-of-type) {
@@ -121,5 +126,11 @@
 		top: 1rem;
 		left: 1rem;
 		z-index: 1000;
+	}
+
+	.calendar-tutorial {
+		font-size: 0.85rem;
+		color: var(--color-text-1);
+		margin: 0;
 	}
 </style>

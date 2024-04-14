@@ -1,77 +1,10 @@
 <script lang="ts">
-	import EventCard from '$lib/components/EventCard.svelte'
-	import { onMount } from 'svelte'
+	import EventsOverview2 from './EventsOverview2.svelte'
 
 	export let data
 
-	$: events = data.events
-	let numColumns = Math.min(2, events?.length)
-
-	function getColumnEvents(columnIndex: number) {
-		return events.filter((_, i) => i % numColumns === columnIndex)
-	}
-
-	function handleResize() {
-		if (window.visualViewport!.width < 666) numColumns = 1
-		else numColumns = Math.min(2, events?.length)
-	}
-
-	onMount(() => {
-		handleResize()
-	})
+	const year = new Date().getFullYear()
+	const month = new Date().getMonth() + 1
 </script>
 
-<svelte:window on:resize={handleResize} />
-
-<h3 class="heading-2">Kommende Veranstaltungen</h3>
-
-{#if !events.length}
-	<h3 class="no-events">In nächster Zeit sind keine Veranstaltungen geplant...</h3>
-{/if}
-
-<nav style:--num-columns={numColumns}>
-	{#each { length: numColumns } as _, columnIndex}
-		<ul>
-			{#each getColumnEvents(columnIndex) as event, i}
-				{@const introDelay = (columnIndex + i) * 100}
-
-				<li>
-					<article>
-						<EventCard {introDelay} {event} />
-					</article>
-				</li>
-			{/each}
-		</ul>
-	{/each}
-</nav>
-
-<style lang="scss">
-	nav {
-		display: grid;
-		grid-template-columns: repeat(var(--num-columns), 1fr);
-		gap: 2rem;
-
-		width: fit-content;
-		margin: auto;
-	}
-
-	ul {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-
-		margin: 0 auto;
-		padding: 0;
-
-		max-width: 400px;
-	}
-
-	li {
-		list-style: none;
-	}
-
-	.no-events {
-		text-align: center;
-		margin-top: 10rem;
-	}
-</style>
+<EventsOverview2 events={data.events} {year} {month} />

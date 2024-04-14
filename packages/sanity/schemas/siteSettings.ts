@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import {ImageAsset, defineField, defineType} from 'sanity'
 import {CogIcon} from '@sanity/icons'
 import {PageSchema} from './page'
 
@@ -9,6 +9,16 @@ export default defineType({
   groups: [],
   icon: CogIcon,
   fields: [
+    defineField({
+      name: 'headerImageLeft',
+      title: 'Header-Bild (links)',
+      type: 'image',
+    }),
+    defineField({
+      name: 'headerImageRight',
+      title: 'Header-Bild (rechts)',
+      type: 'image',
+    }),
     defineField({
       name: 'donationLink',
       title: 'Spendenlink',
@@ -27,6 +37,8 @@ export default defineType({
 
 export interface SiteSettingsSchema {
   _type: 'siteSettings'
+  headerImageLeft: ImageAsset
+  headerImageRight: ImageAsset
   donationLink: string
   imprintPage?: PageSchema
 }

@@ -15,7 +15,8 @@ $color-surface: adjust-color($color-background, $blackness: 2%);
 }
 
 @mixin font-sans-serif {
-	font-family: 'Helvetica', 'Arial', sans-serif;
+	font-family: 'Lato', 'Helvetica', 'Arial', sans-serif;
+	// font-family: 'Helvetica', 'Arial', sans-serif;
 	// font-family: 'Lato', 'Arial', sans-serif;
 }
 

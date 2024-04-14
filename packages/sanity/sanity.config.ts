@@ -3,12 +3,13 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {presentationTool} from '@sanity/presentation'
 import {schemaTypes} from './schemas'
-import {CalendarIcon, MenuIcon} from '@sanity/icons'
+import {MenuIcon} from '@sanity/icons'
 import {
   createDeskHierarchy,
   hierarchicalDocumentList,
   hierarchyTree,
 } from '@sanity/hierarchical-document-list'
+import './assets/global.css'
 
 const DEV = process.env.MODE === 'development'
 
