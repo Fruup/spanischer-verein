@@ -149,22 +149,23 @@
 			flex-grow: 1;
 		}
 
-		button,
 		a {
 			width: var(--cell-width);
-			height: var(--cell-width);
+			height: auto;
+			aspect-ratio: 1;
+
 			padding: 0;
 			margin: 0;
+
+			display: grid;
+			place-content: center;
 
 			cursor: pointer;
 
 			border: none;
-			// border: 2px solid $color-accent;
 			border-radius: 8px;
 
 			color: white;
-
-			// background-color: $color-background;
 			background-color: $color-accent;
 
 			&:hover,

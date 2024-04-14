@@ -46,9 +46,7 @@
 			{value.year}
 		</span>
 
-		<div class="arrow">
-			<IconAngle direction="down" />
-		</div>
+		<IconAngle direction="down" />
 	</button>
 
 	{#if $open}
@@ -73,15 +71,6 @@
 						>
 							{monthString}
 						</a>
-
-						<!-- <button
-							use:melt={$option({ value: month, label: monthString })}
-							on:click={() => handleSelect(year, month)}
-							class:current={isCurrent(year, month)}
-							class:active={isActive(year, month)}
-						>
-							{monthString}
-						</button> -->
 					{/each}
 				</div>
 			{/each}
@@ -94,16 +83,29 @@
 	@import 'vars';
 
 	.trigger {
+		font-size: 0.7rem;
+
+		width: 100%;
+		height: 100%;
+
 		letter-spacing: 1px;
 
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		// justify-content: space-between;
 
 		padding: 0.5em 1em;
 		border: 2px solid $color-accent;
 		border-radius: 8px;
+
+		cursor: pointer;
+
+		transition: all 100ms ease;
+
+		&:hover {
+			background: $color-accent;
+			color: white;
+		}
 	}
 
 	.menu {
@@ -122,7 +124,6 @@
 		@include shadow;
 	}
 
-	button,
 	a {
 		font-size: 0.8em;
 
@@ -157,9 +158,5 @@
 
 	.value {
 		justify-self: center;
-	}
-
-	.arrow {
-		justify-self: end;
 	}
 </style>

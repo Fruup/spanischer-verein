@@ -6,11 +6,16 @@
 
 	export let openMainMenu: () => any
 	export let items: NavigationItem[]
+
+	const homeItem: NavigationItem = {
+		title: 'Home',
+		href: '/',
+	}
 </script>
 
 <nav>
 	<ul>
-		{#each items as item}
+		{#each [homeItem, ...items] as item}
 			<li class="link">
 				<HeaderLinkTop navigationItem={item} />
 			</li>
@@ -27,11 +32,13 @@
 
 	ul {
 		width: 100%;
+		max-width: 800px;
 		margin: auto;
 		padding: 0 2rem;
 
 		display: flex;
 		flex-direction: row;
+		flex-wrap: wrap;
 		align-items: center;
 		justify-content: center;
 

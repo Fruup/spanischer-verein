@@ -26,14 +26,15 @@
 	})
 </script>
 
-<h3>
+<h3 class="current-heading">
 	<span class="heading-2">Veranstaltungen</span>
 	<span class="heading-3">{monthString}</span>
 </h3>
 
 {#if !events.length}
 	<h3 class="no-events">
-		In dieser Zeit {isPast ? 'waren' : 'sind'} keine Veranstaltungen geplant...
+		In dieser Zeit {isPast ? 'waren' : 'sind'}<br />
+		keine Veranstaltungen geplant...
 	</h3>
 {/if}
 
@@ -41,7 +42,9 @@
 	<EventsOverview events={futureEvents} />
 
 	{#if pastEvents.length > 0}
-		<h3 class="heading-past heading-3">Vergangene Veranstaltungen</h3>
+		<div class="past-heading-container">
+			<h3 class="heading-3">Vergangene Veranstaltungen</h3>
+		</div>
 
 		<EventsOverview events={pastEvents} />
 	{/if}
@@ -52,17 +55,25 @@
 {/if}
 
 <style lang="scss">
-	h3 {
+	@import 'vars';
+
+	.current-heading {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 
 		margin: 0;
+
+		:global(> *) {
+			margin-top: 0;
+		}
 	}
 
 	.no-events {
+		color: var(--color-text-1);
 		text-align: center;
-		margin-top: 10rem;
+		margin-top: 6rem;
+		width: 100%;
 	}
 
 	.loader-container {
@@ -77,7 +88,15 @@
 		}
 	}
 
-	.heading-past {
+	.past-heading-container {
 		margin-top: 4rem;
+		margin-bottom: 2rem;
+
+		display: flex;
+		justify-content: end;
+
+		:global(> *) {
+			margin: 0;
+		}
 	}
 </style>
