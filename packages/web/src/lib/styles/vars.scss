@@ -45,3 +45,15 @@ $color-surface: adjust-color($color-background, $blackness: 2%);
 		@content;
 	}
 }
+
+@mixin max-sm {
+	@media screen and (max-width: 786px) {
+		@content;
+	}
+}
+
+@mixin min-sm {
+	@media screen and (min-width: 787px) {
+		@content;
+	}
+}

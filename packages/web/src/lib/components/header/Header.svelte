@@ -7,9 +7,17 @@
 	import SiteLogo from './SiteLogo.svelte'
 	import SiteMenu from './SiteMenu.svelte'
 
-	export let items: NavigationItem[]
+	export let _items: NavigationItem[]
+	export { _items as items }
 	export let leftImageUrl: string | undefined = undefined
 	export let rightImageUrl: string | undefined = undefined
+
+	const homeItem: NavigationItem = {
+		title: 'Home',
+		href: '/',
+	}
+
+	$: items = [homeItem, ..._items]
 
 	$: isMainMenuOpen = !!$page.state.isMainMenuOpen
 
@@ -91,6 +99,23 @@
 
 				&::after {
 					background: linear-gradient(to left, white, transparent 75%);
+				}
+			}
+		}
+	}
+
+	@include max-md {
+		.image {
+			&.left {
+				display: none;
+			}
+
+			&.right {
+				--max-width: 100%;
+				mask-image: linear-gradient(33deg, transparent 0%, transparent 50%, white);
+
+				&::after {
+					display: none;
 				}
 			}
 		}

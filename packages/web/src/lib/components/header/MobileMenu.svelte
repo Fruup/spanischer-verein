@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createTreeView, melt } from '@melt-ui/svelte'
-	import type { NavigationItem } from './Header.svelte'
+	import type { NavigationItem } from './types'
 	import { setContext } from 'svelte'
 	import MobileMenuTree from './MobileMenuTree.svelte'
 	import { browser } from '$app/environment'

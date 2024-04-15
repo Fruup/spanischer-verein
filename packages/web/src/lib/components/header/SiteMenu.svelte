@@ -6,16 +6,11 @@
 
 	export let openMainMenu: () => any
 	export let items: NavigationItem[]
-
-	const homeItem: NavigationItem = {
-		title: 'Home',
-		href: '/',
-	}
 </script>
 
 <nav>
 	<ul>
-		{#each [homeItem, ...items] as item}
+		{#each items as item}
 			<li class="link">
 				<HeaderLinkTop navigationItem={item} />
 			</li>

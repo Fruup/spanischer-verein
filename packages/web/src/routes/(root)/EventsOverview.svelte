@@ -36,6 +36,8 @@
 </nav>
 
 <style lang="scss">
+	@import 'vars';
+
 	nav {
 		width: 100%;
 
@@ -43,7 +45,7 @@
 
 		--num-columns: 2;
 
-		@container (width > 768px) {
+		@include min-md {
 			ul {
 				--num-columns: 3;
 			}
@@ -51,22 +53,23 @@
 	}
 
 	ul {
-		// width: 100%;
-
-		// display: flex;
-		// flex-direction: row;
-		// flex-wrap: wrap;
-		gap: 2rem;
-
 		display: grid;
 		grid-template-columns: repeat(var(--num-columns), 1fr);
+		gap: 2rem;
 
-		// margin: 0 auto;
 		margin: 0;
 		padding: 0;
+
+		@include max-sm {
+			--num-columns: 1 !important;
+		}
 	}
 
 	li {
 		list-style: none;
+
+		:global(img) {
+			max-height: 50vh;
+		}
 	}
 </style>
