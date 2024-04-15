@@ -23,6 +23,7 @@
 
 	$: leftImageUrl = data.siteSettings.headerImageUrlLeft
 	$: rightImageUrl = data.siteSettings.headerImageUrlRight
+	$: mail = data.siteSettings.contactEmail ?? 'info@spanischer-verein.com'
 </script>
 
 <svelte:head>
@@ -54,7 +55,7 @@
 
 			<h3 class="heading-3">Mitmachen</h3>
 
-			<ParticipateSection />
+			<ParticipateSection {mail} />
 
 			<!-- <PageSearch /> -->
 		</div>

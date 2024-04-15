@@ -240,7 +240,7 @@ export const sanityApi = {
 	},
 
 	getSiteSettings: async () => {
-		type Result = Pick<SiteSettingsSchema, 'donationLink'> & {
+		type Result = Pick<SiteSettingsSchema, 'donationLink' | 'contactEmail'> & {
 			imprintPageSlug?: string
 			headerImageLeft?: SanityImageSource
 			headerImageRight?: SanityImageSource
@@ -252,6 +252,7 @@ export const sanityApi = {
 				headerImageRight,
 				donationLink,
 				"imprintPageSlug": imprintPage->slug.current,
+				contactEmail,
 			}
 		`)
 
@@ -284,6 +285,7 @@ export const sanityApi = {
 			imprintPageSlug: settings.imprintPageSlug,
 			headerImageUrlLeft,
 			headerImageUrlRight,
+			contactEmail: settings.contactEmail,
 		}
 	},
 }

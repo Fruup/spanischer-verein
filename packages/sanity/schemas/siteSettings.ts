@@ -13,11 +13,17 @@ export default defineType({
       name: 'headerImageLeft',
       title: 'Header-Bild (links)',
       type: 'image',
+      // options: {
+      //   hotspot: true,
+      // },
     }),
     defineField({
       name: 'headerImageRight',
       title: 'Header-Bild (rechts)',
       type: 'image',
+      // options: {
+      //   hotspot: true,
+      // },
     }),
     defineField({
       name: 'donationLink',
@@ -32,6 +38,11 @@ export default defineType({
         type: 'page',
       },
     }),
+    defineField({
+      name: 'contactEmail',
+      title: 'Kontakt-E-Mail',
+      type: 'email',
+    }),
   ],
 })
 
@@ -41,4 +52,5 @@ export interface SiteSettingsSchema {
   headerImageRight: ImageAsset
   donationLink: string
   imprintPage?: PageSchema
+  contactEmail?: string
 }
