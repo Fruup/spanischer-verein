@@ -16,6 +16,7 @@
     "sanity"
   ],
   "dependencies": {
+    "@sanity/cli": "^3.37.2",
     "@sanity/hierarchical-document-list": "^2.0.0",
     "@sanity/presentation": "^1.8.0",
     "@sanity/vision": "^3.28.0",
