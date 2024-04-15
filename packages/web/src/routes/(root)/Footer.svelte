@@ -40,7 +40,7 @@
 		<SiteLogo />
 
 		<div class="attribution">
-			Developed by <a href="https://leonscherer.com/" target="_blank">Leon</a>
+			Entwickelt von <a href="https://leonscherer.com/" target="_blank">Leon</a>
 		</div>
 	</div>
 </footer>

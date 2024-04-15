@@ -13,11 +13,17 @@ export default defineType({
       name: 'headerImageLeft',
       title: 'Header-Bild (links)',
       type: 'image',
+      // options: {
+      //   hotspot: true,
+      // },
     }),
     defineField({
       name: 'headerImageRight',
       title: 'Header-Bild (rechts)',
       type: 'image',
+      // options: {
+      //   hotspot: true,
+      // },
     }),
     defineField({
       name: 'donationLink',

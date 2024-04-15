@@ -69,9 +69,4 @@
 	li {
 		list-style: none;
 	}
-
-	li,
-	article {
-		height: 100%;
-	}
 </style>
