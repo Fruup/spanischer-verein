@@ -38,6 +38,11 @@ export default defineType({
         type: 'page',
       },
     }),
+    defineField({
+      name: 'contactEmail',
+      title: 'Kontakt-E-Mail',
+      type: 'email',
+    }),
   ],
 })
 
@@ -47,4 +52,5 @@ export interface SiteSettingsSchema {
   headerImageRight: ImageAsset
   donationLink: string
   imprintPage?: PageSchema
+  contactEmail?: string
 }

@@ -4,6 +4,7 @@
 	import { fly } from 'svelte/transition'
 	import EventTime from './EventTime.svelte'
 	import IconTime from './icons/IconTime.svelte'
+	import type { Action } from 'svelte/action'
 
 	export let event: {
 		title: string
@@ -22,7 +23,6 @@
 	export let introDelay: number
 
 	$: backgroundColor = event.mainImageMeta.prominentColor
-	$: aspectRatio = event.mainImageMeta.dimensions.width / event.mainImageMeta.dimensions.height
 
 	const href = getEventUrl(event.slug)
 	let hover = false
@@ -51,6 +51,35 @@
 			})
 		}
 	})
+
+	const fitParent: Action<HTMLElement, { strategy?: 'fontSize' | 'boxSize' | 'scale' }> = (
+		node,
+		options,
+	) => {
+		const parent = node.parentElement
+		if (!parent) return
+
+		const { strategy = 'scale' } = options
+
+		const sx = parent.clientWidth / node.clientWidth
+		const sy = parent.clientHeight / node.clientHeight
+		const scale = Math.min(sx, sy)
+
+		if (scale >= 1) return
+
+		if (strategy === 'scale') {
+			node.style.scale = scale.toString()
+		} else if (strategy === 'boxSize') {
+			node.style.width = `${scale * node.clientWidth}px`
+			node.style.height = `${scale * node.clientHeight}px`
+		} else if (strategy === 'fontSize') {
+			const fontSize = Number(getComputedStyle(node).fontSize.slice(0, -2))
+
+			node.style.fontSize = `${fontSize * scale}px`
+		}
+
+		// TODO: observe resize
+	}
 </script>
 
 <a in:fly|global={{ y: 30, delay: introDelay }} {href} class="event-card" class:hover>
@@ -58,17 +87,14 @@
 		src={event.imageUrl}
 		alt="Title image for an event called '${event.title}'"
 		style:background-color={backgroundColor}
-		style:aspect-ratio={aspectRatio}
 	/>
 
-	<div class="content">
-		<div class="event-time-container">
-			<IconTime size={0.7} />
-			<EventTime time={event.eventTime} />
-		</div>
-
-		<h4 class="title">{event.title}</h4>
+	<div class="event-time-container">
+		<IconTime size={0.7} />
+		<EventTime time={event.eventTime} />
 	</div>
+
+	<h4 use:fitParent={{ strategy: 'fontSize' }} class="title">{event.title}</h4>
 </a>
 
 <style lang="scss">
@@ -77,11 +103,9 @@
 
 	.event-card {
 		font-size: 1rem;
-
-		display: flex;
-		flex-direction: column;
-
+		display: block;
 		height: 100%;
+		text-align: center;
 
 		border-radius: 24px;
 		overflow: hidden;
@@ -96,8 +120,6 @@
 		&:focus,
 		&.hover {
 			outline: 2px solid #{color.change($color-accent)};
-			// --shadow-color: #{color.change($color-accent)};
-			// --shadow-color: #{color.change($color-accent, $alpha: 0.75)};
 		}
 
 		img {
@@ -108,41 +130,35 @@
 
 			margin: 0;
 		}
+	}
 
-		.content {
-			padding: 2rem;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-
-			gap: 1rem;
-
-			text-align: center;
-
-			:global(> *) {
-				margin: 0;
-			}
-		}
+	.title,
+	.event-time-container {
+		margin: 1rem;
 	}
 
 	.title {
 		@include font-serif;
-		font-size: 1.5em;
+		font-size: 1.35em;
 		letter-spacing: 1px;
+
+		margin-left: 0;
+		margin-right: 0;
+		padding: 0 1rem;
+
+		width: fit-content;
 	}
 
 	.event-time-container {
 		font-size: 0.8em;
 		letter-spacing: 1px;
 
-		width: fit-content;
-		margin: auto;
-
 		display: flex;
 		align-items: center;
 		gap: 1ch;
+		justify-content: center;
 
-		padding: 0.25em 0.5em;
+		padding: 0.15em 0.5em;
 		background: color.adjust($color-accent, $lightness: -5%, $alpha: -0.2);
 		border-radius: 999px;
 

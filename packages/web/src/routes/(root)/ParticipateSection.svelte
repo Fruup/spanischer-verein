@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 	import CallToAction from '$lib/components/CallToAction.svelte'
+
+	export let mail: string
 </script>
 
 <div class="participate-section">
@@ -13,12 +15,14 @@
 		<CallToAction href={$page.data.siteSettings.donationLink}>Spenden via PayPal</CallToAction>
 	</div>
 
-	<div class="box">
-		<p>
-			Sie möchten selbst einen Kurs oder ein Event anbieten? Schreiben Sie uns an -
-			<a href="mailto:info@spanischer-verein.com"> info@spanischer-verein.com </a>
-		</p>
-	</div>
+	{#if mail}
+		<div class="box">
+			<p>
+				Sie möchten selbst einen Kurs oder ein Event anbieten? Schreiben Sie uns an -
+				<a href="mailto:{mail}"> {mail} </a>
+			</p>
+		</div>
+	{/if}
 
 	<!--
 	<div class="box">
