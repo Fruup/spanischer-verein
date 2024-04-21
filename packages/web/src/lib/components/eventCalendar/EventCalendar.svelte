@@ -4,11 +4,39 @@
 	import { type EventCalendarItem } from './helpers'
 	import EventCalendarMonth from './EventCalendarMonth.svelte'
 	import { locale } from '$lib/services/locale'
+	import { onMount } from 'svelte'
+	import { page } from '$app/stores'
+	import { goto } from '$app/navigation'
+	import { browser } from '$app/environment'
+	import MonthSelector from './MonthSelector.svelte'
+
+	export let events: EventCalendarItem[]
+
+	// let selected: { year: number; month: number } = {
+	// 	year: new Date().getFullYear(),
+	// 	month: new Date().getMonth() + 1,
+	// }
+
+	$: selected = {
+		year: Number($page.params.year) || new Date().getFullYear(),
+		month: Number($page.params.month) || new Date().getMonth() + 1,
+	}
+
+	$: next = {
+		year: selected.month === 12 ? selected.year + 1 : selected.year,
+		month: selected.month === 12 ? 1 : selected.month + 1,
+	}
+
+	$: prev = {
+		year: selected.month === 1 ? selected.year - 1 : selected.year,
+		month: selected.month === 1 ? 12 : selected.month - 1,
+	}
 
 	const {
 		elements: { calendar, cell, grid, heading, nextButton, prevButton },
-		helpers: { isDateDisabled },
-		states: { months, headingValue, weekdays },
+		helpers: { isDateDisabled, setMonth, setYear },
+		states: { months, weekdays },
+		options: {},
 	} = createCalendar({
 		fixedWeeks: true,
 		readonly: true,
@@ -16,25 +44,60 @@
 		locale: $locale,
 	})
 
-	export let events: EventCalendarItem[]
+	$: if (selected) {
+		setMonth(selected.month)
+		setYear(selected.year)
+	}
 
-	// TODO: draw cool SVG path to the linked element.
-	const handleFocus = (event: Event) => {}
-	const handleBlur = (event: Event) => {}
+	const bla = () => {
+		selected = {
+			year: $months[0].value.year,
+			month: $months[0].value.month,
+		}
+	}
+
+	// TODO: Circular dependency???
+	$: if ($months) {
+		// bla()
+	}
+
+	$: if (browser && selected) {
+		// goto(`?t=${selected.year}-${selected.month.toString().padStart(2, '0')}`, {
+		// 	replaceState: true,
+		// 	noScroll: true,
+		// })
+	}
 </script>
 
 <div class="calendar" use:melt={$calendar}>
 	<div class="heading" use:melt={$heading}>
-		<button type="button" class="left" use:melt={$prevButton}>
+		<!-- <button type="button" class="left" use:melt={$prevButton}>
 			<IconAngle direction="left" />
-		</button>
+		</button> -->
 
-		<div class="value">
-			{$headingValue}
-		</div>
-		<button class="right" use:melt={$nextButton}>
+		<a
+			href="/archiv/{prev.year}-{prev.month.toString().padStart(2, '0')}"
+			class="left"
+			data-sveltekit-noscroll
+			use:melt={$prevButton}
+		>
+			<IconAngle direction="left" />
+		</a>
+
+		<MonthSelector bind:value={selected} />
+
+		<!-- <button class="right" use:melt={$nextButton}>
 			<IconAngle direction="right" />
-		</button>
+		</button> -->
+
+		<a
+			href="/archiv/{next.year}-{next.month.toString().padStart(2, '0')}"
+			data-sveltekit-noscroll
+			class="right"
+			use:melt={$nextButton}
+		>
+			<IconAngle direction="right" />
+		</a>
 	</div>
 
 	<div class="weekdays">
@@ -62,30 +125,48 @@
 
 	.calendar {
 		z-index: 10000;
-		max-width: 350px;
-		margin: auto;
+		width: fit-content;
+		padding: 1em;
+
+		font-size: 0.85rem;
+
+		@include surface;
+
+		border-radius: 24px;
+		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
+
+		--cell-width: 2em;
+		--cell-gap: 0.125em;
 	}
 
 	.heading {
 		display: flex;
 		justify-content: space-between;
 		align-items: stretch;
+		gap: 0.25em;
 
-		.value {
-			text-align: center;
+		:global(.month-selector) {
 			flex-grow: 1;
 		}
 
-		button {
-			width: 2rem;
-			height: 2rem;
+		a {
+			width: var(--cell-width);
+			height: auto;
+			aspect-ratio: 1;
+
 			padding: 0;
 			margin: 0;
 
-			border: 1px solid grey;
-			border-radius: 0.5rem;
+			display: grid;
+			place-content: center;
 
-			background-color: $color-background;
+			cursor: pointer;
+
+			border: none;
+			border-radius: 8px;
+
+			color: white;
+			background-color: $color-accent;
 
 			&:hover,
 			&:active {
@@ -96,7 +177,7 @@
 
 	.weekdays {
 		display: grid;
-		grid-template-columns: repeat(7, 1fr);
+		grid-template-columns: repeat(7, var(--cell-width));
 		background-color: rgba(0, 0, 0, 0.05);
 
 		margin: 0.5rem 0;
@@ -134,7 +215,7 @@
 			border: 1px solid grey;
 		}
 
-		margin: 0.125rem;
+		margin: var(--cell-gap);
 		border-radius: 0.5rem;
 	}
 </style>

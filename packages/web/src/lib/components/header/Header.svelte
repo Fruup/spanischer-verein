@@ -1,27 +1,16 @@
-<script lang="ts" context="module">
-	export interface NavigationItem {
-		title: string
-		href: string
-		children?: NavigationItem[]
-	}
-</script>
-
 <script lang="ts">
-	import logo from '$assets/logo-l.png'
-	import Button from '../Button.svelte'
-	import HeaderLinkTop from './HeaderLinkTop.svelte'
 	import MobileMenu from './MobileMenu.svelte'
 	import { page } from '$app/stores'
 	import { pushState } from '$app/navigation'
-	import IconBurger from '../icons/IconBurger.svelte'
+	import SiteHeading from './SiteHeading.svelte'
+	import type { NavigationItem } from './types'
+	import SiteLogo from './SiteLogo.svelte'
+	import SiteMenu from './SiteMenu.svelte'
 
 	export let items: NavigationItem[]
+	export let leftImageUrl: string | undefined = undefined
+	export let rightImageUrl: string | undefined = undefined
 
-	const pivot = Math.floor(items.length / 2)
-	$: itemsLeft = items.slice(0, pivot)
-	$: itemsRight = items.slice(pivot)
-
-	// const isMainMenuOpen = writable(false)
 	$: isMainMenuOpen = !!$page.state.isMainMenuOpen
 
 	function openMainMenu() {
@@ -34,33 +23,21 @@
 </script>
 
 <header>
-	<nav>
-		<ul class="left">
-			{#each itemsLeft as item}
-				<li class="link">
-					<HeaderLinkTop navigationItem={item} />
-				</li>
-			{/each}
-		</ul>
+	<SiteLogo />
+	<SiteHeading />
+	<SiteMenu {items} {openMainMenu} />
 
-		<a href="/">
-			<img src={logo} width="200px" alt="MACHADO Logo" />
-		</a>
+	{#if leftImageUrl}
+		<div class="image left">
+			<img src={leftImageUrl} alt="" />
+		</div>
+	{/if}
 
-		<ul class="right">
-			{#each itemsRight as item}
-				<li class="link">
-					<HeaderLinkTop navigationItem={item} />
-				</li>
-			{/each}
-
-			<li class="main-menu-trigger">
-				<Button icon={IconBurger} on:click={openMainMenu} />
-			</li>
-		</ul>
-	</nav>
-
-	<h1>Spanische Kultur in Köln</h1>
+	{#if rightImageUrl}
+		<div class="image right">
+			<img src={rightImageUrl} alt="" />
+		</div>
+	{/if}
 </header>
 
 <MobileMenu isOpen={isMainMenuOpen} {items} close={closeMainMenu} />
@@ -73,62 +50,49 @@
 
 		overflow: visible;
 
-		margin: 2rem;
-		margin-bottom: 6rem;
+		padding: 2rem;
+		padding-bottom: 4rem;
 
 		text-align: center;
-	}
 
-	nav {
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
-	}
+		.image {
+			--max-width: 33%;
 
-	ul {
-		width: 100%;
-		margin: auto;
-		padding: 0 2rem;
+			@include max-md {
+				--max-width: 20%;
+			}
 
-		display: flex;
-		flex-direction: row;
-		align-items: center;
+			content: '';
+			position: absolute;
+			inset: 0;
+			left: auto;
+			max-width: var(--max-width);
+			height: 100%;
 
-		gap: 2rem;
+			z-index: -1000;
 
-		&.left {
-			justify-content: end;
-		}
+			img {
+				object-fit: cover;
+				width: 100%;
+				height: 100%;
+			}
 
-		&.right {
-			justify-content: start;
-		}
-	}
+			&::after {
+				z-index: 1000;
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: linear-gradient(to right, white, transparent 75%);
+			}
 
-	li {
-		list-style: none;
-	}
+			&.left {
+				left: 0;
+				right: auto;
 
-	h1 {
-		font-family: 'Old Standard TT', Georgia, serif;
-		font-weight: 300;
-		font-size: 3rem;
-	}
-
-	.main-menu-trigger {
-		display: none;
-	}
-
-	@include max-md {
-		.main-menu-trigger {
-			display: initial;
-		}
-
-		ul .link {
-			display: none;
-		}
-
-		ul.right {
-			justify-content: end;
+				&::after {
+					background: linear-gradient(to left, white, transparent 75%);
+				}
+			}
 		}
 	}
 </style>

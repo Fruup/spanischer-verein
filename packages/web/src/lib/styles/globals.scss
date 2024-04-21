@@ -1,6 +1,15 @@
+@use 'sass:color';
 @import 'vars';
+@import 'headings';
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+:root {
+	font-size: 21px;
+	line-height: 1.66;
+	@include font-sans-serif;
+}
 
 :root,
 body {
@@ -12,22 +21,20 @@ body {
 
 body {
 	--color-text: #0f0f0f;
+	--color-text-1: #6c6c6c;
+
 	--color-surface-0: #fff;
-	// --color-surface-0: #f4f4f4;
-	// --color-surface-0: #f1f1f1;
 	--color-surface-1: #cfcfcf;
 
 	&.dark {
 		--color-text: #f1f1f1;
+		--color-text-1: #c1c1c1;
+
 		--color-surface-0: #0f0f0f;
 		--color-surface-1: #333333;
 	}
-}
 
-body {
-	font-family: 'Roboto', sans-serif;
-	font-size: 21px;
-	line-height: 1.66;
+	--color-background: var(--color-surface-0);
 }
 
 .no-scroll {
@@ -41,6 +48,7 @@ h4,
 h5,
 h6 {
 	line-height: 1.33;
+	letter-spacing: 1px;
 }
 
 * {

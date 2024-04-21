@@ -68,7 +68,8 @@
 
 	.month {
 		display: grid;
-		grid-template-columns: repeat(7, 1fr);
+		grid-template-columns: repeat(7, var(--cell-width));
+		gap: var(--cell-gap);
 		user-select: none;
 	}
 
@@ -78,7 +79,7 @@
 
 		aspect-ratio: 1;
 		height: auto;
-		min-width: 40px;
+		// width: 2em;
 
 		&:not(.active) {
 			opacity: 0.5;
@@ -89,7 +90,7 @@
 			border: 1px solid grey;
 		}
 
-		margin: 0.125rem;
+		// margin: 0.125em;
 		border-radius: 0.5rem;
 	}
 

@@ -1,18 +1,29 @@
 <script lang="ts">
 	import Header from '../../lib/components/header/Header.svelte'
 	import EventCalendar from '$lib/components/eventCalendar/EventCalendar.svelte'
-	import DonationLink from '$lib/components/DonationLink.svelte'
 	import SkipNavigation from '$lib/components/SkipNavigation.svelte'
-	import BackgroundEffect from './BackgroundEffect.svelte'
+	import Divider from './Divider.svelte'
 	import { getEventUrl } from '$lib/helpers/url'
+	import ParticipateSection from './ParticipateSection.svelte'
+	import { navigating } from '$app/stores'
+	import Loader from '$lib/components/icons/Loader.svelte'
+	import { fly } from 'svelte/transition'
+	import { cubicOut } from 'svelte/easing'
+	import Footer from './Footer.svelte'
 
 	export let data
 
-	$: events = data.upcomingEvents.map((e) => ({
+	$: siteSettings = data.siteSettings
+
+	$: events = data.events.map((e) => ({
 		name: e.title,
 		url: getEventUrl(e.slug),
 		date: new Date(e.eventTime),
 	}))
+
+	$: leftImageUrl = data.siteSettings.headerImageUrlLeft
+	$: rightImageUrl = data.siteSettings.headerImageUrlRight
+	$: mail = data.siteSettings.contactEmail ?? 'info@spanischer-verein.com'
 </script>
 
 <svelte:head>
@@ -21,30 +32,47 @@
 
 <!-- <SkipNavigation /> -->
 
-<Header items={data.navigationTree} />
+<Header items={data.navigationTree} {leftImageUrl} {rightImageUrl} />
 
-<BackgroundEffect />
+<Divider />
 
 <div class="content">
 	<main>
 		<slot />
 	</main>
 
+	<div class="divider" />
+
 	<aside>
 		<div class="aside-content">
-			<h5>Zukünftige Veranstaltungen</h5>
+			<h3 class="heading-3">Kalender</h3>
+
+			<p class="calendar-tutorial">
+				💡 Navigiere im Kalender, um vergangene Veranstaltungen zu durchstöbern.
+			</p>
+
 			<EventCalendar {events} />
 
-			<h5>
-				<DonationLink href={data.siteSettings.donationLink} />
-			</h5>
+			<h3 class="heading-3">Mitmachen</h3>
+
+			<ParticipateSection {mail} />
 
 			<!-- <PageSearch /> -->
 		</div>
 	</aside>
 </div>
 
-<footer></footer>
+{#if $navigating}
+	<div class="navigation-indicator" transition:fly={{ x: -20, duration: 500, easing: cubicOut }}>
+		<Loader />
+	</div>
+{/if}
+
+<div style="scale: 1 -1">
+	<Divider />
+</div>
+
+<Footer imprintUrl="/{siteSettings.imprintPageSlug}" />
 
 <style lang="scss">
 	@use 'sass:color';
@@ -52,21 +80,17 @@
 
 	.content {
 		display: grid;
-		grid-template-columns: auto 375px;
+		// grid-template-columns: auto auto 375px;
+		grid-template-columns: 1fr min-content min-content;
 
 		max-width: 1200px;
 
 		margin: 0 auto;
-		padding-top: 3rem;
-		gap: 5rem;
+		gap: 2.5rem;
 
 		@include max-md {
 			grid-template-columns: 1fr;
 		}
-	}
-
-	main {
-		padding: 0 2rem;
 	}
 
 	.aside-content {
@@ -75,31 +99,39 @@
 
 		display: flex;
 		flex-direction: column;
-		gap: 2rem;
+		gap: 1rem;
 
-		padding: 2rem;
-
-		@include surface;
-
-		border-radius: 24px;
-		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
-
-		width: fit-content;
-		margin: auto;
+		.heading-3 {
+			margin-bottom: 0;
+		}
 	}
 
-	h5 {
+	.divider {
+		width: 2px;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.05);
+	}
+
+	main,
+	aside {
+		margin-top: 2.5rem;
+		margin-bottom: 4rem;
+
+		:global(h3:first-of-type) {
+			margin-top: 0;
+		}
+	}
+
+	.navigation-indicator {
+		position: fixed;
+		top: 1rem;
+		left: 1rem;
+		z-index: 1000;
+	}
+
+	.calendar-tutorial {
+		font-size: 0.85rem;
+		color: var(--color-text-1);
 		margin: 0;
-
-		align-self: center;
-	}
-
-	footer {
-		display: grid;
-		place-items: center;
-
-		min-height: 200px;
-		margin-top: 8rem;
-		background-color: rgba(0, 0, 0, 0.02);
 	}
 </style>
