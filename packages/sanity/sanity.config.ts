@@ -87,9 +87,14 @@ const shared = {
     }),
     hierarchicalDocumentList(),
   ],
-
   schema: {
     types: [...schemaTypes, hierarchyTree],
+  },
+  scheduledPublishing: {
+    enabled: false,
+  },
+  unstable_tasks: {
+    enabled: false,
   },
 } satisfies Partial<Config>
 
