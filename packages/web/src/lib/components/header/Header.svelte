@@ -99,8 +99,8 @@
 
 		:global(.social-links) {
 			position: absolute;
-			bottom: 0;
-			right: 0;
+			bottom: 2rem;
+			right: 2rem;
 		}
 	}
 </style>

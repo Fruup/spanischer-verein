@@ -18,7 +18,6 @@
 	.social-links {
 		height: 1.5rem;
 		box-sizing: content-box;
-		padding: 2rem;
 
 		display: flex;
 		gap: 1rem;
