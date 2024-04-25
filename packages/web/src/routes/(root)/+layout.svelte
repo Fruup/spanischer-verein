@@ -10,6 +10,11 @@
 	import { fly } from 'svelte/transition'
 	import { cubicOut } from 'svelte/easing'
 	import Footer from './Footer.svelte'
+	import { beforeNavigate } from '$app/navigation'
+	import type { RouteId as ContentPageRouteId } from './[...pageUrl]/$types'
+	import type { RouteId as EventPageRouteId } from './event/[slug]/$types'
+	import type { RouteId as HomeRouteId } from './$types'
+	import { pick } from '$lib/helpers/pick'
 
 	export let data
 
@@ -21,9 +26,37 @@
 		date: new Date(e.eventTime),
 	}))
 
-	$: leftImageUrl = data.siteSettings.headerImageUrlLeft
-	$: rightImageUrl = data.siteSettings.headerImageUrlRight
-	$: mail = data.siteSettings.contactEmail ?? 'info@spanischer-verein.com'
+	$: headerImages = data.siteSettings?.headerImageUrls ?? []
+	$: mail = data.siteSettings?.contactEmail ?? 'info@spanischer-verein.com'
+	$: imprintPageSlug = siteSettings?.imprintPageSlug
+
+	/**
+	 * Rotate header images on page navigation.
+	 */
+
+	let imageIndexLeft = data.leftHeaderImageIndex
+	let imageIndexRight = data.rightHeaderImageIndex
+
+	$: leftImageUrl = headerImages.at(imageIndexLeft)
+	$: rightImageUrl = headerImages.at(imageIndexRight)
+
+	const changeImageOn: (ContentPageRouteId | HomeRouteId | EventPageRouteId)[] = [
+		'/(root)',
+		'/(root)/[...pageUrl]',
+		'/(root)/event/[slug]',
+	]
+
+	beforeNavigate(({ from, to }) => {
+		if (from?.url.toString() === to?.url.toString()) return
+
+		// @ts-ignore
+		if (!changeImageOn.includes(to?.route?.id)) return
+
+		const exclude = [imageIndexLeft, imageIndexRight]
+		imageIndexLeft = pick(headerImages, exclude)?.index ?? imageIndexLeft
+		exclude.push(imageIndexLeft)
+		imageIndexRight = pick(headerImages, exclude)?.index ?? imageIndexRight
+	})
 </script>
 
 <svelte:head>
@@ -72,7 +105,7 @@
 	<Divider />
 </div>
 
-<Footer imprintUrl="/{siteSettings.imprintPageSlug}" />
+<Footer imprintUrl={imprintPageSlug && `/${imprintPageSlug}`} />
 
 <style lang="scss">
 	@use 'sass:color';
