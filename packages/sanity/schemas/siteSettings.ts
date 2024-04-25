@@ -58,6 +58,14 @@ export default defineType({
       group: 'general',
     }),
     defineField({
+      name: 'newsletterSubscriptionRecipient',
+      title: 'Newsletter-Abonnement-Empfänger',
+      description: 'E-Mail-Adresse, an die Newsletter-Abonnement-Anfragen gesendet werden.',
+      type: 'email',
+      group: 'general',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'imprintPage',
       title: 'Impressum-Seite',
       type: 'reference',
@@ -76,4 +84,5 @@ export interface SiteSettingsSchema {
   donationLink?: string
   imprintPage?: PageSchema
   contactEmail?: string
+  newsletterSubscriptionRecipient?: string
 }

@@ -15,6 +15,7 @@
 	import type { RouteId as EventPageRouteId } from './event/[slug]/$types'
 	import type { RouteId as HomeRouteId } from './$types'
 	import { pick } from '$lib/helpers/pick'
+	import { Toaster } from 'svelte-french-toast'
 
 	export let data
 
@@ -62,6 +63,8 @@
 <svelte:head>
 	<title>Spanischer Verein Köln</title>
 </svelte:head>
+
+<Toaster />
 
 <!-- <SkipNavigation /> -->
 

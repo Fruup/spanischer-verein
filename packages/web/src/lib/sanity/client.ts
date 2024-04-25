@@ -269,4 +269,17 @@ export const sanityApi = {
 			logoUrl: imageUrlBuilder.image(settings.logo).width(200).format('webp').url(),
 		}
 	},
+
+	async getNewsletterSubscriptionRecipient() {
+		const settings = await sanityClient.fetch<Pick<
+			SiteSettingsSchema,
+			'newsletterSubscriptionRecipient'
+		> | null>(`
+			*[_id == "siteSettings"][0]{
+				newsletterSubscriptionRecipient,
+			}
+		`)
+
+		return settings?.newsletterSubscriptionRecipient
+	},
 }
