@@ -240,52 +240,32 @@ export const sanityApi = {
 	},
 
 	getSiteSettings: async () => {
-		type Result = Pick<SiteSettingsSchema, 'donationLink' | 'contactEmail'> & {
-			imprintPageSlug?: string
-			headerImageLeft?: SanityImageSource
-			headerImageRight?: SanityImageSource
-		}
-
-		const settings = await sanityClient.fetch<Result | null>(`
+		const settings = await sanityClient.fetch<
+			| (Pick<SiteSettingsSchema, 'donationLink' | 'contactEmail'> & {
+					imprintPageSlug?: string
+					headerImages?: SanityImageSource[]
+			  })
+			| null
+		>(`
 			*[_id == "siteSettings"][0]{
-				headerImageLeft,
-				headerImageRight,
+				headerImages,
 				donationLink,
 				"imprintPageSlug": imprintPage->slug.current,
 				contactEmail,
 			}
 		`)
 
-		if (!settings) {
-			return {
-				donationLink: '',
-			} satisfies Result
-		}
+		if (!settings) return null
 
-		let headerImageUrlLeft: string | undefined
-		if (settings.headerImageLeft) {
-			headerImageUrlLeft = imageUrlBuilder
-				.image(settings.headerImageLeft)
-				.height(512)
-				.format('webp')
-				.url()
-		}
-
-		let headerImageUrlRight: string | undefined
-		if (settings.headerImageRight) {
-			headerImageUrlRight = imageUrlBuilder
-				.image(settings.headerImageRight)
-				.height(512)
-				.format('webp')
-				.url()
-		}
+		const headerImageUrls = settings.headerImages?.map((image) => {
+			return imageUrlBuilder.image(image).height(512).format('webp').url()
+		})
 
 		return {
 			donationLink: settings.donationLink,
 			imprintPageSlug: settings.imprintPageSlug,
-			headerImageUrlLeft,
-			headerImageUrlRight,
 			contactEmail: settings.contactEmail,
+			headerImageUrls,
 		}
 	},
 }

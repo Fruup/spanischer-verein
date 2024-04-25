@@ -34,14 +34,16 @@
 		{#if ibanParts}
 			<p>Oder per Überweisung an:</p>
 
-			<p>
-				<code>
-					<div>Sparkasse KoelnBonn</div>
-					<div class="iban">
-						{#each ibanParts as item}<span>{item}</span>{/each}
-					</div>
-					<div>SWIFT-BIC: COLSDE33</div>
-				</code>
+			<p class="bank-details">
+				<span>Sparkasse KoelnBonn</span>
+				<br />
+
+				<span class="iban">
+					{#each ibanParts as item}<span>{item}</span>{/each}
+				</span>
+				<br />
+
+				<span>SWIFT-BIC: COLSDE33</span>
 			</p>
 		{/if}
 	</Card>
@@ -90,14 +92,11 @@
 		}
 	}
 
-	code {
-		font-size: 0.9em;
-		line-height: 1.5;
+	.bank-details {
+		font-size: 0.85em;
 	}
 
-	.iban {
-		span {
-			margin-right: 6px;
-		}
+	.iban span {
+		margin-right: 6px;
 	}
 </style>

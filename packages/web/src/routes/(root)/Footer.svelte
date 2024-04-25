@@ -5,7 +5,7 @@
 	import SiteLogo from '$lib/components/header/SiteLogo.svelte'
 	import SocialLinks from '$lib/components/header/SocialLinks.svelte'
 
-	export let imprintUrl: string
+	export let imprintUrl: string | undefined
 </script>
 
 <footer>
@@ -15,7 +15,10 @@
 			<ul>
 				<!-- TODO(v2): make this configurable -->
 				<li><a href="/">Home</a></li>
-				<li><a href={imprintUrl}>Impressum</a></li>
+
+				{#if imprintUrl}
+					<li><a href={imprintUrl}>Impressum</a></li>
+				{/if}
 
 				<li style="margin: 1rem 0">
 					<SocialLinks />

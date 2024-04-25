@@ -7,6 +7,7 @@
 	import SiteLogo from './SiteLogo.svelte'
 	import SiteMenu from './SiteMenu.svelte'
 	import SocialLinks from './SocialLinks.svelte'
+	import { fly } from 'svelte/transition'
 
 	export let items: NavigationItem[]
 	export let leftImageUrl: string | undefined = undefined
@@ -21,6 +22,12 @@
 	function closeMainMenu() {
 		history.back()
 	}
+
+	const transition = {
+		x: 100,
+		duration: 1000,
+		opacity: 0,
+	}
 </script>
 
 <header>
@@ -30,15 +37,37 @@
 	<SocialLinks />
 
 	{#if leftImageUrl}
-		<div class="image left">
-			<img src={leftImageUrl} alt="" />
-		</div>
+		{@const x = -transition.x}
+		{@const duration = transition.duration}
+		{@const opacity = transition.opacity}
+		{@const delayOffset = 0}
+
+		{#each [leftImageUrl] as url (url)}
+			<div
+				in:fly={{ x, duration, delay: duration / 2 + delayOffset, opacity }}
+				out:fly={{ duration, delay: delayOffset, opacity }}
+				class="image left"
+			>
+				<img src={url} alt="" />
+			</div>
+		{/each}
 	{/if}
 
 	{#if rightImageUrl}
-		<div class="image right">
-			<img src={rightImageUrl} alt="" />
-		</div>
+		{@const x = transition.x}
+		{@const duration = transition.duration}
+		{@const opacity = transition.opacity}
+		{@const delayOffset = duration / 4}
+
+		{#each [rightImageUrl] as url (url)}
+			<div
+				in:fly={{ x, duration, delay: duration / 2 + delayOffset, opacity }}
+				out:fly={{ duration, delay: delayOffset, opacity }}
+				class="image right"
+			>
+				<img src={url} alt="" />
+			</div>
+		{/each}
 	{/if}
 </header>
 

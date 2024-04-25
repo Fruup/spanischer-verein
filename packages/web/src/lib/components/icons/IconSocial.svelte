@@ -1,7 +1,5 @@
 <script lang="ts">
-	// @ts-ignore
 	import instagram from '$assets/instagram.png?w=64&h=64&format=webp&imagetools'
-	// @ts-ignore
 	import facebook from '$assets/facebook.png?w=64&h=64&format=webp&imagetools'
 
 	export let name: 'instagram' | 'facebook'
