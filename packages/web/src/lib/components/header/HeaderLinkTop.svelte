@@ -106,8 +106,8 @@
 	}
 
 	li a {
-		border-radius: 12px;
-		padding: 0.5rem;
+		border-radius: 8px;
+		padding: 0.125rem;
 
 		&:hover,
 		&:focus {
