@@ -18,6 +18,9 @@ $color-surface: adjust-color($color-background, $blackness: 2%);
 	font-family: 'Lato', 'Helvetica', 'Arial', sans-serif;
 	// font-family: 'Helvetica', 'Arial', sans-serif;
 	// font-family: 'Lato', 'Arial', sans-serif;
+
+	// The gap between box and text.
+	--font-offset: -6px;
 }
 
 @mixin surface {

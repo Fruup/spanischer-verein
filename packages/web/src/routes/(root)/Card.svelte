@@ -16,14 +16,14 @@
 
 		border-radius: 24px;
 		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
-		padding: calc(1rem - 8px) 1rem;
+		padding: 1rem;
 
 		:global(> *) {
 			margin: 0.5rem 0;
 		}
 
 		:global(> *:first-child) {
-			margin-top: 0;
+			margin-top: var(--font-offset);
 		}
 
 		:global(> *:last-child) {
