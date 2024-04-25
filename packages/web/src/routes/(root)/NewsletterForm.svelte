@@ -26,7 +26,11 @@
 				origin: window.location.origin,
 			})
 
-			const promise = fetch(`/api/v1/newsletter/prepare?${params}`)
+			const promise = fetch(`/api/v1/newsletter/prepare?${params}`).then((response) => {
+				if (!response.ok) {
+					throw new Error()
+				}
+			})
 
 			await toast.promise(
 				promise,
