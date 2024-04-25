@@ -6,6 +6,7 @@
 	import type { NavigationItem } from './types'
 	import SiteLogo from './SiteLogo.svelte'
 	import SiteMenu from './SiteMenu.svelte'
+	import SocialLinks from './SocialLinks.svelte'
 
 	export let items: NavigationItem[]
 	export let leftImageUrl: string | undefined = undefined
@@ -26,6 +27,7 @@
 	<SiteLogo />
 	<SiteHeading />
 	<SiteMenu {items} {openMainMenu} />
+	<SocialLinks />
 
 	{#if leftImageUrl}
 		<div class="image left">
@@ -93,6 +95,12 @@
 					background: linear-gradient(to left, white, transparent 75%);
 				}
 			}
+		}
+
+		:global(.social-links) {
+			position: absolute;
+			bottom: 0;
+			right: 0;
 		}
 	}
 </style>
