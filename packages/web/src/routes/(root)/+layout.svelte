@@ -29,7 +29,6 @@
 	$: headerImages = data.siteSettings?.headerImageUrls ?? []
 	$: mail = data.siteSettings?.contactEmail ?? 'info@spanischer-verein.com'
 	$: imprintPageSlug = siteSettings?.imprintPageSlug
-	$: logoUrl = siteSettings?.logoUrl
 
 	/**
 	 * Rotate header images on page navigation.
@@ -66,7 +65,7 @@
 
 <!-- <SkipNavigation /> -->
 
-<Header {logoUrl} items={data.navigationTree} {leftImageUrl} {rightImageUrl} />
+<Header items={data.navigationTree} {leftImageUrl} {rightImageUrl} />
 
 <Divider />
 
