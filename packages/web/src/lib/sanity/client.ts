@@ -242,12 +242,14 @@ export const sanityApi = {
 	getSiteSettings: async () => {
 		const settings = await sanityClient.fetch<
 			| (Pick<SiteSettingsSchema, 'donationLink' | 'contactEmail'> & {
-					imprintPageSlug?: string
+					logo: SanityImageSource
 					headerImages?: SanityImageSource[]
+					imprintPageSlug?: string
 			  })
 			| null
 		>(`
 			*[_id == "siteSettings"][0]{
+				logo,
 				headerImages,
 				donationLink,
 				"imprintPageSlug": imprintPage->slug.current,
@@ -257,15 +259,14 @@ export const sanityApi = {
 
 		if (!settings) return null
 
-		const headerImageUrls = settings.headerImages?.map((image) => {
-			return imageUrlBuilder.image(image).height(512).format('webp').url()
-		})
-
 		return {
 			donationLink: settings.donationLink,
 			imprintPageSlug: settings.imprintPageSlug,
 			contactEmail: settings.contactEmail,
-			headerImageUrls,
+			headerImageUrls: settings.headerImages?.map((image) =>
+				imageUrlBuilder.image(image).height(512).format('webp').url(),
+			),
+			logoUrl: imageUrlBuilder.image(settings.logo).width(200).format('webp').url(),
 		}
 	},
 }
