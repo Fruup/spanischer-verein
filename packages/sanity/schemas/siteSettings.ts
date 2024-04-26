@@ -74,6 +74,32 @@ export default defineType({
       },
       group: 'footer',
     }),
+    defineField({
+      name: 'mailingInfo',
+      title: 'Mailserver-Einstellungen',
+      description:
+        'Einstellungen für den Mailserver, der für den Newsletter-Versand verwendet wird.',
+      type: 'object',
+      fields: [
+        {
+          name: 'host',
+          title: 'Mailserver Host',
+          type: 'string',
+        },
+        {
+          name: 'port',
+          title: 'Mailserver Port',
+          type: 'number',
+          initialValue: 587,
+        },
+        {
+          name: 'credentials',
+          title: 'Mailserver Zugangsdaten',
+          description: 'Verschlüsselte Zugangsdaten für den Mailserver.',
+          type: 'credentials',
+        },
+      ],
+    }),
   ],
 })
 
@@ -85,4 +111,9 @@ export interface SiteSettingsSchema {
   imprintPage?: PageSchema
   contactEmail?: string
   newsletterSubscriptionRecipient?: string
+  mailingInfo?: {
+    host: string
+    port: number
+    credentials: string // encrypted
+  }
 }

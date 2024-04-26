@@ -282,4 +282,14 @@ export const sanityApi = {
 
 		return settings?.newsletterSubscriptionRecipient
 	},
+
+	async getMailingInfo() {
+		const settings = await sanityClient.fetch<Pick<SiteSettingsSchema, 'mailingInfo'> | null>(`
+			*[_id == "siteSettings"][0]{
+				mailingInfo,
+			}
+		`)
+
+		return settings?.mailingInfo
+	},
 }

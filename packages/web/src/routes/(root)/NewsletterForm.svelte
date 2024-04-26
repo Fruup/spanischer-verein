@@ -37,8 +37,8 @@
 				{
 					loading: 'Anmeldung wird vorbereitet...',
 					success:
-						'🎉 Du hast eine Bestätigungs-Mail erhalten.\n\nSchau mal in Dein Postfach und bestätige Deine Anmeldung!',
-					error: 'Da ist etwas schiefgegangen...\n\nVersuche es später erneut.',
+						'🎉 Du hast eine Bestätigungs-Mail erhalten.\nSchau mal in Dein Postfach und bestätige Deine Anmeldung!',
+					error: 'Da ist etwas schiefgegangen...\nVersuche es später erneut.',
 				},
 				{ duration: 5000 },
 			)

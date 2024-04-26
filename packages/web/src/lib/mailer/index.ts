@@ -2,22 +2,25 @@ import { env } from '$env/dynamic/private'
 import { sanityApi } from '$lib/sanity/client'
 import { createTransport, type Transporter } from 'nodemailer'
 import { generatePreparationHtml, generateRegistrationRequestHtml } from './template'
+import { getMailingInfo } from './credentials'
 
 let transporter: Transporter
 let recipient: string | undefined
+let sender: string | undefined
 
 export async function sendNewsletterSubscriptionRequest(mail: string) {
 	await init()
 	await initRecipient()
 
 	if (!recipient) throw Error(`No newsletter subscription recipient set.`)
+	if (!sender) throw Error(`No sender email set.`)
 
 	const html = generateRegistrationRequestHtml(mail)
 
 	console.log(`Sending newsletter subscription request to ${recipient}...`)
 
 	await transporter.sendMail({
-		from: env.MAIL_USER,
+		from: sender,
 		to: recipient,
 		subject: 'Spanischer Verein - Neue Newsletteranmeldung',
 		html,
@@ -30,38 +33,26 @@ export async function sendNewsletterSubscriptionPreparation(options: {
 }) {
 	await init()
 
+	if (!sender) throw Error(`No sender email set.`)
+
 	const { email, origin = 'https://spanischerverin.com' } = options
 	const html = generatePreparationHtml({ email, origin })
 
 	console.log(`Sending newsletter preparation to ${email} using origin "${origin}"...`)
 
 	await transporter.sendMail({
-		from: env.MAIL_USER,
+		from: sender,
 		to: email,
 		subject: 'Spanischer Verein - Newsletteranmeldung',
 		html,
 	})
 }
 
-const parseIntSafely = (str: any) => {
-	if (typeof str !== 'string') return undefined
-
-	const n = parseInt(str)
-	if (isNaN(n)) return undefined
-
-	return n
-}
-
 async function init() {
 	if (!transporter) {
-		const user = env.MAIL_USER
-		if (!user) throw Error(`MAIL_USER is not set`)
+		const { user, password: pass, host, port } = await getMailingInfo()
 
-		const pass = env.MAIL_PASSWORD
-		if (!pass) throw Error(`MAIL_PASSWORD is not set`)
-
-		const host = env.MAIL_HOST || 'smtp.titan.email'
-		const port = parseIntSafely(env.MAIL_PORT) || 587
+		sender = user
 
 		transporter = createTransport({
 			host,
