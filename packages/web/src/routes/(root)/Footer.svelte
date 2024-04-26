@@ -6,6 +6,7 @@
 	import { socialLinks } from '$lib/components/header/SocialLinks.svelte'
 
 	export let imprintUrl: string | undefined
+	export let privacyUrl: string | undefined
 </script>
 
 <footer>
@@ -18,6 +19,10 @@
 
 				{#if imprintUrl}
 					<li><a href={imprintUrl}>Impressum</a></li>
+				{/if}
+
+				{#if privacyUrl}
+					<li><a href={privacyUrl}>Datenschutz</a></li>
 				{/if}
 
 				{#each socialLinks as { name, url: href }}

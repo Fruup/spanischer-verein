@@ -5,7 +5,7 @@
 	import NewsletterForm from './NewsletterForm.svelte'
 
 	export let mail: string
-	export let privacyUrl: string
+	export let privacyUrl: string | undefined
 
 	const IBAN = 'DE52 3705 0198 0017 7420 40'
 

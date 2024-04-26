@@ -25,29 +25,6 @@ export const sanityClient = createClient({
 const imageUrlBuilder = createImageUrlBuilder(sanityClient)
 
 export const sanityApi = {
-	// getEventsOverview: async () => {
-	// 	interface Result
-	// 		extends Pick<EventSchema, 'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'> {
-	// 		slug: string
-	// 	}
-
-	// 	return await sanityClient.fetch<Result[]>(
-	// 		`*[
-	// 			_type == "event" &&
-	// 			(
-	// 				!defined(publishedAt) ||
-	// 				dateTime(now()) >= dateTime(publishedAt)
-	// 			)
-	// 		]{
-	// 			title,
-	// 			"slug": slug.current,
-	// 			eventTime,
-	// 			eventLocation,
-	// 			eventAdmission,
-	// 		}`,
-	// 	)
-	// },
-
 	getEventsOverview: async (options: { year: number; month: number }) => {
 		interface Result
 			extends Pick<EventSchema, 'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'> {
@@ -248,6 +225,7 @@ export const sanityApi = {
 					logo: SanityImageSource
 					headerImages?: SanityImageSource[]
 					imprintPageSlug?: string
+					privacyPageSlug?: string
 			  })
 			| null
 		>(`
@@ -256,6 +234,7 @@ export const sanityApi = {
 				headerImages,
 				donationLink,
 				"imprintPageSlug": imprintPage->slug.current,
+				"privacyPageSlug": privacyPage->slug.current,
 				contactEmail,
 			}
 		`)
@@ -265,6 +244,7 @@ export const sanityApi = {
 		return {
 			donationLink: settings.donationLink,
 			imprintPageSlug: settings.imprintPageSlug,
+			privacyPageSlug: settings.privacyPageSlug,
 			contactEmail: settings.contactEmail,
 			headerImageUrls: settings.headerImages?.map((image) =>
 				imageUrlBuilder.image(image).height(512).format('webp').url(),

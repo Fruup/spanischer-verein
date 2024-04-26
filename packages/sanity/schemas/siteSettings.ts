@@ -22,6 +22,10 @@ export default defineType({
       name: 'footer',
       title: 'Footer',
     },
+    {
+      name: 'mailing',
+      title: 'E-Mails',
+    },
   ],
   icon: CogIcon,
   fields: [
@@ -57,15 +61,17 @@ export default defineType({
     defineField({
       name: 'contactEmail',
       title: 'Kontakt-E-Mail',
+      description:
+        'Die E-Mail-Adresse, an die Nutzerinnen und Nutzer Kontaktanfragen senden können.',
       type: 'email',
-      group: 'general',
+      group: ['general', 'mailing'],
     }),
     defineField({
       name: 'newsletterSubscriptionRecipient',
       title: 'Newsletter-Abonnement-Empfänger',
       description: 'E-Mail-Adresse, an die Newsletter-Abonnement-Anfragen gesendet werden.',
       type: 'email',
-      group: 'general',
+      group: ['mailing'],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -78,11 +84,23 @@ export default defineType({
       group: 'footer',
     }),
     defineField({
+      name: 'privacyPage',
+      title: 'Datenschutz-Seite',
+      description:
+        'Diese Seite muss Nutzerinnen und Nutzern über die Nutzung ihrer Daten beim Anmelden zum Newsletter belehren (DSGVO).',
+      type: 'reference',
+      to: {
+        type: 'page',
+      },
+      group: ['footer', 'mailing'],
+    }),
+    defineField({
       name: 'mailingInfo',
       title: 'Mailserver-Einstellungen',
       description:
         'Einstellungen für den Mailserver, der für den Newsletter-Versand verwendet wird.',
       type: 'object',
+      group: ['mailing'],
       fields: [
         defineField({
           name: 'host',
@@ -115,6 +133,7 @@ export interface SiteSettingsSchema {
   headerImages?: ImageAsset[]
   donationLink?: string
   imprintPage?: PageSchema
+  privacyPage?: PageSchema
   contactEmail?: string
   newsletterSubscriptionRecipient?: string
   mailingInfo?: {

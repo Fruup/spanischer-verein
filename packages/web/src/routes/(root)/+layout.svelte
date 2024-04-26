@@ -30,6 +30,7 @@
 	$: headerImages = data.siteSettings?.headerImageUrls ?? []
 	$: mail = data.siteSettings?.contactEmail ?? 'info@spanischer-verein.com'
 	$: imprintPageSlug = siteSettings?.imprintPageSlug
+	$: privacyUrl = siteSettings?.privacyPageSlug && `/${siteSettings.privacyPageSlug}`
 
 	/**
 	 * Rotate header images on page navigation.
@@ -91,7 +92,7 @@
 
 			<h3 class="heading-3">Mitmachen</h3>
 
-			<ParticipateSection {mail} />
+			<ParticipateSection {mail} {privacyUrl} />
 
 			<!-- <PageSearch /> -->
 		</div>
@@ -108,7 +109,7 @@
 	<Divider />
 </div>
 
-<Footer imprintUrl={imprintPageSlug && `/${imprintPageSlug}`} />
+<Footer imprintUrl={imprintPageSlug && `/${imprintPageSlug}`} {privacyUrl} />
 
 <style lang="scss">
 	@use 'sass:color';
