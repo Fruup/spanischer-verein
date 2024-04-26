@@ -1,85 +1,39 @@
-import {TextInput, Label, Flex, Dialog, Button, Heading, Container, Box} from '@sanity/ui'
-import {useEffect, useState} from 'react'
-import crypto from 'simple-crypto-js'
-import {SANITY_PATCH_TYPE, StringInputProps} from 'sanity'
+import {Button} from '@sanity/ui'
+import {useState} from 'react'
 import {EditIcon} from '@sanity/icons'
+import {SettingsView} from '@sanity/studio-secrets'
+import {SECRETS_NAMESPACE} from '../schemas/siteSettings'
 
-export default function CredentialsInput(props: StringInputProps) {
-  const secret = process.env.SANITY_STUDIO_MAIL_CREDENTIALS_SECRET
-  const nc = new crypto(secret)
+const pluginConfigKeys = [
+  {
+    key: 'user',
+    title: 'Benutzer/E-Mail',
+    description: 'Der Benutzer oder die E-Mail-Adresse für den Mailserver.',
+  },
+  {
+    key: 'password',
+    title: 'Passwort',
+    description: 'Das Passwort für den Mailserver.',
+  },
+]
 
-  const decryptSafely = (): {user?: string; password?: string} => {
-    if (!props.value) return {}
-
-    try {
-      return nc.decrypt(props.value) as {user?: string; password?: string}
-    } catch (e) {
-      return {}
-    }
-  }
-
-  const initial = decryptSafely()
-
-  const [user, setUser] = useState(initial.user || '')
-  const [password, setPassword] = useState('')
-
-  const [isOpen, setOpen] = useState(false)
-
-  useEffect(() => {
-    if (!isOpen) {
-      setPassword(password || '')
-    }
-  })
-
-  const handleSave = () => {
-    const value = nc.encrypt({user, password})
-
-    props.onChange({
-      type: 'set',
-      value,
-      path: [],
-      patchType: SANITY_PATCH_TYPE,
-    })
-
-    setOpen(false)
-  }
+export default function () {
+  const [showSettings, setShowSettings] = useState(false)
 
   return (
-    <Container>
-      <Button onClick={() => setOpen(true)} icon={EditIcon} text="Bearbeiten" />
+    <>
+      <Button onClick={() => setShowSettings(true)} icon={EditIcon} text="Bearbeiten" />
 
-      {isOpen && (
-        <Dialog id="credentials-input" animate>
-          <Box margin={6}>
-            <Flex direction="column" gap={5}>
-              <Heading>Zugangsdaten ändern</Heading>
-
-              <Flex direction="column" gap={2}>
-                <Label size={2}>Benutzer/E-Mail</Label>
-                <TextInput
-                  type="text"
-                  value={user}
-                  onChange={(e) => setUser(e.currentTarget.value)}
-                />
-              </Flex>
-
-              <Flex direction="column" gap={2}>
-                <Label size={2}>Passwort</Label>
-                <TextInput
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.currentTarget.value)}
-                />
-              </Flex>
-
-              <Flex direction="row" gap={2}>
-                <Button onClick={handleSave} text="Speichern" />
-                <Button tone="caution" onClick={() => setOpen(false)} text="Abbruch" />
-              </Flex>
-            </Flex>
-          </Box>
-        </Dialog>
+      {showSettings && (
+        <SettingsView
+          title={'Mailing Zugangsdaten'}
+          namespace={SECRETS_NAMESPACE}
+          keys={pluginConfigKeys}
+          onClose={() => {
+            setShowSettings(false)
+          }}
+        />
       )}
-    </Container>
+    </>
   )
 }

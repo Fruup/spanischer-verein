@@ -1,6 +1,9 @@
 import {ImageAsset, defineField, defineType} from 'sanity'
 import {CogIcon} from '@sanity/icons'
 import {PageSchema} from './page'
+import CredentialsInput from '../components/CredentialsInput'
+
+export const SECRETS_NAMESPACE = 'spanischer-verein' as const
 
 export default defineType({
   name: 'siteSettings',
@@ -81,23 +84,26 @@ export default defineType({
         'Einstellungen für den Mailserver, der für den Newsletter-Versand verwendet wird.',
       type: 'object',
       fields: [
-        {
+        defineField({
           name: 'host',
           title: 'Mailserver Host',
           type: 'string',
-        },
-        {
+        }),
+        defineField({
           name: 'port',
           title: 'Mailserver Port',
           type: 'number',
           initialValue: 587,
-        },
-        {
+        }),
+        defineField({
           name: 'credentials',
           title: 'Mailserver Zugangsdaten',
           description: 'Verschlüsselte Zugangsdaten für den Mailserver.',
-          type: 'credentials',
-        },
+          type: 'string',
+          components: {
+            input: CredentialsInput,
+          },
+        }),
       ],
     }),
   ],
@@ -114,6 +120,14 @@ export interface SiteSettingsSchema {
   mailingInfo?: {
     host: string
     port: number
-    credentials: string // encrypted
+  }
+}
+
+export interface SecretsSchema {
+  _type: 'pluginSecrets'
+  _id: `secrets.${typeof SECRETS_NAMESPACE}`
+  secrets: {
+    user: string
+    password: string
   }
 }
