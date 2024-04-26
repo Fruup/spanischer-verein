@@ -3,7 +3,7 @@
 	import supporter1 from '$assets/integrationszentrum-koeln.png?format=webp&w=256&imagetools'
 	import supporter2 from '$assets/stadt-koeln.svg'
 	import SiteLogo from '$lib/components/header/SiteLogo.svelte'
-	import SocialLinks from '$lib/components/header/SocialLinks.svelte'
+	import { socialLinks } from '$lib/components/header/SocialLinks.svelte'
 
 	export let imprintUrl: string | undefined
 </script>
@@ -20,9 +20,13 @@
 					<li><a href={imprintUrl}>Impressum</a></li>
 				{/if}
 
-				<li style="margin: 1rem 0">
-					<SocialLinks />
-				</li>
+				{#each socialLinks as { name, url: href }}
+					<li>
+						<a {href} target="_blank" rel="noreferrer nofollow">
+							{name[0].toUpperCase() + name.slice(1)}
+						</a>
+					</li>
+				{/each}
 			</ul>
 		</nav>
 	</div>

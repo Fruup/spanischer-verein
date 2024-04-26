@@ -1,15 +1,26 @@
+<script context="module" lang="ts">
+	export const socialLinks = [
+		{
+			name: 'facebook',
+			url: 'https://www.facebook.com/CentroMachado/',
+		},
+		{
+			name: 'instagram',
+			url: 'https://www.instagram.com/centromachado/',
+		},
+	]
+</script>
+
 <script lang="ts">
 	import IconSocial from '../icons/IconSocial.svelte'
 </script>
 
 <nav class="social-links">
-	<a href="https://www.facebook.com/CentroMachado/" target="_blank" rel="noreferrer nofollow">
-		<IconSocial name="facebook" />
-	</a>
-
-	<a href="https://www.instagram.com/centromachado/" target="_blank" rel="noreferrer nofollow">
-		<IconSocial name="instagram" />
-	</a>
+	{#each socialLinks as { name, url: href }}
+		<a {href} target="_blank" rel="noreferrer nofollow">
+			<IconSocial {name} />
+		</a>
+	{/each}
 </nav>
 
 <style lang="scss">
