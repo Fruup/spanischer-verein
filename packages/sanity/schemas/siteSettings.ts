@@ -87,7 +87,7 @@ export default defineType({
       name: 'privacyPage',
       title: 'Datenschutz-Seite',
       description:
-        'Diese Seite muss Nutzerinnen und Nutzern über die Nutzung ihrer Daten beim Anmelden zum Newsletter belehren (DSGVO).',
+        'Diese Seite muss Nutzerinnen und Nutzer über die Nutzung ihrer Daten beim Anmelden zum Newsletter belehren (DSGVO).',
       type: 'reference',
       to: {
         type: 'page',
