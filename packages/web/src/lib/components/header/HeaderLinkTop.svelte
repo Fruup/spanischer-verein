@@ -14,6 +14,10 @@
 	} = createDropdownMenu({
 		portal: `[data-key="${key}"]`,
 		preventScroll: false,
+		positioning: {
+			flip: false,
+			placement: 'bottom',
+		},
 	})
 </script>
 
@@ -65,6 +69,13 @@
 		text-decoration-color: $color-accent;
 
 		letter-spacing: 1px;
+
+		.angle-down {
+			img {
+				width: 1em;
+				height: 1em;
+			}
+		}
 
 		&:not(.has-children) .angle-down {
 			display: none;

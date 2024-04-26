@@ -22,6 +22,17 @@ const shared = {
 
   // apiHost: 'http://sanity.local',
 
+  document: {
+    // Only allow some actions on siteSettings.
+    actions: (prev, {schemaType}) =>
+      schemaType === 'siteSettings'
+        ? prev.filter(({action}) => {
+            const allowed: (typeof action)[] = ['discardChanges', 'publish', 'restore']
+            return allowed.includes(action)
+          })
+        : prev,
+  },
+
   plugins: [
     structureTool({
       structure: (S, context) =>
@@ -106,6 +117,12 @@ const developmentWorkspace = defineConfig({
   basePath: '/development',
 
   dataset: 'development',
+
+  plugins: [
+    ...shared.plugins,
+    // Add development plugins here
+    visionTool(),
+  ],
 })
 
 const defaultWorkspace = defineConfig({

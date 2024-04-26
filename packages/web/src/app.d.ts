@@ -6,7 +6,7 @@ import type { PortableTextBlock } from '@portabletext/types'
 declare global {
 	namespace App {
 		interface Error {
-			errorCode: 'NOT_FOUND'
+			errorCode: 'NOT_FOUND' | 'SEND_EMAIL_FAILED' | 'INVALID_PARAMETERS'
 		}
 
 		// interface Locals {}

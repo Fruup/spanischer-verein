@@ -15,6 +15,7 @@
 	import type { RouteId as EventPageRouteId } from './event/[slug]/$types'
 	import type { RouteId as HomeRouteId } from './$types'
 	import { pick } from '$lib/helpers/pick'
+	import { Toaster } from 'svelte-french-toast'
 
 	export let data
 
@@ -29,6 +30,7 @@
 	$: headerImages = data.siteSettings?.headerImageUrls ?? []
 	$: mail = data.siteSettings?.contactEmail ?? 'info@spanischer-verein.com'
 	$: imprintPageSlug = siteSettings?.imprintPageSlug
+	$: privacyUrl = siteSettings?.privacyPageSlug && `/${siteSettings.privacyPageSlug}`
 
 	/**
 	 * Rotate header images on page navigation.
@@ -63,6 +65,8 @@
 	<title>Spanischer Verein Köln</title>
 </svelte:head>
 
+<Toaster />
+
 <!-- <SkipNavigation /> -->
 
 <Header items={data.navigationTree} {leftImageUrl} {rightImageUrl} />
@@ -88,7 +92,7 @@
 
 			<h3 class="heading-3">Mitmachen</h3>
 
-			<ParticipateSection {mail} />
+			<ParticipateSection {mail} {privacyUrl} />
 
 			<!-- <PageSearch /> -->
 		</div>
@@ -105,7 +109,7 @@
 	<Divider />
 </div>
 
-<Footer imprintUrl={imprintPageSlug && `/${imprintPageSlug}`} />
+<Footer imprintUrl={imprintPageSlug && `/${imprintPageSlug}`} {privacyUrl} />
 
 <style lang="scss">
 	@use 'sass:color';

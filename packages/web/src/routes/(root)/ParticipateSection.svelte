@@ -2,8 +2,10 @@
 	import { page } from '$app/stores'
 	import CallToAction from '$lib/components/CallToAction.svelte'
 	import Card from './Card.svelte'
+	import NewsletterForm from './NewsletterForm.svelte'
 
 	export let mail: string
+	export let privacyUrl: string | undefined
 
 	const IBAN = 'DE52 3705 0198 0017 7420 40'
 
@@ -46,6 +48,14 @@
 				<span>SWIFT-BIC: COLSDE33</span>
 			</p>
 		{/if}
+	</Card>
+
+	<Card>
+		<p slot="heading">Du möchtest über unsere Angebote auf dem Laufenden bleiben?</p>
+
+		<p>Melde dich zu unserem Newsletter an!</p>
+
+		<NewsletterForm {privacyUrl} />
 	</Card>
 
 	{#if mail}

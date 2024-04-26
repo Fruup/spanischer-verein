@@ -80,6 +80,7 @@
 		position: relative;
 
 		overflow: visible;
+		overflow-x: clip;
 
 		padding: 2rem;
 		padding-bottom: 4rem;

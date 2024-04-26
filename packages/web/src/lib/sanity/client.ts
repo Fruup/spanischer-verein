@@ -4,7 +4,10 @@ import createImageUrlBuilder from '@sanity/image-url'
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import type { PortableTextMarkDefinition } from '@portabletext/types'
 import type { PageSchema } from '@spanischer-verein/sanity/schemas/page'
-import type { SiteSettingsSchema } from '@spanischer-verein/sanity/schemas/siteSettings'
+import type {
+	SecretsSchema,
+	SiteSettingsSchema,
+} from '@spanischer-verein/sanity/schemas/siteSettings'
 import type { NavigationItem } from '$lib/components/header/types'
 import { env } from '$env/dynamic/private'
 
@@ -22,29 +25,6 @@ export const sanityClient = createClient({
 const imageUrlBuilder = createImageUrlBuilder(sanityClient)
 
 export const sanityApi = {
-	// getEventsOverview: async () => {
-	// 	interface Result
-	// 		extends Pick<EventSchema, 'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'> {
-	// 		slug: string
-	// 	}
-
-	// 	return await sanityClient.fetch<Result[]>(
-	// 		`*[
-	// 			_type == "event" &&
-	// 			(
-	// 				!defined(publishedAt) ||
-	// 				dateTime(now()) >= dateTime(publishedAt)
-	// 			)
-	// 		]{
-	// 			title,
-	// 			"slug": slug.current,
-	// 			eventTime,
-	// 			eventLocation,
-	// 			eventAdmission,
-	// 		}`,
-	// 	)
-	// },
-
 	getEventsOverview: async (options: { year: number; month: number }) => {
 		interface Result
 			extends Pick<EventSchema, 'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'> {
@@ -245,6 +225,7 @@ export const sanityApi = {
 					logo: SanityImageSource
 					headerImages?: SanityImageSource[]
 					imprintPageSlug?: string
+					privacyPageSlug?: string
 			  })
 			| null
 		>(`
@@ -253,6 +234,7 @@ export const sanityApi = {
 				headerImages,
 				donationLink,
 				"imprintPageSlug": imprintPage->slug.current,
+				"privacyPageSlug": privacyPage->slug.current,
 				contactEmail,
 			}
 		`)
@@ -262,11 +244,42 @@ export const sanityApi = {
 		return {
 			donationLink: settings.donationLink,
 			imprintPageSlug: settings.imprintPageSlug,
+			privacyPageSlug: settings.privacyPageSlug,
 			contactEmail: settings.contactEmail,
 			headerImageUrls: settings.headerImages?.map((image) =>
 				imageUrlBuilder.image(image).height(512).format('webp').url(),
 			),
 			logoUrl: imageUrlBuilder.image(settings.logo).width(200).format('webp').url(),
+		}
+	},
+
+	async getNewsletterSubscriptionRecipient() {
+		const settings = await sanityClient.fetch<Pick<
+			SiteSettingsSchema,
+			'newsletterSubscriptionRecipient'
+		> | null>(`
+			*[_id == "siteSettings"][0]{
+				newsletterSubscriptionRecipient,
+			}
+		`)
+
+		return settings?.newsletterSubscriptionRecipient
+	},
+
+	async getMailingInfo() {
+		const settings = await sanityClient.fetch<Pick<SiteSettingsSchema, 'mailingInfo'> | null>(`
+			*[_id == "siteSettings"][0]{
+				mailingInfo,
+			}
+		`)
+
+		const secrets = await sanityClient.fetch<SecretsSchema | null>(`*[_id == $id][0]`, {
+			id: 'secrets.spanischer-verein' satisfies SecretsSchema['_id'],
+		})
+
+		return {
+			...settings?.mailingInfo,
+			...secrets?.secrets,
 		}
 	},
 }
