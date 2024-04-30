@@ -1,24 +1,20 @@
 <script lang="ts">
 	import { navigating } from '$app/stores'
-	import Loader from '$lib/components/icons/Loader.svelte'
+	import Loader from '$lib/components/icons/Loader2.svelte'
 	import EventsOverview from './EventsOverview.svelte'
 
 	export let events: any[]
+	export let pastHighlights: any[]
 	export let year: number
 	export let month: number
 
 	$: isPast = new Date().getTime() > new Date(year, month).getTime()
-
-	$: eventsBeforeNow = events.filter(
-		(event) => new Date(event.eventTime).getTime() < new Date().getTime(),
-	)
 
 	$: eventsAfterNow = events.filter(
 		(event) => new Date(event.eventTime).getTime() >= new Date().getTime(),
 	)
 
 	$: futureEvents = isPast ? events : eventsAfterNow
-	$: pastEvents = isPast ? [] : eventsBeforeNow
 
 	$: monthString = new Date(year, month - 1).toLocaleString(undefined, {
 		month: 'long',
@@ -41,12 +37,14 @@
 {#if !$navigating}
 	<EventsOverview events={futureEvents} />
 
-	{#if pastEvents.length > 0}
+	{#if pastHighlights.length > 0}
 		<div class="past-heading-container">
-			<h3 class="heading-3">Vergangene Veranstaltungen</h3>
+			<h3 class="heading-3">Vergangene Highlights</h3>
 		</div>
 
-		<EventsOverview events={pastEvents} />
+		<EventsOverview events={pastHighlights} />
+
+		<p>TBD</p>
 	{/if}
 {:else}
 	<div class="loader-container">
