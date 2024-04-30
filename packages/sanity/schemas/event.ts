@@ -1,5 +1,6 @@
 import {PortableTextBlock, SanityDocument, defineField, defineType, Slug, Image} from 'sanity'
 import {CalendarIcon} from '@sanity/icons'
+import EventHighlightedInput, {MAX_HIGHLIGHTED_EVENTS} from '../components/EventHighlightedInput'
 
 const mainFields = [
   defineField({
@@ -58,7 +59,7 @@ const eventFields = [
   defineField({
     name: 'eventAdmission',
     title: '💰 Eintritt',
-    initialValue: 'Eintritt frei,\nSpenden sind willkommen',
+    placeholder: 'Eintritt frei,\nSpenden sind willkommen',
     type: 'text',
     group: 'event',
     rows: 2,
@@ -75,6 +76,18 @@ const publishingFields = [
     group: 'publishing',
   }),
   defineField({
+    name: 'highlighted',
+    title: 'Hervorheben',
+    description: `Wenn aktiviert, wird dieses Event auf der Startseite hervorgehoben, sobald es in der Vergangenheit liegt. Maximal ${MAX_HIGHLIGHTED_EVENTS} Events sollten hervorgehoben werden.`,
+    type: 'boolean',
+    group: 'publishing',
+    initialValue: false,
+    components: {
+      input: EventHighlightedInput,
+    },
+  }),
+  defineField({
+    hidden: true, // HIDDEN FOR NOW
     name: 'showInNewsletter',
     title: 'Im Newsletter versenden',
     description:
@@ -122,5 +135,6 @@ export interface EventSchema extends SanityDocument {
 
   // Publishing
   publishedAt?: string
-  showInNewsletter?: boolean
+  highlighted?: boolean
+  // showInNewsletter?: boolean
 }

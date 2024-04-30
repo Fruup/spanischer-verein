@@ -32,6 +32,7 @@
 
 <header>
 	<SiteLogo />
+	<div id="scroll-to-marker" />
 	<SiteHeading />
 	<SiteMenu {items} {openMainMenu} />
 	<SocialLinks />
@@ -132,5 +133,10 @@
 			bottom: 2rem;
 			right: 2rem;
 		}
+	}
+
+	#scroll-to-marker {
+		visibility: hidden;
+		height: 0;
 	}
 </style>

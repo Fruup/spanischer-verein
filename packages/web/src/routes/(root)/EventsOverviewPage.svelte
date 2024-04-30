@@ -1,29 +1,30 @@
 <script lang="ts">
 	import { navigating } from '$app/stores'
-	import Loader from '$lib/components/icons/Loader.svelte'
+	import Note from '$lib/components/Note.svelte'
+	import Loader from '$lib/components/icons/Loader2.svelte'
 	import EventsOverview from './EventsOverview.svelte'
 
 	export let events: any[]
+	export let pastHighlights: any[]
 	export let year: number
 	export let month: number
 
 	$: isPast = new Date().getTime() > new Date(year, month).getTime()
-
-	$: eventsBeforeNow = events.filter(
-		(event) => new Date(event.eventTime).getTime() < new Date().getTime(),
-	)
 
 	$: eventsAfterNow = events.filter(
 		(event) => new Date(event.eventTime).getTime() >= new Date().getTime(),
 	)
 
 	$: futureEvents = isPast ? events : eventsAfterNow
-	$: pastEvents = isPast ? [] : eventsBeforeNow
 
 	$: monthString = new Date(year, month - 1).toLocaleString(undefined, {
 		month: 'long',
 		year: 'numeric',
 	})
+
+	function jumpToCalendar() {
+		document.querySelector('#calendar')?.scrollIntoView({ behavior: 'smooth' })
+	}
 </script>
 
 <h3 class="current-heading">
@@ -31,22 +32,27 @@
 	<span class="heading-3">{monthString}</span>
 </h3>
 
-{#if !events.length}
-	<h3 class="no-events">
+{#if !futureEvents.length}
+	<Note>
 		In dieser Zeit {isPast ? 'waren' : 'sind'}<br />
 		keine Veranstaltungen geplant...
-	</h3>
+	</Note>
 {/if}
 
 {#if !$navigating}
 	<EventsOverview events={futureEvents} />
 
-	{#if pastEvents.length > 0}
+	{#if pastHighlights.length > 0}
 		<div class="past-heading-container">
-			<h3 class="heading-3">Vergangene Veranstaltungen</h3>
+			<h3 class="heading-3">Vergangene Highlights</h3>
 		</div>
 
-		<EventsOverview events={pastEvents} />
+		<EventsOverview events={pastHighlights} />
+
+		<Note>
+			Um weitere vergangene Events zu entdecken,<br />
+			nutze unseren <button class="calendar-button" on:click={jumpToCalendar}>Kalender</button>.
+		</Note>
 	{/if}
 {:else}
 	<div class="loader-container">
@@ -55,6 +61,7 @@
 {/if}
 
 <style lang="scss">
+	@use 'sass:color';
 	@import 'vars';
 
 	.current-heading {
@@ -72,7 +79,7 @@
 	.no-events {
 		color: var(--color-text-1);
 		text-align: center;
-		margin-top: 6rem;
+		margin-top: 3rem;
 		width: 100%;
 	}
 
@@ -97,6 +104,24 @@
 
 		:global(> *) {
 			margin: 0;
+		}
+	}
+
+	.calendar-button {
+		text-decoration: underline;
+		background: none;
+		border: none;
+		text-decoration-color: $color-accent;
+		font-size: 1em;
+		padding: 0;
+		margin: 0;
+		display: inline;
+		color: inherit;
+		cursor: pointer;
+
+		&:hover,
+		&:focus {
+			color: $color-accent;
 		}
 	}
 </style>

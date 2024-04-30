@@ -63,6 +63,10 @@
 
 <svelte:head>
 	<title>Spanischer Verein Köln</title>
+
+	{#if data.siteSettings?.logoUrl}
+		<link rel="icon" href={data.siteSettings.logoUrl} />
+	{/if}
 </svelte:head>
 
 <Toaster />
@@ -82,7 +86,7 @@
 
 	<aside>
 		<div class="aside-content">
-			<h3 class="heading-3">Kalender</h3>
+			<h3 id="calendar" class="heading-3">Kalender</h3>
 
 			<p class="calendar-tutorial">
 				💡 Navigiere im Kalender, um vergangene Veranstaltungen zu durchstöbern.
@@ -123,7 +127,9 @@
 		max-width: 1200px;
 
 		margin: 0 auto;
+		padding: 0 2.5rem;
 		gap: 2.5rem;
+		box-sizing: content-box;
 
 		@include max-md {
 			grid-template-columns: 1fr;

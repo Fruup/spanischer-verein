@@ -23,9 +23,11 @@
 </div>
 
 <style lang="scss">
+	@import 'vars';
+
 	.block-content {
 		:global(> *) {
-			margin: 2rem 0;
+			margin: 1rem 0;
 		}
 
 		:global(h2),
@@ -34,10 +36,11 @@
 		:global(h5),
 		:global(h6) {
 			text-align: center;
+			@include font-serif;
 		}
 
 		:global(p) {
-			margin: 2rem 0;
+			margin: 1rem 0;
 		}
 
 		:global(img) {

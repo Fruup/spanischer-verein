@@ -25,7 +25,7 @@ export const sanityClient = createClient({
 const imageUrlBuilder = createImageUrlBuilder(sanityClient)
 
 export const sanityApi = {
-	getEventsOverview: async (options: { year: number; month: number }) => {
+	async getEventsOverview(options: { year: number; month: number }) {
 		interface Result
 			extends Pick<EventSchema, 'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'> {
 			mainImage: SanityImageSource
@@ -68,18 +68,58 @@ export const sanityApi = {
 
 		const transformed = events.map((event) => ({
 			...event,
-			imageUrl: imageUrlBuilder
-				.image(event.mainImage)
-				.width(512)
-				.crop('focalpoint')
-				.format('webp')
-				.url(),
+			imageUrl:
+				event.mainImage &&
+				imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
 		}))
 
 		return transformed
 	},
 
-	getEvent: async (slug: string) => {
+	async getPastHighlights() {
+		interface Result
+			extends Pick<EventSchema, 'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'> {
+			mainImage: SanityImageSource
+			slug: string
+			mainImageMeta: {
+				prominentColor: string
+				dimensions: {
+					height: number
+					width: number
+				}
+			}
+		}
+
+		const events = await sanityClient.fetch<Result[]>(
+			`*[
+				_type == "event" &&
+				highlighted == true &&
+				dateTime(eventTime) < dateTime(now())
+			]{
+				title,
+				"slug": slug.current,
+				eventTime,
+				eventLocation,
+				eventAdmission,
+				mainImage,
+				"mainImageMeta": {
+					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
+					"dimensions": mainImage.asset->metadata.dimensions,
+				},
+			} | order(eventTime desc)`,
+		)
+
+		const transformed = events.map((event) => ({
+			...event,
+			imageUrl:
+				event.mainImage &&
+				imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
+		}))
+
+		return transformed
+	},
+
+	async getEvent(slug: string) {
 		const result = await sanityClient.fetch<EventSchema | undefined>(
 			`*[_type == "event" && slug.current == "${slug}"][0]{
 				...,
@@ -109,7 +149,7 @@ export const sanityApi = {
 		}
 	},
 
-	getNavigationTree: async () => {
+	async getNavigationTree() {
 		interface FlatTreeItem {
 			_key: string
 			parent: string | null
@@ -171,7 +211,7 @@ export const sanityApi = {
 		return tree
 	},
 
-	getPage: async (pathname: string) => {
+	async getPage(pathname: string) {
 		const slug = pathname.split('/').at(-1)
 
 		const page = await sanityClient.fetch<PageSchema | undefined>(`
@@ -219,7 +259,7 @@ export const sanityApi = {
 		return page
 	},
 
-	getSiteSettings: async () => {
+	async getSiteSettings() {
 		const settings = await sanityClient.fetch<
 			| (Pick<SiteSettingsSchema, 'donationLink' | 'contactEmail'> & {
 					logo: SanityImageSource
