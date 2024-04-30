@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { navigating } from '$app/stores'
+	import Note from '$lib/components/Note.svelte'
 	import Loader from '$lib/components/icons/Loader2.svelte'
 	import EventsOverview from './EventsOverview.svelte'
 
@@ -31,11 +32,11 @@
 	<span class="heading-3">{monthString}</span>
 </h3>
 
-{#if !events.length}
-	<h3 class="no-events">
+{#if !futureEvents.length}
+	<Note>
 		In dieser Zeit {isPast ? 'waren' : 'sind'}<br />
 		keine Veranstaltungen geplant...
-	</h3>
+	</Note>
 {/if}
 
 {#if !$navigating}
@@ -46,12 +47,14 @@
 			<h3 class="heading-3">Vergangene Highlights</h3>
 		</div>
 
-		<EventsOverview events={pastHighlights} />
+		{#if pastHighlights.length > 0}
+			<EventsOverview events={pastHighlights} />
 
-		<p class="calendar-notice">
-			Um weitere vergangene Events zu entdecken,<br />
-			nutze unseren <button class="calendar-button" on:click={jumpToCalendar}>Kalender</button>.
-		</p>
+			<Note>
+				Um weitere vergangene Events zu entdecken,<br />
+				nutze unseren <button class="calendar-button" on:click={jumpToCalendar}>Kalender</button>.
+			</Note>
+		{/if}
 	{/if}
 {:else}
 	<div class="loader-container">
@@ -78,7 +81,7 @@
 	.no-events {
 		color: var(--color-text-1);
 		text-align: center;
-		margin-top: 6rem;
+		margin-top: 3rem;
 		width: 100%;
 	}
 
@@ -106,27 +109,21 @@
 		}
 	}
 
-	.calendar-notice {
-		color: var(--color-text-1);
-		text-align: center;
-		margin-top: 3rem;
+	.calendar-button {
+		text-decoration: underline;
+		background: none;
+		border: none;
+		text-decoration-color: $color-accent;
+		font-size: 1em;
+		padding: 0;
+		margin: 0;
+		display: inline;
+		color: inherit;
+		cursor: pointer;
 
-		.calendar-button {
-			text-decoration: underline;
-			background: none;
-			border: none;
-			text-decoration-color: $color-accent;
-			font-size: 1em;
-			padding: 0;
-			margin: 0;
-			display: inline;
-			color: inherit;
-			cursor: pointer;
-
-			&:hover,
-			&:focus {
-				color: $color-accent;
-			}
+		&:hover,
+		&:focus {
+			color: $color-accent;
 		}
 	}
 </style>

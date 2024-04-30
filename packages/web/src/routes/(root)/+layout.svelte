@@ -63,6 +63,10 @@
 
 <svelte:head>
 	<title>Spanischer Verein Köln</title>
+
+	{#if data.siteSettings?.logoUrl}
+		<link rel="icon" href={data.siteSettings.logoUrl} />
+	{/if}
 </svelte:head>
 
 <Toaster />
@@ -122,8 +126,10 @@
 
 		max-width: 1200px;
 
-		margin: 0 2.5rem;
+		margin: 0 auto;
+		padding: 0 2.5rem;
 		gap: 2.5rem;
+		box-sizing: content-box;
 
 		@include max-md {
 			grid-template-columns: 1fr;
