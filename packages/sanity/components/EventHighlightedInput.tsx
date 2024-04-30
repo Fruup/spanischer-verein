@@ -13,28 +13,25 @@ export default function (props: BooleanInputProps) {
     </>
   )
 
-  const isOk = numHighlightedEvents && numHighlightedEvents <= MAX_HIGHLIGHTED_EVENTS
+  const isOk = numHighlightedEvents == null || numHighlightedEvents <= MAX_HIGHLIGHTED_EVENTS
   const tone = isOk ? 'positive' : 'caution'
   const text = isOk
     ? 'Alle hervorgehobenen Events werden auf der Startseite angezeigt, sobald sie in der Vergangenheit liegen.'
     : 'Es sind zu viele Events hervorgehoben. Nicht alle werden auf der Startseite angezeigt.'
 
-  const notice =
-    numHighlightedEvents != null ? (
-      <Card marginTop={2} padding={3} tone={tone} style={{fontSize: '0.9em'}}>
-        <Flex gap={2}>
-          <div>{count}</div>
-          <div>{text}</div>
-        </Flex>
-      </Card>
-    ) : (
-      <></>
-    )
+  const notice = (
+    <Card marginTop={2} padding={3} tone={tone} style={{fontSize: '0.9em'}}>
+      <Flex gap={2}>
+        <div>{count}</div>
+        <div>{text}</div>
+      </Flex>
+    </Card>
+  )
 
   return (
     <>
       {props.renderDefault(props)}
-      {notice}
+      {numHighlightedEvents != null && notice}
     </>
   )
 }
