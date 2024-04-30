@@ -47,14 +47,12 @@
 			<h3 class="heading-3">Vergangene Highlights</h3>
 		</div>
 
-		{#if pastHighlights.length > 0}
-			<EventsOverview events={pastHighlights} />
+		<EventsOverview events={pastHighlights} />
 
-			<Note>
-				Um weitere vergangene Events zu entdecken,<br />
-				nutze unseren <button class="calendar-button" on:click={jumpToCalendar}>Kalender</button>.
-			</Note>
-		{/if}
+		<Note>
+			Um weitere vergangene Events zu entdecken,<br />
+			nutze unseren <button class="calendar-button" on:click={jumpToCalendar}>Kalender</button>.
+		</Note>
 	{/if}
 {:else}
 	<div class="loader-container">
