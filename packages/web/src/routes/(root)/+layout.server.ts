@@ -2,6 +2,8 @@ import { sanityApi } from '$lib/sanity/client'
 import { setLocale } from '$lib/services/locale'
 import { pick } from '$lib/helpers/pick'
 
+const cache: Record<string, any> = {}
+
 export const load = async ({ request, url }) => {
 	const locales = (request.headers.get('Accept-Language')?.split(',') ?? []).map((lang) => {
 		const to = lang.indexOf(';')
@@ -23,6 +25,9 @@ export const load = async ({ request, url }) => {
 	const leftHeaderImageIndex = pick(headerImages ?? [])?.index ?? 0
 	const rightHeaderImageIndex = pick(headerImages ?? [], [leftHeaderImageIndex])?.index ?? 0
 
+	const pastHighlights = cache['pastHighlights'] || (await sanityApi.getPastHighlights())
+	cache['pastHighlights'] = pastHighlights
+
 	return {
 		locales,
 		navigationTree: await sanityApi.getNavigationTree(),
@@ -30,6 +35,7 @@ export const load = async ({ request, url }) => {
 		events: await sanityApi.getEventsOverview({ year, month }),
 		leftHeaderImageIndex,
 		rightHeaderImageIndex,
+		pastHighlights,
 		// year,
 		// month,
 	}
