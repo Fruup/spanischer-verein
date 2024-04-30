@@ -20,6 +20,10 @@
 		month: 'long',
 		year: 'numeric',
 	})
+
+	function jumpToCalendar() {
+		document.querySelector('#calendar')?.scrollIntoView({ behavior: 'smooth' })
+	}
 </script>
 
 <h3 class="current-heading">
@@ -44,7 +48,10 @@
 
 		<EventsOverview events={pastHighlights} />
 
-		<p>TBD</p>
+		<p class="calendar-notice">
+			Um weitere vergangene Events zu entdecken,<br />
+			nutze unseren <button class="calendar-button" on:click={jumpToCalendar}>Kalender</button>.
+		</p>
 	{/if}
 {:else}
 	<div class="loader-container">
@@ -53,6 +60,7 @@
 {/if}
 
 <style lang="scss">
+	@use 'sass:color';
 	@import 'vars';
 
 	.current-heading {
@@ -95,6 +103,30 @@
 
 		:global(> *) {
 			margin: 0;
+		}
+	}
+
+	.calendar-notice {
+		color: var(--color-text-1);
+		text-align: center;
+		margin-top: 3rem;
+
+		.calendar-button {
+			text-decoration: underline;
+			background: none;
+			border: none;
+			text-decoration-color: $color-accent;
+			font-size: 1em;
+			padding: 0;
+			margin: 0;
+			display: inline;
+			color: inherit;
+			cursor: pointer;
+
+			&:hover,
+			&:focus {
+				color: $color-accent;
+			}
 		}
 	}
 </style>
