@@ -1,6 +1,6 @@
 import {PortableTextBlock, SanityDocument, defineField, defineType, Slug, Image} from 'sanity'
 import {CalendarIcon} from '@sanity/icons'
-import EventHighlightedInput from '../components/EventHighlightedInput'
+import EventHighlightedInput, {MAX_HIGHLIGHTED_EVENTS} from '../components/EventHighlightedInput'
 
 const mainFields = [
   defineField({
@@ -78,7 +78,7 @@ const publishingFields = [
   defineField({
     name: 'highlighted',
     title: 'Hervorheben',
-    description: 'Wenn aktiviert, wird dieses Event auf der Startseite hervorgehoben.',
+    description: `Wenn aktiviert, wird dieses Event auf der Startseite hervorgehoben, sobald es in der Vergangenheit liegt. Maximal ${MAX_HIGHLIGHTED_EVENTS} Events sollten hervorgehoben werden.`,
     type: 'boolean',
     group: 'publishing',
     initialValue: false,

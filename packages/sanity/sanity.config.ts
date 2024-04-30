@@ -3,7 +3,7 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {presentationTool} from '@sanity/presentation'
 import {schemaTypes} from './schemas'
-import {MenuIcon} from '@sanity/icons'
+import {MenuIcon, CalendarIcon} from '@sanity/icons'
 import {
   createDeskHierarchy,
   hierarchicalDocumentList,
@@ -45,6 +45,11 @@ const shared = {
             //   .title('Zukünftige Events')
             //   .icon(CalendarIcon)
             //   .child(S.documentTypeList('event').filter('dateTime(eventTime) > dateTime(now())')),
+
+            S.listItem()
+              .title('Hervorgehobene Events')
+              .icon(CalendarIcon)
+              .child(S.documentTypeList('event').filter('highlighted == true')),
 
             // S.documentTypeListItem('location'),
 
