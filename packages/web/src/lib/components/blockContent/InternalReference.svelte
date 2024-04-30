@@ -37,7 +37,8 @@
 	@import 'vars';
 
 	.internal-reference {
-		padding: 0.25rem 0.75rem;
+		padding: 0.125rem 0.4rem;
+		font-size: 0.9em;
 
 		background-color: color.adjust($color-background, $lightness: -5%);
 

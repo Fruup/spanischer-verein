@@ -62,7 +62,7 @@
 
 	<div class="info">
 		<div class="event-time-container">
-			<IconTime size={0.7} />
+			<IconTime />
 			<EventTime time={event.eventTime} />
 		</div>
 
