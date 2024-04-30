@@ -3,7 +3,7 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {presentationTool} from '@sanity/presentation'
 import {schemaTypes} from './schemas'
-import {MenuIcon} from '@sanity/icons'
+import {MenuIcon, CalendarIcon} from '@sanity/icons'
 import {
   createDeskHierarchy,
   hierarchicalDocumentList,
@@ -22,6 +22,17 @@ const shared = {
 
   // apiHost: 'http://sanity.local',
 
+  document: {
+    // Only allow some actions on siteSettings.
+    actions: (prev, {schemaType}) =>
+      schemaType === 'siteSettings'
+        ? prev.filter(({action}) => {
+            const allowed: (typeof action)[] = ['discardChanges', 'publish', 'restore']
+            return allowed.includes(action)
+          })
+        : prev,
+  },
+
   plugins: [
     structureTool({
       structure: (S, context) =>
@@ -34,6 +45,11 @@ const shared = {
             //   .title('Zukünftige Events')
             //   .icon(CalendarIcon)
             //   .child(S.documentTypeList('event').filter('dateTime(eventTime) > dateTime(now())')),
+
+            S.listItem()
+              .title('Hervorgehobene Events')
+              .icon(CalendarIcon)
+              .child(S.documentTypeList('event').filter('highlighted == true')),
 
             // S.documentTypeListItem('location'),
 
@@ -87,9 +103,14 @@ const shared = {
     }),
     hierarchicalDocumentList(),
   ],
-
   schema: {
     types: [...schemaTypes, hierarchyTree],
+  },
+  scheduledPublishing: {
+    enabled: false,
+  },
+  unstable_tasks: {
+    enabled: false,
   },
 } satisfies Partial<Config>
 
@@ -101,6 +122,12 @@ const developmentWorkspace = defineConfig({
   basePath: '/development',
 
   dataset: 'development',
+
+  plugins: [
+    ...shared.plugins,
+    // Add development plugins here
+    visionTool(),
+  ],
 })
 
 const defaultWorkspace = defineConfig({

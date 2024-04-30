@@ -6,6 +6,8 @@
 	import type { NavigationItem } from './types'
 	import SiteLogo from './SiteLogo.svelte'
 	import SiteMenu from './SiteMenu.svelte'
+	import SocialLinks from './SocialLinks.svelte'
+	import { fly } from 'svelte/transition'
 
 	export let _items: NavigationItem[]
 	export { _items as items }
@@ -28,23 +30,53 @@
 	function closeMainMenu() {
 		history.back()
 	}
+
+	const transition = {
+		x: 100,
+		duration: 1000,
+		opacity: 0,
+	}
 </script>
 
 <header>
 	<SiteLogo />
+	<div id="scroll-to-marker" />
 	<SiteHeading />
 	<SiteMenu {items} {openMainMenu} />
+	<SocialLinks />
 
 	{#if leftImageUrl}
-		<div class="image left">
-			<img src={leftImageUrl} alt="" />
-		</div>
+		{@const x = -transition.x}
+		{@const duration = transition.duration}
+		{@const opacity = transition.opacity}
+		{@const delayOffset = 0}
+
+		{#each [leftImageUrl] as url (url)}
+			<div
+				in:fly={{ x, duration, delay: duration / 2 + delayOffset, opacity }}
+				out:fly={{ duration, delay: delayOffset, opacity }}
+				class="image left"
+			>
+				<img src={url} alt="" />
+			</div>
+		{/each}
 	{/if}
 
 	{#if rightImageUrl}
-		<div class="image right">
-			<img src={rightImageUrl} alt="" />
-		</div>
+		{@const x = transition.x}
+		{@const duration = transition.duration}
+		{@const opacity = transition.opacity}
+		{@const delayOffset = duration / 4}
+
+		{#each [rightImageUrl] as url (url)}
+			<div
+				in:fly={{ x, duration, delay: duration / 2 + delayOffset, opacity }}
+				out:fly={{ duration, delay: delayOffset, opacity }}
+				class="image right"
+			>
+				<img src={url} alt="" />
+			</div>
+		{/each}
 	{/if}
 </header>
 
@@ -57,6 +89,7 @@
 		position: relative;
 
 		overflow: visible;
+		overflow-x: clip;
 
 		padding: 2rem;
 		padding-bottom: 4rem;
@@ -102,6 +135,17 @@
 				}
 			}
 		}
+
+		:global(.social-links) {
+			position: absolute;
+			bottom: 2rem;
+			right: 2rem;
+		}
+	}
+
+	#scroll-to-marker {
+		visibility: hidden;
+		height: 0;
 	}
 
 	@include max-md {

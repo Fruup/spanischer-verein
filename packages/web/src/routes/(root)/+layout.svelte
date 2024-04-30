@@ -11,6 +11,12 @@
 	import { cubicOut } from 'svelte/easing'
 	import Footer from './Footer.svelte'
 	import MobileCalendar from './MobileCalendar.svelte'
+	import { beforeNavigate } from '$app/navigation'
+	import type { RouteId as ContentPageRouteId } from './[...pageUrl]/$types'
+	import type { RouteId as EventPageRouteId } from './event/[slug]/$types'
+	import type { RouteId as HomeRouteId } from './$types'
+	import { pick } from '$lib/helpers/pick'
+	import { Toaster } from 'svelte-french-toast'
 
 	export let data
 
@@ -22,14 +28,49 @@
 		date: new Date(e.eventTime),
 	}))
 
-	$: leftImageUrl = data.siteSettings.headerImageUrlLeft
-	$: rightImageUrl = data.siteSettings.headerImageUrlRight
-	$: mail = data.siteSettings.contactEmail ?? 'info@spanischer-verein.com'
+	$: headerImages = data.siteSettings?.headerImageUrls ?? []
+	$: mail = data.siteSettings?.contactEmail ?? 'info@spanischer-verein.com'
+	$: imprintPageSlug = siteSettings?.imprintPageSlug
+	$: privacyUrl = siteSettings?.privacyPageSlug && `/${siteSettings.privacyPageSlug}`
+
+	/**
+	 * Rotate header images on page navigation.
+	 */
+
+	let imageIndexLeft = data.leftHeaderImageIndex
+	let imageIndexRight = data.rightHeaderImageIndex
+
+	$: leftImageUrl = headerImages.at(imageIndexLeft)
+	$: rightImageUrl = headerImages.at(imageIndexRight)
+
+	const changeImageOn: (ContentPageRouteId | HomeRouteId | EventPageRouteId)[] = [
+		'/(root)',
+		'/(root)/[...pageUrl]',
+		'/(root)/event/[slug]',
+	]
+
+	beforeNavigate(({ from, to }) => {
+		if (from?.url.toString() === to?.url.toString()) return
+
+		// @ts-ignore
+		if (!changeImageOn.includes(to?.route?.id)) return
+
+		const exclude = [imageIndexLeft, imageIndexRight]
+		imageIndexLeft = pick(headerImages, exclude)?.index ?? imageIndexLeft
+		exclude.push(imageIndexLeft)
+		imageIndexRight = pick(headerImages, exclude)?.index ?? imageIndexRight
+	})
 </script>
 
 <svelte:head>
 	<title>Spanischer Verein Köln</title>
+
+	{#if data.siteSettings?.logoUrl}
+		<link rel="icon" href={data.siteSettings.logoUrl} />
+	{/if}
 </svelte:head>
+
+<Toaster />
 
 <!-- <SkipNavigation /> -->
 
@@ -46,7 +87,7 @@
 
 	<aside>
 		<div class="aside-content">
-			<h3 class="heading-2">Kalender</h3>
+			<h3 id="calendar" class="heading-3">Kalender</h3>
 
 			<p class="calendar-tutorial">
 				💡 Navigiere im Kalender, um vergangene Veranstaltungen zu durchstöbern.
@@ -58,7 +99,7 @@
 
 			<h3 class="heading-2">Mitmachen</h3>
 
-			<ParticipateSection {mail} />
+			<ParticipateSection {mail} {privacyUrl} />
 
 			<!-- <PageSearch /> -->
 		</div>
@@ -75,7 +116,7 @@
 	<Divider />
 </div>
 
-<Footer imprintUrl="/{siteSettings.imprintPageSlug}" />
+<Footer imprintUrl={imprintPageSlug && `/${imprintPageSlug}`} {privacyUrl} />
 
 <style lang="scss">
 	@use 'sass:color';
@@ -89,11 +130,13 @@
 		max-width: 1200px;
 
 		margin: 0 auto;
+		padding: 0 2.5rem;
 		gap: 2.5rem;
+		box-sizing: content-box;
 
 		@include max-md {
 			grid-template-columns: 1fr;
-			padding: 0 2rem;
+			// padding: 0 2rem;
 		}
 
 		@include max-sm {

@@ -6,7 +6,7 @@ import type { PortableTextBlock } from '@portabletext/types'
 declare global {
 	namespace App {
 		interface Error {
-			errorCode: 'NOT_FOUND'
+			errorCode: 'NOT_FOUND' | 'SEND_EMAIL_FAILED' | 'INVALID_PARAMETERS'
 		}
 
 		// interface Locals {}
@@ -34,13 +34,3 @@ declare global {
 }
 
 export {}
-
-declare module '*&imagetools' {
-	/**
-	 * actual types
-	 * - code https://github.com/JonasKruckenberg/imagetools/blob/main/packages/core/src/output-formats.ts
-	 * - docs https://github.com/JonasKruckenberg/imagetools/blob/main/docs/guide/getting-started.md#metadata
-	 */
-	const out
-	export default out
-}

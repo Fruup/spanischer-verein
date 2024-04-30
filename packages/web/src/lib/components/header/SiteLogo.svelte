@@ -1,13 +1,15 @@
 <script lang="ts">
-	// @ts-ignore
-	import logo from '$assets/logo-l.png?format=webp&w=256&imagetools'
+	import { page } from '$app/stores'
+	import fallback from '$assets/logo-l.png?format=webp&w=200&imagetools'
+
+	const logo = $page.data.siteSettings?.logoUrl || fallback
 </script>
 
 <a href="/">
 	<img
 		src={logo}
 		height="200px"
-		alt="Logo saying 'Interkulturelle Zentren Köln, Antonio Machado'"
+		alt="Website-Logo 'Interkulturelle Zentren Köln, Antonio Machado'"
 	/>
 </a>
 

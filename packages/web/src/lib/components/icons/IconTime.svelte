@@ -3,7 +3,7 @@
 </script>
 
 <svg
-	height="{size}lh"
+	height="{size}em"
 	viewBox="0 0 24 24"
 	fill="none"
 	stroke="currentColor"

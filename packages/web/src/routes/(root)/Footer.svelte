@@ -3,8 +3,10 @@
 	import supporter1 from '$assets/integrationszentrum-koeln.png?format=webp&w=256&imagetools'
 	import supporter2 from '$assets/stadt-koeln.svg'
 	import SiteLogo from '$lib/components/header/SiteLogo.svelte'
+	import { socialLinks } from '$lib/components/header/SocialLinks.svelte'
 
-	export let imprintUrl: string
+	export let imprintUrl: string | undefined
+	export let privacyUrl: string | undefined
 </script>
 
 <footer>
@@ -14,7 +16,22 @@
 			<ul>
 				<!-- TODO(v2): make this configurable -->
 				<li><a href="/">Home</a></li>
-				<li><a href={imprintUrl}>Impressum</a></li>
+
+				{#if imprintUrl}
+					<li><a href={imprintUrl}>Impressum</a></li>
+				{/if}
+
+				{#if privacyUrl}
+					<li><a href={privacyUrl}>Datenschutz</a></li>
+				{/if}
+
+				{#each socialLinks as { name, url: href }}
+					<li>
+						<a {href} target="_blank" rel="noreferrer nofollow">
+							{name[0].toUpperCase() + name.slice(1)}
+						</a>
+					</li>
+				{/each}
 			</ul>
 		</nav>
 	</div>

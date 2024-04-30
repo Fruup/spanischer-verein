@@ -4,7 +4,10 @@ import createImageUrlBuilder from '@sanity/image-url'
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import type { PortableTextMarkDefinition } from '@portabletext/types'
 import type { PageSchema } from '@spanischer-verein/sanity/schemas/page'
-import type { SiteSettingsSchema } from '@spanischer-verein/sanity/schemas/siteSettings'
+import type {
+	SecretsSchema,
+	SiteSettingsSchema,
+} from '@spanischer-verein/sanity/schemas/siteSettings'
 import type { NavigationItem } from '$lib/components/header/types'
 import { env } from '$env/dynamic/private'
 
@@ -22,30 +25,7 @@ export const sanityClient = createClient({
 const imageUrlBuilder = createImageUrlBuilder(sanityClient)
 
 export const sanityApi = {
-	// getEventsOverview: async () => {
-	// 	interface Result
-	// 		extends Pick<EventSchema, 'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'> {
-	// 		slug: string
-	// 	}
-
-	// 	return await sanityClient.fetch<Result[]>(
-	// 		`*[
-	// 			_type == "event" &&
-	// 			(
-	// 				!defined(publishedAt) ||
-	// 				dateTime(now()) >= dateTime(publishedAt)
-	// 			)
-	// 		]{
-	// 			title,
-	// 			"slug": slug.current,
-	// 			eventTime,
-	// 			eventLocation,
-	// 			eventAdmission,
-	// 		}`,
-	// 	)
-	// },
-
-	getEventsOverview: async (options: { year: number; month: number }) => {
+	async getEventsOverview(options: { year: number; month: number }) {
 		interface Result
 			extends Pick<EventSchema, 'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'> {
 			mainImage: SanityImageSource
@@ -88,18 +68,58 @@ export const sanityApi = {
 
 		const transformed = events.map((event) => ({
 			...event,
-			imageUrl: imageUrlBuilder
-				.image(event.mainImage)
-				.width(512)
-				.crop('focalpoint')
-				.format('webp')
-				.url(),
+			imageUrl:
+				event.mainImage &&
+				imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
 		}))
 
 		return transformed
 	},
 
-	getEvent: async (slug: string) => {
+	async getPastHighlights() {
+		interface Result
+			extends Pick<EventSchema, 'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'> {
+			mainImage: SanityImageSource
+			slug: string
+			mainImageMeta: {
+				prominentColor: string
+				dimensions: {
+					height: number
+					width: number
+				}
+			}
+		}
+
+		const events = await sanityClient.fetch<Result[]>(
+			`*[
+				_type == "event" &&
+				highlighted == true &&
+				dateTime(eventTime) < dateTime(now())
+			]{
+				title,
+				"slug": slug.current,
+				eventTime,
+				eventLocation,
+				eventAdmission,
+				mainImage,
+				"mainImageMeta": {
+					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
+					"dimensions": mainImage.asset->metadata.dimensions,
+				},
+			} | order(eventTime desc)`,
+		)
+
+		const transformed = events.map((event) => ({
+			...event,
+			imageUrl:
+				event.mainImage &&
+				imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
+		}))
+
+		return transformed
+	},
+
+	async getEvent(slug: string) {
 		const result = await sanityClient.fetch<EventSchema | undefined>(
 			`*[_type == "event" && slug.current == "${slug}"][0]{
 				...,
@@ -129,7 +149,7 @@ export const sanityApi = {
 		}
 	},
 
-	getNavigationTree: async () => {
+	async getNavigationTree() {
 		interface FlatTreeItem {
 			_key: string
 			parent: string | null
@@ -191,7 +211,7 @@ export const sanityApi = {
 		return tree
 	},
 
-	getPage: async (pathname: string) => {
+	async getPage(pathname: string) {
 		const slug = pathname.split('/').at(-1)
 
 		const page = await sanityClient.fetch<PageSchema | undefined>(`
@@ -239,53 +259,67 @@ export const sanityApi = {
 		return page
 	},
 
-	getSiteSettings: async () => {
-		type Result = Pick<SiteSettingsSchema, 'donationLink' | 'contactEmail'> & {
-			imprintPageSlug?: string
-			headerImageLeft?: SanityImageSource
-			headerImageRight?: SanityImageSource
-		}
-
-		const settings = await sanityClient.fetch<Result | null>(`
+	async getSiteSettings() {
+		const settings = await sanityClient.fetch<
+			| (Pick<SiteSettingsSchema, 'donationLink' | 'contactEmail'> & {
+					logo: SanityImageSource
+					headerImages?: SanityImageSource[]
+					imprintPageSlug?: string
+					privacyPageSlug?: string
+			  })
+			| null
+		>(`
 			*[_id == "siteSettings"][0]{
-				headerImageLeft,
-				headerImageRight,
+				logo,
+				headerImages,
 				donationLink,
 				"imprintPageSlug": imprintPage->slug.current,
+				"privacyPageSlug": privacyPage->slug.current,
 				contactEmail,
 			}
 		`)
 
-		if (!settings) {
-			return {
-				donationLink: '',
-			} satisfies Result
-		}
-
-		let headerImageUrlLeft: string | undefined
-		if (settings.headerImageLeft) {
-			headerImageUrlLeft = imageUrlBuilder
-				.image(settings.headerImageLeft)
-				.height(512)
-				.format('webp')
-				.url()
-		}
-
-		let headerImageUrlRight: string | undefined
-		if (settings.headerImageRight) {
-			headerImageUrlRight = imageUrlBuilder
-				.image(settings.headerImageRight)
-				.height(512)
-				.format('webp')
-				.url()
-		}
+		if (!settings) return null
 
 		return {
 			donationLink: settings.donationLink,
 			imprintPageSlug: settings.imprintPageSlug,
-			headerImageUrlLeft,
-			headerImageUrlRight,
+			privacyPageSlug: settings.privacyPageSlug,
 			contactEmail: settings.contactEmail,
+			headerImageUrls: settings.headerImages?.map((image) =>
+				imageUrlBuilder.image(image).height(512).format('webp').url(),
+			),
+			logoUrl: imageUrlBuilder.image(settings.logo).width(200).format('webp').url(),
+		}
+	},
+
+	async getNewsletterSubscriptionRecipient() {
+		const settings = await sanityClient.fetch<Pick<
+			SiteSettingsSchema,
+			'newsletterSubscriptionRecipient'
+		> | null>(`
+			*[_id == "siteSettings"][0]{
+				newsletterSubscriptionRecipient,
+			}
+		`)
+
+		return settings?.newsletterSubscriptionRecipient
+	},
+
+	async getMailingInfo() {
+		const settings = await sanityClient.fetch<Pick<SiteSettingsSchema, 'mailingInfo'> | null>(`
+			*[_id == "siteSettings"][0]{
+				mailingInfo,
+			}
+		`)
+
+		const secrets = await sanityClient.fetch<SecretsSchema | null>(`*[_id == $id][0]`, {
+			id: 'secrets.spanischer-verein' satisfies SecretsSchema['_id'],
+		})
+
+		return {
+			...settings?.mailingInfo,
+			...secrets?.secrets,
 		}
 	},
 }
