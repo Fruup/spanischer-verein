@@ -1,58 +1,80 @@
-import {BooleanInputProps, SanityClient, useClient} from 'sanity'
-import {useToast} from '@sanity/ui'
-import {useEffect} from 'react'
+import {BooleanInputProps, useClient} from 'sanity'
+import {useEffect, useState} from 'react'
+import {Card, Grid} from '@sanity/ui'
 
-const MAX_HIGHLIGHTED_EVENTS = 1
-
-async function bla(options: {
-  client: SanityClient
-  toast: ReturnType<typeof useToast>
-  excludeId: string
-}) {
-  const {client, toast, excludeId} = options
-
-  const highlightedEvents = await client.fetch<any[]>(
-    `*[
-			_type == "event" &&
-			highlighted == true
-		]`,
-    {excludeId},
-  )
-
-  let count = highlightedEvents.length
-
-  highlightedEvents.forEach(({_id}) => {
-    if (
-      _id.startsWith('drafts.') &&
-      highlightedEvents.some(({_id}) => _id === _id.slice('drafts.'.length))
-    ) {
-      count--
-    }
-  })
-
-  console.log({count}, highlightedEvents)
-  // console.log(await client.fetch(`*[_type == "event" && highlighted == true]`))
-
-  if (count > MAX_HIGHLIGHTED_EVENTS) {
-    toast.push({
-      status: 'warning',
-      title: 'Zu viele hervorgehobene Events',
-      description: `Es können maximal ${MAX_HIGHLIGHTED_EVENTS} Events hervorgehoben werden.`,
-      duration: 0,
-    })
-  }
-}
+const MAX_HIGHLIGHTED_EVENTS = 6
 
 export default function (props: BooleanInputProps) {
+  const numHighlightedEvents = useHighlightedCount()
+
+  const count = (
+    <>
+      ({numHighlightedEvents}/{MAX_HIGHLIGHTED_EVENTS})
+    </>
+  )
+
+  return (
+    <>
+      {props.renderDefault(props)}
+
+      {numHighlightedEvents && numHighlightedEvents <= MAX_HIGHLIGHTED_EVENTS && (
+        <Card marginTop={2} padding={3} tone="positive" style={{fontSize: '0.9em'}}>
+          {count} Alle hervorgehobenen Events werden auf der Startseite angezeigt.
+        </Card>
+      )}
+
+      {numHighlightedEvents && numHighlightedEvents > MAX_HIGHLIGHTED_EVENTS && (
+        <Card marginTop={2} padding={3} tone="caution" style={{fontSize: '0.9em'}}>
+          {count} Es sind zu viele Events hervorgehoben. Nicht alle werden auf der Startseite
+          angezeigt.
+        </Card>
+      )}
+    </>
+  )
+}
+
+function useHighlightedCount() {
   const client = useClient({apiVersion: '2021-06-07'})
-  const toast = useToast()
+  const [numHighlightedEvents, setNumHighlightedEvents] = useState<number | null>(null)
+
+  const query = `*[
+    _type == "event" &&
+    highlighted == true &&
+    !(_id in path("drafts.**"))
+  ]`
+
+  const listener = client.listen<any[]>(
+    query,
+    {},
+    {visibility: 'query', includeResult: false, includePreviousRevision: false},
+  )
+
+  let timer: NodeJS.Timeout | null = null
+
+  function updateCount() {
+    client.fetch<any[]>(query).then((a) => {
+      console.log(a)
+      setNumHighlightedEvents(a.length)
+    })
+  }
 
   useEffect(() => {
-    const excludeId = window.location.pathname.slice(window.location.pathname.lastIndexOf(';') + 1)
-    console.log(excludeId)
+    updateCount()
 
-    bla({client, toast, excludeId})
-  }, [props.value])
+    const subscription = listener.subscribe(() => {
+      if (timer) clearTimeout(timer)
+      timer = setTimeout(updateCount, 500)
+    })
 
-  return props.renderDefault(props)
+    return () => {
+      subscription.unsubscribe()
+
+      if (timer) {
+        clearTimeout(timer)
+        timer = null
+      }
+    }
+  }, [])
+
+  return numHighlightedEvents
 }
