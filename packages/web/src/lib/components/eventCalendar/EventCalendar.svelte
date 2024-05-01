@@ -4,18 +4,10 @@
 	import { type EventCalendarItem } from './helpers'
 	import EventCalendarMonth from './EventCalendarMonth.svelte'
 	import { locale } from '$lib/services/locale'
-	import { onMount } from 'svelte'
 	import { page } from '$app/stores'
-	import { goto } from '$app/navigation'
-	import { browser } from '$app/environment'
 	import MonthSelector from './MonthSelector.svelte'
 
 	export let events: EventCalendarItem[]
-
-	// let selected: { year: number; month: number } = {
-	// 	year: new Date().getFullYear(),
-	// 	month: new Date().getMonth() + 1,
-	// }
 
 	$: selected = {
 		year: Number($page.params.year) || new Date().getFullYear(),
@@ -48,33 +40,10 @@
 		setMonth(selected.month)
 		setYear(selected.year)
 	}
-
-	const bla = () => {
-		selected = {
-			year: $months[0].value.year,
-			month: $months[0].value.month,
-		}
-	}
-
-	// TODO: Circular dependency???
-	$: if ($months) {
-		// bla()
-	}
-
-	$: if (browser && selected) {
-		// goto(`?t=${selected.year}-${selected.month.toString().padStart(2, '0')}`, {
-		// 	replaceState: true,
-		// 	noScroll: true,
-		// })
-	}
 </script>
 
 <div class="calendar" use:melt={$calendar}>
 	<div class="heading" use:melt={$heading}>
-		<!-- <button type="button" class="left" use:melt={$prevButton}>
-			<IconAngle direction="left" />
-		</button> -->
-
 		<a
 			href="/archiv/{prev.year}-{prev.month.toString().padStart(2, '0')}"
 			class="left"
@@ -85,10 +54,6 @@
 		</a>
 
 		<MonthSelector bind:value={selected} />
-
-		<!-- <button class="right" use:melt={$nextButton}>
-			<IconAngle direction="right" />
-		</button> -->
 
 		<a
 			href="/archiv/{next.year}-{next.month.toString().padStart(2, '0')}"
@@ -109,14 +74,7 @@
 	</div>
 
 	{#each $months as month}
-		<EventCalendarMonth
-			{events}
-			{cell}
-			{grid}
-			{month}
-			isDateDisabled={$isDateDisabled}
-			frozen={false}
-		/>
+		<EventCalendarMonth {events} {cell} {grid} {month} isDateDisabled={$isDateDisabled} />
 	{/each}
 </div>
 
@@ -200,16 +158,12 @@
 
 		aspect-ratio: 1;
 		height: auto;
-		// border: 0.75px solid grey;
 
 		&:not(.active) {
 			opacity: 0.5;
 		}
 
 		&.today {
-			// background-color: #ff7700;
-			// box-shadow: inset 0 0 0 2px #ff7700;
-			// color: white;
 			text-decoration: underline;
 			font-weight: bold;
 			border: 1px solid grey;

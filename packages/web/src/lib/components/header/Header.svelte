@@ -21,16 +21,6 @@
 
 	$: items = [homeItem, ..._items]
 
-	$: isMainMenuOpen = !!$page.state.isMainMenuOpen
-
-	function openMainMenu() {
-		pushState('', { isMainMenuOpen: true })
-	}
-
-	function closeMainMenu() {
-		history.back()
-	}
-
 	const transition = {
 		x: 100,
 		duration: 1000,
@@ -42,7 +32,7 @@
 	<SiteLogo />
 	<div id="scroll-to-marker" />
 	<SiteHeading />
-	<SiteMenu {items} {openMainMenu} />
+	<SiteMenu {items} />
 	<SocialLinks />
 
 	{#if leftImageUrl}
@@ -80,7 +70,7 @@
 	{/if}
 </header>
 
-<MobileMenu isOpen={isMainMenuOpen} {items} close={closeMainMenu} />
+<MobileMenu {items} />
 
 <style lang="scss">
 	@import 'vars';
@@ -90,6 +80,8 @@
 
 		overflow: visible;
 		overflow-x: clip;
+
+		max-height: 100vh;
 
 		padding: 2rem;
 		padding-bottom: 4rem;
@@ -138,8 +130,14 @@
 
 		:global(.social-links) {
 			position: absolute;
-			bottom: 2rem;
-			right: 2rem;
+
+			--gap: 2rem;
+			bottom: var(--gap);
+			right: var(--gap);
+
+			@include max-md {
+				--gap: 1rem;
+			}
 		}
 	}
 

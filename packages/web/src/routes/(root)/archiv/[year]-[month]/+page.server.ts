@@ -1,4 +1,4 @@
-import { sanityApi } from '$lib/sanity/client.js'
+import { sanityApi } from '$lib/sanity/client'
 
 export const load = async ({ params }) => {
 	const year = parseInt(params.year) || new Date().getFullYear()

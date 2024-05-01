@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { melt, type TreeView } from '@melt-ui/svelte'
-	import type { NavigationItem } from './Header.svelte'
 	import { getContext } from 'svelte'
 	import Button from '../Button.svelte'
 	import IconAngle from '../icons/IconAngle.svelte'
-	import { fly } from 'svelte/transition'
 	import { goto } from '$app/navigation'
+	import type { NavigationItem } from './types'
 
 	export let items: NavigationItem[]
 
@@ -14,7 +13,7 @@
 
 	const {
 		elements: { item, group },
-		states: { expanded, selectedItem },
+		states: { expanded },
 		helpers: { isExpanded },
 	} = getContext<TreeView>('mobileMenu')
 
@@ -42,7 +41,7 @@
 			</a>
 
 			{#if hasChildren}
-				<Button size="s" tabindex={-1} icon={IconAngle} on:click={() => toggleExpanded(id)} />
+				<Button size="s" tabindex={-1} icon={IconAngle} onClick={() => toggleExpanded(id)} />
 			{/if}
 		</div>
 

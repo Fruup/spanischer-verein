@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Header from '../../lib/components/header/Header.svelte'
 	import EventCalendar from '$lib/components/eventCalendar/EventCalendar.svelte'
-	import SkipNavigation from '$lib/components/SkipNavigation.svelte'
 	import Divider from './Divider.svelte'
 	import { getEventUrl } from '$lib/helpers/url'
 	import ParticipateSection from './ParticipateSection.svelte'
@@ -17,6 +16,8 @@
 	import type { RouteId as HomeRouteId } from './$types'
 	import { pick } from '$lib/helpers/pick'
 	import { Toaster } from 'svelte-french-toast'
+	import MobileNavigationBar from '$lib/components/navigation/MobileNavigationBar.svelte'
+	import { isMobileMenuOpen } from '$lib/components/header/MobileMenu.svelte'
 
 	export let data
 
@@ -32,6 +33,8 @@
 	$: mail = data.siteSettings?.contactEmail ?? 'info@spanischer-verein.com'
 	$: imprintPageSlug = siteSettings?.imprintPageSlug
 	$: privacyUrl = siteSettings?.privacyPageSlug && `/${siteSettings.privacyPageSlug}`
+
+	let isMobileCalendarOpen = false
 
 	/**
 	 * Rotate header images on page navigation.
@@ -75,6 +78,10 @@
 <!-- <SkipNavigation /> -->
 
 <Header items={data.navigationTree} {leftImageUrl} {rightImageUrl} />
+<MobileNavigationBar
+	bind:isCalendarOpen={isMobileCalendarOpen}
+	bind:isFlyoutOpen={$isMobileMenuOpen}
+/>
 
 <Divider />
 
@@ -93,9 +100,8 @@
 				💡 Navigiere im Kalender, um vergangene Veranstaltungen zu durchstöbern.
 			</p>
 
-			<MobileCalendar {events} />
-
 			<EventCalendar {events} />
+			<MobileCalendar {events} open={isMobileCalendarOpen} />
 
 			<h3 class="heading-2">Mitmachen</h3>
 
@@ -184,6 +190,10 @@
 		top: 1rem;
 		left: 1rem;
 		z-index: 1000;
+	}
+
+	#calendar {
+		margin-bottom: 0;
 	}
 
 	.calendar-tutorial {
