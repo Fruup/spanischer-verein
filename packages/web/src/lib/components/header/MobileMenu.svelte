@@ -1,3 +1,9 @@
+<script context="module" lang="ts">
+	import { writable } from 'svelte/store'
+
+	export const isMobileMenuOpen = writable(false)
+</script>
+
 <script lang="ts">
 	import { createTreeView, melt } from '@melt-ui/svelte'
 	import type { NavigationItem } from './types'
@@ -9,8 +15,6 @@
 	import { fly } from 'svelte/transition'
 
 	export let items: NavigationItem[]
-	export let isOpen = false
-	export let close: (() => void) | undefined
 
 	const treeView = createTreeView({})
 
@@ -19,10 +23,9 @@
 	} = treeView
 
 	setContext('mobileMenu', treeView)
-	setContext('mobileMenuIsOpen', isOpen)
 
 	$: if (browser) {
-		if (isOpen) {
+		if ($isMobileMenuOpen) {
 			document.body.classList.add('no-scroll')
 		} else {
 			document.body.classList.remove('no-scroll')
@@ -30,12 +33,12 @@
 	}
 </script>
 
-{#if isOpen}
+{#if $isMobileMenuOpen}
 	<nav use:melt={$tree} transition:fly={{ x: 50 }} class="mobile-menu">
 		<div class="header">
 			<h3>Navigation</h3>
 
-			<Button icon={IconClose} on:click={close} />
+			<Button icon={IconClose} onClick={() => ($isMobileMenuOpen = false)} />
 		</div>
 
 		<ul class="links" {...$tree}>

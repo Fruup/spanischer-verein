@@ -10,10 +10,6 @@
 
 	border: 2px solid $color-accent;
 	border-radius: 8px;
-
-	@include max-md {
-		width: min-content;
-	}
 }
 
 .heading-2 {

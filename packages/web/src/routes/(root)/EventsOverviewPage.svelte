@@ -74,13 +74,20 @@
 		:global(> *) {
 			margin-top: 0;
 		}
-	}
 
-	.no-events {
-		color: var(--color-text-1);
-		text-align: center;
-		margin-top: 3rem;
-		width: 100%;
+		@include max-md {
+			flex-direction: column;
+			gap: 0.5rem;
+
+			.heading-2 {
+				align-self: flex-start;
+				margin-bottom: 0;
+			}
+
+			.heading-3 {
+				align-self: flex-end;
+			}
+		}
 	}
 
 	.loader-container {
