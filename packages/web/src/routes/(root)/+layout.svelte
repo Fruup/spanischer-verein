@@ -10,6 +10,7 @@
 	import { fly } from 'svelte/transition'
 	import { cubicOut } from 'svelte/easing'
 	import Footer from './Footer.svelte'
+	import MobileCalendar from './MobileCalendar.svelte'
 	import { beforeNavigate } from '$app/navigation'
 	import type { RouteId as ContentPageRouteId } from './[...pageUrl]/$types'
 	import type { RouteId as EventPageRouteId } from './event/[slug]/$types'
@@ -92,9 +93,11 @@
 				💡 Navigiere im Kalender, um vergangene Veranstaltungen zu durchstöbern.
 			</p>
 
+			<MobileCalendar {events} />
+
 			<EventCalendar {events} />
 
-			<h3 class="heading-3">Mitmachen</h3>
+			<h3 class="heading-2">Mitmachen</h3>
 
 			<ParticipateSection {mail} {privacyUrl} />
 
@@ -133,6 +136,11 @@
 
 		@include max-md {
 			grid-template-columns: 1fr;
+			// padding: 0 2rem;
+		}
+
+		@include max-sm {
+			padding: 0 1rem;
 		}
 	}
 
@@ -144,8 +152,14 @@
 		flex-direction: column;
 		gap: 1rem;
 
-		.heading-3 {
+		.heading-2 {
 			margin-bottom: 0;
+		}
+
+		@include max-md {
+			align-items: center;
+			max-width: 500px;
+			margin: auto;
 		}
 	}
 

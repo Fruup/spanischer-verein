@@ -1,6 +1,5 @@
 <script lang="ts">
 	import EventCard from '$lib/components/EventCard.svelte'
-	import { onMount } from 'svelte'
 	import type { PageData } from './$types'
 
 	export let events: PageData['events']
@@ -21,6 +20,8 @@
 </nav>
 
 <style lang="scss">
+	@import 'vars';
+
 	nav {
 		width: 100%;
 	}
@@ -34,10 +35,18 @@
 
 		margin: 0;
 		padding: 0;
+
+		@include max-sm {
+			--num-columns: 1 !important;
+		}
 	}
 
 	li {
 		list-style: none;
+
+		:global(img) {
+			max-height: 50vh;
+		}
 	}
 
 	li,

@@ -9,9 +9,17 @@
 	import SocialLinks from './SocialLinks.svelte'
 	import { fly } from 'svelte/transition'
 
-	export let items: NavigationItem[]
+	export let _items: NavigationItem[]
+	export { _items as items }
 	export let leftImageUrl: string | undefined = undefined
 	export let rightImageUrl: string | undefined = undefined
+
+	const homeItem: NavigationItem = {
+		title: 'Home',
+		href: '/',
+	}
+
+	$: items = [homeItem, ..._items]
 
 	$: isMainMenuOpen = !!$page.state.isMainMenuOpen
 
@@ -138,5 +146,22 @@
 	#scroll-to-marker {
 		visibility: hidden;
 		height: 0;
+	}
+
+	@include max-md {
+		.image {
+			&.left {
+				display: none;
+			}
+
+			&.right {
+				--max-width: 100%;
+				mask-image: linear-gradient(33deg, transparent 0%, transparent 50%, white);
+
+				&::after {
+					display: none;
+				}
+			}
+		}
 	}
 </style>
