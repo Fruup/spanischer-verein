@@ -3,6 +3,7 @@
 	import Note from '$lib/components/Note.svelte'
 	import Loader from '$lib/components/icons/Loader2.svelte'
 	import EventsOverview from './EventsOverview.svelte'
+	import { isMobileCalendarOpen } from './MobileCalendar.svelte'
 
 	export let events: any[]
 	export let pastHighlights: any[]
@@ -23,7 +24,12 @@
 	})
 
 	function jumpToCalendar() {
-		document.querySelector('#calendar')?.scrollIntoView({ behavior: 'smooth' })
+		if (window.matchMedia('(max-width: 768px)').matches) {
+			$isMobileCalendarOpen = true
+		} else {
+			const element = document.querySelector('#calendar')
+			element?.scrollIntoView({ behavior: 'smooth' })
+		}
 	}
 </script>
 

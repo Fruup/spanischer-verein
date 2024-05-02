@@ -3,8 +3,8 @@
 	import { onMount } from 'svelte'
 	import { fly } from 'svelte/transition'
 	import EventTime from './EventTime.svelte'
-	import IconTime from './icons/IconTime.svelte'
 	import { fitParent } from '$lib/helpers/fitParent'
+	import IconCalendar from './icons/IconCalendar.svelte'
 
 	export let event: {
 		title: string
@@ -62,7 +62,7 @@
 
 	<div class="info">
 		<div class="event-time-container">
-			<IconTime />
+			<IconCalendar />
 			<EventTime time={event.eventTime} />
 		</div>
 
@@ -77,6 +77,8 @@
 	$spacing: 10%;
 
 	.event-card {
+		@include shadow;
+
 		display: flex;
 		flex-direction: column;
 
@@ -84,12 +86,13 @@
 		height: 100%;
 		text-align: center;
 
-		border-radius: 24px;
+		// border-radius: 24px;
+		border-radius: var(--border-radius);
 		overflow: hidden;
 
 		--shadow-color: rgba(0, 0, 0, 0.1);
 		border: 1px solid var(--shadow-color);
-		box-shadow: 4px 4px 1px 2px var(--shadow-color);
+		// box-shadow: 4px 4px 1px 2px var(--shadow-color);
 
 		transition: all 100ms ease;
 

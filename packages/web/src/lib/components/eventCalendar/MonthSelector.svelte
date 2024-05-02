@@ -96,7 +96,7 @@
 
 		padding: 0.5em 1em;
 		border: 2px solid $color-accent;
-		border-radius: 8px;
+		border-radius: var(--border-radius);
 
 		cursor: pointer;
 
@@ -118,7 +118,7 @@
 
 		z-index: 1000;
 		background: white;
-		border-radius: 12px;
+		border-radius: var(--border-radius);
 		border: 1px solid var(--color-surface-1);
 
 		@include shadow;
@@ -134,7 +134,7 @@
 		background: none;
 		text-align: left;
 
-		border-radius: 8px;
+		border-radius: var(--border-radius);
 		// border: 1px solid transparent;
 
 		&:hover {

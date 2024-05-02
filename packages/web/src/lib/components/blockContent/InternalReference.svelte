@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { MarkComponentProps } from '@portabletext/svelte'
 	import IconBulb from '../icons/IconBulb.svelte'
-	import IconTime from '../icons/IconTime.svelte'
 	import type { InternalLinkMark } from '@spanischer-verein/sanity/schemas/blockContent'
+	import IconCalendar from '../icons/IconCalendar.svelte'
 
 	export let portableText: MarkComponentProps<InternalLinkMark>
 
@@ -21,7 +21,7 @@
 <a class="internal-reference" {href}>
 	<span class="icon">
 		{#if type === 'event'}
-			<IconTime />
+			<IconCalendar />
 		{:else if type === 'page'}
 			<IconBulb />
 		{/if}

@@ -76,7 +76,7 @@
 		}
 
 		// margin: 0.125em;
-		border-radius: 0.5rem;
+		border-radius: var(--border-radius);
 	}
 
 	a.cell {

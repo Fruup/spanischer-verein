@@ -14,7 +14,7 @@
 	.card {
 		@include surface;
 
-		border-radius: 24px;
+		border-radius: var(--border-radius);
 		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
 		padding: 1rem;
 

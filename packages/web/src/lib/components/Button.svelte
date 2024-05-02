@@ -86,7 +86,7 @@
 		color: white;
 		border: none;
 		padding: 0.75rem 1rem;
-		border-radius: 12px;
+		border-radius: var(--border-radius);
 		cursor: pointer;
 
 		width: fit-content;

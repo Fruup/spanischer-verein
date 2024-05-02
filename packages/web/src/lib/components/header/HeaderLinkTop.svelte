@@ -100,7 +100,7 @@
 		background-color: $color-background;
 
 		border: 1px solid $color-border;
-		border-radius: 12px;
+		border-radius: var(--border-radius);
 
 		z-index: 1000;
 
@@ -117,7 +117,7 @@
 	}
 
 	li a {
-		border-radius: 8px;
+		border-radius: var(--border-radius);
 		padding: 0.125rem;
 
 		&:hover,

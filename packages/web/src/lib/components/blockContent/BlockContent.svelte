@@ -47,6 +47,8 @@
 			max-width: 500px;
 			margin-left: auto;
 			margin-right: auto;
+			border-radius: var(--border-radius);
+			@include shadow;
 		}
 	}
 </style>

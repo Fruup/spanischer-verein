@@ -1,31 +1,20 @@
 <script lang="ts">
 	import IconBurger from '../icons/IconBurger.svelte'
 	import IconCalendar from '../icons/IconCalendar.svelte'
-	import IconClose from '../icons/IconClose.svelte'
 
 	export let isCalendarOpen = false
 	export let isFlyoutOpen = false
+
+	$: hidden = isCalendarOpen || isFlyoutOpen
 </script>
 
-<nav class="mobile-navigation-bar">
+<nav class="mobile-navigation-bar" class:hidden>
 	<button class="primary" on:click={() => (isCalendarOpen = !isCalendarOpen)}>
-		<div class="icon-container">
-			<IconCalendar />
-
-			{#if isCalendarOpen}
-				<!-- <span class="icon-close"><IconClose /></span> -->
-			{/if}
-		</div>
+		<IconCalendar />
 	</button>
 
 	<button class="secondary" on:click={() => (isFlyoutOpen = !isFlyoutOpen)}>
-		<div class="icon-container">
-			<IconBurger />
-
-			{#if isFlyoutOpen}
-				<!-- <span class="icon-close"><IconClose /></span> -->
-			{/if}
-		</div>
+		<IconBurger />
 	</button>
 </nav>
 
@@ -56,6 +45,13 @@
 		@include min-md {
 			display: none;
 		}
+
+		transition: all 200ms ease;
+
+		&.hidden {
+			opacity: 0;
+			translate: 100%;
+		}
 	}
 
 	button {
@@ -76,23 +72,5 @@
 			background: white;
 			color: $color-accent;
 		}
-	}
-
-	.icon-container {
-		position: relative;
-		display: flex;
-	}
-
-	.icon-close {
-		height: fit-content;
-
-		position: absolute;
-		top: 0;
-		right: 0;
-		// font-size: 12px;
-		translate: 50% -50%;
-		color: white;
-		// opacity: 0;
-		// transition: opacity 0.2s;
 	}
 </style>

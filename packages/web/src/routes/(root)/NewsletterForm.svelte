@@ -102,11 +102,11 @@
 			font-size: 0.9em;
 			padding: calc(0.25rem - 8px) 0.25rem;
 			border: 2px solid $color-accent;
-			border-radius: 6px;
+			border-radius: var(--border-radius);
 		}
 
 		:global(button) {
-			border-radius: 8px !important;
+			border-radius: var(--border-radius) !important;
 		}
 
 		.checkbox {

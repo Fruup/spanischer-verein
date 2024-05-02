@@ -1,5 +1,5 @@
 <!-- https://www.svgrepo.com/collection/generica-tiny-interface-icons/1 -->
-<svg height="1lh" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg height="1em" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 	<path
 		d="M12 22.9199C17.5228 22.9199 22 18.4428 22 12.9199C22 7.39707 17.5228 2.91992 12 2.91992C6.47715 2.91992 2 7.39707 2 12.9199C2 18.4428 6.47715 22.9199 12 22.9199Z"
 		stroke="currentColor"

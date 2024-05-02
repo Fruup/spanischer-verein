@@ -10,9 +10,7 @@
 	import { setContext } from 'svelte'
 	import MobileMenuTree from './MobileMenuTree.svelte'
 	import { browser } from '$app/environment'
-	import Button from '../Button.svelte'
-	import IconClose from '../icons/IconClose.svelte'
-	import { fly } from 'svelte/transition'
+	import Drawer from '../ui/Drawer.svelte'
 
 	export let items: NavigationItem[]
 
@@ -33,36 +31,28 @@
 	}
 </script>
 
-{#if $isMobileMenuOpen}
-	<nav use:melt={$tree} transition:fly={{ x: 50 }} class="mobile-menu">
+<Drawer bind:open={$isMobileMenuOpen}>
+	<nav use:melt={$tree} class="mobile-menu">
 		<div class="header">
-			<h3>Navigation</h3>
-
-			<Button icon={IconClose} onClick={() => ($isMobileMenuOpen = false)} />
+			<h3 class="heading">Navigation</h3>
 		</div>
 
 		<ul class="links" {...$tree}>
 			<MobileMenuTree {items} />
 		</ul>
 	</nav>
-{/if}
+</Drawer>
 
 <style lang="scss">
 	@import 'vars';
 
 	.mobile-menu {
-		position: fixed;
-		inset: 0 0 0 auto;
-		z-index: 1000;
-		width: min(100vw, 500px);
-		padding: 3rem;
+		overflow: auto;
+		padding: 1rem;
 
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-
-		background-color: $color-background;
-		@include shadow;
 	}
 
 	.header {
@@ -74,11 +64,15 @@
 	.links {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 0.5rem;
 	}
 
 	ul {
 		padding: 0;
+		margin: 0;
+	}
+
+	.heading {
 		margin: 0;
 	}
 </style>
