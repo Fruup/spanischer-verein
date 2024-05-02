@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ComponentType } from 'svelte'
-	import Loader2 from '$lib/components/icons/Loader2.svelte'
+	import Loader from '$lib/components/icons/Loader.svelte'
 	import type { HTMLButtonAttributes } from 'svelte/elements'
 
 	export let type: HTMLButtonAttributes['type'] = 'button'
@@ -43,7 +43,7 @@
 {#if href}
 	<a {href} class:iconOnly class="size-{size}" class:disabled>
 		{#if showLoader}
-			<Loader2 />
+			<Loader />
 		{:else if icon}
 			<svelte:component this={icon} />
 		{/if}
@@ -61,7 +61,7 @@
 		on:click={handleClick}
 	>
 		{#if showLoader}
-			<Loader2 />
+			<Loader />
 		{:else if icon}
 			<svelte:component this={icon} />
 		{/if}

@@ -102,6 +102,8 @@
 
 		transition: all 100ms ease;
 
+		background: $color-background;
+
 		&:hover {
 			background: $color-accent;
 			color: white;
@@ -109,7 +111,7 @@
 	}
 
 	.menu {
-		font-size: 0.8rem;
+		font-size: 0.9rem;
 
 		max-height: 300px;
 		overflow-y: auto;
@@ -129,7 +131,8 @@
 
 		display: block;
 		width: 100%;
-		padding: 0.5em 1em;
+		padding: 0.25em 0.5em;
+		margin-bottom: 0.25em;
 		border: none;
 		background: none;
 		text-align: left;

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import Loader2 from '$lib/components/icons/Loader2.svelte'
+	import Loader from '$lib/components/icons/Loader.svelte'
 	import { onMount } from 'svelte'
 	import Button from '$lib/components/Button.svelte'
 	import { goto } from '$app/navigation'
@@ -37,7 +37,7 @@
 <div class="page">
 	{#if promise}
 		{#await promise}
-			<Loader2 />
+			<Loader />
 		{:then value}
 			<p>
 				Vielen Dank!<br />

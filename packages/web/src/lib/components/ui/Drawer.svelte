@@ -6,6 +6,7 @@
 
 <Drawer.Root preventScroll={false} bind:open>
 	<Drawer.Portal>
+		<Drawer.Overlay />
 		<Drawer.Content class="drawer-content">
 			<div class="handle" />
 			<slot />

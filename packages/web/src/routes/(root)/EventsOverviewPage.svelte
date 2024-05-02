@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { navigating } from '$app/stores'
 	import Note from '$lib/components/Note.svelte'
-	import Loader from '$lib/components/icons/Loader2.svelte'
+	import Loader from '$lib/components/icons/Loader.svelte'
 	import EventsOverview from './EventsOverview.svelte'
 	import { isMobileCalendarOpen } from './MobileCalendar.svelte'
 
