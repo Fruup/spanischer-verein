@@ -66,6 +66,14 @@
 	@import 'vars';
 
 	footer {
+		--margin: 4rem;
+
+		@include max-sm {
+			--margin: 2rem;
+		}
+	}
+
+	footer {
 		font-size: 0.9rem;
 
 		display: flex;
@@ -74,7 +82,7 @@
 		gap: 2rem;
 
 		min-height: 200px;
-		margin: 4rem;
+		margin: var(--margin);
 
 		@include max-md {
 			flex-direction: column;
