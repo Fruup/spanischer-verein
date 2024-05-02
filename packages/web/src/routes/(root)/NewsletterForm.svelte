@@ -55,7 +55,13 @@
 </script>
 
 <form on:submit|preventDefault={() => {}}>
-	<input class="input-email" name="email" bind:value={email} placeholder="Deine E-Mail..." />
+	<input
+		type="email"
+		class="input-email"
+		name="email"
+		bind:value={email}
+		placeholder="Deine E-Mail..."
+	/>
 
 	{#if showCheckbox}
 		<div class="checkbox" transition:slide={{ duration: 500 }}>
