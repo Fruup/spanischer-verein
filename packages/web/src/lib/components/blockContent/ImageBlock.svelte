@@ -11,13 +11,26 @@
 	const height = width / ratio
 </script>
 
-<div class="image-container">
-	<img src={url} {alt} {width} {height} />
+<!-- One container is used for centering, one for applying border radius and shadow. -->
+<div class="image-container-outer">
+	<div class="image-container-inner">
+		<img src={url} {alt} {width} {height} />
+	</div>
 </div>
 
-<style>
-	.image-container {
+<style lang="scss">
+	@import 'vars';
+
+	.image-container-outer {
 		width: 100%;
+		height: fit-content;
+		overflow: visible !important;
+	}
+
+	.image-container-inner {
+		width: fit-content;
+		height: fit-content;
+		margin: auto;
 
 		text-align: center;
 	}
@@ -26,5 +39,11 @@
 		width: 100%;
 		max-width: 500px;
 		height: auto;
+
+		margin-left: auto;
+		margin-right: auto;
+
+		border-radius: var(--border-radius);
+		@include shadow;
 	}
 </style>

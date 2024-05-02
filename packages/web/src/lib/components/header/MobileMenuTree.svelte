@@ -5,6 +5,7 @@
 	import IconAngle from '../icons/IconAngle.svelte'
 	import { goto } from '$app/navigation'
 	import type { NavigationItem } from './types'
+	import { isMobileMenuOpen } from './MobileMenu.svelte'
 
 	export let items: NavigationItem[]
 
@@ -24,6 +25,11 @@
 			$expanded = $expanded.filter((_id) => _id !== id)
 		}
 	}
+
+	function navigate(href: string) {
+		goto(href)
+		$isMobileMenuOpen = false
+	}
 </script>
 
 {#each items as { href, title, children }, index}
@@ -34,7 +40,7 @@
 		<div class="item">
 			<a
 				use:melt={$item({ id, hasChildren })}
-				on:click|capture|preventDefault|stopPropagation={() => goto(href)}
+				on:click|capture|preventDefault|stopPropagation={() => navigate(href)}
 				{href}
 			>
 				{title}
@@ -46,7 +52,9 @@
 		</div>
 
 		{#if hasChildren}
-			<ul use:melt={$group({ id })} class:shown={$isExpanded(id)}>
+			{@const shown = $isExpanded(id)}
+
+			<ul use:melt={$group({ id })} class:shown>
 				<svelte:self level={level + 1} items={children} shown={$isExpanded(id)} />
 			</ul>
 		{/if}
@@ -79,5 +87,10 @@
 		&:not(.shown) {
 			display: none;
 		}
+	}
+
+	li :global(button) {
+		width: 1.5rem !important;
+		height: 1.5rem !important;
 	}
 </style>

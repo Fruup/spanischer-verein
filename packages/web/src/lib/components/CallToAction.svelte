@@ -28,7 +28,7 @@
 
 		border: 2px solid $color;
 
-		border-radius: 8px;
+		border-radius: var(--border-radius);
 		transition: all 250ms ease;
 		padding: 0.5em 0.66em;
 		padding: calc(0.5em - 2px) 0.5em;

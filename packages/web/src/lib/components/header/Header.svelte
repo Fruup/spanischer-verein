@@ -1,7 +1,5 @@
 <script lang="ts">
 	import MobileMenu from './MobileMenu.svelte'
-	import { page } from '$app/stores'
-	import { pushState } from '$app/navigation'
 	import SiteHeading from './SiteHeading.svelte'
 	import type { NavigationItem } from './types'
 	import SiteLogo from './SiteLogo.svelte'

@@ -41,12 +41,9 @@
 
 		:global(p) {
 			margin: 1rem 0;
-		}
 
-		:global(img) {
-			max-width: 500px;
-			margin-left: auto;
-			margin-right: auto;
+			overflow-wrap: break-word;
+			overflow: auto;
 		}
 	}
 </style>

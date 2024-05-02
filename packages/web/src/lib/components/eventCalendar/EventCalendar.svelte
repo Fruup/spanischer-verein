@@ -90,7 +90,7 @@
 
 		@include surface;
 
-		border-radius: 24px;
+		border-radius: var(--border-radius);
 		box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 0.1);
 
 		--cell-width: 2em;
@@ -121,7 +121,7 @@
 			cursor: pointer;
 
 			border: none;
-			border-radius: 8px;
+			border-radius: var(--border-radius);
 
 			color: white;
 			background-color: $color-accent;
@@ -139,7 +139,7 @@
 		background-color: rgba(0, 0, 0, 0.05);
 
 		margin: 0.5rem 0;
-		border-radius: 12px;
+		border-radius: var(--border-radius);
 	}
 
 	.displayed-time-container {

@@ -9,7 +9,7 @@
 	import { fly } from 'svelte/transition'
 	import { cubicOut } from 'svelte/easing'
 	import Footer from './Footer.svelte'
-	import MobileCalendar from './MobileCalendar.svelte'
+	import MobileCalendar, { isMobileCalendarOpen } from './MobileCalendar.svelte'
 	import { beforeNavigate } from '$app/navigation'
 	import type { RouteId as ContentPageRouteId } from './[...pageUrl]/$types'
 	import type { RouteId as EventPageRouteId } from './event/[slug]/$types'
@@ -33,8 +33,6 @@
 	$: mail = data.siteSettings?.contactEmail ?? 'info@spanischer-verein.com'
 	$: imprintPageSlug = siteSettings?.imprintPageSlug
 	$: privacyUrl = siteSettings?.privacyPageSlug && `/${siteSettings.privacyPageSlug}`
-
-	let isMobileCalendarOpen = false
 
 	/**
 	 * Rotate header images on page navigation.
@@ -79,7 +77,7 @@
 
 <Header items={data.navigationTree} {leftImageUrl} {rightImageUrl} />
 <MobileNavigationBar
-	bind:isCalendarOpen={isMobileCalendarOpen}
+	bind:isCalendarOpen={$isMobileCalendarOpen}
 	bind:isFlyoutOpen={$isMobileMenuOpen}
 />
 
@@ -101,7 +99,7 @@
 			</p>
 
 			<EventCalendar {events} />
-			<MobileCalendar {events} open={isMobileCalendarOpen} />
+			<MobileCalendar {events} />
 
 			<h3 class="heading-2">Mitmachen</h3>
 
@@ -142,7 +140,10 @@
 
 		@include max-md {
 			grid-template-columns: 1fr;
-			// padding: 0 2rem;
+
+			main {
+				margin-bottom: 0;
+			}
 		}
 
 		@include max-sm {
@@ -166,6 +167,14 @@
 			align-items: center;
 			max-width: 500px;
 			margin: auto;
+
+			:global {
+				.calendar,
+				.calendar-tutorial,
+				#calendar {
+					display: none;
+				}
+			}
 		}
 	}
 
@@ -173,6 +182,11 @@
 		width: 2px;
 		height: 100%;
 		background: rgba(0, 0, 0, 0.05);
+
+		@include max-md {
+			width: auto;
+			height: 2px;
+		}
 	}
 
 	main,

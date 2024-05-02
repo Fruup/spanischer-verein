@@ -1,31 +1,29 @@
+<script context="module">
+	import { writable } from 'svelte/store'
+
+	export const isMobileCalendarOpen = writable(false)
+</script>
+
 <script lang="ts">
 	import EventCalendar from '$lib/components/eventCalendar/EventCalendar.svelte'
 	import type { EventCalendarItem } from '$lib/components/eventCalendar/helpers'
-	import { fly } from 'svelte/transition'
+	import Drawer from '$lib/components/ui/Drawer.svelte'
 
-	export let open = false
 	export let events: EventCalendarItem[]
 </script>
 
-{#if open}
-	<div transition:fly={{ x: 10, y: 10, duration: 500 }} class="container">
+<Drawer bind:open={$isMobileCalendarOpen}>
+	<div class="mobile-calendar-container">
 		<EventCalendar {events} />
 	</div>
-{/if}
+</Drawer>
 
 <style lang="scss">
 	@import 'vars';
 
-	.container {
-		// padding: 1rem;
-		border-radius: 24px;
-		z-index: 1000000;
-		position: fixed;
-		bottom: 0;
-		right: 0;
-		margin: 1rem;
-
-		// background-color: white;
-		@include shadow;
+	.mobile-calendar-container :global(.calendar) {
+		background-color: none !important;
+		background: none !important;
+		box-shadow: none !important;
 	}
 </style>

@@ -22,31 +22,43 @@
 {#if admission || eventTime || location}
 	<div class="event-info">
 		{#if eventTime}
-			<div class="item">
+			<div class="icon">
 				<IconTime />
+			</div>
 
+			<div class="content">
 				<EventTime time={eventTime} />
 			</div>
+
+			<div class="dummy" />
 		{/if}
 
 		{#if location}
-			<div class="item">
+			<div class="icon">
 				<IconPin />
+			</div>
 
+			<div class="content">
 				<span>
 					{@html location.replaceAll('\n', '<br />')}
 				</span>
 			</div>
+
+			<div class="dummy" />
 		{/if}
 
 		{#if admission}
-			<div class="item">
+			<div class="icon">
 				<IconCoin />
+			</div>
 
+			<div class="content">
 				<span>
 					{@html admission.replaceAll('\n', '<br />')}
 				</span>
 			</div>
+
+			<div class="dummy" />
 		{/if}
 	</div>
 {/if}
@@ -58,51 +70,25 @@
 		hyphens: auto;
 
 		font-size: 0.8rem;
-		color: #555;
+		color: var(--color-text-1);
 
-		display: flex;
-		flex-direction: row;
-		gap: 1rem;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		gap: 0.5rem;
+		row-gap: 1rem;
 
-		.item {
-			flex: 1 0 0;
+		margin-bottom: 2rem;
 
-			text-align: center;
+		align-items: center;
+
+		.icon {
+			justify-self: end;
 			display: flex;
-			flex-direction: column;
-			gap: 0.5rem;
-
-			font-size: 0.9em;
-			line-height: 1.5;
-			letter-spacing: 0.5px;
+			font-size: 1.5em;
 		}
 
-		:global(.event-marker) {
-			background-color: var(--color-surface-0);
-			padding: 0.5rem;
-			height: fit-content;
-			width: fit-content;
-
-			position: absolute;
-			top: 0;
-			left: 50%;
-			translate: -50% -50%;
-		}
-
-		@media screen and (max-width: 600px) {
-			width: fit-content;
-			margin: auto;
-
-			// flex-direction: column;
-			flex-wrap: wrap;
-
-			> * {
-				min-width: 100px;
-			}
-
-			span:not(:last-of-type) {
-				margin-bottom: 2rem;
-			}
+		.content {
+			justify-self: start;
 		}
 	}
 </style>

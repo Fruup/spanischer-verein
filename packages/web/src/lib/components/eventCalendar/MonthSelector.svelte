@@ -96,11 +96,14 @@
 
 		padding: 0.5em 1em;
 		border: 2px solid $color-accent;
-		border-radius: 8px;
+		border-radius: var(--border-radius);
 
 		cursor: pointer;
 
 		transition: all 100ms ease;
+
+		background: $color-background;
+		color: var(--color-text);
 
 		&:hover {
 			background: $color-accent;
@@ -109,7 +112,7 @@
 	}
 
 	.menu {
-		font-size: 0.8rem;
+		font-size: 0.9rem;
 
 		max-height: 300px;
 		overflow-y: auto;
@@ -118,7 +121,7 @@
 
 		z-index: 1000;
 		background: white;
-		border-radius: 12px;
+		border-radius: var(--border-radius);
 		border: 1px solid var(--color-surface-1);
 
 		@include shadow;
@@ -129,12 +132,13 @@
 
 		display: block;
 		width: 100%;
-		padding: 0.5em 1em;
+		padding: 0.25em 0.5em;
+		margin-bottom: 0.25em;
 		border: none;
 		background: none;
 		text-align: left;
 
-		border-radius: 8px;
+		border-radius: var(--border-radius);
 		// border: 1px solid transparent;
 
 		&:hover {
