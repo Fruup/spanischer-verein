@@ -103,6 +103,7 @@
 		transition: all 100ms ease;
 
 		background: $color-background;
+		color: var(--color-text);
 
 		&:hover {
 			background: $color-accent;

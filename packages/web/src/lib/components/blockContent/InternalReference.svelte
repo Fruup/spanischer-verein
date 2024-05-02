@@ -37,24 +37,26 @@
 	@import 'vars';
 
 	.internal-reference {
-		padding: 0.125rem 0.4rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25ch;
+
+		// eyeballed it
+		padding: 0 0.4em;
+		padding-right: 0.6em;
 		font-size: 0.9em;
+		border-radius: 999px;
 
 		background-color: color.adjust($color-background, $lightness: -5%);
 
-		transition: background-color 200ms ease;
-
-		border-radius: 999px;
-
-		border: 1px solid transparent;
-
 		&:hover {
 			background-color: color.adjust($color-background, $lightness: -10%);
-			border-color: $color-accent;
+			outline: 2px solid $color-accent;
 		}
 	}
 
 	.icon {
 		font-size: 0.8rem;
+		display: contents;
 	}
 </style>
