@@ -1,5 +1,5 @@
 <svg
-	height="1lh"
+	height="1em"
 	viewBox="-0.5 0 25 25"
 	fill="none"
 	stroke="currentColor"

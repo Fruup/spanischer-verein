@@ -1,46 +1,74 @@
 <script lang="ts">
 	import MobileMenu from './MobileMenu.svelte'
-	import { page } from '$app/stores'
-	import { pushState } from '$app/navigation'
 	import SiteHeading from './SiteHeading.svelte'
 	import type { NavigationItem } from './types'
 	import SiteLogo from './SiteLogo.svelte'
 	import SiteMenu from './SiteMenu.svelte'
+	import SocialLinks from './SocialLinks.svelte'
+	import { fly } from 'svelte/transition'
 
-	export let items: NavigationItem[]
+	export let _items: NavigationItem[]
+	export { _items as items }
 	export let leftImageUrl: string | undefined = undefined
 	export let rightImageUrl: string | undefined = undefined
 
-	$: isMainMenuOpen = !!$page.state.isMainMenuOpen
-
-	function openMainMenu() {
-		pushState('', { isMainMenuOpen: true })
+	const homeItem: NavigationItem = {
+		title: 'Home',
+		href: '/',
 	}
 
-	function closeMainMenu() {
-		history.back()
+	$: items = [homeItem, ..._items]
+
+	const transition = {
+		x: 100,
+		duration: 1000,
+		opacity: 0,
 	}
 </script>
 
 <header>
 	<SiteLogo />
+	<div id="scroll-to-marker" />
 	<SiteHeading />
-	<SiteMenu {items} {openMainMenu} />
+	<SiteMenu {items} />
+	<SocialLinks />
 
 	{#if leftImageUrl}
-		<div class="image left">
-			<img src={leftImageUrl} alt="" />
-		</div>
+		{@const x = -transition.x}
+		{@const duration = transition.duration}
+		{@const opacity = transition.opacity}
+		{@const delayOffset = 0}
+
+		{#each [leftImageUrl] as url (url)}
+			<div
+				in:fly={{ x, duration, delay: duration / 2 + delayOffset, opacity }}
+				out:fly={{ duration, delay: delayOffset, opacity }}
+				class="image left"
+			>
+				<img src={url} alt="" />
+			</div>
+		{/each}
 	{/if}
 
 	{#if rightImageUrl}
-		<div class="image right">
-			<img src={rightImageUrl} alt="" />
-		</div>
+		{@const x = transition.x}
+		{@const duration = transition.duration}
+		{@const opacity = transition.opacity}
+		{@const delayOffset = duration / 4}
+
+		{#each [rightImageUrl] as url (url)}
+			<div
+				in:fly={{ x, duration, delay: duration / 2 + delayOffset, opacity }}
+				out:fly={{ duration, delay: delayOffset, opacity }}
+				class="image right"
+			>
+				<img src={url} alt="" />
+			</div>
+		{/each}
 	{/if}
 </header>
 
-<MobileMenu isOpen={isMainMenuOpen} {items} close={closeMainMenu} />
+<MobileMenu {items} />
 
 <style lang="scss">
 	@import 'vars';
@@ -49,6 +77,9 @@
 		position: relative;
 
 		overflow: visible;
+		overflow-x: clip;
+
+		max-height: 100vh;
 
 		padding: 2rem;
 		padding-bottom: 4rem;
@@ -91,6 +122,40 @@
 
 				&::after {
 					background: linear-gradient(to left, white, transparent 75%);
+				}
+			}
+		}
+
+		:global(.social-links) {
+			position: absolute;
+
+			--gap: 2rem;
+			bottom: var(--gap);
+			right: var(--gap);
+
+			@include max-md {
+				--gap: 1rem;
+			}
+		}
+	}
+
+	#scroll-to-marker {
+		visibility: hidden;
+		height: 0;
+	}
+
+	@include max-md {
+		.image {
+			&.left {
+				display: none;
+			}
+
+			&.right {
+				--max-width: 100%;
+				mask-image: linear-gradient(33deg, transparent 0%, transparent 50%, white);
+
+				&::after {
+					display: none;
 				}
 			}
 		}

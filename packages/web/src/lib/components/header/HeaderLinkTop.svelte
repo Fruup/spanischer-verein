@@ -14,6 +14,10 @@
 	} = createDropdownMenu({
 		portal: `[data-key="${key}"]`,
 		preventScroll: false,
+		positioning: {
+			flip: false,
+			placement: 'bottom',
+		},
 	})
 </script>
 
@@ -66,6 +70,13 @@
 
 		letter-spacing: 1px;
 
+		.angle-down {
+			img {
+				width: 1em;
+				height: 1em;
+			}
+		}
+
 		&:not(.has-children) .angle-down {
 			display: none;
 		}
@@ -89,7 +100,7 @@
 		background-color: $color-background;
 
 		border: 1px solid $color-border;
-		border-radius: 12px;
+		border-radius: var(--border-radius);
 
 		z-index: 1000;
 
@@ -106,8 +117,8 @@
 	}
 
 	li a {
-		border-radius: 12px;
-		padding: 0.5rem;
+		border-radius: var(--border-radius);
+		padding: 0.125rem;
 
 		&:hover,
 		&:focus {

@@ -2,27 +2,22 @@
 	import Button from '../Button.svelte'
 	import IconBurger from '../icons/IconBurger.svelte'
 	import HeaderLinkTop from './HeaderLinkTop.svelte'
+	import { isMobileMenuOpen } from './MobileMenu.svelte'
 	import type { NavigationItem } from './types'
 
-	export let openMainMenu: () => any
 	export let items: NavigationItem[]
-
-	const homeItem: NavigationItem = {
-		title: 'Home',
-		href: '/',
-	}
 </script>
 
 <nav>
 	<ul>
-		{#each [homeItem, ...items] as item}
+		{#each items as item}
 			<li class="link">
 				<HeaderLinkTop navigationItem={item} />
 			</li>
 		{/each}
 
 		<li class="main-menu-trigger">
-			<Button icon={IconBurger} on:click={openMainMenu} />
+			<Button icon={IconBurger} on:click={() => ($isMobileMenuOpen = true)} />
 		</li>
 	</ul>
 </nav>
@@ -55,7 +50,7 @@
 
 	@include max-md {
 		.main-menu-trigger {
-			display: initial;
+			// display: initial;
 		}
 
 		ul .link {

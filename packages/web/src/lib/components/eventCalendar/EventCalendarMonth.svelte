@@ -4,12 +4,6 @@
 	import { getEventsForDay, type EventCalendarItem } from './helpers'
 	import { page } from '$app/stores'
 
-	interface State {
-		month: Month<DateValue>
-		events: EventCalendarItem[]
-	}
-
-	export let frozen: boolean | undefined = undefined
 	export let cell: any
 	export let grid: any
 	export let isDateDisabled: any
@@ -18,15 +12,6 @@
 	export let events: EventCalendarItem[]
 
 	$: pathname = $page.url.pathname
-
-	// $effect(() => {
-	// 	if (frozen) return
-
-	// 	state = {
-	// 		month,
-	// 		events,
-	// 	}
-	// })
 </script>
 
 <div class="month" use:melt={$grid}>
@@ -91,7 +76,7 @@
 		}
 
 		// margin: 0.125em;
-		border-radius: 0.5rem;
+		border-radius: var(--border-radius);
 	}
 
 	a.cell {

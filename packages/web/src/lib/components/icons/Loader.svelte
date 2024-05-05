@@ -1,73 +1,46 @@
-<!-- By Sam Herbert (@sherb), for everyone. More @ http://goo.gl/7AJzbL -->
-<svg
-	width="45"
-	height="45"
-	viewBox="0 0 45 45"
-	xmlns="http://www.w3.org/2000/svg"
-	stroke="currentColor"
->
-	<g fill="none" fill-rule="evenodd" transform="translate(1 1)" stroke-width="2">
-		<circle cx="22" cy="22" r="6" stroke-opacity="0">
-			<animate
-				attributeName="r"
-				begin="1.5s"
-				dur="3s"
-				values="6;22"
-				calcMode="linear"
-				repeatCount="indefinite"
-			/>
-			<animate
-				attributeName="stroke-opacity"
-				begin="1.5s"
-				dur="3s"
-				values="1;0"
-				calcMode="linear"
-				repeatCount="indefinite"
-			/>
-			<animate
-				attributeName="stroke-width"
-				begin="1.5s"
-				dur="3s"
-				values="2;0"
-				calcMode="linear"
-				repeatCount="indefinite"
-			/>
-		</circle>
-		<circle cx="22" cy="22" r="6" stroke-opacity="0">
-			<animate
-				attributeName="r"
-				begin="3s"
-				dur="3s"
-				values="6;22"
-				calcMode="linear"
-				repeatCount="indefinite"
-			/>
-			<animate
-				attributeName="stroke-opacity"
-				begin="3s"
-				dur="3s"
-				values="1;0"
-				calcMode="linear"
-				repeatCount="indefinite"
-			/>
-			<animate
-				attributeName="stroke-width"
-				begin="3s"
-				dur="3s"
-				values="2;0"
-				calcMode="linear"
-				repeatCount="indefinite"
-			/>
-		</circle>
-		<circle cx="22" cy="22" r="8">
-			<animate
-				attributeName="r"
-				begin="0s"
-				dur="1.5s"
-				values="6;1;2;3;4;5;6"
-				calcMode="linear"
-				repeatCount="indefinite"
-			/>
-		</circle>
-	</g>
-</svg>
+<!-- https://cssloaders.github.io/ -->
+
+<span class="loader"></span>
+
+<style>
+	.loader {
+		width: 1lh;
+		height: 1lh;
+		border-radius: 50%;
+		position: relative;
+		animation: rotate 1s linear infinite;
+	}
+	.loader::before {
+		content: '';
+		box-sizing: border-box;
+		position: absolute;
+		inset: 0px;
+		border-radius: 50%;
+		border: 2px solid #fff;
+		animation: prixClipFix 2s linear infinite;
+	}
+
+	@keyframes rotate {
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	@keyframes prixClipFix {
+		0% {
+			clip-path: polygon(50% 50%, 0 0, 0 0, 0 0, 0 0, 0 0);
+		}
+		25% {
+			clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 0, 100% 0, 100% 0);
+		}
+		50% {
+			clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 100% 100%, 100% 100%);
+		}
+		75% {
+			clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%);
+		}
+		100% {
+			clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0);
+		}
+	}
+</style>

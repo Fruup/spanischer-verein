@@ -26,16 +26,19 @@
 
 		text-wrap: nowrap;
 
-		border: 1px solid $color;
+		border: 2px solid $color;
 
-		border-radius: 12px;
+		border-radius: var(--border-radius);
 		transition: all 250ms ease;
-		padding: 0.66em 1em;
+		padding: 0.5em 0.66em;
+		padding: calc(0.5em - 2px) 0.5em;
 
 		background-color: white;
 
 		&:hover {
 			background-color: change-color($color, $alpha: 0.1);
 		}
+
+		cursor: pointer;
 	}
 </style>

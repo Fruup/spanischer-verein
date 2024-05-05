@@ -1,5 +1,5 @@
 <script lang="ts">
-	import EventsOverview2 from './EventsOverview2.svelte'
+	import EventsOverviewPage from './EventsOverviewPage.svelte'
 
 	export let data
 
@@ -7,4 +7,8 @@
 	const month = new Date().getMonth() + 1
 </script>
 
-<EventsOverview2 events={data.events} {year} {month} />
+<svelte:head>
+	<title>Spanischer Verein Köln</title>
+</svelte:head>
+
+<EventsOverviewPage events={data.events} pastHighlights={data.pastHighlights} {year} {month} />

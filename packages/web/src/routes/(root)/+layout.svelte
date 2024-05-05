@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Header from '../../lib/components/header/Header.svelte'
 	import EventCalendar from '$lib/components/eventCalendar/EventCalendar.svelte'
-	import SkipNavigation from '$lib/components/SkipNavigation.svelte'
 	import Divider from './Divider.svelte'
 	import { getEventUrl } from '$lib/helpers/url'
 	import ParticipateSection from './ParticipateSection.svelte'
@@ -10,6 +9,15 @@
 	import { fly } from 'svelte/transition'
 	import { cubicOut } from 'svelte/easing'
 	import Footer from './Footer.svelte'
+	import MobileCalendar, { isMobileCalendarOpen } from './MobileCalendar.svelte'
+	import { beforeNavigate } from '$app/navigation'
+	import type { RouteId as ContentPageRouteId } from './[...pageUrl]/$types'
+	import type { RouteId as EventPageRouteId } from './event/[slug]/$types'
+	import type { RouteId as HomeRouteId } from './$types'
+	import { pick } from '$lib/helpers/pick'
+	import { Toaster } from 'svelte-french-toast'
+	import MobileNavigationBar from '$lib/components/navigation/MobileNavigationBar.svelte'
+	import { isMobileMenuOpen } from '$lib/components/header/MobileMenu.svelte'
 
 	export let data
 
@@ -21,18 +29,57 @@
 		date: new Date(e.eventTime),
 	}))
 
-	$: leftImageUrl = data.siteSettings.headerImageUrlLeft
-	$: rightImageUrl = data.siteSettings.headerImageUrlRight
-	$: mail = data.siteSettings.contactEmail ?? 'info@spanischer-verein.com'
+	$: headerImages = data.siteSettings?.headerImageUrls ?? []
+	$: mail = data.siteSettings?.contactEmail ?? 'info@spanischer-verein.com'
+	$: imprintPageSlug = siteSettings?.imprintPageSlug
+	$: privacyUrl = siteSettings?.privacyPageSlug && `/${siteSettings.privacyPageSlug}`
+
+	/**
+	 * Rotate header images on page navigation.
+	 */
+
+	let imageIndexLeft = data.leftHeaderImageIndex
+	let imageIndexRight = data.rightHeaderImageIndex
+
+	$: leftImageUrl = headerImages.at(imageIndexLeft)
+	$: rightImageUrl = headerImages.at(imageIndexRight)
+
+	const changeImageOn: (ContentPageRouteId | HomeRouteId | EventPageRouteId)[] = [
+		'/(root)',
+		'/(root)/[...pageUrl]',
+		'/(root)/event/[slug]',
+	]
+
+	beforeNavigate(({ from, to }) => {
+		if (from?.url.toString() === to?.url.toString()) return
+
+		// @ts-ignore
+		if (!changeImageOn.includes(to?.route?.id)) return
+
+		const exclude = [imageIndexLeft, imageIndexRight]
+		imageIndexLeft = pick(headerImages, exclude)?.index ?? imageIndexLeft
+		exclude.push(imageIndexLeft)
+		imageIndexRight = pick(headerImages, exclude)?.index ?? imageIndexRight
+	})
 </script>
 
 <svelte:head>
 	<title>Spanischer Verein Köln</title>
+
+	{#if data.siteSettings?.logoUrl}
+		<link rel="icon" href={data.siteSettings.logoUrl} />
+	{/if}
 </svelte:head>
+
+<Toaster />
 
 <!-- <SkipNavigation /> -->
 
 <Header items={data.navigationTree} {leftImageUrl} {rightImageUrl} />
+<MobileNavigationBar
+	bind:isCalendarOpen={$isMobileCalendarOpen}
+	bind:isFlyoutOpen={$isMobileMenuOpen}
+/>
 
 <Divider />
 
@@ -45,17 +92,18 @@
 
 	<aside>
 		<div class="aside-content">
-			<h3 class="heading-3">Kalender</h3>
+			<h3 id="calendar" class="heading-3">Kalender</h3>
 
 			<p class="calendar-tutorial">
 				💡 Navigiere im Kalender, um vergangene Veranstaltungen zu durchstöbern.
 			</p>
 
 			<EventCalendar {events} />
+			<MobileCalendar {events} />
 
-			<h3 class="heading-3">Mitmachen</h3>
+			<h3 class="heading-2">Mitmachen</h3>
 
-			<ParticipateSection {mail} />
+			<ParticipateSection {mail} {privacyUrl} />
 
 			<!-- <PageSearch /> -->
 		</div>
@@ -72,7 +120,7 @@
 	<Divider />
 </div>
 
-<Footer imprintUrl="/{siteSettings.imprintPageSlug}" />
+<Footer imprintUrl={imprintPageSlug && `/${imprintPageSlug}`} {privacyUrl} />
 
 <style lang="scss">
 	@use 'sass:color';
@@ -86,10 +134,20 @@
 		max-width: 1200px;
 
 		margin: 0 auto;
+		padding: 0 2.5rem;
 		gap: 2.5rem;
+		box-sizing: content-box;
 
 		@include max-md {
 			grid-template-columns: 1fr;
+
+			main {
+				margin-bottom: 0;
+			}
+		}
+
+		@include max-sm {
+			padding: 0 1rem;
 		}
 	}
 
@@ -101,8 +159,22 @@
 		flex-direction: column;
 		gap: 1rem;
 
-		.heading-3 {
+		.heading-2 {
 			margin-bottom: 0;
+		}
+
+		@include max-md {
+			align-items: center;
+			max-width: 500px;
+			margin: auto;
+
+			:global {
+				.calendar,
+				.calendar-tutorial,
+				#calendar {
+					display: none;
+				}
+			}
 		}
 	}
 
@@ -110,6 +182,11 @@
 		width: 2px;
 		height: 100%;
 		background: rgba(0, 0, 0, 0.05);
+
+		@include max-md {
+			width: auto;
+			height: 2px;
+		}
 	}
 
 	main,
@@ -127,6 +204,10 @@
 		top: 1rem;
 		left: 1rem;
 		z-index: 1000;
+	}
+
+	#calendar {
+		margin-bottom: 0;
 	}
 
 	.calendar-tutorial {

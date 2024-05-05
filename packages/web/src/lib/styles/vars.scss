@@ -18,6 +18,9 @@ $color-surface: adjust-color($color-background, $blackness: 2%);
 	font-family: 'Lato', 'Helvetica', 'Arial', sans-serif;
 	// font-family: 'Helvetica', 'Arial', sans-serif;
 	// font-family: 'Lato', 'Arial', sans-serif;
+
+	// The gap between box and text.
+	--font-offset: -6px;
 }
 
 @mixin surface {
@@ -42,6 +45,18 @@ $color-surface: adjust-color($color-background, $blackness: 2%);
 
 @mixin min-md {
 	@media screen and (min-width: 1201px) {
+		@content;
+	}
+}
+
+@mixin max-sm {
+	@media screen and (max-width: 786px) {
+		@content;
+	}
+}
+
+@mixin min-sm {
+	@media screen and (min-width: 787px) {
 		@content;
 	}
 }

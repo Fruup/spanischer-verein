@@ -1,16 +1,18 @@
+<script context="module" lang="ts">
+	import { writable } from 'svelte/store'
+
+	export const isMobileMenuOpen = writable(false)
+</script>
+
 <script lang="ts">
 	import { createTreeView, melt } from '@melt-ui/svelte'
-	import type { NavigationItem } from './Header.svelte'
+	import type { NavigationItem } from './types'
 	import { setContext } from 'svelte'
 	import MobileMenuTree from './MobileMenuTree.svelte'
 	import { browser } from '$app/environment'
-	import Button from '../Button.svelte'
-	import IconClose from '../icons/IconClose.svelte'
-	import { fly } from 'svelte/transition'
+	import Drawer from '../ui/Drawer.svelte'
 
 	export let items: NavigationItem[]
-	export let isOpen = false
-	export let close: (() => void) | undefined
 
 	const treeView = createTreeView({})
 
@@ -19,10 +21,9 @@
 	} = treeView
 
 	setContext('mobileMenu', treeView)
-	setContext('mobileMenuIsOpen', isOpen)
 
 	$: if (browser) {
-		if (isOpen) {
+		if ($isMobileMenuOpen) {
 			document.body.classList.add('no-scroll')
 		} else {
 			document.body.classList.remove('no-scroll')
@@ -30,36 +31,28 @@
 	}
 </script>
 
-{#if isOpen}
-	<nav use:melt={$tree} transition:fly={{ x: 50 }} class="mobile-menu">
+<Drawer bind:open={$isMobileMenuOpen}>
+	<nav use:melt={$tree} class="mobile-menu">
 		<div class="header">
-			<h3>Navigation</h3>
-
-			<Button icon={IconClose} on:click={close} />
+			<h3 class="heading">Navigation</h3>
 		</div>
 
 		<ul class="links" {...$tree}>
 			<MobileMenuTree {items} />
 		</ul>
 	</nav>
-{/if}
+</Drawer>
 
 <style lang="scss">
 	@import 'vars';
 
 	.mobile-menu {
-		position: fixed;
-		inset: 0 0 0 auto;
-		z-index: 1000;
-		width: min(100vw, 500px);
-		padding: 3rem;
+		overflow: auto;
+		padding: 1rem;
 
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-
-		background-color: $color-background;
-		@include shadow;
 	}
 
 	.header {
@@ -71,11 +64,15 @@
 	.links {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 0.5rem;
 	}
 
 	ul {
 		padding: 0;
+		margin: 0;
+	}
+
+	.heading {
 		margin: 0;
 	}
 </style>

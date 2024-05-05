@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { melt, type TreeView } from '@melt-ui/svelte'
-	import type { NavigationItem } from './Header.svelte'
 	import { getContext } from 'svelte'
 	import Button from '../Button.svelte'
 	import IconAngle from '../icons/IconAngle.svelte'
-	import { fly } from 'svelte/transition'
 	import { goto } from '$app/navigation'
+	import type { NavigationItem } from './types'
+	import { isMobileMenuOpen } from './MobileMenu.svelte'
 
 	export let items: NavigationItem[]
 
@@ -14,7 +14,7 @@
 
 	const {
 		elements: { item, group },
-		states: { expanded, selectedItem },
+		states: { expanded },
 		helpers: { isExpanded },
 	} = getContext<TreeView>('mobileMenu')
 
@@ -24,6 +24,11 @@
 		} else {
 			$expanded = $expanded.filter((_id) => _id !== id)
 		}
+	}
+
+	function navigate(href: string) {
+		goto(href)
+		$isMobileMenuOpen = false
 	}
 </script>
 
@@ -35,19 +40,21 @@
 		<div class="item">
 			<a
 				use:melt={$item({ id, hasChildren })}
-				on:click|capture|preventDefault|stopPropagation={() => goto(href)}
+				on:click|capture|preventDefault|stopPropagation={() => navigate(href)}
 				{href}
 			>
 				{title}
 			</a>
 
 			{#if hasChildren}
-				<Button size="s" tabindex={-1} icon={IconAngle} on:click={() => toggleExpanded(id)} />
+				<Button size="s" tabindex={-1} icon={IconAngle} onClick={() => toggleExpanded(id)} />
 			{/if}
 		</div>
 
 		{#if hasChildren}
-			<ul use:melt={$group({ id })} class:shown={$isExpanded(id)}>
+			{@const shown = $isExpanded(id)}
+
+			<ul use:melt={$group({ id })} class:shown>
 				<svelte:self level={level + 1} items={children} shown={$isExpanded(id)} />
 			</ul>
 		{/if}
@@ -80,5 +87,10 @@
 		&:not(.shown) {
 			display: none;
 		}
+	}
+
+	li :global(button) {
+		width: 1.5rem !important;
+		height: 1.5rem !important;
 	}
 </style>
