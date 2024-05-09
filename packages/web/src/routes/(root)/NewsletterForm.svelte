@@ -23,21 +23,20 @@
 		try {
 			const params = new URLSearchParams({
 				email,
-				origin: window.location.origin,
 			})
 
-			const promise = fetch(`/api/v1/newsletter/prepare?${params}`).then((response) => {
+			const promise = fetch(`/api/v1/newsletter/subscribe?${params}`).then((response) => {
 				if (!response.ok) {
-					throw new Error()
+					console.error(response)
+					throw new Error(`${response.status} - ${response.statusText}`)
 				}
 			})
 
 			await toast.promise(
 				promise,
 				{
-					loading: 'Anmeldung wird vorbereitet...',
-					success:
-						'🎉 Du hast eine Bestätigungs-Mail erhalten.\nSchau mal in Dein Postfach und bestätige Deine Anmeldung!',
+					loading: 'Anmeldung wird gesendet...',
+					success: '🎉 Deine Anmeldung ist eingegangen. Vielen Dank!',
 					error: 'Da ist etwas schiefgegangen...\nVersuche es später erneut.',
 				},
 				{ duration: 5000 },

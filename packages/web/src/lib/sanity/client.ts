@@ -4,10 +4,7 @@ import createImageUrlBuilder from '@sanity/image-url'
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import type { PortableTextMarkDefinition } from '@portabletext/types'
 import type { PageSchema } from '@spanischer-verein/sanity/schemas/page'
-import type {
-	SecretsSchema,
-	SiteSettingsSchema,
-} from '@spanischer-verein/sanity/schemas/siteSettings'
+import type { SiteSettingsSchema } from '@spanischer-verein/sanity/schemas/siteSettings'
 import type { NavigationItem } from '$lib/components/header/types'
 import { env } from '$env/dynamic/private'
 
@@ -304,22 +301,5 @@ export const sanityApi = {
 		`)
 
 		return settings?.newsletterSubscriptionRecipient
-	},
-
-	async getMailingInfo() {
-		const settings = await sanityClient.fetch<Pick<SiteSettingsSchema, 'mailingInfo'> | null>(`
-			*[_id == "siteSettings"][0]{
-				mailingInfo,
-			}
-		`)
-
-		const secrets = await sanityClient.fetch<SecretsSchema | null>(`*[_id == $id][0]`, {
-			id: 'secrets.spanischer-verein' satisfies SecretsSchema['_id'],
-		})
-
-		return {
-			...settings?.mailingInfo,
-			...secrets?.secrets,
-		}
 	},
 }
