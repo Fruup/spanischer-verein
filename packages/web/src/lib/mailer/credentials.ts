@@ -1,4 +1,4 @@
-import { sanityApi } from '$lib/sanity/client'
+import { env } from '$env/dynamic/private'
 
 export async function getMailingInfo(): Promise<{
 	user: string
@@ -6,17 +6,16 @@ export async function getMailingInfo(): Promise<{
 	host: string
 	port: number
 }> {
-	const { user, password, host, port } = (await sanityApi.getMailingInfo()) ?? {}
+	if (!env.MAIL_CREDENTIALS) throw Error(`No mail credentials set (MAIL_CREDENTIALS).`)
+	if (!env.MAIL_SERVER) throw Error(`No mail server set (MAIL_SERVER).`)
 
-	if (!host) throw Error(`No mail server host set.`)
-	if (!port) throw Error(`No mail server port set.`)
-	if (!user) throw Error(`No mail server user set.`)
-	if (!password) throw Error(`No mail server password set.`)
+	const [user, ...passwordParts] = env.MAIL_CREDENTIALS.split(':')
+	const [host, port] = env.MAIL_SERVER.split(':')
 
 	return {
 		user,
-		password,
-		host: host,
-		port,
+		password: passwordParts.join(''),
+		host,
+		port: Number(port),
 	}
 }
