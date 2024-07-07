@@ -1,3 +1,8 @@
+# Spanischer Verein
+
+Source code for the website https://spanischer-verein.com - a platform representing a nonprofit organization cultivating German-Spanish relations.
+Includes Content Management System (Sanity Studio) and frontend (SvelteKit).
+
 ## Notes
 
 - Check if Netlify is building a preview: https://docs.netlify.com/configure-builds/environment-variables/#build-metadata
