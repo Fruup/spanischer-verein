@@ -83,7 +83,7 @@
 		flex-direction: column;
 
 		font-size: 1rem;
-		height: 100%;
+		min-height: 100%;
 		text-align: center;
 
 		border-radius: var(--border-radius);
