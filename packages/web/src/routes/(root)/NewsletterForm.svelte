@@ -4,9 +4,8 @@
 	import Checkbox from '$lib/components/ui/Checkbox.svelte'
 	import { slide } from 'svelte/transition'
 	import { toast } from 'svelte-french-toast'
-	import { onMount } from 'svelte'
 
-	export let privacyUrl
+	export let privacyUrl: string | undefined
 
 	let email = ''
 	let checked = false

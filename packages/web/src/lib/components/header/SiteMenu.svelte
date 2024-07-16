@@ -49,10 +49,6 @@
 	}
 
 	@include max-md {
-		.main-menu-trigger {
-			// display: initial;
-		}
-
 		ul .link {
 			display: none;
 		}
