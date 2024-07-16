@@ -12,8 +12,11 @@
 
 	$: isPast = new Date().getTime() > new Date(year, month).getTime()
 
+	// Grace time for events to be considered past
+	const graceTime = 1000 * 60 * 60 * 6 // 6 hours
+
 	$: eventsAfterNow = events.filter(
-		(event) => new Date(event.eventTime).getTime() >= new Date().getTime(),
+		(event) => new Date(event.eventTime).getTime() + graceTime >= new Date().getTime(),
 	)
 
 	$: futureEvents = isPast ? events : eventsAfterNow
