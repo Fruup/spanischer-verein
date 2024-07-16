@@ -6,6 +6,8 @@
 
 	const messages: Record<App.Error['errorCode'], string> = {
 		NOT_FOUND: 'Der Inhalt konnte leider nicht gefunden werden... 😢',
+		INVALID_PARAMETERS: 'Die Anfrage war fehlerhaft... 😢',
+		SEND_EMAIL_FAILED: 'Die E-Mail konnte nicht gesendet werden... 😢',
 	}
 </script>
 

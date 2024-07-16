@@ -10,7 +10,7 @@
 	import { cubicOut } from 'svelte/easing'
 	import Footer from './Footer.svelte'
 	import MobileCalendar, { isMobileCalendarOpen } from './MobileCalendar.svelte'
-	import { beforeNavigate } from '$app/navigation'
+	import { afterNavigate, beforeNavigate, onNavigate } from '$app/navigation'
 	import type { RouteId as ContentPageRouteId } from './[...pageUrl]/$types'
 	import type { RouteId as EventPageRouteId } from './event/[slug]/$types'
 	import type { RouteId as HomeRouteId } from './$types'
@@ -61,6 +61,16 @@
 		exclude.push(imageIndexLeft)
 		imageIndexRight = pick(headerImages, exclude)?.index ?? imageIndexRight
 	})
+
+	afterNavigate(({ type, to }) => {
+		if (!(['goto', 'link'] as (typeof type)[]).includes(type)) return
+
+		// Do not scroll to top when navigating using the calendar.
+		if (to?.url.pathname.startsWith('/archiv')) return
+
+		const logo = document.querySelector('#scroll-to-marker')
+		logo?.scrollIntoView({ behavior: 'smooth' })
+	})
 </script>
 
 <svelte:head>
@@ -85,7 +95,13 @@
 
 <div class="content">
 	<main>
-		<slot />
+		{#if $navigating}
+			<div style="min-height: 50vh; display: grid; place-content: center">
+				<Loader />
+			</div>
+		{:else}
+			<slot />
+		{/if}
 	</main>
 
 	<div class="divider" />
@@ -121,6 +137,26 @@
 </div>
 
 <Footer imprintUrl={imprintPageSlug && `/${imprintPageSlug}`} {privacyUrl} />
+
+<!-- 
+	* Analytics
+	! Keep this at the bottom
+-->
+<svelte:element
+	this="script"
+	async
+	defer
+	src="https://scripts.simpleanalyticscdn.com/latest.{import.meta.env.PROD ? '' : 'dev.'}js"
+></svelte:element>
+{#if import.meta.env.PROD}
+	<noscript>
+		<img
+			src="https://queue.simpleanalyticscdn.com/noscript.gif"
+			alt=""
+			referrerpolicy="no-referrer-when-downgrade"
+		/>
+	</noscript>
+{/if}
 
 <style lang="scss">
 	@use 'sass:color';

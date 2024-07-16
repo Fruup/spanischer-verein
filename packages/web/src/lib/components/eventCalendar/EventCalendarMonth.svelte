@@ -37,6 +37,7 @@
 					use:melt={$cell}
 					class="cell"
 					class:active={!isDateDisabled(day)}
+					class:today={isToday(day, getLocalTimeZone())}
 					class:shown={pathname === event.url}
 				>
 					{day.day}
@@ -64,7 +65,6 @@
 
 		aspect-ratio: 1;
 		height: auto;
-		// width: 2em;
 
 		&:not(.active) {
 			opacity: 0.5;
@@ -75,13 +75,11 @@
 			border: 1px solid grey;
 		}
 
-		// margin: 0.125em;
 		border-radius: var(--border-radius);
 	}
 
 	a.cell {
 		box-shadow: inset 0 0 0 2px $color-accent;
-		border-color: $color-accent;
 
 		&.shown {
 			background-color: $color-accent;
