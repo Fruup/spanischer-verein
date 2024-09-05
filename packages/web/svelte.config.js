@@ -1,5 +1,6 @@
 import adapterStatic from '@sveltejs/adapter-static'
-import adapterNetlify from '@sveltejs/adapter-netlify'
+// import adapterNetlify from '@sveltejs/adapter-netlify'
+import adapterBun from 'svelte-adapter-bun'
 import preprocess from 'svelte-preprocess'
 import { preprocessMeltUI, sequence } from '@melt-ui/pp'
 
@@ -21,7 +22,7 @@ const adapter = (() => {
 			strict: false,
 		})
 	} else {
-		return adapterNetlify({})
+		return adapterBun({})
 	}
 })()
 

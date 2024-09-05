@@ -49,6 +49,7 @@
 		"@sanity/image-url": "^1.0.2",
 		"@sveltejs/adapter-static": "^3.0.1",
 		"nodemailer": "^6.9.13",
+		"svelte-adapter-bun": "^0.5.2",
 		"svelte-french-toast": "^1.2.0",
 		"vaul-svelte": "^0.3.0"
 	}
