@@ -7,6 +7,11 @@ services:
       target: production
     ports:
       - 3000:3000
+    labels:
+      # Redirect to non-www
+      - traefik.http.middlewares.redirect-to-non-www.redirectregex.regex=^https?://www\.(.*)
+      - traefik.http.middlewares.redirect-to-non-www.redirectregex.replacement=https://$${1}
+      - traefik.http.middlewares.redirect-to-non-www.redirectregex.permanent=true
     environment:
       - SANITY_PERSPECTIVE=${SANITY_PERSPECTIVE}
       - SANITY_DATASET=${SANITY_DATASET}
