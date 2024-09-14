@@ -18,3 +18,4 @@ Includes Content Management System (Sanity Studio) and frontend (SvelteKit).
 - https://github.com/sanity-io/google-maps-input
 - https://github.com/sanity-io/sanity-plugin-scheduled-publishing
 - https://www.sanity.io/docs/structure-builder-typical-use-cases#c22ce054acba
+
