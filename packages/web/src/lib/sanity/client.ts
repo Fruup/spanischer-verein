@@ -286,7 +286,7 @@ export const sanityApi = {
 			headerImageUrls: settings.headerImages?.map((image) =>
 				imageUrlBuilder.image(image).height(512).format('webp').url(),
 			),
-			logoUrl: imageUrlBuilder.image(settings.logo).width(200).format('webp').url(),
+			logoUrl: imageUrlBuilder.image(settings.logo).height(400).format('webp').url(),
 		}
 	},
 

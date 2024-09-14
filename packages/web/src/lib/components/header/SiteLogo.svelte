@@ -8,7 +8,7 @@
 <a href="/">
 	<img
 		src={logo}
-		height="400px"
+		height="200px"
 		alt="Website-Logo 'Interkulturelle Zentren Köln, Antonio Machado'"
 	/>
 </a>
