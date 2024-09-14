@@ -40,13 +40,23 @@
 		<h6>Unterstützer</h6>
 		<ul>
 			<li>
-				<a href="https://www.ki-koeln.de/" target="_blank" rel="noreferrer nofollow">
+				<a
+					href="https://www.ki-koeln.de/"
+					target="_blank"
+					rel="noreferrer nofollow"
+					title="Kommunales Integrationszentrum Köln"
+				>
 					<img width="256" src={supporter1} alt="" />
 				</a>
 			</li>
 
 			<li>
-				<a href="https://www.stadt-koeln.de/" target="_blank" rel="noreferrer nofollow">
+				<a
+					href="https://www.stadt-koeln.de/"
+					target="_blank"
+					rel="noreferrer nofollow"
+					title="Stadt Köln"
+				>
 					<img width="256" src={supporter2} alt="" />
 				</a>
 			</li>

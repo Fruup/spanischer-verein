@@ -9,11 +9,19 @@
 </script>
 
 <nav class="mobile-navigation-bar" class:hidden>
-	<button class="primary" on:click={() => (isCalendarOpen = !isCalendarOpen)}>
+	<button
+		class="primary"
+		on:click={() => (isCalendarOpen = !isCalendarOpen)}
+		title="Öffne Kalender"
+	>
 		<IconCalendar />
 	</button>
 
-	<button class="secondary" on:click={() => (isFlyoutOpen = !isFlyoutOpen)}>
+	<button
+		class="secondary"
+		on:click={() => (isFlyoutOpen = !isFlyoutOpen)}
+		title="Öffne Navigation"
+	>
 		<IconBurger />
 	</button>
 </nav>
