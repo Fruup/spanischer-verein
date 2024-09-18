@@ -82,7 +82,7 @@
 	{/if}
 </svelte:head>
 
-<Toaster />
+<Toaster position="bottom-center" />
 
 <!-- <SkipNavigation /> -->
 
