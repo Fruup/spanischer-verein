@@ -13,7 +13,7 @@ services:
       - traefik.http.middlewares.redirect-to-non-www.redirectregex.replacement=https://$${1}
       - traefik.http.middlewares.redirect-to-non-www.redirectregex.permanent=true
     environment:
-      - SANITY_PERSPECTIVE=${SANITY_PERSPECTIVE
+      - SANITY_PERSPECTIVE=${SANITY_PERSPECTIVE}
       - SANITY_DATASET=${SANITY_DATASET}
       - SANITY_TOKEN=${SANITY_TOKEN}
       - MAIL_CREDENTIALS=${MAIL_CREDENTIALS}
