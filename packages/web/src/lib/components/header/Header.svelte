@@ -79,7 +79,7 @@
 		overflow: visible;
 		overflow-x: clip;
 
-		max-height: 100vh;
+		max-height: 100svh;
 
 		padding: 2rem;
 		padding-bottom: 4rem;
