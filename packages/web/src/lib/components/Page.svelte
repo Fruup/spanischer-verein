@@ -29,7 +29,9 @@
 	.page {
 		h2 {
 			@include font-serif;
-			font-weight: normal;
+			font-style: italic;
+			text-wrap: balance;
+			line-height: 1.33;
 			font-size: 1.75rem;
 
 			text-align: center;

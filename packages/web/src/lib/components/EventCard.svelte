@@ -122,6 +122,7 @@
 		@include font-serif;
 		font-size: 1.35em;
 		letter-spacing: 1px;
+		text-wrap: balance;
 
 		width: fit-content;
 	}
