@@ -18,6 +18,7 @@
 	import { Toaster } from 'svelte-french-toast'
 	import MobileNavigationBar from '$lib/components/navigation/MobileNavigationBar.svelte'
 	import { isMobileMenuOpen } from '$lib/components/header/MobileMenu.svelte'
+	import 'virtual:fonts.css'
 
 	export let data
 
@@ -81,7 +82,7 @@
 	{/if}
 </svelte:head>
 
-<Toaster />
+<Toaster position="bottom-center" />
 
 <!-- <SkipNavigation /> -->
 

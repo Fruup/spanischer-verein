@@ -79,7 +79,7 @@
 		overflow: visible;
 		overflow-x: clip;
 
-		max-height: 100vh;
+		max-height: 100svh;
 
 		padding: 2rem;
 		padding-bottom: 4rem;
@@ -152,7 +152,8 @@
 
 			&.right {
 				--max-width: 100%;
-				mask-image: linear-gradient(33deg, transparent 0%, transparent 50%, white);
+				width: 100%;
+				mask-image: linear-gradient(to bottom, white, transparent 80%);
 
 				&::after {
 					display: none;

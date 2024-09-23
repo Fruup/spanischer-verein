@@ -11,13 +11,11 @@ $color-accent-2: #1dede6;
 $color-surface: adjust-color($color-background, $blackness: 2%);
 
 @mixin font-serif {
-	font-family: 'Old Standard TT', Georgia, serif;
+	font-family: 'PT Serif', 'Old Standard TT', Georgia, serif;
 }
 
 @mixin font-sans-serif {
 	font-family: 'Lato', 'Helvetica', 'Arial', sans-serif;
-	// font-family: 'Helvetica', 'Arial', sans-serif;
-	// font-family: 'Lato', 'Arial', sans-serif;
 
 	// The gap between box and text.
 	--font-offset: -6px;

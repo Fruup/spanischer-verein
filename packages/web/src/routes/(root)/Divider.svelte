@@ -12,6 +12,7 @@
 		height: 0;
 
 		position: relative;
+		top: -3px;
 
 		&::after {
 			content: '';

@@ -6,7 +6,7 @@ services:
       dockerfile: .docker/web/Dockerfile
       target: production
     ports:
-      - 3000:3000
+      - ${PORT}:${PORT}
     labels:
       # Redirect to non-www
       - traefik.http.middlewares.redirect-to-non-www.redirectregex.regex=^https?://www\.(.*)

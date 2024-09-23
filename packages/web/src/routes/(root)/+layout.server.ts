@@ -3,8 +3,6 @@ import { setLocale } from '$lib/services/locale'
 import { pick } from '$lib/helpers/pick'
 import { parseMonthFromUrl } from '$lib/helpers/url'
 
-const cache: Record<string, any> = {}
-
 export const load = async ({ request, params }) => {
 	const locales = (request.headers.get('Accept-Language')?.split(',') ?? []).map((lang) => {
 		const to = lang.indexOf(';')
@@ -19,8 +17,7 @@ export const load = async ({ request, params }) => {
 	const leftHeaderImageIndex = pick(headerImages ?? [])?.index ?? 0
 	const rightHeaderImageIndex = pick(headerImages ?? [], [leftHeaderImageIndex])?.index ?? 0
 
-	const pastHighlights = cache['pastHighlights'] || (await sanityApi.getPastHighlights())
-	cache['pastHighlights'] = pastHighlights
+	const pastHighlights = await sanityApi.getPastHighlights()
 
 	const { year, month } = parseMonthFromUrl(params)
 	const events = await sanityApi.getEventsOverview({ year, month })
