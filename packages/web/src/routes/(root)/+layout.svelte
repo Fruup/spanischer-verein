@@ -15,7 +15,7 @@
 	import type { RouteId as EventPageRouteId } from './event/[slug]/$types'
 	import type { RouteId as HomeRouteId } from './$types'
 	import { pick } from '$lib/helpers/pick'
-	// import { Toaster } from 'svelte-french-toast'
+	import { Toaster } from 'svelte-sonner'
 	import MobileNavigationBar from '$lib/components/navigation/MobileNavigationBar.svelte'
 	import { isMobileMenuOpen } from '$lib/components/header/MobileMenu.svelte'
 	import 'virtual:fonts.css'
@@ -84,7 +84,7 @@
 	{/if}
 </svelte:head>
 
-<!-- <Toaster position="bottom-center" /> -->
+<Toaster position="bottom-center" />
 
 <!-- <SkipNavigation /> -->
 

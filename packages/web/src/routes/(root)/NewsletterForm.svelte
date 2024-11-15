@@ -3,7 +3,7 @@
 	import IconSend from '$lib/components/icons/IconSend.svelte'
 	import Checkbox from '$lib/components/ui/Checkbox.svelte'
 	import { slide } from 'svelte/transition'
-	// import { toast } from 'svelte-french-toast'
+	import { toast } from 'svelte-sonner'
 
 	interface Props {
 		privacyUrl: string | undefined
@@ -35,16 +35,14 @@
 				}
 			})
 
-			// TODO
-			// await toast.promise(
-			// 	promise,
-			// 	{
-			// 		loading: 'Anmeldung wird gesendet...',
-			// 		success: '🎉 Deine Anmeldung ist eingegangen. Vielen Dank!',
-			// 		error: 'Da ist etwas schiefgegangen...\nVersuche es später erneut.',
-			// 	},
-			// 	{ duration: 5000 },
-			// )
+			toast.promise(promise, {
+				loading: 'Anmeldung wird gesendet...',
+				success: '🎉 Deine Anmeldung ist eingegangen. Vielen Dank!',
+				error: 'Da ist etwas schiefgegangen...\nVersuche es später erneut.',
+				duration: 5000,
+			})
+
+			await promise
 
 			disabledAfterSubmit = true
 		} catch (error) {

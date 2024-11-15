@@ -12,7 +12,7 @@
 	const alt = '' // TODO
 
 	const width = 500
-	const height = width / ratio
+	const height = $derived(width / ratio)
 </script>
 
 <!-- One container is used for centering, one for applying border radius and shadow. -->

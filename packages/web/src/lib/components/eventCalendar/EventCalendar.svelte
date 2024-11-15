@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy'
-
 	import { createCalendar, melt } from '@melt-ui/svelte'
 	import IconAngle from '../icons/IconAngle.svelte'
 	import { type EventCalendarItem } from './helpers'
@@ -148,16 +146,6 @@
 		border-radius: var(--border-radius);
 	}
 
-	.displayed-time-container {
-		display: grid;
-		place-content: center;
-
-		width: 100%;
-		font-size: 0.9rem;
-
-		border: 0.5px solid grey;
-	}
-
 	.cell {
 		display: grid;
 		place-content: center;
@@ -167,12 +155,6 @@
 
 		&:not(.active) {
 			opacity: 0.5;
-		}
-
-		&.today {
-			text-decoration: underline;
-			font-weight: bold;
-			border: 1px solid grey;
 		}
 
 		margin: var(--cell-gap);

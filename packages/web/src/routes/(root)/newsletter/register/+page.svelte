@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte'
 	import Button from '$lib/components/Button.svelte'
 	import { goto } from '$app/navigation'
-	import toast from 'svelte-french-toast'
+	import { toast } from 'svelte-sonner'
 
 	let promise: Promise<any> | undefined = $state()
 

@@ -36,7 +36,8 @@ export const fontPlugin = (options: { url: string | string[] }): Plugin => {
 						throw new Error(`Failed to fetch font file: ${fontFileUrl}`)
 					}
 
-					const fontFile = await (await response.blob()).bytes()
+					const fontFile = await response.text()
+					// const fontFile = await (await response.blob()).bytes()
 					const fontFilePath = path.join(publicDir, '_fonts', fontFamily, filename)
 
 					// save font file
