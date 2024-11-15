@@ -13,10 +13,10 @@
 	import EventTime from './EventTime.svelte'
 
 	interface Props {
-		eventInfo: EventInfoSpec;
+		eventInfo: EventInfoSpec
 	}
 
-	let { eventInfo }: Props = $props();
+	let { eventInfo }: Props = $props()
 
 	let admission = $derived(eventInfo.admission)
 	let eventTime = $derived(eventInfo.time)

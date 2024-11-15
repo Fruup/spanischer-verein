@@ -5,7 +5,7 @@
 </script>
 
 <script lang="ts">
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { createTreeView, melt } from '@melt-ui/svelte'
 	import type { NavigationItem } from './types'
@@ -15,10 +15,10 @@
 	import Drawer from '../ui/Drawer.svelte'
 
 	interface Props {
-		items: NavigationItem[];
+		items: NavigationItem[]
 	}
 
-	let { items }: Props = $props();
+	let { items }: Props = $props()
 
 	const treeView = createTreeView({})
 
@@ -36,7 +36,7 @@
 				document.body.classList.remove('no-scroll')
 			}
 		}
-	});
+	})
 </script>
 
 <Drawer bind:open={$isMobileMenuOpen}>

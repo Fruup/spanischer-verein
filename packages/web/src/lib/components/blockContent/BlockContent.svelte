@@ -6,10 +6,10 @@
 	import InternalReference from './InternalReference.svelte'
 
 	interface Props {
-		body: ComponentProps<PortableText>['value'];
+		body: ComponentProps<PortableText>['value']
 	}
 
-	let { body }: Props = $props();
+	let { body }: Props = $props()
 
 	const components: PortableTextComponents = {
 		types: {

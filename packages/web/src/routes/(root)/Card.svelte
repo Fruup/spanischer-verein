@@ -1,10 +1,10 @@
 <script lang="ts">
 	interface Props {
-		heading?: import('svelte').Snippet;
-		children?: import('svelte').Snippet;
+		heading?: import('svelte').Snippet
+		children?: import('svelte').Snippet
 	}
 
-	let { heading, children }: Props = $props();
+	let { heading, children }: Props = $props()
 </script>
 
 <div class="card">

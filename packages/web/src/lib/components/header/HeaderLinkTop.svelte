@@ -5,10 +5,10 @@
 	import angleUrl from '$assets/angle.svg'
 
 	interface Props {
-		navigationItem: NavigationItem;
+		navigationItem: NavigationItem
 	}
 
-	let { navigationItem }: Props = $props();
+	let { navigationItem }: Props = $props()
 
 	const key = Math.random().toString(16)
 

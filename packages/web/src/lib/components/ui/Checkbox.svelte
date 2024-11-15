@@ -1,11 +1,11 @@
 <script lang="ts">
 	interface Props {
-		checked?: boolean;
-		name?: string;
-		label?: import('svelte').Snippet;
+		checked?: boolean
+		name?: string
+		label?: import('svelte').Snippet
 	}
 
-	let { checked = $bindable(false), name = '', label }: Props = $props();
+	let { checked = $bindable(false), name = '', label }: Props = $props()
 </script>
 
 <div class="checkbox">

@@ -5,21 +5,23 @@
 	import IconCalendar from '../icons/IconCalendar.svelte'
 
 	interface Props {
-		portableText: MarkComponentProps<InternalLinkMark>;
+		portableText: MarkComponentProps<InternalLinkMark>
 	}
 
-	let { portableText }: Props = $props();
+	let { portableText }: Props = $props()
 
 	let resolvedReference = $derived(portableText.value.resolvedReference)
 	let type = $derived(resolvedReference._type)
-	let href = $derived((() => {
-		switch (type) {
-			case 'event':
-				return `/event/${resolvedReference.slug}`
-			case 'page':
-				return `/${resolvedReference.slug}`
-		}
-	})())
+	let href = $derived(
+		(() => {
+			switch (type) {
+				case 'event':
+					return `/event/${resolvedReference.slug}`
+				case 'page':
+					return `/${resolvedReference.slug}`
+			}
+		})(),
+	)
 </script>
 
 <a class="internal-reference" {href}>

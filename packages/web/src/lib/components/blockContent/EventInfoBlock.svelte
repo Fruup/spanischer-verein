@@ -3,10 +3,10 @@
 	import EventInfo, { type EventInfoSpec } from '../EventInfo.svelte'
 
 	interface Props {
-		portableText: CustomBlockComponentProps<EventInfoSpec>;
+		portableText: CustomBlockComponentProps<EventInfoSpec>
 	}
 
-	let { portableText }: Props = $props();
+	let { portableText }: Props = $props()
 </script>
 
 <EventInfo eventInfo={portableText.value} />

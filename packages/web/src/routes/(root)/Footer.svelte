@@ -6,11 +6,11 @@
 	import { socialLinks } from '$lib/components/header/SocialLinks.svelte'
 
 	interface Props {
-		imprintUrl: string | undefined;
-		privacyUrl: string | undefined;
+		imprintUrl: string | undefined
+		privacyUrl: string | undefined
 	}
 
-	let { imprintUrl, privacyUrl }: Props = $props();
+	let { imprintUrl, privacyUrl }: Props = $props()
 </script>
 
 <footer>

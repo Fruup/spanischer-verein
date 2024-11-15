@@ -4,22 +4,15 @@
 	import { getEventsForDay, type EventCalendarItem } from './helpers'
 	import { page } from '$app/stores'
 
-
 	interface Props {
-		cell: any;
-		grid: any;
-		isDateDisabled: any;
-		month: Month<DateValue>;
-		events: EventCalendarItem[];
+		cell: any
+		grid: any
+		isDateDisabled: any
+		month: Month<DateValue>
+		events: EventCalendarItem[]
 	}
 
-	let {
-		cell,
-		grid,
-		isDateDisabled,
-		month,
-		events
-	}: Props = $props();
+	let { cell, grid, isDateDisabled, month, events }: Props = $props()
 
 	let pathname = $derived($page.url.pathname)
 </script>

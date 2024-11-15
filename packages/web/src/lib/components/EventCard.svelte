@@ -6,25 +6,24 @@
 	import { fitParent } from '$lib/helpers/fitParent'
 	import IconCalendar from './icons/IconCalendar.svelte'
 
-
 	interface Props {
 		event: {
-		title: string
-		slug: string
-		imageUrl: string
-		eventTime: string
-		mainImageMeta: {
-			prominentColor: string
-			dimensions: {
-				width: number
-				height: number
+			title: string
+			slug: string
+			imageUrl: string
+			eventTime: string
+			mainImageMeta: {
+				prominentColor: string
+				dimensions: {
+					width: number
+					height: number
+				}
 			}
 		}
-	};
-		introDelay: number;
+		introDelay: number
 	}
 
-	let { event, introDelay }: Props = $props();
+	let { event, introDelay }: Props = $props()
 
 	let backgroundColor = $derived(event.mainImageMeta.prominentColor)
 

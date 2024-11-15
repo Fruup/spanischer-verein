@@ -1,17 +1,19 @@
 <script lang="ts">
 	interface Props {
-		direction?: 'up' | 'down' | 'left' | 'right';
-		transition?: boolean | undefined;
+		direction?: 'up' | 'down' | 'left' | 'right'
+		transition?: boolean | undefined
 	}
 
-	let { direction = 'down', transition = undefined }: Props = $props();
+	let { direction = 'down', transition = undefined }: Props = $props()
 
-	let rotate = $derived({
-		down: '0deg',
-		up: '180deg',
-		right: '-90deg',
-		left: '90deg',
-	}[direction])
+	let rotate = $derived(
+		{
+			down: '0deg',
+			up: '180deg',
+			right: '-90deg',
+			left: '90deg',
+		}[direction],
+	)
 </script>
 
 <svg

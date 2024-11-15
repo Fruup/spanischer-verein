@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Page from '$lib/components/Page.svelte'
 
-	let { data } = $props();
+	let { data } = $props()
 	let title = $derived(data.page.title)
 	let body = $derived(data.page.body)
 </script>

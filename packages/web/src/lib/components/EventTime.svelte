@@ -2,10 +2,10 @@
 	import { locale } from '$lib/services/locale'
 
 	interface Props {
-		time: string;
+		time: string
 	}
 
-	let { time }: Props = $props();
+	let { time }: Props = $props()
 
 	let _time = $derived(new Date(time))
 

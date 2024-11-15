@@ -6,34 +6,33 @@
 	import { isMobileCalendarOpen } from './MobileCalendar.svelte'
 
 	interface Props {
-		events: any[];
-		pastHighlights: any[];
-		year: number;
-		month: number;
+		events: any[]
+		pastHighlights: any[]
+		year: number
+		month: number
 	}
 
-	let {
-		events,
-		pastHighlights,
-		year,
-		month
-	}: Props = $props();
+	let { events, pastHighlights, year, month }: Props = $props()
 
 	let isPast = $derived(new Date().getTime() > new Date(year, month).getTime())
 
 	// Grace time for events to be considered past
 	const graceTime = 1000 * 60 * 60 * 6 // 6 hours
 
-	let eventsAfterNow = $derived(events.filter(
-		(event) => new Date(event.eventTime).getTime() + graceTime >= new Date().getTime(),
-	))
+	let eventsAfterNow = $derived(
+		events.filter(
+			(event) => new Date(event.eventTime).getTime() + graceTime >= new Date().getTime(),
+		),
+	)
 
 	let futureEvents = $derived(isPast ? events : eventsAfterNow)
 
-	let monthString = $derived(new Date(year, month - 1).toLocaleString(undefined, {
-		month: 'long',
-		year: 'numeric',
-	}))
+	let monthString = $derived(
+		new Date(year, month - 1).toLocaleString(undefined, {
+			month: 'long',
+			year: 'numeric',
+		}),
+	)
 
 	function jumpToCalendar() {
 		if (window.matchMedia('(max-width: 768px)').matches) {

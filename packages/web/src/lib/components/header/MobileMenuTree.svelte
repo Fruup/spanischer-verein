@@ -1,6 +1,6 @@
 <script lang="ts">
-	import MobileMenuTree from './MobileMenuTree.svelte';
-	import { preventDefault, stopPropagation } from 'svelte/legacy';
+	import MobileMenuTree from './MobileMenuTree.svelte'
+	import { preventDefault, stopPropagation } from 'svelte/legacy'
 
 	import { melt, type TreeView } from '@melt-ui/svelte'
 	import { getContext } from 'svelte'
@@ -10,14 +10,13 @@
 	import type { NavigationItem } from './types'
 	import { isMobileMenuOpen } from './MobileMenu.svelte'
 
-
 	interface Props {
-		items: NavigationItem[];
-		level?: number;
-		shown?: boolean;
+		items: NavigationItem[]
+		level?: number
+		shown?: boolean
 	}
 
-	let { items, level = 1, shown = true }: Props = $props();
+	let { items, level = 1, shown = true }: Props = $props()
 
 	const {
 		elements: { item, group },

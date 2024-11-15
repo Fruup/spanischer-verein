@@ -10,10 +10,10 @@
 	import Drawer from '$lib/components/ui/Drawer.svelte'
 
 	interface Props {
-		events: EventCalendarItem[];
+		events: EventCalendarItem[]
 	}
 
-	let { events }: Props = $props();
+	let { events }: Props = $props()
 </script>
 
 <Drawer bind:open={$isMobileCalendarOpen}>

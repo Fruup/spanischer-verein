@@ -5,12 +5,12 @@
 	import type { PortableTextBlock } from '@sanity/types'
 
 	interface Props {
-		title: string;
-		body: PortableTextBlock[];
-		eventInfo?: EventInfoSpec | undefined;
+		title: string
+		body: PortableTextBlock[]
+		eventInfo?: EventInfoSpec | undefined
 	}
 
-	let { title, body, eventInfo = undefined }: Props = $props();
+	let { title, body, eventInfo = undefined }: Props = $props()
 </script>
 
 <div class="page" in:fly={{ y: 10 }}>

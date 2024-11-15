@@ -6,10 +6,10 @@
 	import type { NavigationItem } from './types'
 
 	interface Props {
-		items: NavigationItem[];
+		items: NavigationItem[]
 	}
 
-	let { items }: Props = $props();
+	let { items }: Props = $props()
 </script>
 
 <nav>

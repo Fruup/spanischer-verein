@@ -3,15 +3,17 @@
 	import facebook from '$assets/facebook.png?w=64&h=64&format=webp&imagetools'
 
 	interface Props {
-		name: 'instagram' | 'facebook' | string;
+		name: 'instagram' | 'facebook' | string
 	}
 
-	let { name }: Props = $props();
+	let { name }: Props = $props()
 
-	let url = $derived({
-		instagram,
-		facebook,
-	}[name])
+	let url = $derived(
+		{
+			instagram,
+			facebook,
+		}[name],
+	)
 </script>
 
 <img src={url} alt="{name} logo" />

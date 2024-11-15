@@ -3,10 +3,10 @@
 	import type { PageData } from './$types'
 
 	interface Props {
-		events: PageData['events'];
+		events: PageData['events']
 	}
 
-	let { events }: Props = $props();
+	let { events }: Props = $props()
 </script>
 
 <nav>

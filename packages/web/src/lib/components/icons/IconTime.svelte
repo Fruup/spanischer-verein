@@ -1,9 +1,9 @@
 <script lang="ts">
 	interface Props {
-		size?: number;
+		size?: number
 	}
 
-	let { size = 1 }: Props = $props();
+	let { size = 1 }: Props = $props()
 </script>
 
 <svg

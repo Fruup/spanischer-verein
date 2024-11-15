@@ -2,7 +2,7 @@
 	import Page from '$lib/components/Page.svelte'
 	import type { EventInfoSpec } from '$lib/components/EventInfo.svelte'
 
-	let { data } = $props();
+	let { data } = $props()
 	let title = $derived(data.event.title)
 	let body = $derived(data.event.body)
 

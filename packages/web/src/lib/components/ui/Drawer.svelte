@@ -2,11 +2,11 @@
 	import { Drawer } from 'vaul-svelte'
 
 	interface Props {
-		open?: boolean;
-		children?: import('svelte').Snippet;
+		open?: boolean
+		children?: import('svelte').Snippet
 	}
 
-	let { open = $bindable(false), children }: Props = $props();
+	let { open = $bindable(false), children }: Props = $props()
 </script>
 
 <Drawer.Root preventScroll={false} bind:open>

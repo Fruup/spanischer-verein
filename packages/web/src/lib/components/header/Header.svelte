@@ -7,14 +7,13 @@
 	import SocialLinks from './SocialLinks.svelte'
 	import { fly } from 'svelte/transition'
 
-	
 	interface Props {
-		items: NavigationItem[];
-		leftImageUrl?: string | undefined;
-		rightImageUrl?: string | undefined;
+		items: NavigationItem[]
+		leftImageUrl?: string | undefined
+		rightImageUrl?: string | undefined
 	}
 
-	let { items: _items, leftImageUrl = undefined, rightImageUrl = undefined }: Props = $props();
+	let { items: _items, leftImageUrl = undefined, rightImageUrl = undefined }: Props = $props()
 
 	const homeItem: NavigationItem = {
 		title: 'Home',
