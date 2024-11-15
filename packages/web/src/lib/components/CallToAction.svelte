@@ -1,14 +1,22 @@
 <script lang="ts">
-	export let href: string | undefined = undefined
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
+	interface Props {
+		href?: string | undefined;
+		children?: import('svelte').Snippet;
+	}
+
+	let { href = undefined, children }: Props = $props();
 </script>
 
 {#if href}
 	<a {href} target="_blank" rel="noreferrer nofollow">
-		<slot />
+		{@render children?.()}
 	</a>
 {:else}
-	<button type="button" on:click>
-		<slot />
+	<button type="button" onclick={bubble('click')}>
+		{@render children?.()}
 	</button>
 {/if}
 

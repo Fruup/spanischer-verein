@@ -2,7 +2,11 @@
 	import EventCard from '$lib/components/EventCard.svelte'
 	import type { PageData } from './$types'
 
-	export let events: PageData['events']
+	interface Props {
+		events: PageData['events'];
+	}
+
+	let { events }: Props = $props();
 </script>
 
 <nav>

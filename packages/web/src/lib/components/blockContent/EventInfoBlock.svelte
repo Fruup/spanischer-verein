@@ -2,7 +2,11 @@
 	import type { CustomBlockComponentProps } from '@portabletext/svelte'
 	import EventInfo, { type EventInfoSpec } from '../EventInfo.svelte'
 
-	export let portableText: CustomBlockComponentProps<EventInfoSpec>
+	interface Props {
+		portableText: CustomBlockComponentProps<EventInfoSpec>;
+	}
+
+	let { portableText }: Props = $props();
 </script>
 
 <EventInfo eventInfo={portableText.value} />

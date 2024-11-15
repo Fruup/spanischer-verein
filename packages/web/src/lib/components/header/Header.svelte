@@ -7,17 +7,21 @@
 	import SocialLinks from './SocialLinks.svelte'
 	import { fly } from 'svelte/transition'
 
-	export let _items: NavigationItem[]
-	export { _items as items }
-	export let leftImageUrl: string | undefined = undefined
-	export let rightImageUrl: string | undefined = undefined
+	
+	interface Props {
+		items: NavigationItem[];
+		leftImageUrl?: string | undefined;
+		rightImageUrl?: string | undefined;
+	}
+
+	let { items: _items, leftImageUrl = undefined, rightImageUrl = undefined }: Props = $props();
 
 	const homeItem: NavigationItem = {
 		title: 'Home',
 		href: '/',
 	}
 
-	$: items = [homeItem, ..._items]
+	let items = $derived([homeItem, ..._items])
 
 	const transition = {
 		x: 100,
@@ -28,7 +32,7 @@
 
 <header>
 	<SiteLogo />
-	<div id="scroll-to-marker" />
+	<div id="scroll-to-marker"></div>
 	<SiteHeading />
 	<SiteMenu {items} />
 	<SocialLinks />

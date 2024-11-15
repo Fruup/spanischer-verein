@@ -20,30 +20,30 @@
 	import { isMobileMenuOpen } from '$lib/components/header/MobileMenu.svelte'
 	import 'virtual:fonts.css'
 
-	export let data
+	let { data, children } = $props();
 
-	$: siteSettings = data.siteSettings
+	let siteSettings = $derived(data.siteSettings)
 
-	$: events = data.events.map((e) => ({
+	let events = $derived(data.events.map((e) => ({
 		name: e.title,
 		url: getEventUrl(e.slug),
 		date: new Date(e.eventTime),
-	}))
+	})))
 
-	$: headerImages = data.siteSettings?.headerImageUrls ?? []
-	$: mail = data.siteSettings?.contactEmail ?? 'info@spanischer-verein.com'
-	$: imprintPageSlug = siteSettings?.imprintPageSlug
-	$: privacyUrl = siteSettings?.privacyPageSlug && `/${siteSettings.privacyPageSlug}`
+	let headerImages = $derived(data.siteSettings?.headerImageUrls ?? [])
+	let mail = $derived(data.siteSettings?.contactEmail ?? 'info@spanischer-verein.com')
+	let imprintPageSlug = $derived(siteSettings?.imprintPageSlug)
+	let privacyUrl = $derived(siteSettings?.privacyPageSlug && `/${siteSettings.privacyPageSlug}`)
 
 	/**
 	 * Rotate header images on page navigation.
 	 */
 
-	let imageIndexLeft = data.leftHeaderImageIndex
-	let imageIndexRight = data.rightHeaderImageIndex
+	let imageIndexLeft = $state(data.leftHeaderImageIndex)
+	let imageIndexRight = $state(data.rightHeaderImageIndex)
 
-	$: leftImageUrl = headerImages.at(imageIndexLeft)
-	$: rightImageUrl = headerImages.at(imageIndexRight)
+	let leftImageUrl = $derived(headerImages.at(imageIndexLeft))
+	let rightImageUrl = $derived(headerImages.at(imageIndexRight))
 
 	const changeImageOn: (ContentPageRouteId | HomeRouteId | EventPageRouteId)[] = [
 		'/(root)',
@@ -101,11 +101,11 @@
 				<Loader />
 			</div>
 		{:else}
-			<slot />
+			{@render children?.()}
 		{/if}
 	</main>
 
-	<div class="divider" />
+	<div class="divider"></div>
 
 	<aside>
 		<div class="aside-content">
@@ -144,7 +144,7 @@
 	! Keep this at the bottom
 -->
 <svelte:element
-	this="script"
+	this={"script"}
 	async
 	defer
 	src="https://scripts.simpleanalyticscdn.com/latest.{import.meta.env.PROD ? '' : 'dev.'}js"

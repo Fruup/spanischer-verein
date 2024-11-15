@@ -1,7 +1,7 @@
 <script lang="ts">
 	import EventsOverviewPage from './EventsOverviewPage.svelte'
 
-	export let data
+	let { data } = $props();
 
 	const year = new Date().getFullYear()
 	const month = new Date().getMonth() + 1

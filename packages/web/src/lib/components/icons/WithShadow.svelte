@@ -1,10 +1,15 @@
 <script lang="ts">
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 	// let { children } = $props<{ children: any }>()
 </script>
 
 <div class="shadow-container">
 	<!-- {@render children()} -->
-	<slot />
+	{@render children?.()}
 </div>
 
 <style lang="scss">

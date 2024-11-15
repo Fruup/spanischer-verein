@@ -4,12 +4,16 @@
 	import Card from './Card.svelte'
 	import NewsletterForm from './NewsletterForm.svelte'
 
-	export let mail: string
-	export let privacyUrl: string | undefined
+	interface Props {
+		mail: string;
+		privacyUrl: string | undefined;
+	}
+
+	let { mail, privacyUrl }: Props = $props();
 
 	const IBAN = 'DE52 3705 0198 0017 7420 40'
 
-	$: ibanParts = (() => {
+	let ibanParts = $derived((() => {
 		const ir = IBAN.replace(/\s+/g, '')
 
 		if (ir.length !== 22) return
@@ -22,12 +26,14 @@
 			ir.slice(16, 20),
 			ir.slice(20, 22),
 		]
-	})()
+	})())
 </script>
 
 <div class="participate-section">
 	<Card>
-		<p slot="heading">Du möchtest den Verein und unsere Arbeit finanziell unterstützen?</p>
+		{#snippet heading()}
+				<p >Du möchtest den Verein und unsere Arbeit finanziell unterstützen?</p>
+			{/snippet}
 
 		<p>Wir freuen uns über jede Spende!</p>
 
@@ -51,7 +57,9 @@
 	</Card>
 
 	<Card>
-		<p slot="heading">Du möchtest über unsere Angebote auf dem Laufenden bleiben?</p>
+		{#snippet heading()}
+				<p >Du möchtest über unsere Angebote auf dem Laufenden bleiben?</p>
+			{/snippet}
 
 		<p>Melde dich zu unserem Newsletter an!</p>
 
@@ -60,7 +68,9 @@
 
 	{#if mail}
 		<Card>
-			<p slot="heading">Du möchtest selbst einen Kurs oder ein Event anbieten?</p>
+			{#snippet heading()}
+						<p >Du möchtest selbst einen Kurs oder ein Event anbieten?</p>
+					{/snippet}
 
 			<p>
 				Schreib uns an! - <a href="mailto:{mail}"> {mail} </a>

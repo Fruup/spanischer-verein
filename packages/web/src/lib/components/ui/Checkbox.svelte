@@ -1,6 +1,11 @@
 <script lang="ts">
-	export let checked = false
-	export let name = ''
+	interface Props {
+		checked?: boolean;
+		name?: string;
+		label?: import('svelte').Snippet;
+	}
+
+	let { checked = $bindable(false), name = '', label }: Props = $props();
 </script>
 
 <div class="checkbox">
@@ -8,9 +13,9 @@
 		<input type="checkbox" {name} id={name} bind:checked />
 	</div>
 
-	{#if $$slots.label}
+	{#if label}
 		<label for={name}>
-			<slot name="label" />
+			{@render label?.()}
 		</label>
 	{/if}
 </div>

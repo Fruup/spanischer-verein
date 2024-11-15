@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Page from '$lib/components/Page.svelte'
 
-	export let data
-	$: title = data.page.title
-	$: body = data.page.body
+	let { data } = $props();
+	let title = $derived(data.page.title)
+	let body = $derived(data.page.body)
 </script>
 
 <svelte:head>

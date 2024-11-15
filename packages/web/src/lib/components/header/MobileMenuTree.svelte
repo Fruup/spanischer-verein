@@ -1,4 +1,7 @@
 <script lang="ts">
+	import MobileMenuTree from './MobileMenuTree.svelte';
+	import { preventDefault, stopPropagation } from 'svelte/legacy';
+
 	import { melt, type TreeView } from '@melt-ui/svelte'
 	import { getContext } from 'svelte'
 	import Button from '../Button.svelte'
@@ -7,10 +10,14 @@
 	import type { NavigationItem } from './types'
 	import { isMobileMenuOpen } from './MobileMenu.svelte'
 
-	export let items: NavigationItem[]
 
-	export let level = 1
-	export let shown = true
+	interface Props {
+		items: NavigationItem[];
+		level?: number;
+		shown?: boolean;
+	}
+
+	let { items, level = 1, shown = true }: Props = $props();
 
 	const {
 		elements: { item, group },
@@ -40,7 +47,7 @@
 		<div class="item">
 			<a
 				use:melt={$item({ id, hasChildren })}
-				on:click|capture|preventDefault|stopPropagation={() => navigate(href)}
+				onclickcapture={stopPropagation(preventDefault(() => navigate(href)))}
 				{href}
 			>
 				{title}
@@ -55,7 +62,7 @@
 			{@const shown = $isExpanded(id)}
 
 			<ul use:melt={$group({ id })} class:shown>
-				<svelte:self level={level + 1} items={children} shown={$isExpanded(id)} />
+				<MobileMenuTree level={level + 1} items={children} shown={$isExpanded(id)} />
 			</ul>
 		{/if}
 	</li>

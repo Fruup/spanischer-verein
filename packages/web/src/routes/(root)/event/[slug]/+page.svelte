@@ -2,15 +2,15 @@
 	import Page from '$lib/components/Page.svelte'
 	import type { EventInfoSpec } from '$lib/components/EventInfo.svelte'
 
-	export let data
-	$: title = data.event.title
-	$: body = data.event.body
+	let { data } = $props();
+	let title = $derived(data.event.title)
+	let body = $derived(data.event.body)
 
-	$: eventInfo = {
+	let eventInfo = $derived({
 		admission: data.event.eventAdmission,
 		time: data.event.eventTime,
 		location: data.event.eventLocation,
-	} satisfies EventInfoSpec
+	} satisfies EventInfoSpec)
 </script>
 
 <svelte:head>

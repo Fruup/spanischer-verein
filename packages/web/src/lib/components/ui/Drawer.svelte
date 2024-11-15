@@ -1,15 +1,20 @@
 <script lang="ts">
 	import { Drawer } from 'vaul-svelte'
 
-	export let open = false
+	interface Props {
+		open?: boolean;
+		children?: import('svelte').Snippet;
+	}
+
+	let { open = $bindable(false), children }: Props = $props();
 </script>
 
 <Drawer.Root preventScroll={false} bind:open>
 	<Drawer.Portal>
 		<Drawer.Overlay />
 		<Drawer.Content class="drawer-content">
-			<div class="handle" />
-			<slot />
+			<div class="handle"></div>
+			{@render children?.()}
 		</Drawer.Content>
 		<Drawer.Overlay />
 	</Drawer.Portal>

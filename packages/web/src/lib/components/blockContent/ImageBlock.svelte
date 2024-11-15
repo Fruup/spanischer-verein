@@ -1,10 +1,14 @@
 <script lang="ts">
 	import type { CustomBlockComponentProps } from '@portabletext/svelte'
 
-	export let portableText: CustomBlockComponentProps
+	interface Props {
+		portableText: CustomBlockComponentProps;
+	}
 
-	$: url = portableText.value.transformedImageUrl || portableText.value.asset.url
-	$: ratio = portableText.value.asset.metadata.dimensions.aspectRatio
+	let { portableText }: Props = $props();
+
+	let url = $derived(portableText.value.transformedImageUrl || portableText.value.asset.url)
+	let ratio = $derived(portableText.value.asset.metadata.dimensions.aspectRatio)
 	const alt = '' // TODO
 
 	const width = 500

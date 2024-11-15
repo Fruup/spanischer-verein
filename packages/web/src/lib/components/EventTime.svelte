@@ -1,13 +1,17 @@
 <script lang="ts">
 	import { locale } from '$lib/services/locale'
 
-	export let time: string
+	interface Props {
+		time: string;
+	}
 
-	$: _time = new Date(time)
+	let { time }: Props = $props();
 
-	$: date = _time.toLocaleDateString($locale)
-	$: hours = _time.getHours().toString().padStart(2, '0')
-	$: minutes = _time.getMinutes().toString().padStart(2, '0')
+	let _time = $derived(new Date(time))
+
+	let date = $derived(_time.toLocaleDateString($locale))
+	let hours = $derived(_time.getHours().toString().padStart(2, '0'))
+	let minutes = $derived(_time.getMinutes().toString().padStart(2, '0'))
 </script>
 
 <time class="event-time" datetime={_time.toISOString()}>

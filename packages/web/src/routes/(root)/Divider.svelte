@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<div />
+<div></div>
 
 <style lang="scss">
 	@use 'sass:color';

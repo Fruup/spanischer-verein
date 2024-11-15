@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
 	import { writable } from 'svelte/store'
 
 	export const isMobileCalendarOpen = writable(false)
@@ -9,7 +9,11 @@
 	import type { EventCalendarItem } from '$lib/components/eventCalendar/helpers'
 	import Drawer from '$lib/components/ui/Drawer.svelte'
 
-	export let events: EventCalendarItem[]
+	interface Props {
+		events: EventCalendarItem[];
+	}
+
+	let { events }: Props = $props();
 </script>
 
 <Drawer bind:open={$isMobileCalendarOpen}>

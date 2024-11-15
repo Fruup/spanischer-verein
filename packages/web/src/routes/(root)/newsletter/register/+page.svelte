@@ -6,7 +6,7 @@
 	import { goto } from '$app/navigation'
 	import toast from 'svelte-french-toast'
 
-	let promise: Promise<any> | undefined
+	let promise: Promise<any> | undefined = $state()
 
 	onMount(() => {
 		const email = $page.url.searchParams.get('email')

@@ -4,14 +4,24 @@
 	import { getEventsForDay, type EventCalendarItem } from './helpers'
 	import { page } from '$app/stores'
 
-	export let cell: any
-	export let grid: any
-	export let isDateDisabled: any
 
-	export let month: Month<DateValue>
-	export let events: EventCalendarItem[]
+	interface Props {
+		cell: any;
+		grid: any;
+		isDateDisabled: any;
+		month: Month<DateValue>;
+		events: EventCalendarItem[];
+	}
 
-	$: pathname = $page.url.pathname
+	let {
+		cell,
+		grid,
+		isDateDisabled,
+		month,
+		events
+	}: Props = $props();
+
+	let pathname = $derived($page.url.pathname)
 </script>
 
 <div class="month" use:melt={$grid}>

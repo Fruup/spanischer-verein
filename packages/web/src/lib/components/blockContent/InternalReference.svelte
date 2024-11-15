@@ -4,18 +4,22 @@
 	import type { InternalLinkMark } from '@spanischer-verein/sanity/schemas/blockContent'
 	import IconCalendar from '../icons/IconCalendar.svelte'
 
-	export let portableText: MarkComponentProps<InternalLinkMark>
+	interface Props {
+		portableText: MarkComponentProps<InternalLinkMark>;
+	}
 
-	$: resolvedReference = portableText.value.resolvedReference
-	$: type = resolvedReference._type
-	$: href = (() => {
+	let { portableText }: Props = $props();
+
+	let resolvedReference = $derived(portableText.value.resolvedReference)
+	let type = $derived(resolvedReference._type)
+	let href = $derived((() => {
 		switch (type) {
 			case 'event':
 				return `/event/${resolvedReference.slug}`
 			case 'page':
 				return `/${resolvedReference.slug}`
 		}
-	})()
+	})())
 </script>
 
 <a class="internal-reference" {href}>

@@ -5,7 +5,11 @@
 	import type { ComponentProps } from 'svelte'
 	import InternalReference from './InternalReference.svelte'
 
-	export let body: ComponentProps<PortableText>['value']
+	interface Props {
+		body: ComponentProps<PortableText>['value'];
+	}
+
+	let { body }: Props = $props();
 
 	const components: PortableTextComponents = {
 		types: {

@@ -1,10 +1,12 @@
-<script context="module" lang="ts">
+<script module lang="ts">
 	import { writable } from 'svelte/store'
 
 	export const isMobileMenuOpen = writable(false)
 </script>
 
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { createTreeView, melt } from '@melt-ui/svelte'
 	import type { NavigationItem } from './types'
 	import { setContext } from 'svelte'
@@ -12,7 +14,11 @@
 	import { browser } from '$app/environment'
 	import Drawer from '../ui/Drawer.svelte'
 
-	export let items: NavigationItem[]
+	interface Props {
+		items: NavigationItem[];
+	}
+
+	let { items }: Props = $props();
 
 	const treeView = createTreeView({})
 
@@ -22,13 +28,15 @@
 
 	setContext('mobileMenu', treeView)
 
-	$: if (browser) {
-		if ($isMobileMenuOpen) {
-			document.body.classList.add('no-scroll')
-		} else {
-			document.body.classList.remove('no-scroll')
+	run(() => {
+		if (browser) {
+			if ($isMobileMenuOpen) {
+				document.body.classList.add('no-scroll')
+			} else {
+				document.body.classList.remove('no-scroll')
+			}
 		}
-	}
+	});
 </script>
 
 <Drawer bind:open={$isMobileMenuOpen}>

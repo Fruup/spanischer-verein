@@ -5,8 +5,12 @@
 	import SiteLogo from '$lib/components/header/SiteLogo.svelte'
 	import { socialLinks } from '$lib/components/header/SocialLinks.svelte'
 
-	export let imprintUrl: string | undefined
-	export let privacyUrl: string | undefined
+	interface Props {
+		imprintUrl: string | undefined;
+		privacyUrl: string | undefined;
+	}
+
+	let { imprintUrl, privacyUrl }: Props = $props();
 </script>
 
 <footer>

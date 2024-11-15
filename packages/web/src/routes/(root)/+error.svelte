@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 
-	$: code = $page.error?.errorCode
-	$: status = $page.status
+	let code = $derived($page.error?.errorCode)
+	let status = $derived($page.status)
 
 	const messages: Record<App.Error['errorCode'], string> = {
 		NOT_FOUND: 'Der Inhalt konnte leider nicht gefunden werden... 😢',

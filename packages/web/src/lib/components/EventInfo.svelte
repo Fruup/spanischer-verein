@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script module lang="ts">
 	export interface EventInfoSpec {
 		admission?: string
 		time?: string
@@ -12,11 +12,15 @@
 	import IconTime from './icons/IconTime.svelte'
 	import EventTime from './EventTime.svelte'
 
-	export let eventInfo: EventInfoSpec
+	interface Props {
+		eventInfo: EventInfoSpec;
+	}
 
-	$: admission = eventInfo.admission
-	$: eventTime = eventInfo.time
-	$: location = eventInfo.location
+	let { eventInfo }: Props = $props();
+
+	let admission = $derived(eventInfo.admission)
+	let eventTime = $derived(eventInfo.time)
+	let location = $derived(eventInfo.location)
 </script>
 
 {#if admission || eventTime || location}
@@ -30,7 +34,7 @@
 				<EventTime time={eventTime} />
 			</div>
 
-			<div class="dummy" />
+			<div class="dummy"></div>
 		{/if}
 
 		{#if location}
@@ -44,7 +48,7 @@
 				</span>
 			</div>
 
-			<div class="dummy" />
+			<div class="dummy"></div>
 		{/if}
 
 		{#if admission}
@@ -58,7 +62,7 @@
 				</span>
 			</div>
 
-			<div class="dummy" />
+			<div class="dummy"></div>
 		{/if}
 	</div>
 {/if}

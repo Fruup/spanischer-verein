@@ -3,13 +3,13 @@
 	import { fade, fly } from 'svelte/transition'
 	import IconAngle from '../icons/IconAngle.svelte'
 
-	export let value = { year: new Date().getFullYear(), month: new Date().getMonth() + 1 }
+	let { value = $bindable({ year: new Date().getFullYear(), month: new Date().getMonth() + 1 }) } = $props();
 
 	const years = [2024, 2023]
 
-	$: months = Array.from({ length: 12 }, (_, monthIndex) =>
+	let months = $derived(Array.from({ length: 12 }, (_, monthIndex) =>
 		new Date(2024, monthIndex).toLocaleDateString(undefined, { month: 'long' }),
-	)
+	))
 
 	const {
 		elements: { trigger, option, menu, group, groupLabel },

@@ -4,9 +4,13 @@
 	import BlockContent from './blockContent/BlockContent.svelte'
 	import type { PortableTextBlock } from '@sanity/types'
 
-	export let title: string
-	export let body: PortableTextBlock[]
-	export let eventInfo: EventInfoSpec | undefined = undefined
+	interface Props {
+		title: string;
+		body: PortableTextBlock[];
+		eventInfo?: EventInfoSpec | undefined;
+	}
+
+	let { title, body, eventInfo = undefined }: Props = $props();
 </script>
 
 <div class="page" in:fly={{ y: 10 }}>

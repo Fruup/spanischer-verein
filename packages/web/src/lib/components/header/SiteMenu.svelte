@@ -5,7 +5,11 @@
 	import { isMobileMenuOpen } from './MobileMenu.svelte'
 	import type { NavigationItem } from './types'
 
-	export let items: NavigationItem[]
+	interface Props {
+		items: NavigationItem[];
+	}
+
+	let { items }: Props = $props();
 </script>
 
 <nav>

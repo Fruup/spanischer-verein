@@ -4,7 +4,11 @@
 	import { melt, createDropdownMenu } from '@melt-ui/svelte'
 	import angleUrl from '$assets/angle.svg'
 
-	export let navigationItem: NavigationItem
+	interface Props {
+		navigationItem: NavigationItem;
+	}
+
+	let { navigationItem }: Props = $props();
 
 	const key = Math.random().toString(16)
 
@@ -26,13 +30,13 @@
   Maybe add functionality to the dropdown menu that opens it on hover instead of click.
 -->
 
-<div data-key={key} role="tooltip" on:mouseleave={() => ($open = false)}>
+<div data-key={key} role="tooltip" onmouseleave={() => ($open = false)}>
 	<a
 		use:melt={$trigger}
 		href={navigationItem.href}
 		class:has-children={!!navigationItem.children?.length}
 		style:--angleUrl="url({angleUrl})"
-		on:mouseenter={() => ($open = true)}
+		onmouseenter={() => ($open = true)}
 	>
 		{navigationItem.title}
 
@@ -43,7 +47,7 @@
 
 	{#if $open && !!navigationItem.children?.length}
 		<div use:melt={$menu} transition:fly={{ y: 10, duration: 150 }} class="popup">
-			<div use:melt={$arrow} class="arrow" />
+			<div use:melt={$arrow} class="arrow"></div>
 
 			<ul>
 				{#each navigationItem.children ?? [] as child, i}

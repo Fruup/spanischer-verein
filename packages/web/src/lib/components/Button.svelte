@@ -3,23 +3,37 @@
 	import Loader from '$lib/components/icons/Loader.svelte'
 	import type { HTMLButtonAttributes } from 'svelte/elements'
 
-	export let type: HTMLButtonAttributes['type'] = 'button'
-	export let icon: ComponentType | undefined = undefined
-	export let size: 's' | 'm' = 'm'
-	export let tabindex: number | undefined = undefined
-	export let _disabled = false
-	export let href: string | undefined = undefined
-	export { _disabled as disabled }
+	
 
-	export let onClick: (() => any) | undefined = undefined
+	interface Props {
+		type?: HTMLButtonAttributes['type'];
+		icon?: ComponentType | undefined;
+		size?: 's' | 'm';
+		tabindex?: number | undefined;
+		disabled?: boolean;
+		href?: string | undefined;
+		onClick?: (() => any) | undefined;
+		children?: import('svelte').Snippet;
+	}
 
-	let loading = false
-	let showLoader = false
+	let {
+		type = 'button',
+		icon = undefined,
+		size = 'm',
+		tabindex = undefined,
+		disabled: _disabled = false,
+		href = undefined,
+		onClick = undefined,
+		children
+	}: Props = $props();
 
-	$: onClickPromise = async () => await onClick?.()
+	let loading = $state(false)
+	let showLoader = $state(false)
 
-	$: iconOnly = !!icon && !$$slots.default
-	$: disabled = _disabled || loading
+	let onClickPromise = $derived(async () => await onClick?.())
+
+	let iconOnly = $derived(!!icon && !children)
+	let disabled = $derived(_disabled || loading)
 
 	async function handleClick() {
 		if (!onClick) return
@@ -45,10 +59,11 @@
 		{#if showLoader}
 			<Loader />
 		{:else if icon}
-			<svelte:component this={icon} />
+			{@const SvelteComponent = icon}
+			<SvelteComponent />
 		{/if}
 
-		<slot />
+		{@render children?.()}
 	</a>
 {:else}
 	<button
@@ -58,15 +73,16 @@
 		class:iconOnly
 		class="size-{size}"
 		class:disabled
-		on:click={handleClick}
+		onclick={handleClick}
 	>
 		{#if showLoader}
 			<Loader />
 		{:else if icon}
-			<svelte:component this={icon} />
+			{@const SvelteComponent_1 = icon}
+			<SvelteComponent_1 />
 		{/if}
 
-		<slot />
+		{@render children?.()}
 	</button>
 {/if}
 

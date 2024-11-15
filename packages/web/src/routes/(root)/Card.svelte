@@ -1,11 +1,20 @@
+<script lang="ts">
+	interface Props {
+		heading?: import('svelte').Snippet;
+		children?: import('svelte').Snippet;
+	}
+
+	let { heading, children }: Props = $props();
+</script>
+
 <div class="card">
 	<div>
 		<strong>
-			<slot name="heading" />
+			{@render heading?.()}
 		</strong>
 	</div>
 
-	<slot />
+	{@render children?.()}
 </div>
 
 <style lang="scss">

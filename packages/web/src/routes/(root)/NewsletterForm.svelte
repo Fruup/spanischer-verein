@@ -1,20 +1,26 @@
 <script lang="ts">
+	import { run, preventDefault } from 'svelte/legacy';
+
 	import Button from '$lib/components/Button.svelte'
 	import IconSend from '$lib/components/icons/IconSend.svelte'
 	import Checkbox from '$lib/components/ui/Checkbox.svelte'
 	import { slide } from 'svelte/transition'
 	import { toast } from 'svelte-french-toast'
 
-	export let privacyUrl: string | undefined
+	interface Props {
+		privacyUrl: string | undefined;
+	}
 
-	let email = ''
-	let checked = false
-	let disabledAfterSubmit = false
+	let { privacyUrl }: Props = $props();
+
+	let email = $state('')
+	let checked = $state(false)
+	let disabledAfterSubmit = $state(false)
 
 	const emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-	$: isNewsletterEmailValid = email && emailRegexp.test(email) && checked
-	$: showCheckbox = !!email
+	let isNewsletterEmailValid = $derived(email && emailRegexp.test(email) && checked)
+	let showCheckbox = $derived(!!email)
 
 	async function handleSubmit() {
 		if (!isNewsletterEmailValid) return
@@ -47,12 +53,14 @@
 		}
 	}
 
-	$: if (email) {
-		disabledAfterSubmit = false
-	}
+	run(() => {
+		if (email) {
+			disabledAfterSubmit = false
+		}
+	});
 </script>
 
-<form on:submit|preventDefault={() => {}}>
+<form onsubmit={preventDefault(() => {})}>
 	<input
 		type="email"
 		class="input-email"
@@ -64,14 +72,16 @@
 	{#if showCheckbox}
 		<div class="checkbox" transition:slide={{ duration: 500 }}>
 			<Checkbox name="acceptPrivacy" bind:checked>
-				<p slot="label" class="label">
-					Ich möchte den Newsletter erhalten und akzeptiere die
-					{#if privacyUrl}
-						<a href={privacyUrl} target="_blank">Datenschutzrichtlinien</a>.
-					{:else}
-						Datenschutzrichtlinien.
-					{/if}
-				</p>
+				{#snippet label()}
+								<p  class="label">
+						Ich möchte den Newsletter erhalten und akzeptiere die
+						{#if privacyUrl}
+							<a href={privacyUrl} target="_blank">Datenschutzrichtlinien</a>.
+						{:else}
+							Datenschutzrichtlinien.
+						{/if}
+					</p>
+							{/snippet}
 			</Checkbox>
 
 			<Button

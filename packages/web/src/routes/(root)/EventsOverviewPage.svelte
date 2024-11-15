@@ -5,26 +5,35 @@
 	import EventsOverview from './EventsOverview.svelte'
 	import { isMobileCalendarOpen } from './MobileCalendar.svelte'
 
-	export let events: any[]
-	export let pastHighlights: any[]
-	export let year: number
-	export let month: number
+	interface Props {
+		events: any[];
+		pastHighlights: any[];
+		year: number;
+		month: number;
+	}
 
-	$: isPast = new Date().getTime() > new Date(year, month).getTime()
+	let {
+		events,
+		pastHighlights,
+		year,
+		month
+	}: Props = $props();
+
+	let isPast = $derived(new Date().getTime() > new Date(year, month).getTime())
 
 	// Grace time for events to be considered past
 	const graceTime = 1000 * 60 * 60 * 6 // 6 hours
 
-	$: eventsAfterNow = events.filter(
+	let eventsAfterNow = $derived(events.filter(
 		(event) => new Date(event.eventTime).getTime() + graceTime >= new Date().getTime(),
-	)
+	))
 
-	$: futureEvents = isPast ? events : eventsAfterNow
+	let futureEvents = $derived(isPast ? events : eventsAfterNow)
 
-	$: monthString = new Date(year, month - 1).toLocaleString(undefined, {
+	let monthString = $derived(new Date(year, month - 1).toLocaleString(undefined, {
 		month: 'long',
 		year: 'numeric',
-	})
+	}))
 
 	function jumpToCalendar() {
 		if (window.matchMedia('(max-width: 768px)').matches) {
@@ -60,7 +69,7 @@
 
 		<Note>
 			Um weitere vergangene Events zu entdecken,<br />
-			nutze unseren <button class="calendar-button" on:click={jumpToCalendar}>Kalender</button>.
+			nutze unseren <button class="calendar-button" onclick={jumpToCalendar}>Kalender</button>.
 		</Note>
 	{/if}
 {:else}

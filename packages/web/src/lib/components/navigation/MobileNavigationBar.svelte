@@ -2,16 +2,20 @@
 	import IconBurger from '../icons/IconBurger.svelte'
 	import IconCalendar from '../icons/IconCalendar.svelte'
 
-	export let isCalendarOpen = false
-	export let isFlyoutOpen = false
+	interface Props {
+		isCalendarOpen?: boolean;
+		isFlyoutOpen?: boolean;
+	}
 
-	$: hidden = isCalendarOpen || isFlyoutOpen
+	let { isCalendarOpen = $bindable(false), isFlyoutOpen = $bindable(false) }: Props = $props();
+
+	let hidden = $derived(isCalendarOpen || isFlyoutOpen)
 </script>
 
 <nav class="mobile-navigation-bar" class:hidden>
 	<button
 		class="primary"
-		on:click={() => (isCalendarOpen = !isCalendarOpen)}
+		onclick={() => (isCalendarOpen = !isCalendarOpen)}
 		title="Öffne Kalender"
 	>
 		<IconCalendar />
@@ -19,7 +23,7 @@
 
 	<button
 		class="secondary"
-		on:click={() => (isFlyoutOpen = !isFlyoutOpen)}
+		onclick={() => (isFlyoutOpen = !isFlyoutOpen)}
 		title="Öffne Navigation"
 	>
 		<IconBurger />

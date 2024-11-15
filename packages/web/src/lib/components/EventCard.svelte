@@ -6,7 +6,9 @@
 	import { fitParent } from '$lib/helpers/fitParent'
 	import IconCalendar from './icons/IconCalendar.svelte'
 
-	export let event: {
+
+	interface Props {
+		event: {
 		title: string
 		slug: string
 		imageUrl: string
@@ -18,14 +20,16 @@
 				height: number
 			}
 		}
+	};
+		introDelay: number;
 	}
 
-	export let introDelay: number
+	let { event, introDelay }: Props = $props();
 
-	$: backgroundColor = event.mainImageMeta.prominentColor
+	let backgroundColor = $derived(event.mainImageMeta.prominentColor)
 
 	const href = getEventUrl(event.slug)
-	let hover = false
+	let hover = $state(false)
 
 	onMount(() => {
 		const as = document.querySelectorAll<HTMLAnchorElement>(`a[href="${href}"]`)
