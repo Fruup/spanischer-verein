@@ -1,4 +1,4 @@
-@import 'vars';
+@use 'vars';
 
 @mixin shared {
 	width: fit-content;
@@ -8,14 +8,14 @@
 	padding: 0.25rem 0.666rem;
 	margin: 2rem 0;
 
-	border: 2px solid $color-accent;
+	border: 2px solid vars.$color-accent;
 	border-radius: var(--border-radius);
 }
 
 .heading-2 {
 	@include shared;
 
-	background-color: $color-accent;
+	background-color: vars.$color-accent;
 	color: white;
 }
 
@@ -23,5 +23,5 @@
 	@include shared;
 
 	background-color: white;
-	color: $color-text;
+	color: vars.$color-text;
 }

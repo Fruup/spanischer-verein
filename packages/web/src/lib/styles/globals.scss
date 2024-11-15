@@ -1,11 +1,11 @@
 @use 'sass:color';
-@import 'vars';
-@import 'headings';
+@use 'vars';
+@use 'headings';
 
 :root {
 	font-size: 21px;
 	line-height: 1.66;
-	@include font-sans-serif;
+	@include vars.font-sans-serif;
 }
 
 :root,
