@@ -1,17 +1,15 @@
 <script lang="ts">
-	import { run, preventDefault } from 'svelte/legacy';
-
 	import Button from '$lib/components/Button.svelte'
 	import IconSend from '$lib/components/icons/IconSend.svelte'
 	import Checkbox from '$lib/components/ui/Checkbox.svelte'
 	import { slide } from 'svelte/transition'
-	import { toast } from 'svelte-french-toast'
+	// import { toast } from 'svelte-french-toast'
 
 	interface Props {
-		privacyUrl: string | undefined;
+		privacyUrl: string | undefined
 	}
 
-	let { privacyUrl }: Props = $props();
+	let { privacyUrl }: Props = $props()
 
 	let email = $state('')
 	let checked = $state(false)
@@ -37,15 +35,16 @@
 				}
 			})
 
-			await toast.promise(
-				promise,
-				{
-					loading: 'Anmeldung wird gesendet...',
-					success: '🎉 Deine Anmeldung ist eingegangen. Vielen Dank!',
-					error: 'Da ist etwas schiefgegangen...\nVersuche es später erneut.',
-				},
-				{ duration: 5000 },
-			)
+			// TODO
+			// await toast.promise(
+			// 	promise,
+			// 	{
+			// 		loading: 'Anmeldung wird gesendet...',
+			// 		success: '🎉 Deine Anmeldung ist eingegangen. Vielen Dank!',
+			// 		error: 'Da ist etwas schiefgegangen...\nVersuche es später erneut.',
+			// 	},
+			// 	{ duration: 5000 },
+			// )
 
 			disabledAfterSubmit = true
 		} catch (error) {
@@ -53,14 +52,14 @@
 		}
 	}
 
-	run(() => {
+	$effect(() => {
 		if (email) {
 			disabledAfterSubmit = false
 		}
-	});
+	})
 </script>
 
-<form onsubmit={preventDefault(() => {})}>
+<form onsubmit={(e) => e.preventDefault()}>
 	<input
 		type="email"
 		class="input-email"
@@ -73,7 +72,7 @@
 		<div class="checkbox" transition:slide={{ duration: 500 }}>
 			<Checkbox name="acceptPrivacy" bind:checked>
 				{#snippet label()}
-								<p  class="label">
+					<p class="label">
 						Ich möchte den Newsletter erhalten und akzeptiere die
 						{#if privacyUrl}
 							<a href={privacyUrl} target="_blank">Datenschutzrichtlinien</a>.
@@ -81,7 +80,7 @@
 							Datenschutzrichtlinien.
 						{/if}
 					</p>
-							{/snippet}
+				{/snippet}
 			</Checkbox>
 
 			<Button

@@ -15,20 +15,22 @@
 	import type { RouteId as EventPageRouteId } from './event/[slug]/$types'
 	import type { RouteId as HomeRouteId } from './$types'
 	import { pick } from '$lib/helpers/pick'
-	import { Toaster } from 'svelte-french-toast'
+	// import { Toaster } from 'svelte-french-toast'
 	import MobileNavigationBar from '$lib/components/navigation/MobileNavigationBar.svelte'
 	import { isMobileMenuOpen } from '$lib/components/header/MobileMenu.svelte'
 	import 'virtual:fonts.css'
 
-	let { data, children } = $props();
+	let { data, children } = $props()
 
 	let siteSettings = $derived(data.siteSettings)
 
-	let events = $derived(data.events.map((e) => ({
-		name: e.title,
-		url: getEventUrl(e.slug),
-		date: new Date(e.eventTime),
-	})))
+	let events = $derived(
+		data.events.map((e) => ({
+			name: e.title,
+			url: getEventUrl(e.slug),
+			date: new Date(e.eventTime),
+		})),
+	)
 
 	let headerImages = $derived(data.siteSettings?.headerImageUrls ?? [])
 	let mail = $derived(data.siteSettings?.contactEmail ?? 'info@spanischer-verein.com')
@@ -82,7 +84,7 @@
 	{/if}
 </svelte:head>
 
-<Toaster position="bottom-center" />
+<!-- <Toaster position="bottom-center" /> -->
 
 <!-- <SkipNavigation /> -->
 
@@ -144,7 +146,7 @@
 	! Keep this at the bottom
 -->
 <svelte:element
-	this={"script"}
+	this={'script'}
 	async
 	defer
 	src="https://scripts.simpleanalyticscdn.com/latest.{import.meta.env.PROD ? '' : 'dev.'}js"

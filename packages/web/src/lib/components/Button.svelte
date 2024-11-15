@@ -1,19 +1,17 @@
 <script lang="ts">
-	import type { ComponentType } from 'svelte'
 	import Loader from '$lib/components/icons/Loader.svelte'
+	import type { Component } from 'svelte'
 	import type { HTMLButtonAttributes } from 'svelte/elements'
 
-	
-
 	interface Props {
-		type?: HTMLButtonAttributes['type'];
-		icon?: ComponentType | undefined;
-		size?: 's' | 'm';
-		tabindex?: number | undefined;
-		disabled?: boolean;
-		href?: string | undefined;
-		onClick?: (() => any) | undefined;
-		children?: import('svelte').Snippet;
+		type?: HTMLButtonAttributes['type']
+		icon?: Component | undefined
+		size?: 's' | 'm'
+		tabindex?: number | undefined
+		disabled?: boolean
+		href?: string | undefined
+		onClick?: (() => any) | undefined
+		children?: import('svelte').Snippet
 	}
 
 	let {
@@ -24,8 +22,8 @@
 		disabled: _disabled = false,
 		href = undefined,
 		onClick = undefined,
-		children
-	}: Props = $props();
+		children,
+	}: Props = $props()
 
 	let loading = $state(false)
 	let showLoader = $state(false)
