@@ -1,7 +1,7 @@
 import adapterStatic from '@sveltejs/adapter-static'
 // import adapterNetlify from '@sveltejs/adapter-netlify'
 import adapterBun from 'svelte-adapter-bun'
-import preprocess from 'svelte-preprocess'
+import { sveltePreprocess } from 'svelte-preprocess'
 import { preprocessMeltUI, sequence } from '@melt-ui/pp'
 
 import { fileURLToPath } from 'url'
@@ -10,7 +10,7 @@ import { dirname, join } from 'path'
 /**
  * @param {string} path
  */
-const resolve = (path) => join(dirname(fileURLToPath(import.meta.url)), path)
+const resolve = (path) => fileURLToPath(new URL(path, import.meta.url))
 
 const isRenderingNewsletter = process.env.PUBLIC_RENDERING_NEWSLETTER === 'true'
 
@@ -31,9 +31,10 @@ const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
 	// for more information about preprocessors
 	preprocess: sequence([
-		preprocess({
+		sveltePreprocess({
 			scss: {
 				includePaths: [resolve('src/lib/styles')],
+				silenceDeprecations: ['import', 'mixed-decls', 'legacy-js-api'],
 			},
 		}),
 		preprocessMeltUI(),

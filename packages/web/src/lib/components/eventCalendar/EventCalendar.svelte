@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
+	import { run } from 'svelte/legacy'
 
 	import { createCalendar, melt } from '@melt-ui/svelte'
 	import IconAngle from '../icons/IconAngle.svelte'
@@ -10,25 +10,22 @@
 	import MonthSelector from './MonthSelector.svelte'
 
 	interface Props {
-		events: EventCalendarItem[];
+		events: EventCalendarItem[]
 	}
 
-	let { events }: Props = $props();
+	let { events }: Props = $props()
 
-	let selected;
-	run(() => {
-		selected = {
-			year: Number($page.params.year) || new Date().getFullYear(),
-			month: Number($page.params.month) || new Date().getMonth() + 1,
-		}
-	});
+	const selected = $derived({
+		year: Number($page.params.year) || new Date().getFullYear(),
+		month: Number($page.params.month) || new Date().getMonth() + 1,
+	})
 
-	let next = $derived({
+	const next = $derived({
 		year: selected.month === 12 ? selected.year + 1 : selected.year,
 		month: selected.month === 12 ? 1 : selected.month + 1,
 	})
 
-	let prev = $derived({
+	const prev = $derived({
 		year: selected.month === 1 ? selected.year - 1 : selected.year,
 		month: selected.month === 1 ? 12 : selected.month - 1,
 	})
@@ -45,12 +42,10 @@
 		locale: $locale,
 	})
 
-	run(() => {
-		if (selected) {
-			setMonth(selected.month)
-			setYear(selected.year)
-		}
-	});
+	$effect(() => {
+		setMonth(selected.month)
+		setYear(selected.year)
+	})
 </script>
 
 <div class="calendar" use:melt={$calendar}>
@@ -64,7 +59,7 @@
 			<IconAngle direction="left" />
 		</a>
 
-		<MonthSelector bind:value={selected} />
+		<MonthSelector value={selected} />
 
 		<a
 			href="/archiv/{next.year}-{next.month.toString().padStart(2, '0')}"

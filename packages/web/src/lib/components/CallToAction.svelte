@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { createBubbler } from 'svelte/legacy';
+	import { createBubbler } from 'svelte/legacy'
 
-	const bubble = createBubbler();
+	const bubble = createBubbler()
 	interface Props {
-		href?: string | undefined;
-		children?: import('svelte').Snippet;
+		href?: string | undefined
+		children?: import('svelte').Snippet
 	}
 
-	let { href = undefined, children }: Props = $props();
+	let { href = undefined, children }: Props = $props()
 </script>
 
 {#if href}
@@ -21,6 +21,7 @@
 {/if}
 
 <style lang="scss">
+	@use 'sass:color';
 	@import 'vars';
 
 	$color: #0070e0;
@@ -44,7 +45,7 @@
 		background-color: white;
 
 		&:hover {
-			background-color: change-color($color, $alpha: 0.1);
+			background-color: color.change($color, $alpha: 0.1);
 		}
 
 		cursor: pointer;

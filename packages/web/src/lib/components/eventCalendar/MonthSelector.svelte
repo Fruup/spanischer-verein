@@ -1,33 +1,28 @@
 <script lang="ts">
-	import { createSelect, melt } from '@melt-ui/svelte'
-	import { fade, fly } from 'svelte/transition'
+	import { createDropdownMenu, melt } from '@melt-ui/svelte'
+	import { fly } from 'svelte/transition'
 	import IconAngle from '../icons/IconAngle.svelte'
 
-	let { value = $bindable({ year: new Date().getFullYear(), month: new Date().getMonth() + 1 }) } = $props();
+	let { value = { year: new Date().getFullYear(), month: new Date().getMonth() + 1 } } = $props()
 
 	const years = [2024, 2023]
 
-	let months = $derived(Array.from({ length: 12 }, (_, monthIndex) =>
-		new Date(2024, monthIndex).toLocaleDateString(undefined, { month: 'long' }),
-	))
+	let months = $derived(
+		Array.from({ length: 12 }, (_, monthIndex) =>
+			new Date(2024, monthIndex).toLocaleDateString(undefined, { month: 'long' }),
+		),
+	)
 
 	const {
-		elements: { trigger, option, menu, group, groupLabel },
+		elements: { menu, trigger, group, groupLabel, item },
 		states: { open },
-	} = createSelect({
+	} = createDropdownMenu({
 		preventScroll: false,
 		positioning: {
 			placement: 'bottom',
 			sameWidth: true,
 		},
 	})
-
-	const handleSelect = (year: number, month: number) => {
-		value = {
-			year,
-			month,
-		}
-	}
 
 	const isCurrent = (year: number, month: number) => {
 		const current = { year: new Date().getFullYear(), month: new Date().getMonth() + 1 }
@@ -65,7 +60,7 @@
 						<a
 							href="/archiv/{year}-{month.toString().padStart(2, '0')}"
 							data-sveltekit-noscroll
-							use:melt={$option({ value: month, label: monthString })}
+							use:melt={$item}
 							class:current={isCurrent(year, month)}
 							class:active={isActive(year, month)}
 						>
@@ -117,7 +112,6 @@
 		max-height: 300px;
 		overflow-y: auto;
 		padding: 0.5em;
-		margin: 0 2em;
 
 		z-index: 1000;
 		background: white;
@@ -150,7 +144,7 @@
 		}
 
 		&.active {
-			border: 1px solid change-color($color-accent, $alpha: 0.5);
+			border: 1px solid color.change($color-accent, $alpha: 0.5);
 		}
 	}
 
