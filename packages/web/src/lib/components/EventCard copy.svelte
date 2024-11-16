@@ -21,11 +21,9 @@
 			}
 		}
 		introDelay: number
-		horizontal?: boolean
-		reverse?: boolean
 	}
 
-	let { event, introDelay, horizontal, reverse }: Props = $props()
+	let { event, introDelay }: Props = $props()
 
 	let backgroundColor = $derived(event.mainImageMeta.prominentColor)
 
@@ -58,14 +56,7 @@
 	})
 </script>
 
-<a
-	in:fly|global={{ y: 30, delay: introDelay }}
-	{href}
-	class="event-card"
-	class:hover
-	class:horizontal
-	class:reverse
->
+<a in:fly|global={{ y: 30, delay: introDelay }} {href} class="event-card" class:hover>
 	<img
 		src={event.imageUrl}
 		alt="Title image for an event called '${event.title}'"
@@ -84,56 +75,37 @@
 
 <style lang="scss">
 	@use 'sass:color';
-	@use 'vars';
-
 	@import 'vars';
 
-	$spacing: 1.5rem;
+	$spacing: 10%;
 
 	.event-card {
 		@include shadow;
 
-		display: grid;
-		grid-template-rows: auto auto;
-
-		&.horizontal {
-			grid-template-columns: auto auto;
-		}
-
-		&.reverse img {
-			order: 1;
-		}
+		display: flex;
+		flex-direction: column;
 
 		font-size: 1rem;
 		min-height: 100%;
 		text-align: center;
 
 		border-radius: var(--border-radius);
+		overflow: hidden;
 
 		--shadow-color: rgba(0, 0, 0, 0.1);
 		border: 1px solid var(--shadow-color);
 
 		transition: all 150ms ease;
-		transition: scale 300ms ease;
+		transition: scale 500ms ease;
 
 		&:hover,
 		&:focus,
 		&.hover {
 			outline: 2px solid #{color.change($color-accent)};
 			scale: 1.01;
-
-			img {
-				scale: 1.05;
-				rotate: -0.5deg;
-				@include vars.shadow-xl;
-			}
 		}
 
 		img {
-			border-radius: var(--border-radius);
-
-			transition: all 300ms ease;
-
 			width: 100%;
 			height: auto;
 			min-height: 50%;
