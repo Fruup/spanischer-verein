@@ -129,11 +129,6 @@
 			gap: 4px;
 
 			font-size: 0.8em;
-
-			input {
-				height: 0.8rem;
-				width: 0.8rem;
-			}
 		}
 
 		:global(.checkbox) {

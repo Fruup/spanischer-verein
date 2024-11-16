@@ -21,7 +21,7 @@
 		{/each}
 
 		<li class="main-menu-trigger">
-			<Button icon={IconBurger} on:click={() => ($isMobileMenuOpen = true)} />
+			<Button icon={IconBurger} onClick={() => ($isMobileMenuOpen = true)} />
 		</li>
 	</ul>
 </nav>

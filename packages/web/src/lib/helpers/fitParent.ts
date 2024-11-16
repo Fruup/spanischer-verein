@@ -1,19 +1,21 @@
 import { tick } from 'svelte'
 import type { Action } from 'svelte/action'
 
+interface FitParentOptions {
+	strategy?: 'fontSize' | 'boxSize' | 'scale'
+}
+
 /**
  * Automatically resizes an element to fit its parent.
  */
-export const fitParent: Action<HTMLElement, { strategy?: 'fontSize' | 'boxSize' | 'scale' }> = (
+export const fitParent: Action<HTMLElement, FitParentOptions | undefined> = (
 	node,
-	options,
+	options?: FitParentOptions,
 ) => {
-	document.createElement('style')
-
 	const parent = node.parentElement
 	if (!parent) return
 
-	const { strategy = 'scale' } = options
+	const { strategy = 'scale' } = options ?? {}
 
 	// create style sheet for this element
 	const id = `fit-parent-${createId()}`
