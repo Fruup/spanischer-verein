@@ -1,6 +1,14 @@
-import {PortableTextBlock, SanityDocument, defineField, defineType, Slug, Image} from 'sanity'
+import {
+  type PortableTextBlock,
+  type SanityDocument,
+  defineField,
+  defineType,
+  type Slug,
+  type Image,
+} from 'sanity'
 import {CalendarIcon} from '@sanity/icons'
-import EventHighlightedInput, {MAX_HIGHLIGHTED_EVENTS} from '../components/EventHighlightedInput'
+import EventHighlightedInput from '../components/EventHighlightedInput'
+import {MAX_HIGHLIGHTED_EVENTS} from '../components/constants'
 
 const mainFields = [
   defineField({

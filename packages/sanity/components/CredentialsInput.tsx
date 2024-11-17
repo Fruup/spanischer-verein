@@ -2,7 +2,7 @@ import {Button} from '@sanity/ui'
 import {useState} from 'react'
 import {EditIcon} from '@sanity/icons'
 import {SettingsView} from '@sanity/studio-secrets'
-import {SECRETS_NAMESPACE} from '../schemas/siteSettings'
+import {SECRETS_NAMESPACE} from './constants'
 
 const pluginConfigKeys = [
   {

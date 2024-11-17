@@ -1,5 +1,5 @@
 import {TextInput} from '@sanity/ui'
-import {FormEventHandler, useEffect, useState} from 'react'
+import {type FormEventHandler, useEffect, useState} from 'react'
 
 interface Coordinates {
   long: number

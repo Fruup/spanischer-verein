@@ -1,8 +1,7 @@
-import {BooleanInputProps, useClient} from 'sanity'
-import {useEffect, useState} from 'react'
+import {type BooleanInputProps, useClient} from 'sanity'
+import {useEffect, useRef, useState} from 'react'
 import {Card, Flex} from '@sanity/ui'
-
-export const MAX_HIGHLIGHTED_EVENTS = 6
+import {MAX_HIGHLIGHTED_EVENTS} from './constants'
 
 export default function (props: BooleanInputProps) {
   const numHighlightedEvents = useHighlightedCount()
@@ -52,7 +51,7 @@ function useHighlightedCount() {
     {visibility: 'query', includeResult: false, includePreviousRevision: false},
   )
 
-  let timer: NodeJS.Timeout | null = null
+  let timer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   function updateCount() {
     client.fetch<any[]>(query).then((a) => {
@@ -65,16 +64,16 @@ function useHighlightedCount() {
     updateCount()
 
     const subscription = listener.subscribe(() => {
-      if (timer) clearTimeout(timer)
-      timer = setTimeout(updateCount, 500)
+      if (timer.current) clearTimeout(timer.current)
+      timer.current = setTimeout(updateCount, 500)
     })
 
     return () => {
       subscription.unsubscribe()
 
-      if (timer) {
-        clearTimeout(timer)
-        timer = null
+      if (timer.current) {
+        clearTimeout(timer.current)
+        timer.current = null
       }
     }
   }, [])

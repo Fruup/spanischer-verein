@@ -1,4 +1,10 @@
-import {PortableTextBlock, SanityDocument, defineField, defineType, Slug} from 'sanity'
+import {
+  type PortableTextBlock,
+  type SanityDocument,
+  defineField,
+  defineType,
+  type Slug,
+} from 'sanity'
 import {TextIcon} from '@sanity/icons'
 
 export default defineType({

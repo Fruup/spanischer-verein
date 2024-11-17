@@ -1,6 +1,6 @@
-import {ImageAsset, defineField, defineType} from 'sanity'
+import {type ImageAsset, defineField, defineType} from 'sanity'
 import {CogIcon} from '@sanity/icons'
-import {PageSchema} from './page'
+import type {PageSchema} from './page'
 
 export default defineType({
   name: 'siteSettings',

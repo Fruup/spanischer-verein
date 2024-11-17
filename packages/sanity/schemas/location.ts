@@ -1,4 +1,4 @@
-import {SanityDocument, defineField, defineType} from 'sanity'
+import {type SanityDocument, defineField, defineType} from 'sanity'
 import {PinIcon} from '@sanity/icons'
 // import LocationInput from '../components/LocationInput'
 
