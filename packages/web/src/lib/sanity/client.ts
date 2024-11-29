@@ -65,8 +65,8 @@ export const sanityApi = {
 				},
 			} | order(eventTime asc)`,
 			{
-				from: `${from.toISOTimeString()}`,
-				to: `${to.toISOTimeString()}`,
+				from: `${from.toISOString()}`,
+				to: `${to.toISOString()}`,
 			},
 		)
 
