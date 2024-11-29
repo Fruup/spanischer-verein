@@ -7,6 +7,7 @@ import type { PageSchema } from '@spanischer-verein/sanity/schemas/page'
 import type { SiteSettingsSchema } from '@spanischer-verein/sanity/schemas/siteSettings'
 import type { NavigationItem } from '$lib/components/header/types'
 import { env } from '$env/dynamic/private'
+import { CalendarDateTime } from '@internationalized/date'
 
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
@@ -36,6 +37,11 @@ export const sanityApi = {
 			}
 		}
 
+		const from = new CalendarDateTime(options.year, options.month, 1)
+		const to = from.copy().add({ months: 1 })
+
+		const timeZone = 'Europe/Berlin'
+
 		const events = await sanityClient.fetch<Result[]>(
 			`*[
 				_type == "event" &&
@@ -58,8 +64,8 @@ export const sanityApi = {
 				},
 			} | order(eventTime asc)`,
 			{
-				from: `${options.year}-${options.month.toString().padStart(2, '0')}-01T00:00:00Z`,
-				to: `${options.year}-${(options.month + 1).toString().padStart(2, '0')}-01T00:00:00Z`,
+				from: `${from.toDate(timeZone).toISOString()}`,
+				to: `${to.toDate(timeZone).toISOString()}`,
 			},
 		)
 
