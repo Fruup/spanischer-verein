@@ -36,6 +36,13 @@ export const sanityApi = {
 			}
 		}
 
+		const from = new Date()
+		from.setYear(options.year)
+		from.setMonth(options.month)
+
+		const to = new Date(clone)
+		to.setMonth(from.getMonth() + 1)
+
 		const events = await sanityClient.fetch<Result[]>(
 			`*[
 				_type == "event" &&
@@ -58,8 +65,8 @@ export const sanityApi = {
 				},
 			} | order(eventTime asc)`,
 			{
-				from: `${options.year}-${options.month.toString().padStart(2, '0')}-01T00:00:00Z`,
-				to: `${options.year}-${(options.month + 1).toString().padStart(2, '0')}-01T00:00:00Z`,
+				from: `${from.toISOTimeString()}`,
+				to: `${to.toISOTimeString()}`,
 			},
 		)
 
