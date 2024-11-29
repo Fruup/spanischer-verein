@@ -40,7 +40,7 @@ export const sanityApi = {
 		from.setYear(options.year)
 		from.setMonth(options.month)
 
-		const to = new Date(clone)
+		const to = new Date(from)
 		to.setMonth(from.getMonth() + 1)
 
 		const events = await sanityClient.fetch<Result[]>(
