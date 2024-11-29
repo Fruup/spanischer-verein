@@ -38,7 +38,7 @@ export const sanityApi = {
 
 		const from = new Date()
 		from.setYear(options.year)
-		from.setMonth(options.month)
+		from.setMonth(options.month - 1)
 
 		const to = new Date(from)
 		to.setMonth(from.getMonth() + 1)
