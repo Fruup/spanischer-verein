@@ -8,6 +8,7 @@ import type { SiteSettingsSchema } from '@spanischer-verein/sanity/schemas/siteS
 import type { NavigationItem } from '$lib/components/header/types'
 import { env } from '$env/dynamic/private'
 import { CalendarDateTime } from '@internationalized/date'
+import type { NewsletterSchema } from '@spanischer-verein/sanity/schemas/newsletter'
 
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
@@ -308,4 +309,23 @@ export const sanityApi = {
 
 		return settings?.newsletterSubscriptionRecipient
 	},
+
+	async getNewsletter(slug: string) {
+		return sanityClient.fetch<NewsletterSchema>(
+			`
+				*[_type == "newsletter" && slug.current == $slug][0]{
+					...,
+					"featuredEvents": featuredEvents[]->{
+						...,
+						"slug": slug.current,
+					} | order(eventTime desc),
+				}
+			`,
+			{
+				slug,
+			},
+		)
+	},
+
+	// async getUnsentNewsletters() {},
 }

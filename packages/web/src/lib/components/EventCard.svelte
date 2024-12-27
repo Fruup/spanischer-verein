@@ -5,6 +5,7 @@
 	import EventTime from './EventTime.svelte'
 	import { fitParent } from '$lib/helpers/fitParent'
 	import IconCalendar from './icons/IconCalendar.svelte'
+	import { PUBLIC_ORIGIN } from '$env/static/public'
 
 	interface Props {
 		event: {
@@ -12,7 +13,7 @@
 			slug: string
 			imageUrl: string
 			eventTime: string
-			mainImageMeta: {
+			mainImageMeta?: {
 				prominentColor: string
 				dimensions: {
 					width: number
@@ -27,9 +28,12 @@
 
 	let { event, introDelay, horizontal, reverse }: Props = $props()
 
-	let backgroundColor = $derived(event.mainImageMeta.prominentColor)
+	let backgroundColor = $derived(event.mainImageMeta?.prominentColor)
 
-	const href = getEventUrl(event.slug)
+	const isRenderingNewsletter = true // TODO
+	const urlBase = isRenderingNewsletter ? PUBLIC_ORIGIN : ''
+	const href = urlBase + getEventUrl(event.slug)
+
 	let hover = $state(false)
 
 	onMount(() => {
@@ -62,6 +66,7 @@
 	in:fly|global={{ y: 30, delay: introDelay }}
 	{href}
 	class="event-card"
+	target={isRenderingNewsletter ? '_blank' : undefined}
 	class:hover
 	class:horizontal
 	class:reverse
