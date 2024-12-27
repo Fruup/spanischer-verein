@@ -11,6 +11,7 @@
 
 	let { body }: Props = $props()
 
+	// @ts-ignore
 	const components: PortableTextComponents = {
 		types: {
 			image: ImageBlock,
