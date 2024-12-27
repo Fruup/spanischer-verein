@@ -6,7 +6,7 @@
 
 	let { value = { year: new Date().getFullYear(), month: new Date().getMonth() + 1 } } = $props()
 
-	let menuElement: HTMLDivElement
+	let menuElement: HTMLDivElement = $state() as HTMLDivElement
 
 	const currentYear = new Date().getFullYear()
 	const years = [currentYear - 1, currentYear, currentYear + 1]
