@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy'
-
-	import { browser } from '$app/environment'
 	import { goto } from '$app/navigation'
 	import EventsOverviewPage from '../../EventsOverviewPage.svelte'
+	import { onMount } from 'svelte'
 
 	let { data } = $props()
 
@@ -13,8 +11,8 @@
 	const currentYear = new Date().getFullYear()
 	const currentMonth = new Date().getMonth() + 1
 
-	run(() => {
-		if (browser && month === currentMonth && year === currentYear) {
+	onMount(() => {
+		if (month === currentMonth && year === currentYear) {
 			goto('/', { noScroll: true, replaceState: true })
 		}
 	})

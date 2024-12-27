@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { navigating } from '$app/stores'
+	import { navigating } from '$app/state'
 	import Note from '$lib/components/Note.svelte'
 	import Loader from '$lib/components/icons/Loader.svelte'
 	import EventsOverview from './EventsOverview.svelte'
@@ -56,7 +56,11 @@
 	</Note>
 {/if}
 
-{#if !$navigating}
+{#await navigating.complete}
+	<div class="loader-container">
+		<Loader />
+	</div>
+{:then}
 	<EventsOverview events={futureEvents} />
 
 	{#if pastHighlights.length > 0}
@@ -71,11 +75,7 @@
 			nutze unseren <button class="calendar-button" onclick={jumpToCalendar}>Kalender</button>.
 		</Note>
 	{/if}
-{:else}
-	<div class="loader-container">
-		<Loader />
-	</div>
-{/if}
+{/await}
 
 <style lang="scss">
 	@use 'sass:color';

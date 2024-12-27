@@ -5,13 +5,10 @@
 </script>
 
 <script lang="ts">
-	import { run } from 'svelte/legacy'
-
 	import { createTreeView, melt } from '@melt-ui/svelte'
 	import type { NavigationItem } from './types'
-	import { setContext } from 'svelte'
+	import { onMount, setContext } from 'svelte'
 	import MobileMenuTree from './MobileMenuTree.svelte'
-	import { browser } from '$app/environment'
 	import Drawer from '../ui/Drawer.svelte'
 
 	interface Props {
@@ -28,13 +25,11 @@
 
 	setContext('mobileMenu', treeView)
 
-	run(() => {
-		if (browser) {
-			if ($isMobileMenuOpen) {
-				document.body.classList.add('no-scroll')
-			} else {
-				document.body.classList.remove('no-scroll')
-			}
+	onMount(() => {
+		if ($isMobileMenuOpen) {
+			document.body.classList.add('no-scroll')
+		} else {
+			document.body.classList.remove('no-scroll')
 		}
 	})
 </script>
