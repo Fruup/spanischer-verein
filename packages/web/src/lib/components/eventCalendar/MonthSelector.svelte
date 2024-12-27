@@ -2,10 +2,14 @@
 	import { createDropdownMenu, melt } from '@melt-ui/svelte'
 	import { fly } from 'svelte/transition'
 	import IconAngle from '../icons/IconAngle.svelte'
+	import { tick } from 'svelte'
 
 	let { value = { year: new Date().getFullYear(), month: new Date().getMonth() + 1 } } = $props()
 
-	const years = [2024, 2023]
+	let menuElement: HTMLDivElement
+
+	const currentYear = new Date().getFullYear()
+	const years = [currentYear - 1, currentYear, currentYear + 1]
 
 	let months = $derived(
 		Array.from({ length: 12 }, (_, monthIndex) =>
@@ -22,6 +26,21 @@
 			placement: 'bottom',
 			sameWidth: true,
 		},
+	})
+
+	$effect(() => {
+		if ($open) {
+			// Scroll to the selected month.
+			tick().then(() => {
+				const activeAnchor = menuElement.querySelector<HTMLAnchorElement>('a.active')
+				if (!activeAnchor) return
+
+				menuElement.scrollTo({
+					top: activeAnchor.offsetTop - menuElement.clientHeight / 2,
+					behavior: 'smooth',
+				})
+			})
+		}
 	})
 
 	const isCurrent = (year: number, month: number) => {
@@ -45,7 +64,12 @@
 	</button>
 
 	{#if $open}
-		<div class="menu" use:melt={$menu} transition:fly={{ y: 10, duration: 200 }}>
+		<div
+			class="menu"
+			bind:this={menuElement}
+			use:melt={$menu}
+			transition:fly={{ y: 10, duration: 200 }}
+		>
 			{#each years as year}
 				{@const yearString = year.toString()}
 
@@ -54,19 +78,21 @@
 						{year}
 					</div>
 
-					{#each months as monthString, monthIndex}
-						{@const month = monthIndex + 1}
+					<div class="options-container">
+						{#each months as monthString, monthIndex}
+							{@const month = monthIndex + 1}
 
-						<a
-							href="/archiv/{year}-{month.toString().padStart(2, '0')}"
-							data-sveltekit-noscroll
-							use:melt={$item}
-							class:current={isCurrent(year, month)}
-							class:active={isActive(year, month)}
-						>
-							{monthString}
-						</a>
-					{/each}
+							<a
+								href="/archiv/{year}-{month.toString().padStart(2, '0')}"
+								data-sveltekit-noscroll
+								use:melt={$item}
+								class:current={isCurrent(year, month)}
+								class:active={isActive(year, month)}
+							>
+								{monthString}
+							</a>
+						{/each}
+					</div>
 				</div>
 			{/each}
 		</div>
@@ -121,6 +147,10 @@
 		@include shadow;
 	}
 
+	.options-container {
+		padding: 0 0.5em;
+	}
+
 	a {
 		font-size: 0.8em;
 
@@ -133,7 +163,6 @@
 		text-align: left;
 
 		border-radius: var(--border-radius);
-		// border: 1px solid transparent;
 
 		&:hover {
 			background: var(--color-surface-1);
@@ -149,9 +178,14 @@
 	}
 
 	.group-label {
-		border-bottom: 1px solid $color-accent;
+		position: sticky;
+		top: 0;
 
+		padding: 0.25em 0.5em;
 		margin: 0.5em 0;
+
+		background-color: var(--color-surface-0);
+		border-bottom: 1px solid $color-accent;
 	}
 
 	.value {
