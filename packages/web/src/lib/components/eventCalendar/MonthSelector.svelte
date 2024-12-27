@@ -137,7 +137,6 @@
 
 		max-height: 300px;
 		overflow-y: auto;
-		padding: 0.5em;
 
 		z-index: 1000;
 		background: white;
@@ -148,7 +147,7 @@
 	}
 
 	.options-container {
-		padding: 0 0.5em;
+		padding: 0.5em;
 	}
 
 	a {
@@ -182,7 +181,6 @@
 		top: 0;
 
 		padding: 0.25em 0.5em;
-		margin: 0.5em 0;
 
 		background-color: var(--color-surface-0);
 		border-bottom: 1px solid $color-accent;
