@@ -1,9 +1,9 @@
-import {Config, defineConfig} from 'sanity'
+import {type Config, defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {presentationTool} from '@sanity/presentation'
 import {schemaTypes} from './schemas'
-import {MenuIcon, CalendarIcon} from '@sanity/icons'
+import {MenuIcon, CalendarIcon, EnvelopeIcon, UsersIcon} from '@sanity/icons'
 import {
   createDeskHierarchy,
   hierarchicalDocumentList,
@@ -89,6 +89,12 @@ const shared = {
               // ❓ Optional: subarray of referenceTo, when it should not be possible to create new types from all referenceTo types
               // creatableTypes: ['page'],
             }),
+
+            S.divider(),
+
+            // Newsletter
+            S.documentTypeListItem('newsletter').icon(EnvelopeIcon),
+            S.documentTypeListItem('newsletterRecipient').icon(UsersIcon),
 
             S.divider(),
 
