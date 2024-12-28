@@ -21,6 +21,7 @@ export default function () {
       .fetch<typeof events>(
         `*[
           _type == "event" &&
+          !(_id in path("drafts.**")) &&
           (
             !defined(eventTime) ||
             (
