@@ -33,7 +33,7 @@
 	})
 </script>
 
-<div class="prose m-auto max-w-[768px] p-4">
+<div class="prose m-auto max-w-[768px] p-4 py-8">
 	<h1 class="heading text-3xl font-bold">{newsletter.title}</h1>
 
 	<div class="my-4">
