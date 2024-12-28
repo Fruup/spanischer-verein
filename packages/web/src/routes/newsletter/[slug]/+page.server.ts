@@ -1,9 +1,6 @@
-import { isRenderingNewsletter } from '$lib/config'
 import { sanityApi } from '$lib/sanity/client'
 import { error } from '@sveltejs/kit'
 
-// export const prerender = isRenderingNewsletter
-export const prerender = true
 export const csr = false
 
 export const load = async ({ params }) => {

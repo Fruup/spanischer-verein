@@ -12,6 +12,7 @@
   "type": "module",
   "dependencies": {
     "@mailchimp/mailchimp_marketing": "^3.0.80",
+    "@sanity/client": "^6.24.1",
     "html-minifier": "^4.0.0"
   }
 }

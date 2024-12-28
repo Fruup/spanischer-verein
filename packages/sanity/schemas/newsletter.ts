@@ -1,10 +1,11 @@
 import type {PortableTextBlock} from '@portabletext/types'
-import {defineField, defineType, type Slug} from 'sanity'
+import {defineField, defineType, type SanityDocument, type Slug} from 'sanity'
 
 export default defineType({
   type: 'document',
   name: 'newsletter',
   title: 'Newsletter',
+  readOnly: ({document}) => !!document?.sentAt,
   fields: [
     defineField({
       name: 'title',
@@ -41,10 +42,18 @@ export default defineType({
       type: 'array',
       of: [{type: 'reference', to: [{type: 'event'}]}],
     }),
+    defineField({
+      // This field is set by the newsletter service.
+      name: 'sentAt',
+      title: 'Gesendet am',
+      description: 'Wann der Newsletter gesendet wurde',
+      type: 'datetime',
+      readOnly: true,
+    }),
   ],
 })
 
-export interface NewsletterSchema {
+export interface NewsletterSchema extends SanityDocument {
   _type: 'newsletter'
   // _id: string
   // _rev: string

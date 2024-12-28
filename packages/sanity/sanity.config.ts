@@ -3,13 +3,14 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {presentationTool} from '@sanity/presentation'
 import {schemaTypes} from './schemas'
-import {MenuIcon, CalendarIcon, EnvelopeIcon, UsersIcon} from '@sanity/icons'
+import {MenuIcon, CalendarIcon, EnvelopeIcon, AddIcon} from '@sanity/icons'
 import {
   createDeskHierarchy,
   hierarchicalDocumentList,
   hierarchyTree,
 } from '@sanity/hierarchical-document-list'
 import './assets/global.css'
+import CreateNewsletterForNextWeek from './components/CreateNewsletterForNextWeek'
 
 const DEV = process.env.MODE === 'development'
 
@@ -94,7 +95,16 @@ const shared = {
 
             // Newsletter
             S.documentTypeListItem('newsletter').icon(EnvelopeIcon),
-            S.documentTypeListItem('newsletterRecipient').icon(UsersIcon),
+
+            S.listItem()
+              .title('Newsletter für nächste Woche')
+              .icon(AddIcon)
+              .child(
+                S.component({
+                  id: 'create-newsletter-for-next-week',
+                  component: CreateNewsletterForNextWeek,
+                }),
+              ),
 
             S.divider(),
 
