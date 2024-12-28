@@ -4,7 +4,6 @@
 	export type NewsletterContext = {
 		newsletter: TNewsletter
 		urlParams: URLSearchParams
-		mailTo: string
 	}
 </script>
 
@@ -28,12 +27,9 @@
 		utm_campaign: newsletter.slug,
 	})
 
-	const mailTo = 'circulomachado@gmail.com'
-
 	setContext<NewsletterContext>('newsletter', {
 		newsletter,
 		urlParams,
-		mailTo,
 	})
 </script>
 
@@ -59,7 +55,6 @@
 		</p>
 
 		<p class="*:mx-1 *:text-gray-500">
-			<a href="mailto:{mailTo}">Abmelden</a>
 			<a href="{PUBLIC_ORIGIN}/newsletter/{newsletter.slug}?{urlParams}">Web-Version</a>
 		</p>
 	</footer>
