@@ -344,11 +344,16 @@ export const sanityApi = {
 
 		return {
 			...newsletter,
+			slug: newsletter.slug.current,
 			featuredEvents: newsletter.featuredEvents.map((event) => ({
 				...event,
-				imageUrl:
-					event.mainImage &&
-					imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
+				slug: event.slug.current,
+				imageUrl: imageUrlBuilder
+					.image(event.mainImage)
+					.width(512)
+					.crop('focalpoint')
+					.format('webp')
+					.url(),
 			})),
 		}
 	},

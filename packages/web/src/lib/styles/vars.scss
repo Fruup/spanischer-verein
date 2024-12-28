@@ -16,7 +16,7 @@ $color-surface: color.adjust($color-background, $blackness: 2%);
 }
 
 @mixin font-sans-serif {
-	font-family: 'Lato', 'Helvetica', 'Arial', sans-serif;
+	font-family: 'PT Sans', 'Helvetica', 'Arial', sans-serif;
 
 	// The gap between box and text.
 	--font-offset: -6px;

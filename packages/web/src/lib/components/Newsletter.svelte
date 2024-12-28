@@ -25,7 +25,7 @@
 
 	const urlParams = new URLSearchParams({
 		utm_source: 'newsletter',
-		utm_campaign: newsletter.slug.current,
+		utm_campaign: newsletter.slug,
 	})
 
 	const mailTo = 'circulomachado@gmail.com'
@@ -44,6 +44,8 @@
 		<BlockContent body={newsletter.content} />
 	</div>
 
+	<h2 class="heading-2">Vorgestellte Events</h2>
+
 	<div class="not-prose">
 		<EventsOverview events={newsletter.featuredEvents} />
 	</div>
@@ -56,8 +58,9 @@
 			e.V.
 		</p>
 
-		<p>
-			<a class="text-gray-500" href="mailto:{mailTo}">Abmelden</a>
+		<p class="*:mx-1 *:text-gray-500">
+			<a href="mailto:{mailTo}">Abmelden</a>
+			<a href="{PUBLIC_ORIGIN}/newsletter/{newsletter.slug}?{urlParams}">Web-Version</a>
 		</p>
 	</footer>
 </div>

@@ -36,6 +36,7 @@ const mainFields = [
     title: 'Bild',
     group: 'main',
     type: 'image',
+    validation: (Rule) => Rule.required(),
     options: {
       hotspot: true,
     },
@@ -133,7 +134,7 @@ export interface EventSchema extends SanityDocument {
 
   title: string
   slug: Slug
-  mainImage?: Image
+  mainImage: Image
   body: PortableTextBlock[]
 
   // Event
