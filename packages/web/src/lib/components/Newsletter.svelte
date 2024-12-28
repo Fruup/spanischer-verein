@@ -66,4 +66,8 @@
 	.heading {
 		@include font-serif;
 	}
+
+	:global(.not-prose) {
+		text-decoration: none !important;
+	}
 </style>
