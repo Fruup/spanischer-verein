@@ -4,10 +4,4 @@
 	let { data } = $props()
 </script>
 
-<Newsletter
-	content={data.newsletter.content}
-	title={data.newsletter.title}
-	events={data.newsletter.featuredEvents}
-/>
-
-{JSON.stringify(data.newsletter)}
+<Newsletter newsletter={data.newsletter} />

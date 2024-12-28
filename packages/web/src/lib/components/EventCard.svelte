@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { getEventUrl } from '$lib/helpers/url'
-	import { onMount } from 'svelte'
+	import { getContext, onMount } from 'svelte'
 	import { fly } from 'svelte/transition'
 	import EventTime from './EventTime.svelte'
 	import { fitParent } from '$lib/helpers/fitParent'
 	import IconCalendar from './icons/IconCalendar.svelte'
 	import { PUBLIC_ORIGIN } from '$env/static/public'
+	import type { NewsletterContext } from './Newsletter.svelte'
 
 	interface Props {
 		event: {
@@ -28,11 +29,16 @@
 
 	let { event, introDelay, horizontal, reverse }: Props = $props()
 
+	const newsletterContext = getContext<NewsletterContext | undefined>('newsletter')
+	const isRenderingNewsletter = !!newsletterContext
+
 	let backgroundColor = $derived(event.mainImageMeta?.prominentColor)
 
-	const isRenderingNewsletter = true // TODO
 	const urlBase = isRenderingNewsletter ? PUBLIC_ORIGIN : ''
-	const href = urlBase + getEventUrl(event.slug)
+	const href =
+		urlBase +
+		getEventUrl(event.slug) +
+		(isRenderingNewsletter ? `?${newsletterContext.urlParams}` : '')
 
 	let hover = $state(false)
 
@@ -83,7 +89,9 @@
 			<EventTime time={event.eventTime} />
 		</div>
 
-		<h4 use:fitParent={{ strategy: 'fontSize' }} class="title">{event.title}</h4>
+		<h4 use:fitParent={{ strategy: 'fontSize' }} class="title">
+			{event.title}
+		</h4>
 	</div>
 </a>
 

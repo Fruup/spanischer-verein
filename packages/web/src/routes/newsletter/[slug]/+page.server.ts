@@ -8,7 +8,11 @@ export const csr = false
 
 export const load = async ({ params }) => {
 	const newsletter = await sanityApi.getNewsletter(params.slug)
-	if (!newsletter) throw error(404, { errorCode: 'NOT_FOUND', message: 'Newsletter not found' })
+	if (!newsletter)
+		throw error(404, {
+			errorCode: 'NOT_FOUND',
+			message: 'Newsletter not found',
+		})
 
 	return {
 		newsletter,

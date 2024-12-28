@@ -1,14 +1,16 @@
 <script lang="ts">
-	import { page } from '$app/stores'
+	import { page } from '$app/state'
 	import fallback from '$assets/logo-l.png?format=webp&h=400&imagetools'
 
-	const logo = $page.data.siteSettings?.logoUrl || fallback
+	let { href = '/', class: className }: { href?: string; class?: string } = $props()
+
+	const logo = page.data.siteSettings?.logoUrl || fallback
 </script>
 
-<a href="/">
+<a {href} class="block h-[200px] {className}">
 	<img
 		src={logo}
-		height="200px"
+		class="h-full"
 		alt="Website-Logo 'Interkulturelle Zentren Köln, Antonio Machado'"
 	/>
 </a>

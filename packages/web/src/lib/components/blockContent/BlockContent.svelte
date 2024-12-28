@@ -23,7 +23,7 @@
 	}
 </script>
 
-<div class="block-content">
+<div class="block-content prose">
 	<PortableText {components} value={body} />
 </div>
 

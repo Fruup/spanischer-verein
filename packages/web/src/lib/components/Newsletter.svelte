@@ -1,39 +1,71 @@
-<script lang="ts">
-	import BlockContent from './blockContent/BlockContent.svelte'
-	import type { PortableTextBlock } from '@portabletext/types'
-	import type { EventSchema } from '@spanischer-verein/sanity/schemas/event'
-	import EventsOverview from '../../routes/(root)/EventsOverview.svelte'
-	import '$lib/styles/globals.scss'
+<script lang="ts" module>
+	type TNewsletter = Exclude<Awaited<ReturnType<typeof sanityApi.getNewsletter>>, null>
 
-	let {
-		title,
-		content,
-		events,
-	}: {
-		title: string
-		content: PortableTextBlock[]
-		events: EventSchema[]
-	} = $props()
+	export type NewsletterContext = {
+		newsletter: TNewsletter
+		urlParams: URLSearchParams
+		mailTo: string
+	}
 </script>
 
-<div class="container">
-	<!-- <Email.Container> -->
-	<h1>{title}</h1>
-	<!-- </Email.Container> -->
+<script lang="ts">
+	import BlockContent from './blockContent/BlockContent.svelte'
+	import EventsOverview from '../../routes/(root)/EventsOverview.svelte'
+	import '$lib/styles/globals.scss'
+	import type { sanityApi } from '$lib/sanity/client'
+	import SiteLogo from './header/SiteLogo.svelte'
+	import { setContext } from 'svelte'
+	import { PUBLIC_ORIGIN } from '$env/static/public'
 
-	<!-- <Email.Section> -->
-	<BlockContent body={content} />
-	<!-- </Email.Section> -->
+	let {
+		newsletter,
+	}: {
+		newsletter: TNewsletter
+	} = $props()
 
-	<!-- <Email.Section> -->
-	<EventsOverview {events} />
-	<!-- </Email.Section> -->
+	const urlParams = new URLSearchParams({
+		utm_source: 'newsletter',
+		utm_campaign: newsletter.slug.current,
+	})
+
+	const mailTo = 'circulomachado@gmail.com'
+
+	setContext<NewsletterContext>('newsletter', {
+		newsletter,
+		urlParams,
+		mailTo,
+	})
+</script>
+
+<div class="prose m-auto max-w-[768px] p-4">
+	<h1 class="heading text-3xl font-bold">{newsletter.title}</h1>
+
+	<div class="my-4">
+		<BlockContent body={newsletter.content} />
+	</div>
+
+	<div class="not-prose">
+		<EventsOverview events={newsletter.featuredEvents} />
+	</div>
+
+	<footer class="mx-auto mt-16 max-w-[66%] text-center text-xs">
+		<SiteLogo href="{PUBLIC_ORIGIN}?{urlParams}" />
+
+		<p>
+			<strong>Spanische Kultur in Köln</strong> - Deutsch-Spanischer gemeinnütziger Kulturkreis Machado
+			e.V.
+		</p>
+
+		<p>
+			<a class="text-gray-500" href="mailto:{mailTo}">Abmelden</a>
+		</p>
+	</footer>
 </div>
 
 <style lang="scss">
-	.container {
-		padding: 1rem;
-		margin: auto;
-		max-width: 768px;
+	@import '../styles/vars.scss';
+
+	.heading {
+		@include font-serif;
 	}
 </style>

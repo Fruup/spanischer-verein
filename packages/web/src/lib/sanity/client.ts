@@ -29,7 +29,7 @@ export const sanityApi = {
 			extends Pick<EventSchema, 'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'> {
 			mainImage: SanityImageSource
 			slug: string
-			mainImageMeta: {
+			mainImageMeta?: {
 				prominentColor: string
 				dimensions: {
 					height: number
@@ -311,9 +311,23 @@ export const sanityApi = {
 	},
 
 	async getNewsletter(slug: string) {
-		const newsletter = await sanityClient.fetch<NewsletterSchema>(
+		const newsletter = await sanityClient.fetch<
+			| (NewsletterSchema & {
+					featuredEvents: (EventSchema & {
+						slug: string
+					})[]
+			  })
+			| null
+		>(
 			`
-				*[_type == "newsletter" && slug.current == $slug][0]{
+				*[
+          _type == "newsletter" &&
+          slug.current == $slug &&
+          (
+            !defined(publishedAt) ||
+            dateTime(now()) >= dateTime(publishedAt)
+          )
+        ][0]{
 					...,
 					"featuredEvents": featuredEvents[]->{
 						...,
@@ -325,6 +339,8 @@ export const sanityApi = {
 				slug,
 			},
 		)
+
+		if (!newsletter) return null
 
 		return {
 			...newsletter,
