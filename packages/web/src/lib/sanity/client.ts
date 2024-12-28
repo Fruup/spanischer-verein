@@ -311,7 +311,7 @@ export const sanityApi = {
 	},
 
 	async getNewsletter(slug: string) {
-		return sanityClient.fetch<NewsletterSchema>(
+		const newsletter = await sanityClient.fetch<NewsletterSchema>(
 			`
 				*[_type == "newsletter" && slug.current == $slug][0]{
 					...,
@@ -325,6 +325,16 @@ export const sanityApi = {
 				slug,
 			},
 		)
+
+		return {
+			...newsletter,
+			featuredEvents: newsletter.featuredEvents.map((event) => ({
+				...event,
+				imageUrl:
+					event.mainImage &&
+					imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
+			})),
+		}
 	},
 
 	// async getUnsentNewsletters() {},

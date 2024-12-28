@@ -1,5 +1,4 @@
 <script lang="ts">
-	import * as Email from 'svelty-email'
 	import BlockContent from './blockContent/BlockContent.svelte'
 	import type { PortableTextBlock } from '@portabletext/types'
 	import type { EventSchema } from '@spanischer-verein/sanity/schemas/event'
@@ -17,16 +16,24 @@
 	} = $props()
 </script>
 
-<Email.Body>
-	<Email.Container>
-		<h1>{title}</h1>
-	</Email.Container>
+<div class="container">
+	<!-- <Email.Container> -->
+	<h1>{title}</h1>
+	<!-- </Email.Container> -->
 
-	<Email.Section>
-		<BlockContent body={content} />
-	</Email.Section>
+	<!-- <Email.Section> -->
+	<BlockContent body={content} />
+	<!-- </Email.Section> -->
 
-	<Email.Section>
-		<EventsOverview {events} />
-	</Email.Section>
-</Email.Body>
+	<!-- <Email.Section> -->
+	<EventsOverview {events} />
+	<!-- </Email.Section> -->
+</div>
+
+<style lang="scss">
+	.container {
+		padding: 1rem;
+		margin: auto;
+		max-width: 768px;
+	}
+</style>
