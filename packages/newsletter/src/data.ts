@@ -28,14 +28,14 @@ export async function sendUnsentNewsletters() {
 			await sendNewsletter({ title, listId, html })
 
 			// Mark as sent.
-			const result = await client
+			await client
 				.patch(_id)
 				.set({
 					sentAt: new Date().toISOString(),
 				})
 				.commit()
 
-			console.log('Patch result:', JSON.stringify(result))
+			console.log(`Success!`)
 		} catch (error) {
 			console.error(error)
 			console.error(JSON.stringify(error))
