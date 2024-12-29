@@ -41,10 +41,9 @@ export async function sendUnsentNewsletters() {
 
 			// Mark as sent.
 			await client
-				.patch(_id, {
-					set: {
-						sentAt: new Date().toISOString(),
-					},
+				.patch(_id)
+				.set({
+					sentAt: new Date().toISOString(),
 				})
 				.commit()
 		} catch (error) {
