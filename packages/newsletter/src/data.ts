@@ -28,6 +28,8 @@ export async function sendUnsentNewsletters() {
 			await sendNewsletter({ title, listId, html })
 
 			// Mark as sent.
+			console.log('Patching document...')
+
 			const result = await client
 				.patch(_id)
 				.set({
@@ -39,6 +41,7 @@ export async function sendUnsentNewsletters() {
 			console.log(JSON.stringify(result))
 		} catch (error) {
 			console.error(error)
+			console.error(JSON.stringify(error))
 		}
 	}
 }

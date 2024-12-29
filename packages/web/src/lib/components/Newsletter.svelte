@@ -35,20 +35,22 @@
 	})
 </script>
 
-<div class="prose m-auto max-w-[768px] p-4 py-8">
-	<h1 class="heading text-3xl font-bold">{newsletter.title}</h1>
+<div class="m-auto max-w-[768px] p-4 py-8">
+	<div class="prose">
+		<h1 class="heading text-3xl font-bold">{newsletter.title}</h1>
 
-	<div class="my-4">
-		<BlockContent body={newsletter.content} />
+		<div class="my-4">
+			<BlockContent body={newsletter.content} />
+		</div>
+
+		<h2 class="heading-2">Vorgestellte Events</h2>
 	</div>
 
-	<h2 class="heading-2">Vorgestellte Events</h2>
-
-	<div class="not-prose">
+	<section>
 		<EventsOverview events={newsletter.featuredEvents} />
-	</div>
+	</section>
 
-	<footer class="mx-auto mt-16 max-w-[66%] text-center text-xs">
+	<footer class="prose mx-auto mt-16 max-w-[66%] text-center text-xs">
 		<SiteLogo href="{PUBLIC_ORIGIN}?{urlParams}" />
 
 		<p>
