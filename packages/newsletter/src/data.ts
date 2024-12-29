@@ -1,7 +1,7 @@
-import { minify } from 'html-minifier'
 import { sendNewsletter } from './mailchimp'
 import type { NewsletterSchema } from '@spanischer-verein/sanity/schemas/newsletter'
 import { client } from './sanity'
+import { getHtmlForEmail } from './html'
 
 const BASE_URL = import.meta.env.BASE_URL
 if (!BASE_URL) throw new Error('BASE_URL is not set')
@@ -15,18 +15,6 @@ export async function getUnsentNewsletters() {
 	`)
 }
 
-async function getNewsletterHtml(slug: string) {
-	const response = await fetch(`${BASE_URL}/newsletter/${slug}`)
-	const html = await response.text()
-
-	return minify(html, {
-		minifyCSS: true,
-		removeComments: true,
-		collapseWhitespace: true,
-		preserveLineBreaks: false,
-	})
-}
-
 export async function sendUnsentNewsletters() {
 	const newsletters = await getUnsentNewsletters()
 
@@ -36,8 +24,8 @@ export async function sendUnsentNewsletters() {
 		console.log(`Sending newsletter: ${title}`)
 
 		try {
-			// const html = await getNewsletterHtml(slug.current)
-			await sendNewsletter({ title, listId, slug: slug.current })
+			const html = await getHtmlForEmail(`${BASE_URL}/newsletter/${slug.current}`)
+			await sendNewsletter({ title, listId, html })
 
 			// Mark as sent.
 			await client

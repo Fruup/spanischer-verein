@@ -25,7 +25,6 @@ async function createCampaign({ title, listId }: { title: string; listId: string
 			subject_line: `Newsletter 💌 Spanischer Verein Köln`,
 			from_name: 'Spanischer Verein Köln',
 			reply_to: 'circulomachado@gmail.com',
-			inline_css: true,
 		},
 		tracking: {
 			html_clicks: false,
@@ -40,10 +39,9 @@ async function createCampaign({ title, listId }: { title: string; listId: string
 	return campaign.id
 }
 
-async function setCampaignContent(campaignId: string, url: string) {
+async function setCampaignContent(campaignId: string, html: string) {
 	await Mailchimp.campaigns.setContent(campaignId, {
-		// html,
-		url,
+		html,
 	})
 }
 
@@ -54,19 +52,19 @@ async function sendCampaign(campaignId: string) {
 export async function sendNewsletter({
 	title,
 	listId,
-	slug,
+	html,
 }: {
 	title: string
 	listId: string
-	slug: string
+	html: string
 }) {
-	console.log('Sending newsletter', { title, slug })
+	console.log('Sending newsletter', { title })
 
 	try {
 		const campaignId = await createCampaign({ title, listId })
 		if (!campaignId) throw new Error('Failed to create campaign')
 
-		await setCampaignContent(campaignId, `${import.meta.env.BASE_URL}/newsletter/${slug}`)
+		await setCampaignContent(campaignId, html)
 		await sendCampaign(campaignId)
 
 		console.log('Newsletter sent!')
