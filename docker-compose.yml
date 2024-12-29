@@ -16,6 +16,8 @@ services:
       - SANITY_PERSPECTIVE=${SANITY_PERSPECTIVE}
       - SANITY_DATASET=${SANITY_DATASET}
       - SANITY_TOKEN=${SANITY_TOKEN}
+      - ORIGIN=${WEB__ORIGIN}
+      - PUBLIC_ORIGIN=${WEB__ORIGIN}
 
   newsletter-service:
     build:
