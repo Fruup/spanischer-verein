@@ -34,6 +34,10 @@
 	const newsletterContext = getContext<NewsletterContext | undefined>('newsletter')
 	const isRenderingNewsletter = !!newsletterContext
 
+	const imageAspectRatio = event.mainImageMeta?.dimensions
+		? event.mainImageMeta.dimensions.width / event.mainImageMeta.dimensions.height
+		: undefined
+
 	let backgroundColor = $derived(event.mainImageMeta?.prominentColor)
 
 	const urlBase = isRenderingNewsletter ? PUBLIC_ORIGIN : ''
@@ -83,6 +87,7 @@
 		src={event.imageUrl}
 		alt="Title image for an event called '${event.title}'"
 		style:background-color={backgroundColor}
+		style:aspect-ratio={imageAspectRatio}
 	/>
 
 	<div class="info">
