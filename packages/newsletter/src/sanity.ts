@@ -15,5 +15,4 @@ export const client = createClient({
 	token: SANITY_API_TOKEN,
 	projectId: SANITY_PROJECT_ID,
 	perspective: 'published',
-	useCdn: true,
 })

@@ -31,11 +31,15 @@ export async function sendUnsentNewsletters() {
 			console.log('Patching document...')
 
 			const result = await client
-				.patch(_id)
-				.set({
-					sentAt: new Date().toISOString(),
+				.patch(_id, {
+					set: {
+						sentAt: new Date().toISOString,
+					},
 				})
 				.commit()
+				.catch((e) => {
+					throw e
+				})
 
 			console.log('Patch result:')
 			console.log(JSON.stringify(result))
