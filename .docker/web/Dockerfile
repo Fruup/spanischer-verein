@@ -4,22 +4,22 @@ WORKDIR /work
 
 # Add dependencies and install
 ADD package.json bun.lockb ./
-ADD packages/web/package.json packages/web/bun.lockb ./web/
-ADD packages/sanity/package.json packages/sanity/bun.lockb ./sanity/
+ADD packages/web/package.json ./packages/web/
+ADD packages/sanity/package.json ./packages/sanity/
 
-RUN cd web && bun install
+RUN cd packages/web && bun install
 
 # Add sources and build
-ADD packages/web ./web
-ADD packages/sanity ./sanity
+ADD packages/web ./packages/web
+ADD packages/sanity ./packages/sanity
 
-RUN cd web && bun run build
+RUN cd packages/web && bun run build
 
 FROM oven/bun:latest as production
 
 WORKDIR /work
 
-COPY --from=builder /work/web/build /work/build
+COPY --from=builder /work/packages/web/build /work/build
 
 ENV NODE_ENV=production
 
