@@ -72,6 +72,7 @@ export async function sendNewsletter({
 		console.log('Newsletter sent!')
 	} catch (error) {
 		console.error(error)
+		console.error(JSON.stringify(error))
 	}
 }
 
