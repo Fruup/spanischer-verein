@@ -1,5 +1,5 @@
 import { minify } from 'html-minifier'
-import path from 'node:path'
+import { resolve } from 'node:url'
 
 export async function getHtmlForEmail(url: string) {
 	const response = await fetch(url)
@@ -13,7 +13,7 @@ export async function getHtmlForEmail(url: string) {
 
 	html = html.replace(/<link[^h]+href="([^"]+)"[^>]*>/g, (match, href) => {
 		if (href.startsWith('.')) {
-			href = path.join(url, href.slice(1))
+			href = resolve(url, href)
 		}
 
 		// Async load CSS
