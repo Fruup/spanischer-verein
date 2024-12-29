@@ -28,22 +28,13 @@ export async function sendUnsentNewsletters() {
 			await sendNewsletter({ title, listId, html })
 
 			// Mark as sent.
-			{
-				console.log('Patching document...')
-
-				const patch = client.patch(_id, {
+			await client
+				.patch(_id, {
 					set: {
-						sentAt: new Date().toISOString,
+						sentAt: new Date().toISOString(),
 					},
 				})
-
-				console.log(patch.serialize())
-
-				const result = await patch.commit()
-
-				console.log('Patch result:')
-				console.log(JSON.stringify(result))
-			}
+				.commit()
 		} catch (error) {
 			console.error(error)
 			console.error(JSON.stringify(error))
