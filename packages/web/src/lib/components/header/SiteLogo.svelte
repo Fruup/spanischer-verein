@@ -7,22 +7,16 @@
 	const logo = page.data.siteSettings?.logoUrl || fallback
 </script>
 
-<a {href} class="block h-[200px] {className}">
+<a {href} class="relative m-auto block h-[200px] w-fit {className}">
 	<img
 		src={logo}
-		class="h-full"
+		class="h-full w-auto"
 		alt="Website-Logo 'Interkulturelle Zentren Köln, Antonio Machado'"
 	/>
 </a>
 
 <style lang="scss">
 	a {
-		display: block;
-		width: fit-content;
-		margin: auto;
-
-		position: relative;
-
 		&::before {
 			content: '';
 			position: absolute;
