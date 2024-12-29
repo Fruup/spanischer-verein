@@ -1,18 +1,20 @@
 {
-  "name": "@spanischer-verein/newsletter",
-  "module": "index.ts",
-  "devDependencies": {
-    "@types/bun": "latest",
-    "@types/html-minifier": "^4.0.5",
-    "@types/mailchimp__mailchimp_marketing": "^3.0.20"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
-  "type": "module",
-  "dependencies": {
-    "@mailchimp/mailchimp_marketing": "^3.0.80",
-    "@sanity/client": "^6.24.1",
-    "html-minifier": "^4.0.0"
-  }
+	"name": "@spanischer-verein/newsletter",
+	"scripts": {
+		"start": "bun run ./src/main.ts"
+	},
+	"devDependencies": {
+		"@types/bun": "latest",
+		"@types/html-minifier": "^4.0.5",
+		"@types/mailchimp__mailchimp_marketing": "^3.0.20"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"@mailchimp/mailchimp_marketing": "^3.0.80",
+		"@sanity/client": "^6.24.1",
+		"html-minifier": "^4.0.0"
+	}
 }

@@ -18,3 +18,16 @@ services:
       - SANITY_TOKEN=${SANITY_TOKEN}
       - MAIL_CREDENTIALS=${MAIL_CREDENTIALS}
       - MAIL_SERVER=${MAIL_SERVER}
+
+  newsletter-service:
+    build:
+      context: .
+      dockerfile: .docker/newsletter/Dockerfile
+      target: production
+    environment:
+      - MAILCHIMP_API_KEY=${MAILCHIMP_API_KEY:?}
+      - MAILCHIMP_LIST_ID=${MAILCHIMP_LIST_ID:?}
+      - SANITY_PROJECT_ID=${SANITY_PROJECT_ID:?}
+      - SANITY_API_TOKEN=${SANITY_API_TOKEN:?}
+      - SANITY_DATASET=${SANITY_DATASET:?}
+      - BASE_URL=${BASE_URL:?}
