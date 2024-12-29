@@ -16,8 +16,6 @@ services:
       - SANITY_PERSPECTIVE=${SANITY_PERSPECTIVE}
       - SANITY_DATASET=${SANITY_DATASET}
       - SANITY_TOKEN=${SANITY_TOKEN}
-      - MAIL_CREDENTIALS=${MAIL_CREDENTIALS}
-      - MAIL_SERVER=${MAIL_SERVER}
 
   newsletter-service:
     build:
