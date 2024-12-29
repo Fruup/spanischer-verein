@@ -6,10 +6,10 @@
 
 	interface Props {
 		mail: string
-		privacyUrl: string | undefined
+		newsletterSubscriptionUrl?: string
 	}
 
-	let { mail, privacyUrl }: Props = $props()
+	let { mail, newsletterSubscriptionUrl }: Props = $props()
 
 	const IBAN = 'DE52 3705 0198 0017 7420 40'
 
@@ -58,15 +58,15 @@
 		{/if}
 	</Card>
 
-	<Card>
-		{#snippet heading()}
-			<p>Du möchtest über unsere Angebote auf dem Laufenden bleiben?</p>
-		{/snippet}
+	{#if newsletterSubscriptionUrl}
+		<Card>
+			{#snippet heading()}
+				<p>Du möchtest über unsere Angebote auf dem Laufenden bleiben?</p>
+			{/snippet}
 
-		<p>Melde dich zu unserem Newsletter an!</p>
-
-		<NewsletterForm {privacyUrl} />
-	</Card>
+			<NewsletterForm {newsletterSubscriptionUrl} />
+		</Card>
+	{/if}
 
 	{#if mail}
 		<Card>

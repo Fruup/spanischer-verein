@@ -265,7 +265,7 @@ export const sanityApi = {
 
 	async getSiteSettings() {
 		const settings = await sanityClient.fetch<
-			| (Pick<SiteSettingsSchema, 'donationLink' | 'contactEmail'> & {
+			| (Pick<SiteSettingsSchema, 'donationLink' | 'contactEmail' | 'newsletterSignupUrl'> & {
 					logo: SanityImageSource
 					headerImages?: SanityImageSource[]
 					imprintPageSlug?: string
@@ -279,6 +279,7 @@ export const sanityApi = {
 				donationLink,
 				"imprintPageSlug": imprintPage->slug.current,
 				"privacyPageSlug": privacyPage->slug.current,
+				newsletterSignupUrl,
 				contactEmail,
 			}
 		`)
@@ -289,6 +290,7 @@ export const sanityApi = {
 			donationLink: settings.donationLink,
 			imprintPageSlug: settings.imprintPageSlug,
 			privacyPageSlug: settings.privacyPageSlug,
+			newsletterSignupUrl: settings.newsletterSignupUrl,
 			contactEmail: settings.contactEmail,
 			headerImageUrls: settings.headerImages?.map((image) =>
 				imageUrlBuilder.image(image).height(512).format('webp').url(),
@@ -313,7 +315,7 @@ export const sanityApi = {
 	async getNewsletter(slug: string) {
 		const newsletter = await sanityClient.fetch<
 			| (NewsletterSchema & {
-					featuredEvents: (EventSchema & {
+					featuredEvents: (Omit<EventSchema, 'slug'> & {
 						slug: string
 					})[]
 			  })
@@ -347,7 +349,7 @@ export const sanityApi = {
 			slug: newsletter.slug.current,
 			featuredEvents: newsletter.featuredEvents.map((event) => ({
 				...event,
-				slug: event.slug.current,
+				slug: event.slug,
 				imageUrl: imageUrlBuilder
 					.image(event.mainImage)
 					.width(512)

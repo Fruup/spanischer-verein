@@ -36,6 +36,7 @@
 	let mail = $derived(data.siteSettings?.contactEmail ?? 'info@spanischer-verein.com')
 	let imprintPageSlug = $derived(siteSettings?.imprintPageSlug)
 	let privacyUrl = $derived(siteSettings?.privacyPageSlug && `/${siteSettings.privacyPageSlug}`)
+	let newsletterSignupUrl = $derived(siteSettings?.newsletterSignupUrl)
 
 	/**
 	 * Rotate header images on page navigation.
@@ -122,7 +123,7 @@
 
 			<h3 class="heading-2">Mitmachen</h3>
 
-			<ParticipateSection {mail} {privacyUrl} />
+			<ParticipateSection {mail} newsletterSubscriptionUrl={newsletterSignupUrl} />
 
 			<!-- <PageSearch /> -->
 		</div>

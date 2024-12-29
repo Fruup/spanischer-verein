@@ -91,6 +91,14 @@ export default defineType({
       },
       group: ['footer', 'mailing'],
     }),
+    defineField({
+      name: 'newsletterSignupUrl',
+      title: 'URL zur Newsletteranmeldung',
+      description:
+        'Die URL, unter der sich Nutzerinnen und Nutzer für den Newsletter anmelden können (von Mailchimp).',
+      type: 'url',
+      group: ['footer', 'mailing'],
+    }),
   ],
 })
 
@@ -101,6 +109,7 @@ export interface SiteSettingsSchema {
   donationLink?: string
   imprintPage?: PageSchema
   privacyPage?: PageSchema
+  newsletterSignupUrl?: string
   contactEmail?: string
   newsletterSubscriptionRecipient?: string
 }
