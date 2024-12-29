@@ -36,8 +36,8 @@ export async function sendUnsentNewsletters() {
 		console.log(`Sending newsletter: ${title}`)
 
 		try {
-			const html = await getNewsletterHtml(slug.current)
-			await sendNewsletter({ title, listId, html })
+			// const html = await getNewsletterHtml(slug.current)
+			await sendNewsletter({ title, listId, slug: slug.current })
 
 			// Mark as sent.
 			await client

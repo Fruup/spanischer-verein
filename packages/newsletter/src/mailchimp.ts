@@ -40,9 +40,10 @@ async function createCampaign({ title, listId }: { title: string; listId: string
 	return campaign.id
 }
 
-async function setCampaignContent(campaignId: string, html: string) {
+async function setCampaignContent(campaignId: string, url: string) {
 	await Mailchimp.campaigns.setContent(campaignId, {
-		html,
+		// html,
+		url,
 	})
 }
 
@@ -53,19 +54,19 @@ async function sendCampaign(campaignId: string) {
 export async function sendNewsletter({
 	title,
 	listId,
-	html,
+	slug,
 }: {
 	title: string
 	listId: string
-	html: string
+	slug: string
 }) {
-	console.log('Sending newsletter', { title })
+	console.log('Sending newsletter', { title, slug })
 
 	try {
 		const campaignId = await createCampaign({ title, listId })
 		if (!campaignId) throw new Error('Failed to create campaign')
 
-		await setCampaignContent(campaignId, html)
+		await setCampaignContent(campaignId, `${import.meta.env.BASE_URL}/newsletter/${slug}`)
 		await sendCampaign(campaignId)
 
 		console.log('Newsletter sent!')

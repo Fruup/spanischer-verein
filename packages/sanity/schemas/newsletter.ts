@@ -65,4 +65,5 @@ export interface NewsletterSchema extends SanityDocument {
   featuredEvents: Event[]
   content: PortableTextBlock[]
   publishedAt?: string
+  sentAt?: string
 }
