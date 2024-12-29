@@ -25,6 +25,7 @@ async function createCampaign({ title, listId }: { title: string; listId: string
 			subject_line: `Newsletter 💌 Spanischer Verein Köln`,
 			from_name: 'Spanischer Verein Köln',
 			reply_to: 'circulomachado@gmail.com',
+			inline_css: true,
 		},
 		tracking: {
 			html_clicks: false,

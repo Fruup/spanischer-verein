@@ -10,7 +10,7 @@
 	href={newsletterSubscriptionUrl}
 	target="_blank"
 	rel="noopener noreferrer"
-	class="bg-accent hover:bg-accent/80 cursor-pointer rounded-lg px-2.5 py-2 text-sm text-white"
+	class="bg-accent hover:bg-accent-300 block cursor-pointer rounded-lg px-2.5 py-2 text-sm text-white"
 >
 	Melde Dich zum Newsletter an!
 </a>
