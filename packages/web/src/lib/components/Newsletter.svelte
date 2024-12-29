@@ -14,7 +14,9 @@
 	import type { sanityApi } from '$lib/sanity/client'
 	import SiteLogo from './header/SiteLogo.svelte'
 	import { setContext } from 'svelte'
-	import { PUBLIC_ORIGIN } from '$env/static/public'
+	import { env } from '$env/dynamic/public'
+
+	const { PUBLIC_ORIGIN } = env
 
 	let {
 		newsletter,

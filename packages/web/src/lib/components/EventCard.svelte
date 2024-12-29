@@ -5,8 +5,10 @@
 	import EventTime from './EventTime.svelte'
 	import { fitParent } from '$lib/helpers/fitParent'
 	import IconCalendar from './icons/IconCalendar.svelte'
-	import { PUBLIC_ORIGIN } from '$env/static/public'
 	import type { NewsletterContext } from './Newsletter.svelte'
+	import { env } from '$env/dynamic/public'
+
+	const { PUBLIC_ORIGIN } = env
 
 	interface Props {
 		event: {
