@@ -9,3 +9,5 @@ declare module '*&imagetools' {
 }
 
 declare type ValueOf<T> = T[keyof T]
+
+declare function sa_event(event: string, metadata?: Record<string, string>): void
