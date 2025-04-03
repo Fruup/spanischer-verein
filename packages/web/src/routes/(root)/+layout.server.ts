@@ -11,24 +11,24 @@ export const load = async ({ request, params }) => {
 
 	if (locales[0]) setLocale(locales[0])
 
-	const siteSettings = await sanityApi.getSiteSettings()
+	// Start all API calls in parallel
+	const siteSettingsPromise = sanityApi.getSiteSettings()
+	const pastHighlightsPromise = sanityApi.getPastHighlights()
+	const eventsPromise = sanityApi.getEventsOverview(parseMonthFromUrl(params))
+	const navigationTreePromise = sanityApi.getNavigationTree()
 
+	const siteSettings = await siteSettingsPromise
 	const headerImages = siteSettings?.headerImageUrls ?? []
 	const leftHeaderImageIndex = pick(headerImages ?? [])?.index ?? 0
 	const rightHeaderImageIndex = pick(headerImages ?? [], [leftHeaderImageIndex])?.index ?? 0
 
-	const pastHighlights = await sanityApi.getPastHighlights()
-
-	const { year, month } = parseMonthFromUrl(params)
-	const events = await sanityApi.getEventsOverview({ year, month })
-
 	return {
 		locales,
-		navigationTree: await sanityApi.getNavigationTree(),
+		navigationTree: await navigationTreePromise,
 		siteSettings,
-		events,
+		events: await eventsPromise,
 		leftHeaderImageIndex,
 		rightHeaderImageIndex,
-		pastHighlights,
+		pastHighlights: await pastHighlightsPromise,
 	}
 }
