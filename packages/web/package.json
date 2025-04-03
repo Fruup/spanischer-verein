@@ -47,6 +47,7 @@
 		"@sanity/core-loader": "^1.7.22",
 		"@sanity/image-url": "^1.1.0",
 		"@sveltejs/adapter-static": "^3.0.8",
+		"flat-cache": "^6.1.7",
 		"nodemailer": "^6.9.16",
 		"svelte-adapter-bun": "^0.5.2",
 		"svelte-sonner": "^0.3.28",

@@ -1,3 +1,4 @@
+import { create as createCache } from 'flat-cache'
 import { createClient } from '@sanity/client'
 import type { EventSchema } from '@spanischer-verein/sanity/schemas/event'
 import createImageUrlBuilder from '@sanity/image-url'
@@ -22,6 +23,8 @@ export const sanityClient = createClient({
 
 const imageUrlBuilder = createImageUrlBuilder(sanityClient)
 
+const cache = env.ENABLE_CACHE?.toLowerCase() === 'true' ? createCache() : null
+
 export const sanityApi = {
 	async getEventsOverview(options: { year: number; month: number }) {
 		interface Result
@@ -36,6 +39,11 @@ export const sanityApi = {
 				}
 			}
 		}
+
+		// Check for cached value
+		const cacheKey = `sanity:getEventsOverview:${options.year}-${options.month}`
+		const cached = cache?.get<typeof transformed>(cacheKey)
+		if (cached) return cached
 
 		const from = new CalendarDateTime(options.year, options.month, 1)
 		const to = from.copy().add({ months: 1 })
@@ -76,6 +84,9 @@ export const sanityApi = {
 				imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
 		}))
 
+		// Cache the result
+		cache?.setKey(cacheKey, transformed, 10 * 60 * 1000) // 10 minutes
+
 		return transformed
 	},
 
@@ -92,6 +103,11 @@ export const sanityApi = {
 				}
 			}
 		}
+
+		// Check for cached value
+		const cacheKey = `sanity:getPastHighlights`
+		const cached = cache?.get<typeof transformed>(cacheKey)
+		if (cached) return cached
 
 		const events = await sanityClient.fetch<Result[]>(
 			`*[
@@ -119,10 +135,18 @@ export const sanityApi = {
 				imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
 		}))
 
+		// Cache the result
+		cache?.setKey(cacheKey, transformed, 15 * 60 * 1000) // 15 minutes
+
 		return transformed
 	},
 
 	async getEvent(slug: string) {
+		// Check for cached value
+		const cacheKey = `sanity:getEvent:${slug}`
+		const cached = cache?.get<typeof transformed>(cacheKey)
+		if (cached) return cached
+
 		const result = await sanityClient.fetch<EventSchema | undefined>(
 			`*[_type == "event" && slug.current == "${slug}"][0]{
 				...,
@@ -146,10 +170,15 @@ export const sanityApi = {
 					.url(),
 		}))
 
-		return {
+		const transformed = {
 			...result,
 			body,
 		}
+
+		// Cache the result
+		cache?.setKey(cacheKey, transformed, 10 * 60 * 1000) // 10 minutes
+
+		return transformed
 	},
 
 	async getNavigationTree() {
@@ -162,6 +191,11 @@ export const sanityApi = {
 				slug: string
 			}
 		}
+
+		// Check for cached value
+		const cacheKey = `sanity:getNavigationTree`
+		const cached = cache?.get<typeof tree>(cacheKey)
+		if (cached) return cached
 
 		const result = await sanityClient.fetch<{
 			tree: FlatTreeItem[]
@@ -211,10 +245,19 @@ export const sanityApi = {
 		}
 
 		const tree = buildSubTree(flatTree, null)
+
+		// Cache the result
+		cache?.setKey(cacheKey, tree, 20 * 60 * 1000) // 20 minutes
+
 		return tree
 	},
 
 	async getPage(pathname: string) {
+		// Check for cached value
+		const cacheKey = `sanity:getPage:${pathname}`
+		const cached = cache?.get<typeof page>(cacheKey)
+		if (cached) return cached
+
 		const slug = pathname.split('/').at(-1)
 
 		const page = await sanityClient.fetch<PageSchema | undefined>(`
@@ -259,10 +302,18 @@ export const sanityApi = {
 					.url(),
 		}))
 
+		// Cache the result
+		cache?.setKey(cacheKey, page, 10 * 60 * 1000) // 10 minutes
+
 		return page
 	},
 
 	async getSiteSettings() {
+		// Check for cached value
+		const cacheKey = `sanity:getSiteSettings`
+		const cached = cache?.get<typeof transformed>(cacheKey)
+		if (cached) return cached
+
 		const settings = await sanityClient.fetch<
 			| (Pick<SiteSettingsSchema, 'donationLink' | 'contactEmail'> & {
 					logo: SanityImageSource
@@ -284,7 +335,7 @@ export const sanityApi = {
 
 		if (!settings) return null
 
-		return {
+		const transformed = {
 			donationLink: settings.donationLink,
 			imprintPageSlug: settings.imprintPageSlug,
 			privacyPageSlug: settings.privacyPageSlug,
@@ -294,6 +345,11 @@ export const sanityApi = {
 			),
 			logoUrl: imageUrlBuilder.image(settings.logo).height(400).format('webp').url(),
 		}
+
+		// Cache the result
+		cache?.setKey(cacheKey, transformed, 10 * 60 * 1000) // 10 minutes
+
+		return transformed
 	},
 
 	async getNewsletterSubscriptionRecipient() {
