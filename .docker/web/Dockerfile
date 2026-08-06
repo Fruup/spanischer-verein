@@ -1,26 +1,27 @@
-FROM oven/bun:latest as builder
+FROM oven/bun:1.3.14 AS builder
 
 WORKDIR /work
 
 # Add dependencies and install
-ADD package.json bun.lockb ./
-ADD packages/web/package.json packages/web/bun.lockb ./web/
-ADD packages/sanity/package.json packages/sanity/bun.lockb ./sanity/
+ADD package.json bun.lock ./
+ADD packages/web/package.json ./packages/web/
+ADD packages/sanity/package.json ./packages/sanity/
 
-RUN cd web && bun install
+# RUN cd web && bun install --frozen-lockfile
+RUN bun install --frozen-lockfile
 
 # Add sources and build
-ADD packages/web ./web
-ADD packages/sanity ./sanity
+ADD packages/web ./packages/web
+ADD packages/sanity ./packages/sanity
 
-RUN cd web && bun run build
+RUN cd packages/web && bun run build
 
-FROM oven/bun:latest as production
+FROM oven/bun:1.3.14 AS production
 
 WORKDIR /work
 
-COPY --from=builder /work/web/build /work/build
+COPY --from=builder /work/packages/web/build /work/build
 
 ENV NODE_ENV=production
 
-CMD bun run ./build
+CMD ["bun", "run", "./build"]
