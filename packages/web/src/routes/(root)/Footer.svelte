@@ -2,6 +2,7 @@
 	// @ts-ignore
 	import supporter1 from '$assets/integrationszentrum-koeln.png?format=webp&w=256&imagetools'
 	import supporter2 from '$assets/stadt-koeln.svg'
+	import supporter3 from '$assets/interkulturelle-zentren-koeln.webp'
 	import SiteLogo from '$lib/components/header/SiteLogo.svelte'
 	import { socialLinks } from '$lib/components/header/SocialLinks.svelte'
 
@@ -62,6 +63,17 @@
 					title="Stadt Köln"
 				>
 					<img width="256" src={supporter2} alt="" />
+				</a>
+			</li>
+
+			<li>
+				<a
+					href="https://interkulturell.koeln/"
+					target="_blank"
+					rel="noreferrer nofollow"
+					title="Interkulturelle Zentren Köln"
+				>
+					<img width="180" src={supporter3} alt="" />
 				</a>
 			</li>
 		</ul>
