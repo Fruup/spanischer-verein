@@ -45,7 +45,7 @@
 
 <form
 	{...enhanced}
-	class="flex flex-col items-center gap-1 [&_a]:cursor-pointer [&_a]:underline [&_a]:decoration-brand [&_a:focus]:text-brand [&_a:hover]:text-brand [&_button]:rounded-base!"
+	class="flex flex-col items-center gap-1 [&_a]:cursor-pointer [&_a]:underline [&_a]:decoration-brand-link [&_a:focus]:text-brand-link [&_a:hover]:text-brand-link [&_button]:rounded-base!"
 >
 	<input
 		{...subscribeToNewsletter.fields.email.as('email')}

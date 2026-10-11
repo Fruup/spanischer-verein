@@ -8,7 +8,7 @@
 
 <a
 	href="/"
-	class="relative mx-auto block w-fit before:absolute before:-inset-[20%] before:-z-10 before:content-[''] before:[background:radial-gradient(closest-side,white,rgba(255,255,255,0.5),rgba(255,255,255,0.5),rgba(255,255,255,0.2),transparent)]"
+	class="relative mx-auto block w-fit before:absolute before:-inset-[20%] before:-z-10 before:content-[''] before:[background:var(--logo-glow)]"
 >
 	<img
 		src={logo}

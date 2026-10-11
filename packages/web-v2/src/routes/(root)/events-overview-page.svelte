@@ -76,7 +76,7 @@
 			nutze unseren
 			<button
 				type="button"
-				class="m-0 inline cursor-pointer border-none bg-transparent p-0 text-[1em] text-inherit underline decoration-brand hover:text-brand focus:text-brand"
+				class="m-0 inline cursor-pointer border-none bg-transparent p-0 text-[1em] text-inherit underline decoration-brand-link hover:text-brand-link focus:text-brand-link"
 				onclick={jumpToCalendar}
 			>
 				Kalender

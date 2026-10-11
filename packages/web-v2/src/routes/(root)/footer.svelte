@@ -15,7 +15,7 @@
 </script>
 
 <footer
-	class="m-16 flex min-h-[200px] flex-row justify-around gap-8 text-[0.9rem] max-desktop:flex-col max-tablet:m-8 [&_a]:underline [&_a]:decoration-brand [&_a]:decoration-2"
+	class="m-16 flex min-h-[200px] flex-row justify-around gap-8 text-[0.9rem] max-desktop:flex-col max-tablet:m-8 [&_a]:underline [&_a]:decoration-brand-link [&_a]:decoration-2"
 >
 	<div>
 		<h6 class="m-0 mb-4 text-[1.3em]">Links</h6>

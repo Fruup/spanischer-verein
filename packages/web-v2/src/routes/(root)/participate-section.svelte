@@ -31,7 +31,7 @@
 </script>
 
 <div
-	class="flex flex-col gap-4 [&_a]:underline [&_a]:decoration-brand [&_a:focus]:text-brand [&_a:hover]:text-brand [&_p]:mt-0 [&_p]:text-[0.9rem] [&_p:last-child]:mb-0 [&>*]:my-0"
+	class="flex flex-col gap-4 [&_a]:underline [&_a]:decoration-brand-link [&_a:focus]:text-brand-link [&_a:hover]:text-brand-link [&_p]:mt-0 [&_p]:text-[0.9rem] [&_p:last-child]:mb-0 [&>*]:my-0"
 >
 	<Card>
 		{#snippet heading()}

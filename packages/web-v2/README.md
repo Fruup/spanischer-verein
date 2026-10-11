@@ -48,3 +48,24 @@ Beyond the framework:
   `/api/v1/newsletter/request`, an endpoint that never existed.
 - `src/lib/components/ui/*` is shadcn-svelte output. Regenerate or extend it with
   `bunx shadcn-svelte@latest add <component>`.
+
+## Dark mode
+
+New in v2 — v1 had a `.dark` block in `globals.scss` that nothing ever toggled.
+
+`mode-watcher` follows the operating system preference, remembers an explicit
+choice in local storage, and sets the `dark` class on `<html>` before first
+paint so the page never flashes. `<ModeWatcher />` sits in the root layout and
+the toggle lives in the header.
+
+Every colour a component uses is a custom property declared twice in
+`src/routes/layout.css` — once on `:root`, once on `.dark` — and exposed as a
+Tailwind utility through `@theme inline`. Components reference the tokens only,
+so no component carries a `dark:` variant. The light values are v1's, unchanged.
+
+Two brand tokens matter when editing:
+
+- `--brand` is the mark used for fills, borders and outlines.
+- `--brand-link` is the brand red used as _foreground_ text — link colour,
+  underline decorations, hover text. Pure red is too dim to read against a dark
+  page, so dark mode lifts this well above `--brand` while keeping the hue.

@@ -37,7 +37,7 @@
 				{href}
 				aria-expanded={hasChildren ? menu.isExpanded(id) : undefined}
 				onclick={(event) => navigate(event, href)}
-				class="underline decoration-brand"
+				class="underline decoration-brand-link"
 			>
 				{title}
 			</a>

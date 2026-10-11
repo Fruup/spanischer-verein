@@ -10,7 +10,7 @@
 	let { href = undefined, onclick, children }: Props = $props()
 
 	const classes =
-		'm-0 block cursor-pointer rounded-base border-2 border-[#0070e0] bg-white px-2 py-[calc(0.5em-2px)] text-base text-nowrap transition-all duration-250 ease-[ease] hover:bg-[#0070e0]/10'
+		'm-0 block cursor-pointer rounded-base border-2 border-donate bg-surface-raised px-2 py-[calc(0.5em-2px)] text-base text-nowrap transition-all duration-250 ease-[ease] hover:bg-donate-wash'
 </script>
 
 {#if href}

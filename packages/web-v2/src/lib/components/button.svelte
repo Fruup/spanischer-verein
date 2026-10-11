@@ -37,7 +37,7 @@
 	// intentionally come after the icon-only ones.
 	let classes = $derived(
 		cn(
-			'flex w-fit cursor-pointer items-center gap-[1ch] rounded-base border-none bg-brand px-4 py-3 text-base text-white transition-colors duration-200 hover:bg-brand-dark',
+			'flex w-fit cursor-pointer items-center gap-[1ch] rounded-base border-none bg-brand px-4 py-3 text-base text-brand-contrast transition-colors duration-200 hover:bg-brand-hover',
 			iconOnly && 'box-content aspect-square h-auto w-10 rounded-full p-0',
 			size === 's' && 'size-8 text-xs',
 			disabled && 'cursor-not-allowed opacity-50',

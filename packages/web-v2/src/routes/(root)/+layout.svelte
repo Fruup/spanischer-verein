@@ -116,7 +116,7 @@
 		{/if}
 	</main>
 
-	<div class="h-full w-[2px] bg-black/5 max-desktop:h-[2px] max-desktop:w-auto"></div>
+	<div class="h-full w-[2px] bg-hairline max-desktop:h-[2px] max-desktop:w-auto"></div>
 
 	<aside class="mt-10 mb-16 [&_h3:first-of-type]:mt-0">
 		<div

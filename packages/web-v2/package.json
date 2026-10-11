@@ -49,6 +49,7 @@
 		"bits-ui": "^2.19.5",
 		"cn": "^0.3.0",
 		"flat-cache": "^6.1.23",
+		"mode-watcher": "^1.1.0",
 		"nodemailer": "^10.1.0",
 		"svelte-sonner": "^1.2.1",
 		"tailwind-variants": "^3.3.1",

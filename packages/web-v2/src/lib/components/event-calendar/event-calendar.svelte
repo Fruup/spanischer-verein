@@ -37,10 +37,10 @@
 		`/archiv/${value.year}-${value.month.toString().padStart(2, '0')}`
 
 	const navButtonClasses =
-		'grid aspect-square h-auto w-(--cell-width) cursor-pointer place-content-center rounded-base border-none bg-brand p-0 text-white'
+		'grid aspect-square h-auto w-(--cell-width) cursor-pointer place-content-center rounded-base border-none bg-brand p-0 text-brand-contrast'
 
 	const dayClasses =
-		'grid aspect-square h-auto place-content-center rounded-base data-[outside-month]:opacity-50 data-today:border data-today:border-gray-500 data-today:font-bold'
+		'grid aspect-square h-auto place-content-center rounded-base data-[outside-month]:opacity-50 data-today:border data-today:border-ink-muted data-today:font-bold'
 </script>
 
 <Calendar.Root
@@ -70,7 +70,7 @@
 			<Calendar.Grid class="w-fit border-collapse select-none">
 				<Calendar.GridHead>
 					<Calendar.GridRow
-						class="my-2 bg-black/5 [&>th:first-child]:rounded-l-base [&>th:last-child]:rounded-r-base"
+						class="my-2 bg-hairline [&>th:first-child]:rounded-l-base [&>th:last-child]:rounded-r-base"
 					>
 						{#each weekdays as weekday, weekdayIndex (weekdayIndex)}
 							<Calendar.HeadCell
@@ -99,7 +99,7 @@
 													data-sveltekit-noscroll
 													class="{dayClasses} shadow-[inset_0_0_0_2px_var(--color-brand)] {page.url
 														.pathname === event.url
-														? 'bg-brand text-white'
+														? 'bg-brand text-brand-contrast'
 														: ''}"
 												>
 													{day}

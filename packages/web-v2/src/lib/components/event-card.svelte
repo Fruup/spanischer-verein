@@ -65,7 +65,7 @@
 	in:fly|global={{ y: 30, delay: introDelay }}
 	{href}
 	class={cn(
-		'group grid min-h-full rounded-base border border-black/10 text-center text-base shadow-soft transition-[scale] duration-300 ease-[ease]',
+		'group grid min-h-full rounded-base border border-edge-subtle text-center text-base shadow-soft transition-[scale] duration-300 ease-[ease]',
 		'grid-rows-[auto_auto]',
 		horizontal && 'grid-cols-[auto_auto]',
 		'hover:scale-[1.01] hover:outline-2 hover:outline-brand focus:scale-[1.01] focus:outline-2 focus:outline-brand',
@@ -87,7 +87,7 @@
 
 	<div class="m-6 flex flex-grow flex-col items-center justify-center gap-4">
 		<div
-			class="m-0 flex items-center justify-center gap-[1ch] rounded-full bg-brand-translucent px-[0.5em] py-[0.15em] text-[0.8em] tracking-[1px] [&_*]:text-white"
+			class="m-0 flex items-center justify-center gap-[1ch] rounded-full bg-brand-translucent px-[0.5em] py-[0.15em] text-[0.8em] tracking-[1px] [&_*]:text-brand-contrast"
 		>
 			<IconCalendar />
 			<EventTime time={event.eventTime} />

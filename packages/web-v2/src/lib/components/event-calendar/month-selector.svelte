@@ -46,7 +46,7 @@
 
 <DropdownMenu.Root bind:open>
 	<DropdownMenu.Trigger
-		class="flex h-full w-full cursor-pointer flex-row items-center rounded-base border-2 border-brand bg-background px-[1em] py-[0.5em] text-[0.7rem] tracking-[1px] text-ink transition-all duration-100 ease-[ease] hover:bg-brand hover:text-white"
+		class="flex h-full w-full cursor-pointer flex-row items-center rounded-base border-2 border-brand bg-surface-0 px-[1em] py-[0.5em] text-[0.7rem] tracking-[1px] text-ink transition-all duration-100 ease-[ease] hover:bg-brand hover:text-brand-contrast"
 	>
 		<span class="justify-self-center">
 			{months[value.month - 1]}
@@ -60,7 +60,7 @@
 		bind:ref={menuElement}
 		sideOffset={4}
 		align="center"
-		class="z-[1000] max-h-[300px] overflow-y-auto rounded-base border border-surface-1 bg-white text-[0.9rem] shadow-soft data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0"
+		class="z-[1000] max-h-[300px] overflow-y-auto rounded-base border border-edge bg-surface-raised text-[0.9rem] shadow-soft data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0"
 		style="width: var(--bits-dropdown-menu-anchor-width)"
 	>
 		{#each years as year (year)}
@@ -83,7 +83,7 @@
 									data-sveltekit-noscroll
 									data-current={isCurrent(year, month) ? '' : undefined}
 									data-active={isActive(year, month) ? '' : undefined}
-									class="mb-[0.25em] block w-full rounded-base border-none bg-transparent px-[0.5em] py-[0.25em] text-left text-[0.8em] hover:bg-surface-1 data-current:border data-current:border-ink-muted data-active:border data-active:border-brand/50"
+									class="mb-[0.25em] block w-full rounded-base border-none bg-transparent px-[0.5em] py-[0.25em] text-left text-[0.8em] hover:bg-edge-subtle data-current:border data-current:border-ink-muted data-active:border data-active:border-brand/50"
 								>
 									{monthString}
 								</a>

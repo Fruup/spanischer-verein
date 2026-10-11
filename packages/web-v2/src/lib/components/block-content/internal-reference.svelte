@@ -25,7 +25,7 @@
 
 <a
 	{href}
-	class="inline-flex items-center gap-[0.25ch] rounded-full bg-[#f2f2f2] pr-[0.6em] pl-[0.4em] text-[0.9em] hover:bg-[#e6e6e6] hover:outline-2 hover:outline-brand"
+	class="inline-flex items-center gap-[0.25ch] rounded-full bg-chip pr-[0.6em] pl-[0.4em] text-[0.9em] hover:bg-chip-hover hover:outline-2 hover:outline-brand"
 >
 	<span class="contents text-[0.8rem]">
 		{#if type === 'event'}

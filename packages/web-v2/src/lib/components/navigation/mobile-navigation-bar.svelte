@@ -21,7 +21,7 @@
 	)}
 >
 	<button
-		class="size-8 border-none bg-brand text-base text-white"
+		class="size-8 border-none bg-brand text-base text-brand-contrast"
 		onclick={() => (isCalendarOpen = !isCalendarOpen)}
 		title="Öffne Kalender"
 	>
@@ -29,7 +29,7 @@
 	</button>
 
 	<button
-		class="size-8 border-none bg-white text-base text-brand"
+		class="size-8 border-none bg-surface-0 text-base text-brand-link"
 		onclick={() => (isFlyoutOpen = !isFlyoutOpen)}
 		title="Öffne Navigation"
 	>

@@ -28,7 +28,7 @@
 					{...props}
 					href={navigationItem.href}
 					onmouseenter={() => (open = hasChildren)}
-					class="relative tracking-[1px] underline decoration-brand"
+					class="relative tracking-[1px] underline decoration-brand-link"
 				>
 					{navigationItem.title}
 
@@ -45,9 +45,9 @@
 			<DropdownMenu.Content
 				side="bottom"
 				sideOffset={4}
-				class="z-[1000] rounded-base border border-black/20 bg-background p-4 shadow-soft data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-top-2"
+				class="z-[1000] rounded-base border border-edge bg-surface-raised p-4 shadow-soft data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-top-2"
 			>
-				<DropdownMenu.Arrow class="border-t border-l border-black/20" />
+				<DropdownMenu.Arrow class="border-t border-l border-edge" />
 
 				<ul class="m-0 p-0">
 					{#each navigationItem.children ?? [] as item (item._key ?? item.href)}
@@ -57,7 +57,7 @@
 									<a
 										{...props}
 										href={item.href}
-										class="block rounded-base p-0.5 hover:bg-black/10 focus:bg-black/10"
+										class="block rounded-base p-0.5 hover:bg-edge-subtle focus:bg-edge-subtle"
 									>
 										{item.title}
 									</a>

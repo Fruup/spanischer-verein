@@ -6,6 +6,7 @@
 	import SiteLogo from './site-logo.svelte'
 	import SiteMenu from './site-menu.svelte'
 	import SocialLinks from './social-links.svelte'
+	import ThemeToggle from '../theme-toggle.svelte'
 	import type { NavigationItem } from './types'
 
 	interface Props {
@@ -42,6 +43,10 @@
 	<SiteMenu {items} />
 	<SocialLinks />
 
+	<div class="absolute top-6 right-6 z-10 max-desktop:top-4 max-desktop:right-4">
+		<ThemeToggle />
+	</div>
+
 	{#if leftImageUrl}
 		{#each [leftImageUrl] as url (url)}
 			<div
@@ -56,7 +61,7 @@
 					delay: 0,
 					opacity: transition.opacity,
 				}}
-				class="{imageClasses} right-auto left-0 after:absolute after:inset-0 after:z-[1000] after:content-[''] after:[background:linear-gradient(to_left,white,transparent_75%)] max-desktop:hidden"
+				class="{imageClasses} right-auto left-0 after:absolute after:inset-0 after:z-[1000] after:content-[''] after:[background:linear-gradient(to_left,var(--header-fade),transparent_75%)] max-desktop:hidden"
 			>
 				<img src={url} alt="" />
 			</div>
@@ -79,7 +84,7 @@
 					delay: delayOffset,
 					opacity: transition.opacity,
 				}}
-				class="{imageClasses} after:absolute after:inset-0 after:z-[1000] after:content-[''] after:[background:linear-gradient(to_right,white,transparent_75%)] max-desktop:w-full max-desktop:[mask-image:linear-gradient(to_bottom,white,transparent_80%)] max-desktop:[--max-width:100%] max-desktop:after:hidden"
+				class="{imageClasses} after:absolute after:inset-0 after:z-[1000] after:content-[''] after:[background:linear-gradient(to_right,var(--header-fade),transparent_75%)] max-desktop:w-full max-desktop:[mask-image:linear-gradient(to_bottom,white,transparent_80%)] max-desktop:[--max-width:100%] max-desktop:after:hidden"
 			>
 				<img src={url} alt="" />
 			</div>
