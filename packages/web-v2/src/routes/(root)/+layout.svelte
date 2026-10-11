@@ -1,16 +1,11 @@
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation'
-	import { navigating, page } from '$app/state'
-	import { cubicOut } from 'svelte/easing'
-	import { fly } from 'svelte/transition'
-
+	import { page } from '$app/state'
 	import EventCalendar from '#lib/components/event-calendar/event-calendar.svelte'
 	import Header from '#lib/components/header/header.svelte'
 	import { mobileMenu } from '#lib/components/header/mobile-menu.svelte'
-	import Loader from '#lib/components/icons/loader.svelte'
 	import MobileNavigationBar from '#lib/components/navigation/mobile-navigation-bar.svelte'
 	import { Toaster } from '#lib/components/ui/sonner/index.js'
-	import { duration, motion } from '#lib/helpers/motion.js'
 	import { pick } from '#lib/helpers/pick.js'
 	import { getEventUrl, parseMonthFromUrl } from '#lib/helpers/url.js'
 	import {
@@ -20,12 +15,12 @@
 		getSiteSettings,
 	} from '#lib/sanity/sanity.remote.js'
 	import { locale } from '#lib/services/locale.svelte.js'
-
 	import Divider from './divider.svelte'
 	import Footer from './footer.svelte'
 	import MobileCalendar, { mobileCalendar } from './mobile-calendar.svelte'
 	import ParticipateSection from './participate-section.svelte'
 	import type { LayoutProps } from './$types'
+	import NavigationIndicator from './navigation-indicator.svelte'
 
 	let { children }: LayoutProps = $props()
 
@@ -95,6 +90,7 @@
 </svelte:head>
 
 <Toaster position="bottom-center" />
+<NavigationIndicator />
 
 <Header items={navigationTree} {leftImageUrl} {rightImageUrl} />
 <MobileNavigationBar
@@ -108,13 +104,7 @@
 	class="mx-auto box-content grid max-w-[1200px] [grid-template-columns:1fr_min-content_min-content] gap-10 px-10 max-desktop:grid-cols-1 max-tablet:px-4"
 >
 	<main class="mt-10 mb-16 max-desktop:mb-0 [&_h3:first-of-type]:mt-0">
-		{#if navigating.to}
-			<div class="grid min-h-[50vh] place-content-center">
-				<Loader />
-			</div>
-		{:else}
-			{@render children?.()}
-		{/if}
+		{@render children?.()}
 	</main>
 
 	<div class="h-full w-[2px] bg-hairline max-desktop:h-[2px] max-desktop:w-auto"></div>
@@ -143,15 +133,6 @@
 	</aside>
 </div>
 
-{#if navigating.to}
-	<div
-		class="fixed top-4 left-4 z-[1000]"
-		transition:fly={{ x: -20, duration: motion(duration.slow), easing: cubicOut }}
-	>
-		<Loader />
-	</div>
-{/if}
-
 <div style="scale: 1 -1">
 	<Divider />
 </div>
@@ -168,6 +149,7 @@
 	defer
 	src="https://scripts.simpleanalyticscdn.com/latest.{import.meta.env.PROD ? '' : 'dev.'}js"
 ></svelte:element>
+
 {#if import.meta.env.PROD}
 	<noscript>
 		<img
