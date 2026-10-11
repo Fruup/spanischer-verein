@@ -10,6 +10,7 @@
 	import Loader from '#lib/components/icons/loader.svelte'
 	import MobileNavigationBar from '#lib/components/navigation/mobile-navigation-bar.svelte'
 	import { Toaster } from '#lib/components/ui/sonner/index.js'
+	import { duration, motion } from '#lib/helpers/motion.js'
 	import { pick } from '#lib/helpers/pick.js'
 	import { getEventUrl, parseMonthFromUrl } from '#lib/helpers/url.js'
 	import {
@@ -126,7 +127,7 @@
 			<div class="contents max-desktop:hidden">
 				<h3 id="calendar" class="heading-3 mb-0">Kalender</h3>
 
-				<p class="m-0 text-[0.85rem] text-ink-muted">
+				<p class="m-0 text-xs text-ink-muted">
 					💡 Navigiere im Kalender, um vergangene Veranstaltungen zu durchstöbern.
 				</p>
 
@@ -145,7 +146,7 @@
 {#if navigating.to}
 	<div
 		class="fixed top-4 left-4 z-[1000]"
-		transition:fly={{ x: -20, duration: 500, easing: cubicOut }}
+		transition:fly={{ x: -20, duration: motion(duration.slow), easing: cubicOut }}
 	>
 		<Loader />
 	</div>

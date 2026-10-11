@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition'
 
+	import { duration, motion } from '#lib/helpers/motion.js'
+
 	import MobileMenu from './mobile-menu.svelte'
 	import SiteHeading from './site-heading.svelte'
 	import SiteLogo from './site-logo.svelte'
@@ -26,7 +28,7 @@
 
 	const transition = {
 		x: 100,
-		duration: 1000,
+		duration: motion(duration.ambient),
 		opacity: 0,
 	}
 

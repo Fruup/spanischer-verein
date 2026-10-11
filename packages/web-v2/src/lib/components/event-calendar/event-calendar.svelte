@@ -37,10 +37,10 @@
 		`/archiv/${value.year}-${value.month.toString().padStart(2, '0')}`
 
 	const navButtonClasses =
-		'grid aspect-square h-auto w-(--cell-width) cursor-pointer place-content-center rounded-base border-none bg-brand p-0 text-brand-contrast'
+		'focus-ring grid aspect-square h-auto w-(--cell-width) cursor-pointer place-content-center rounded-base border-none bg-brand p-0 text-brand-contrast transition-colors hover:bg-brand-hover'
 
 	const dayClasses =
-		'grid aspect-square h-auto place-content-center rounded-base data-[outside-month]:opacity-50 data-today:border data-today:border-ink-muted data-today:font-bold'
+		'grid aspect-square h-auto place-content-center rounded-base transition-colors data-[outside-month]:opacity-40 data-today:font-bold data-today:text-brand-link'
 </script>
 
 <Calendar.Root
@@ -51,7 +51,7 @@
 	calendarLabel="Veranstaltungskalender"
 	{placeholder}
 	data-event-calendar
-	class="w-fit rounded-base bg-surface-raised p-[1em] text-[0.85rem] text-ink shadow-card [--cell-gap:0.125em] [--cell-width:2em]"
+	class="w-fit rounded-base border border-edge-subtle bg-surface-raised p-[1em] text-xs text-ink shadow-raised [--cell-gap:0.125em] [--cell-width:2.1em]"
 >
 	{#snippet children({ months, weekdays })}
 		<div class="flex items-stretch justify-between gap-1">
@@ -74,7 +74,7 @@
 					>
 						{#each weekdays as weekday, weekdayIndex (weekdayIndex)}
 							<Calendar.HeadCell
-								class="w-(--cell-width) p-(--cell-gap) text-center font-normal opacity-50"
+								class="w-(--cell-width) p-(--cell-gap) text-center text-2xs font-normal tracking-label text-ink-muted"
 							>
 								{weekday}
 							</Calendar.HeadCell>
@@ -97,9 +97,9 @@
 													{...props}
 													href={event.url}
 													data-sveltekit-noscroll
-													class="{dayClasses} shadow-[inset_0_0_0_2px_var(--color-brand)] {page.url
-														.pathname === event.url
-														? 'bg-brand text-brand-contrast'
+													class="focus-ring {dayClasses} font-bold ring-2 ring-brand/70 transition-colors ring-inset hover:bg-brand/10 {page
+														.url.pathname === event.url
+														? 'bg-brand text-brand-contrast ring-brand hover:bg-brand'
 														: ''}"
 												>
 													{day}

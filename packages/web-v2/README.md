@@ -69,3 +69,34 @@ Two brand tokens matter when editing:
 - `--brand-link` is the brand red used as _foreground_ text — link colour,
   underline decorations, hover text. Pure red is too dim to read against a dark
   page, so dark mode lifts this well above `--brand` while keeping the hue.
+
+## Design tokens
+
+`src/routes/layout.css` is the whole design system; components reference tokens
+and carry no raw values.
+
+- **Type** — `text-2xs` … `text-2xl`, in `rem` against a 16px root so the
+  visitor's browser font size is respected. `--text-base` resolves to the 21px
+  body the design has always used, and larger steps carry tighter leading. `em`
+  is still allowed where something must track its context rather than the scale:
+  superscripts, and icons sized to the text around them.
+- **Elevation** — three layered steps, each a tight contact shadow plus a wider
+  ambient one. `shadow-raised` for cards, the calendar and buttons at rest,
+  `shadow-floating` for menus, drawers and the mobile bar, `shadow-lifted` for a
+  card under the cursor. This replaced the single hard `6px 6px 0 0` offset,
+  which was the one thing making cards read as a different system from the rest
+  of the site.
+- **Motion** — `--default-transition-duration` and
+  `--default-transition-timing-function` are set, so a bare `transition-colors`
+  already carries the house timing and curve; call sites name a duration only
+  when they deliberately differ. Svelte's transitions are JS-driven and so out of
+  reach of the `prefers-reduced-motion` block in CSS, so every `transition:`
+  directive runs its duration through `motion()` in `helpers/motion.ts`.
+- **Tracking** — `tracking-tight` on `h1`/`h2`, normal elsewhere, and
+  `tracking-label` on the brand pills and the event date pill, which read as
+  labels rather than prose. The old stylesheet put a flat `1px` on every heading
+  regardless of size.
+- **Radii** — `rounded-base` (8px) for cards, controls and menu items;
+  `rounded-panel` (20px) for drawers and other full-width sheets.
+- **Focus** — one `focus-ring` utility, keyboard-only via `:focus-visible`, on
+  every interactive element. There was no focus treatment at all before.

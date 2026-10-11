@@ -15,10 +15,10 @@
 </script>
 
 <footer
-	class="m-16 flex min-h-[200px] flex-row justify-around gap-8 text-[0.9rem] max-desktop:flex-col max-tablet:m-8 [&_a]:underline [&_a]:decoration-brand-link [&_a]:decoration-2"
+	class="m-16 flex min-h-[200px] flex-row justify-around gap-8 text-sm max-desktop:flex-col max-tablet:m-8 [&_a]:rounded-sm [&_a]:underline [&_a]:decoration-brand-link [&_a]:decoration-2 [&_a]:underline-offset-4 [&_a]:transition-colors [&_a:hover]:text-brand-link"
 >
 	<div>
-		<h6 class="m-0 mb-4 text-[1.3em]">Links</h6>
+		<h6 class="m-0 mb-4 text-md">Links</h6>
 		<nav>
 			<ul class="list-none p-0">
 				<!-- TODO(v2): make this configurable -->
@@ -44,7 +44,7 @@
 	</div>
 
 	<div>
-		<h6 class="m-0 mb-4 text-[1.3em]">Unterstützer</h6>
+		<h6 class="m-0 mb-4 text-md">Unterstützer</h6>
 		<ul class="list-none p-0 [&_img]:mb-[0.5em]">
 			<li>
 				<a
@@ -84,7 +84,7 @@
 	<div>
 		<SiteLogo />
 
-		<div class="text-center text-[0.9em]">
+		<div class="text-center text-xs text-ink-muted">
 			Entwickelt von <a href="https://leonscherer.com/" target="_blank">Leon</a>
 		</div>
 	</div>

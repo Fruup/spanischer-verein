@@ -2,6 +2,8 @@
 	import { toast } from 'svelte-sonner'
 	import { slide } from 'svelte/transition'
 
+	import { duration as motionDuration, motion } from '#lib/helpers/motion.js'
+
 	import Button from '#lib/components/button.svelte'
 	import IconSend from '#lib/components/icons/icon-send.svelte'
 	import { Checkbox } from '#lib/components/ui/checkbox/index.js'
@@ -45,20 +47,20 @@
 
 <form
 	{...enhanced}
-	class="flex flex-col items-center gap-1 [&_a]:cursor-pointer [&_a]:underline [&_a]:decoration-brand-link [&_a:focus]:text-brand-link [&_a:hover]:text-brand-link [&_button]:rounded-base!"
+	class="flex flex-col items-center gap-1 [&_a]:cursor-pointer [&_a]:underline [&_a]:decoration-brand-link [&_a]:underline-offset-4 [&_a:focus]:text-brand-link [&_a:hover]:text-brand-link [&_button]:rounded-base!"
 >
 	<input
 		{...subscribeToNewsletter.fields.email.as('email')}
-		class="h-8 w-full rounded-base border-2 border-brand px-1 py-[calc(0.25rem-8px)] text-[0.9em]"
+		class="h-10 w-full rounded-base border border-edge bg-surface-0 px-3 text-sm text-ink focus-ring transition-colors placeholder:text-ink-muted hover:border-brand/60 focus-visible:border-brand"
 		placeholder="Deine E-Mail..."
 	/>
 
 	{#if showCheckbox}
 		<div
-			class="mt-1 grid w-full grid-cols-[1fr_auto] items-center gap-1 text-[0.8em]"
-			transition:slide={{ duration: 500 }}
+			class="mt-2 grid w-full grid-cols-[1fr_auto] items-center gap-2 text-xs"
+			transition:slide={{ duration: motion(motionDuration.slow) }}
 		>
-			<div class="flex items-start gap-2 text-[0.8em] leading-normal">
+			<div class="flex items-start gap-2 text-2xs leading-normal">
 				<Checkbox id="acceptPrivacy" bind:checked={accepted} class="mt-[0.2lh]" />
 
 				<!-- bits-ui renders no form control of its own, so submit the value explicitly. -->

@@ -16,7 +16,7 @@
 </script>
 
 <nav
-	class="box-content flex h-6 justify-center gap-4 [&_a]:transition-[scale] [&_a]:duration-250 [&_a]:ease-[ease] [&_a:hover]:scale-110"
+	class="box-content flex h-6 justify-center gap-4 [&_a]:rounded-full [&_a]:transition-[scale] [&_a:hover]:scale-110"
 >
 	{#each socialLinks as { name, url: href } (href)}
 		<a {href} target="_blank" rel="noreferrer nofollow">

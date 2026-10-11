@@ -7,9 +7,6 @@
 /* -------------------------------------------------------------------------- */
 /* Palette                                                                    */
 /*                                                                            */
-/* Light values are ported from the v1 Sass setup (`src/lib/styles/vars.scss`) */
-/* and are unchanged. Dark values are new.                                     */
-/*                                                                            */
 /* Every colour a component uses lives here, so nothing has to special-case    */
 /* the mode: `.dark` swaps the value, and the `@theme inline` block below turns */
 /* each one into a Tailwind utility.                                           */
@@ -20,36 +17,36 @@
 	--ink-muted: #6c6c6c;
 
 	--surface-0: #ffffff; /* the page */
-	--surface-raised: #fafafa; /* cards, menus, the calendar */
-	--surface-1: #cfcfcf; /* filled controls, menu item hover */
+	--surface-raised: #fcfcfc; /* cards, menus, the calendar */
+	--surface-1: #efefef; /* filled controls, menu item hover */
 
 	/* Stadt Köln red. Named `brand` so it never collides with Tailwind's
 	   `accent-*` utilities or shadcn's `--accent` token. */
 	--brand: #ef0000; /* fills, borders, outlines */
 	--brand-hover: #bc0000; /* hover state of a brand fill */
-	--brand-translucent: rgb(213 0 0 / 0.8); /* the event card's date pill */
+	--brand-translucent: rgb(213 0 0 / 0.85); /* the event card's date pill */
 	--brand-contrast: #ffffff; /* text sitting on a brand fill */
 	--brand-2: #1dede6;
 
 	/* Brand red as *foreground* text: link colour, underline decorations,
 	   hover text. Pure red on a dark page is too dim to read, so dark mode
 	   lifts this well above `--brand` while keeping the hue. */
-	--brand-link: #ef0000;
+	--brand-link: #d40000;
 
 	/* PayPal blue, used by the donation call to action. */
 	--donate: #0070e0;
 	--donate-wash: rgb(0 112 224 / 0.1);
 
-	--hairline: rgb(0 0 0 / 0.05); /* column rules, the weekday strip */
-	--edge-subtle: rgb(0 0 0 / 0.1); /* card borders, menu item hover */
-	--edge: rgb(0 0 0 / 0.2); /* dropdown borders */
+	--hairline: rgb(16 18 28 / 0.06); /* column rules, the weekday strip */
+	--edge-subtle: rgb(16 18 28 / 0.1); /* card and control borders */
+	--edge: rgb(16 18 28 / 0.16); /* menus, popovers */
 
 	--chip: #f2f2f2; /* inline references in block content */
-	--chip-hover: #e6e6e6;
+	--chip-hover: #e8e8e8;
 
-	--card-shadow: rgb(0 0 0 / 0.1);
-	--shadow-soft-color: rgb(100 100 111 / 0.2);
-	--shadow-strong-color: rgb(100 100 111 / 0.5);
+	/* Shadow ink. Two strengths, layered into the elevations below. */
+	--shadow-tint-weak: rgb(16 18 28 / 0.05);
+	--shadow-tint: rgb(16 18 28 / 0.09);
 
 	/* The colour the header images and the logo glow fade into, i.e. the page. */
 	--header-fade: #ffffff;
@@ -58,25 +55,13 @@
 	--heading-3-ink: #1d1d1d;
 }
 
-:root {
-	/* The soft halo behind the site logo; fades into whatever the page is. */
-	--logo-glow: radial-gradient(
-		closest-side,
-		var(--header-fade),
-		color-mix(in oklab, var(--header-fade) 50%, transparent),
-		color-mix(in oklab, var(--header-fade) 50%, transparent),
-		color-mix(in oklab, var(--header-fade) 20%, transparent),
-		transparent
-	);
-}
-
 .dark {
 	--ink: oklch(0.95 0 0);
 	--ink-muted: oklch(0.72 0 0);
 
 	--surface-0: oklch(0.17 0 0);
-	--surface-raised: oklch(0.225 0 0);
-	--surface-1: oklch(0.32 0 0);
+	--surface-raised: oklch(0.215 0 0);
+	--surface-1: oklch(0.3 0 0);
 
 	/* Same hue, lifted just enough that white text on a brand fill keeps the
 	   contrast it has in light mode. */
@@ -91,41 +76,96 @@
 	--donate: oklch(0.72 0.15 250);
 	--donate-wash: oklch(0.72 0.15 250 / 0.14);
 
-	--hairline: oklch(1 0 0 / 0.08);
-	--edge-subtle: oklch(1 0 0 / 0.1);
+	--hairline: oklch(1 0 0 / 0.07);
+	--edge-subtle: oklch(1 0 0 / 0.11);
 	--edge: oklch(1 0 0 / 0.18);
 
-	--chip: oklch(0.27 0 0);
-	--chip-hover: oklch(0.33 0 0);
+	--chip: oklch(0.26 0 0);
+	--chip-hover: oklch(0.32 0 0);
 
 	/* Shadows read as depth on a light ground and as glow on a dark one, so
 	   darken them instead of tinting. */
-	--card-shadow: oklch(0 0 0 / 0.5);
-	--shadow-soft-color: oklch(0 0 0 / 0.5);
-	--shadow-strong-color: oklch(0 0 0 / 0.7);
+	--shadow-tint-weak: oklch(0 0 0 / 0.4);
+	--shadow-tint: oklch(0 0 0 / 0.55);
 
 	--header-fade: oklch(0.17 0 0);
 
-	--heading-3-surface: oklch(0.225 0 0);
+	--heading-3-surface: oklch(0.215 0 0);
 	--heading-3-ink: oklch(0.95 0 0);
+}
+
+:root {
+	/* The soft halo behind the site logo; fades into whatever the page is. */
+	--logo-glow: radial-gradient(
+		closest-side,
+		var(--header-fade),
+		color-mix(in oklab, var(--header-fade) 50%, transparent),
+		color-mix(in oklab, var(--header-fade) 50%, transparent),
+		color-mix(in oklab, var(--header-fade) 20%, transparent),
+		transparent
+	);
 }
 
 /* -------------------------------------------------------------------------- */
 /* Project theme                                                              */
-/*                                                                            */
-/* The two custom breakpoints replace the old `max-md` / `max-sm` mixins;      */
-/* Tailwind's own `sm`/`md`/`lg` scale is left alone so shadcn-svelte          */
-/* components behave.                                                         */
 /* -------------------------------------------------------------------------- */
 
 @theme {
+	/* The two custom breakpoints replace the old `max-md` / `max-sm` Sass
+	   mixins. Tailwind's own `sm`/`md`/`lg` scale is left alone so
+	   shadcn-svelte components behave. */
 	--breakpoint-tablet: 787px;
 	--breakpoint-desktop: 1201px;
 
 	--font-sans: 'Lato', 'Helvetica', 'Arial', sans-serif;
 	--font-serif: 'PT Serif', 'Old Standard TT', Georgia, serif;
 
-	--radius-base: 8px;
+	/* Type scale. Sizes are `rem` against a 16px root, so they respect the
+	   visitor's browser font size; `--text-base` resolves to the 21px body the
+	   design has always used. Larger steps get tighter leading.
+
+	   `em` stays allowed for the few things that must track their context
+	   rather than the scale: superscripts, and icons sized to the text
+	   around them. */
+	--text-2xs: 0.8125rem; /* 13px */
+	--text-2xs--line-height: 1.5;
+	--text-xs: 0.9375rem; /* 15px */
+	--text-xs--line-height: 1.5;
+	--text-sm: 1.0625rem; /* 17px */
+	--text-sm--line-height: 1.6;
+	--text-base: 1.3125rem; /* 21px — body */
+	--text-base--line-height: 1.66;
+	--text-md: 1.5rem; /* 24px */
+	--text-md--line-height: 1.4;
+	--text-lg: 1.75rem; /* 28px */
+	--text-lg--line-height: 1.3;
+	--text-xl: 2.25rem; /* 36px */
+	--text-xl--line-height: 1.22;
+	--text-2xl: 3.25rem; /* 52px */
+	--text-2xl--line-height: 1.08;
+
+	/* Large type wants to be pulled together, small type pushed apart. The
+	   old stylesheet put a flat `1px` on every heading regardless of size. */
+	--tracking-tight: -0.015em;
+	--tracking-label: 0.05em;
+
+	--radius-base: 8px; /* cards, controls, menu items */
+	--radius-panel: 20px; /* drawers and other full-width sheets */
+
+	/* One elevation system. Each step is layered — a tight contact shadow plus
+	   a wider ambient one — which is what separates these from the single
+	   hard-offset shadow the cards used to carry. */
+	--shadow-raised: 0 1px 2px var(--shadow-tint-weak), 0 2px 8px var(--shadow-tint-weak);
+	--shadow-floating: 0 2px 6px var(--shadow-tint), 0 12px 32px var(--shadow-tint-weak);
+	--shadow-lifted: 0 4px 10px var(--shadow-tint), 0 20px 48px var(--shadow-tint);
+
+	/* Motion. `--default-transition-*` means a bare `transition-colors` already
+	   carries the house curve and timing, so call sites only name a duration
+	   when they deliberately differ. */
+	--ease-out: cubic-bezier(0.2, 0.8, 0.25, 1);
+	--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+	--default-transition-duration: 250ms;
+	--default-transition-timing-function: var(--ease-out);
 
 	/* Spinner used by `icons/loader.svelte`. */
 	--animate-loader-spin: loader-spin 1s linear infinite;
@@ -180,10 +220,6 @@
 
 	--color-chip: var(--chip);
 	--color-chip-hover: var(--chip-hover);
-
-	--shadow-soft: 0 7px 29px 0 var(--shadow-soft-color);
-	--shadow-strong: 0 7px 29px 0 var(--shadow-strong-color);
-	--shadow-card: 6px 6px 0 0 var(--card-shadow);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -201,12 +237,12 @@
 	--popover-foreground: var(--ink);
 	--primary: var(--brand);
 	--primary-foreground: var(--brand-contrast);
-	--secondary: oklch(0.97 0 0);
-	--secondary-foreground: oklch(0.205 0 0);
-	--muted: oklch(0.97 0 0);
+	--secondary: var(--surface-1);
+	--secondary-foreground: var(--ink);
+	--muted: var(--surface-1);
 	--muted-foreground: var(--ink-muted);
-	--accent: oklch(0.97 0 0);
-	--accent-foreground: oklch(0.205 0 0);
+	--accent: var(--surface-1);
+	--accent-foreground: var(--ink);
 	--destructive: oklch(0.577 0.245 27.325);
 	--destructive-foreground: oklch(0.985 0 0);
 	--border: var(--edge-subtle);
@@ -221,21 +257,14 @@
 	--sidebar-foreground: var(--ink);
 	--sidebar-primary: var(--brand);
 	--sidebar-primary-foreground: var(--brand-contrast);
-	--sidebar-accent: oklch(0.97 0 0);
-	--sidebar-accent-foreground: oklch(0.205 0 0);
+	--sidebar-accent: var(--surface-1);
+	--sidebar-accent-foreground: var(--ink);
 	--sidebar-border: var(--edge-subtle);
 	--sidebar-ring: var(--brand);
 }
 
 .dark {
-	--secondary: oklch(0.269 0 0);
-	--secondary-foreground: oklch(0.985 0 0);
-	--muted: oklch(0.269 0 0);
-	--accent: oklch(0.371 0 0);
-	--accent-foreground: oklch(0.985 0 0);
 	--destructive: oklch(0.704 0.191 22.216);
-	--sidebar-accent: oklch(0.269 0 0);
-	--sidebar-accent-foreground: oklch(0.985 0 0);
 }
 
 @theme inline {
@@ -279,14 +308,14 @@
 }
 
 /* -------------------------------------------------------------------------- */
-/* Base layer — the former `globals.scss`                                     */
+/* Base layer                                                                 */
 /* -------------------------------------------------------------------------- */
 
 @layer base {
 	:root {
-		font-size: 21px;
-		line-height: 1.66;
-		font-family: var(--font-sans);
+		/* No px root: the visitor's browser font size is respected, and every
+		   `rem` in the type scale means what it says. */
+		font-size: 100%;
 
 		/* The gap between a text box and its glyphs. */
 		--font-offset: -6px;
@@ -309,18 +338,25 @@
 	}
 
 	body {
+		font-family: var(--font-sans);
+		font-size: var(--text-base);
+		line-height: var(--text-base--line-height);
 		color: var(--ink);
 		background-color: var(--surface-0);
+		-webkit-font-smoothing: antialiased;
+		text-rendering: optimizeLegibility;
 	}
 
 	h1,
-	h2,
+	h2 {
+		letter-spacing: var(--tracking-tight);
+	}
+
 	h3,
 	h4,
 	h5,
 	h6 {
-		line-height: 1.33;
-		letter-spacing: 1px;
+		letter-spacing: normal;
 	}
 
 	a {
@@ -332,19 +368,52 @@
 		display: grid;
 		place-content: center;
 	}
+
+	/* Transitions and smooth scrolling are decoration, so they go. The loader
+	   animation stays — it reports that something is happening. Svelte's own
+	   JS-driven transitions are gated separately, in `helpers/motion.ts`. */
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			transition-duration: 1ms !important;
+			transition-delay: 0ms !important;
+		}
+
+		:root,
+		body {
+			scroll-behavior: auto;
+		}
+	}
 }
 
 /* -------------------------------------------------------------------------- */
-/* Shared component classes — the former `headings.scss`                      */
+/* Utilities                                                                  */
+/* -------------------------------------------------------------------------- */
+
+/* One focus treatment for every interactive element, keyboard-only. */
+@utility focus-ring {
+	&:focus-visible {
+		outline: 2px solid var(--ring);
+		outline-offset: 2px;
+	}
+}
+
+/* -------------------------------------------------------------------------- */
+/* Shared component classes                                                   */
 /* -------------------------------------------------------------------------- */
 
 @layer components {
+	/* The brand pills. They read as labels rather than prose, so they keep the
+	   open tracking the rest of the headings gave up. */
 	.heading-2,
 	.heading-3 {
 		width: fit-content;
 		height: fit-content;
 		margin: 2rem 0;
-		padding: 0.25rem 0.666rem;
+		padding: 0.3em 0.85em;
+		font-weight: 700;
+		letter-spacing: var(--tracking-label);
 		text-align: center;
 		border: 2px solid var(--brand);
 		border-radius: var(--radius-base);

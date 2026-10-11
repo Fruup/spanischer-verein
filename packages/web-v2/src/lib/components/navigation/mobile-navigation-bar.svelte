@@ -16,12 +16,12 @@
 
 <nav
 	class={cn(
-		'fixed right-0 bottom-8 z-[1000] flex flex-col justify-between overflow-clip rounded-l-lg border-2 border-r-0 border-brand shadow-soft transition-all duration-200 ease-[ease] desktop:hidden',
+		'fixed right-0 bottom-8 z-[1000] flex flex-col justify-between overflow-clip rounded-l-panel border border-r-0 border-edge-subtle shadow-floating transition-[translate,opacity] desktop:hidden',
 		hidden && 'translate-x-full opacity-0',
 	)}
 >
 	<button
-		class="size-8 border-none bg-brand text-base text-brand-contrast"
+		class="size-10 border-none bg-brand text-base text-brand-contrast focus-ring transition-colors hover:bg-brand-hover"
 		onclick={() => (isCalendarOpen = !isCalendarOpen)}
 		title="Öffne Kalender"
 	>
@@ -29,7 +29,7 @@
 	</button>
 
 	<button
-		class="size-8 border-none bg-surface-0 text-base text-brand-link"
+		class="size-10 border-none bg-surface-raised text-base text-brand-link focus-ring transition-colors hover:bg-surface-1"
 		onclick={() => (isFlyoutOpen = !isFlyoutOpen)}
 		title="Öffne Navigation"
 	>

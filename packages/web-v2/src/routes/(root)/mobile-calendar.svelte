@@ -25,14 +25,18 @@
 </script>
 
 <Drawer.Root bind:open={mobileCalendar.open}>
-	<Drawer.Content class="items-center rounded-t-[30px] pb-4 shadow-soft">
+	<Drawer.Content
+		class="items-center rounded-t-panel border-t border-edge-subtle pb-6 shadow-floating"
+	>
 		<Drawer.Header class="sr-only">
 			<Drawer.Title>Kalender</Drawer.Title>
 			<Drawer.Description>Veranstaltungskalender</Drawer.Description>
 		</Drawer.Header>
 
 		<!-- Inside the drawer the calendar sits on the drawer's own surface. -->
-		<div class="[&_[data-event-calendar]]:bg-transparent [&_[data-event-calendar]]:shadow-none">
+		<div
+			class="[&_[data-event-calendar]]:border-0 [&_[data-event-calendar]]:bg-transparent [&_[data-event-calendar]]:shadow-none"
+		>
 			<EventCalendar {events} />
 		</div>
 	</Drawer.Content>

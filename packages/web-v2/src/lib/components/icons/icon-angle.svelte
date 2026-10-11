@@ -24,7 +24,7 @@
 	viewBox="0 -960 960 960"
 	fill="currentColor"
 	style:rotate
-	class={cn(transition && 'transition-[rotate] duration-200 ease-[ease]')}
+	class={cn(transition && 'transition-[rotate]')}
 >
 	<path d="M480-345 240-585l56-56 184 184 184-184 56 56-240 240Z" />
 </svg>

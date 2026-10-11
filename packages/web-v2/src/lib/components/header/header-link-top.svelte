@@ -28,7 +28,7 @@
 					{...props}
 					href={navigationItem.href}
 					onmouseenter={() => (open = hasChildren)}
-					class="relative tracking-[1px] underline decoration-brand-link"
+					class="relative rounded-sm underline decoration-brand-link decoration-2 underline-offset-4 focus-ring transition-colors hover:text-brand-link"
 				>
 					{navigationItem.title}
 
@@ -45,7 +45,7 @@
 			<DropdownMenu.Content
 				side="bottom"
 				sideOffset={4}
-				class="z-[1000] rounded-base border border-edge bg-surface-raised p-4 shadow-soft data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-top-2"
+				class="z-[1000] min-w-[12ch] rounded-base border border-edge bg-surface-raised p-2 shadow-floating data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-top-2"
 			>
 				<DropdownMenu.Arrow class="border-t border-l border-edge" />
 
@@ -57,7 +57,7 @@
 									<a
 										{...props}
 										href={item.href}
-										class="block rounded-base p-0.5 hover:bg-edge-subtle focus:bg-edge-subtle"
+										class="block rounded-base px-2 py-1 text-sm focus-ring transition-colors hover:bg-edge-subtle"
 									>
 										{item.title}
 									</a>

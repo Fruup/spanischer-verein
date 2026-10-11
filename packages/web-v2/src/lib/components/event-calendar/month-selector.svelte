@@ -46,9 +46,9 @@
 
 <DropdownMenu.Root bind:open>
 	<DropdownMenu.Trigger
-		class="flex h-full w-full cursor-pointer flex-row items-center rounded-base border-2 border-brand bg-surface-0 px-[1em] py-[0.5em] text-[0.7rem] tracking-[1px] text-ink transition-all duration-100 ease-[ease] hover:bg-brand hover:text-brand-contrast"
+		class="flex h-full w-full cursor-pointer flex-row items-center justify-center gap-1 rounded-base border-2 border-brand bg-surface-0 px-[1em] py-[0.5em] text-2xs tracking-label text-ink focus-ring transition-colors hover:bg-brand hover:text-brand-contrast"
 	>
-		<span class="justify-self-center">
+		<span>
 			{months[value.month - 1]}
 			{value.year}
 		</span>
@@ -60,13 +60,13 @@
 		bind:ref={menuElement}
 		sideOffset={4}
 		align="center"
-		class="z-[1000] max-h-[300px] overflow-y-auto rounded-base border border-edge bg-surface-raised text-[0.9rem] shadow-soft data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0"
+		class="z-[1000] max-h-[300px] overflow-y-auto rounded-base border border-edge bg-surface-raised text-sm shadow-floating data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0"
 		style="width: var(--bits-dropdown-menu-anchor-width)"
 	>
 		{#each years as year (year)}
 			<DropdownMenu.Group>
 				<DropdownMenu.GroupHeading
-					class="sticky top-0 border-b border-brand bg-surface-0 px-[0.5em] py-[0.25em]"
+					class="sticky top-0 z-10 border-b border-edge-subtle bg-surface-raised px-[0.6em] py-[0.35em] text-2xs tracking-label text-ink-muted"
 				>
 					{year}
 				</DropdownMenu.GroupHeading>
@@ -83,7 +83,7 @@
 									data-sveltekit-noscroll
 									data-current={isCurrent(year, month) ? '' : undefined}
 									data-active={isActive(year, month) ? '' : undefined}
-									class="mb-[0.25em] block w-full rounded-base border-none bg-transparent px-[0.5em] py-[0.25em] text-left text-[0.8em] hover:bg-edge-subtle data-current:border data-current:border-ink-muted data-active:border data-active:border-brand/50"
+									class="mb-[0.25em] block w-full rounded-base border-none bg-transparent px-[0.6em] py-[0.3em] text-left text-xs focus-ring transition-colors hover:bg-edge-subtle data-current:font-bold data-current:text-brand-link data-active:bg-brand data-active:text-brand-contrast"
 								>
 									{monthString}
 								</a>

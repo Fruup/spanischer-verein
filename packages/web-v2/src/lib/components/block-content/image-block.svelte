@@ -23,7 +23,7 @@
 			{alt}
 			{width}
 			{height}
-			class="mx-auto h-auto w-full max-w-[500px] rounded-base shadow-soft"
+			class="mx-auto h-auto w-full max-w-[500px] rounded-base shadow-raised"
 		/>
 	</div>
 </div>

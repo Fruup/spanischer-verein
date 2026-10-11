@@ -25,9 +25,9 @@
 
 <a
 	{href}
-	class="inline-flex items-center gap-[0.25ch] rounded-full bg-chip pr-[0.6em] pl-[0.4em] text-[0.9em] hover:bg-chip-hover hover:outline-2 hover:outline-brand"
+	class="inline-flex items-center gap-[0.25ch] rounded-full border border-edge-subtle bg-chip pr-[0.6em] pl-[0.4em] text-[0.9em] focus-ring transition-colors hover:border-brand/60 hover:bg-chip-hover"
 >
-	<span class="contents text-[0.8rem]">
+	<span class="contents text-[0.8em]">
 		{#if type === 'event'}
 			<IconCalendar />
 		{:else if type === 'page'}

@@ -30,7 +30,7 @@
 </script>
 
 <div
-	class="grid min-h-[20vh] place-content-center text-center [&_*]:mx-auto [&_a]:underline [&_a]:decoration-brand-link"
+	class="grid min-h-[20vh] place-content-center text-center [&_*]:mx-auto [&_a]:rounded-sm [&_a]:underline [&_a]:decoration-brand-link [&_a]:decoration-2 [&_a]:underline-offset-4"
 >
 	{#if promise}
 		{#await promise}

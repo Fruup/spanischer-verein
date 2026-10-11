@@ -11,7 +11,7 @@
 	}
 </script>
 
-<div class="flex flex-col items-center justify-center text-center">
+<div class="flex min-h-[40vh] flex-col items-center justify-center gap-2 text-center">
 	<h2>
 		{status}
 	</h2>
@@ -32,5 +32,10 @@
 		{/if}
 	{/if}
 
-	<a href="/">Zurück</a>
+	<a
+		href="/"
+		class="mt-4 rounded-sm underline decoration-brand-link decoration-2 underline-offset-4 focus-ring transition-colors hover:text-brand-link"
+	>
+		Zurück
+	</a>
 </div>

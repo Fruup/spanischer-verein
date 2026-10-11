@@ -3,6 +3,7 @@
 	import { fly } from 'svelte/transition'
 
 	import { fitParent } from '#lib/helpers/fitParent.js'
+	import { duration, motion } from '#lib/helpers/motion.js'
 	import { getEventUrl } from '#lib/helpers/url.js'
 	import { cn } from '#lib/utils.js'
 
@@ -62,14 +63,15 @@
 </script>
 
 <a
-	in:fly|global={{ y: 30, delay: introDelay }}
+	in:fly|global={{ y: 24, delay: introDelay, duration: motion(duration.slow) }}
 	{href}
 	class={cn(
-		'group grid min-h-full rounded-base border border-edge-subtle text-center text-base shadow-soft transition-[scale] duration-300 ease-[ease]',
+		'group grid min-h-full overflow-hidden rounded-base border border-edge-subtle text-center text-base shadow-raised focus-ring transition-[scale,box-shadow,border-color]',
 		'grid-rows-[auto_auto]',
 		horizontal && 'grid-cols-[auto_auto]',
-		'hover:scale-[1.01] hover:outline-2 hover:outline-brand focus:scale-[1.01] focus:outline-2 focus:outline-brand',
-		hover && 'scale-[1.01] outline-2 outline-brand',
+		'hover:scale-[1.005] hover:border-brand/60 hover:shadow-lifted',
+		'focus-visible:border-brand/60 focus-visible:shadow-lifted',
+		hover && 'scale-[1.005] border-brand/60 shadow-lifted',
 	)}
 >
 	<img
@@ -77,17 +79,16 @@
 		alt="Title image for an event called '{event.title}'"
 		style:background-color={backgroundColor}
 		class={cn(
-			'm-0 h-auto max-h-none min-h-[50%] w-full rounded-base object-cover transition-all duration-300 ease-[ease]',
-			'group-hover:scale-105 group-hover:-rotate-[0.5deg] group-hover:shadow-strong',
-			'group-focus:scale-105 group-focus:-rotate-[0.5deg] group-focus:shadow-strong',
+			'm-0 h-auto max-h-none min-h-[50%] w-full object-cover transition-[scale]',
+			'group-hover:scale-[1.03] group-focus-visible:scale-[1.03]',
 			reverse && 'order-1',
-			hover && 'scale-105 -rotate-[0.5deg] shadow-strong',
+			hover && 'scale-[1.03]',
 		)}
 	/>
 
 	<div class="m-6 flex flex-grow flex-col items-center justify-center gap-4">
 		<div
-			class="m-0 flex items-center justify-center gap-[1ch] rounded-full bg-brand-translucent px-[0.5em] py-[0.15em] text-[0.8em] tracking-[1px] [&_*]:text-brand-contrast"
+			class="m-0 flex items-center justify-center gap-[1ch] rounded-full bg-brand-translucent px-[0.7em] py-[0.2em] text-xs tracking-label [&_*]:text-brand-contrast"
 		>
 			<IconCalendar />
 			<EventTime time={event.eventTime} />
@@ -95,7 +96,7 @@
 
 		<h4
 			use:fitParent={{ strategy: 'fontSize' }}
-			class="m-0 w-fit font-serif text-[1.35em] tracking-[1px] text-balance"
+			class="m-0 w-fit font-serif text-lg tracking-tight text-balance"
 		>
 			{event.title}
 		</h4>

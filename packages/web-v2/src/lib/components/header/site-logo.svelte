@@ -8,7 +8,7 @@
 
 <a
 	href="/"
-	class="relative mx-auto block w-fit before:absolute before:-inset-[20%] before:-z-10 before:content-[''] before:[background:var(--logo-glow)]"
+	class="relative mx-auto block w-fit rounded-base focus-ring before:absolute before:-inset-[20%] before:-z-10 before:content-[''] before:[background:var(--logo-glow)]"
 >
 	<img
 		src={logo}

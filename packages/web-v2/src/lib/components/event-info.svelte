@@ -25,7 +25,7 @@
 
 {#if admission || eventTime || location}
 	<div
-		class="mb-8 grid grid-cols-[1fr_auto_1fr] items-center gap-2 gap-y-4 text-[0.8rem] hyphens-auto text-ink-muted"
+		class="mb-8 grid grid-cols-[1fr_auto_1fr] items-center gap-2 gap-y-4 text-xs hyphens-auto text-ink-muted"
 	>
 		{#if eventTime}
 			<div class="flex justify-self-end text-[1.5em]">

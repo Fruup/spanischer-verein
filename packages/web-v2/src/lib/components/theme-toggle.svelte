@@ -11,7 +11,7 @@
 	onclick={toggleMode}
 	aria-label={isDark ? 'Zum hellen Modus wechseln' : 'Zum dunklen Modus wechseln'}
 	title={isDark ? 'Heller Modus' : 'Dunkler Modus'}
-	class="size-8 cursor-pointer rounded-full border border-edge bg-surface-raised/80 text-ink shadow-soft backdrop-blur-sm transition-colors duration-200 hover:border-brand hover:text-brand-link"
+	class="size-9 cursor-pointer rounded-full border border-edge bg-surface-raised/80 text-ink shadow-raised focus-ring backdrop-blur-sm transition-colors hover:border-brand hover:text-brand-link"
 >
 	{#if isDark}
 		<SunIcon class="size-4" />

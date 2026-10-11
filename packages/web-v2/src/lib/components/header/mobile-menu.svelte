@@ -39,10 +39,10 @@
 </script>
 
 <Drawer.Root bind:open={mobileMenu.open}>
-	<Drawer.Content class="rounded-t-[30px] shadow-soft">
-		<nav class="flex flex-col gap-4 overflow-auto p-4">
+	<Drawer.Content class="rounded-t-panel border-t border-edge-subtle shadow-floating">
+		<nav class="flex w-full flex-col gap-4 overflow-auto p-6">
 			<Drawer.Header class="flex items-center justify-between p-0">
-				<Drawer.Title class="m-0 text-xl">Navigation</Drawer.Title>
+				<Drawer.Title class="m-0 text-md">Navigation</Drawer.Title>
 			</Drawer.Header>
 
 			<ul class="m-0 flex flex-col gap-2 p-0">
