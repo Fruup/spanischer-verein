@@ -1,5 +1,5 @@
 import {type BooleanInputProps, useClient} from 'sanity'
-import {useEffect, useRef, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {Card, Flex} from '@sanity/ui'
 import {MAX_HIGHLIGHTED_EVENTS} from './constants'
 
@@ -35,48 +35,47 @@ export default function (props: BooleanInputProps) {
   )
 }
 
+const HIGHLIGHTED_FILTER = `*[
+  _type == "event" &&
+  highlighted == true &&
+  !(_id in path("drafts.**"))
+]`
+
+const HIGHLIGHTED_COUNT_QUERY = `count(${HIGHLIGHTED_FILTER})`
+
 function useHighlightedCount() {
   const client = useClient({apiVersion: '2021-06-07'})
   const [numHighlightedEvents, setNumHighlightedEvents] = useState<number | null>(null)
 
-  const query = `*[
-    _type == "event" &&
-    highlighted == true &&
-    !(_id in path("drafts.**"))
-  ]`
-
-  const listener = client.listen<any[]>(
-    query,
-    {},
-    {visibility: 'query', includeResult: false, includePreviousRevision: false},
-  )
-
-  let timer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  function updateCount() {
-    client.fetch<any[]>(query).then((a) => {
-      console.log(a)
-      setNumHighlightedEvents(a.length)
-    })
-  }
-
   useEffect(() => {
+    let cancelled = false
+    let timer: ReturnType<typeof setTimeout> | null = null
+
+    function updateCount() {
+      client.fetch<number>(HIGHLIGHTED_COUNT_QUERY).then((count) => {
+        if (!cancelled) setNumHighlightedEvents(count)
+      })
+    }
+
     updateCount()
 
-    const subscription = listener.subscribe(() => {
-      if (timer.current) clearTimeout(timer.current)
-      timer.current = setTimeout(updateCount, 500)
-    })
+    const subscription = client
+      .listen(
+        HIGHLIGHTED_FILTER,
+        {},
+        {visibility: 'query', includeResult: false, includePreviousRevision: false},
+      )
+      .subscribe(() => {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(updateCount, 500)
+      })
 
     return () => {
+      cancelled = true
       subscription.unsubscribe()
-
-      if (timer.current) {
-        clearTimeout(timer.current)
-        timer.current = null
-      }
+      if (timer) clearTimeout(timer)
     }
-  }, [])
+  }, [client])
 
   return numHighlightedEvents
 }

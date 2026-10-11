@@ -1,5 +1,5 @@
 import {type ImageAsset, defineField, defineType} from 'sanity'
-import {CogIcon} from '@sanity/icons'
+import {CogIcon} from '@sanity/icons/Cog'
 import type {PageSchema} from './page'
 
 export default defineType({

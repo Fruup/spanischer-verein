@@ -6,7 +6,7 @@ import {
   type Slug,
   type Image,
 } from 'sanity'
-import {CalendarIcon} from '@sanity/icons'
+import {CalendarIcon} from '@sanity/icons/Calendar'
 import EventHighlightedInput from '../components/EventHighlightedInput'
 import {MAX_HIGHLIGHTED_EVENTS} from '../components/constants'
 

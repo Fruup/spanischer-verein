@@ -1,6 +1,6 @@
 import {Button} from '@sanity/ui'
 import {useState} from 'react'
-import {EditIcon} from '@sanity/icons'
+import {EditIcon} from '@sanity/icons/Edit'
 import {SettingsView} from '@sanity/studio-secrets'
 import {SECRETS_NAMESPACE} from './constants'
 
