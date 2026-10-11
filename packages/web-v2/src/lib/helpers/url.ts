@@ -1,0 +1,8 @@
+export const getEventUrl = (slug: string) => `/event/${slug}`
+
+export const parseMonthFromUrl = (params: Partial<Record<string, string>>) => {
+	const year = parseInt(params.year ?? '') || new Date().getFullYear()
+	const month = parseInt(params.month ?? '') || new Date().getMonth() + 1
+
+	return { year, month }
+}

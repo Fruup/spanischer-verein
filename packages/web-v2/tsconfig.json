@@ -1,0 +1,10 @@
+{
+	"extends": "$app/tsconfig",
+	"compilerOptions": {
+		"strict": true,
+		"sourceMap": true,
+		// `@spanischer-verein/sanity` ships `.tsx` Studio components.
+		"jsx": "preserve"
+	},
+	"include": ["src", "vite.config.ts"]
+}
