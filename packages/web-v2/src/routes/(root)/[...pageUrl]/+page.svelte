@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page as pageState } from '$app/state'
 
-	import Page from '#lib/components/Page.svelte'
+	import Page from '#lib/components/page.svelte'
 	import { getPage } from '#lib/sanity/sanity.remote.js'
 
 	const page = await getPage(pageState.params.pageUrl ?? '')

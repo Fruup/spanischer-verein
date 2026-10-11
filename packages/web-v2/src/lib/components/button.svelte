@@ -2,7 +2,7 @@
 	import type { Component, Snippet } from 'svelte'
 	import type { HTMLButtonAttributes } from 'svelte/elements'
 
-	import Loader from '#lib/components/icons/Loader.svelte'
+	import Loader from '#lib/components/icons/loader.svelte'
 	import { cn } from '#lib/utils.js'
 
 	interface Props {

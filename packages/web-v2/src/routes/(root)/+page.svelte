@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getEventsOverview, getPastHighlights } from '#lib/sanity/sanity.remote.js'
 
-	import EventsOverviewPage from './EventsOverviewPage.svelte'
+	import EventsOverviewPage from './events-overview-page.svelte'
 
 	const year = new Date().getFullYear()
 	const month = new Date().getMonth() + 1

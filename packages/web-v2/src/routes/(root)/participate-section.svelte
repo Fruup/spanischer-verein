@@ -1,8 +1,8 @@
 <script lang="ts">
-	import CallToAction from '#lib/components/CallToAction.svelte'
+	import CallToAction from '#lib/components/call-to-action.svelte'
 
-	import Card from './Card.svelte'
-	import NewsletterForm from './NewsletterForm.svelte'
+	import Card from './card.svelte'
+	import NewsletterForm from './newsletter-form.svelte'
 
 	interface Props {
 		mail: string

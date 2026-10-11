@@ -1,21 +1,22 @@
 /**
- * Picks a random item from an array.
+ * Picks a random item from an array, skipping `excludeIndices`.
+ *
+ * v1 drew a random index up to `array.length` times and gave up if every draw
+ * happened to land on an excluded one, so it returned `null` even when a valid
+ * index was available (~25% of the time for a two-item array with one
+ * exclusion). This picks from the eligible indices directly instead.
  */
 export function pick<T extends any[]>(
 	array: T,
 	excludeIndices?: number[],
 ): { value: ValueOf<T>; index: number } | null {
-	for (let i = 0; i < array.length; i++) {
-		const index = Math.floor(Math.random() * array.length)
-		const value = array[index]
+	const candidates = array
+		.map((_, index) => index)
+		.filter((index) => !excludeIndices?.includes(index))
 
-		if (!excludeIndices?.includes(index)) {
-			return {
-				value,
-				index,
-			}
-		}
-	}
+	if (!candidates.length) return null
 
-	return null
+	const index = candidates[Math.floor(Math.random() * candidates.length)]
+
+	return { value: array[index], index }
 }

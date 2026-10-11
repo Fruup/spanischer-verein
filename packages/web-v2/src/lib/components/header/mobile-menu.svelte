@@ -18,7 +18,7 @@
 
 	import * as Drawer from '#lib/components/ui/drawer/index.js'
 
-	import MobileMenuTree from './MobileMenuTree.svelte'
+	import MobileMenuTree from './mobile-menu-tree.svelte'
 	import { MOBILE_MENU_CONTEXT, type MobileMenuContext } from './context'
 	import type { NavigationItem } from './types'
 

@@ -3,9 +3,9 @@
 
 	import { goto } from '$app/navigation'
 
-	import Button from '../Button.svelte'
-	import IconAngle from '../icons/IconAngle.svelte'
-	import MobileMenuTree from './MobileMenuTree.svelte'
+	import Button from '../button.svelte'
+	import IconAngle from '../icons/icon-angle.svelte'
+	import MobileMenuTree from './mobile-menu-tree.svelte'
 	import { MOBILE_MENU_CONTEXT, type MobileMenuContext } from './context'
 	import type { NavigationItem } from './types'
 

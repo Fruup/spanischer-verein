@@ -3,8 +3,8 @@
 	import supporter1 from '#assets/integrationszentrum-koeln.png?format=webp&w=256&imagetools'
 	import supporter2 from '#assets/stadt-koeln.svg'
 	import supporter3 from '#assets/interkulturelle-zentren-koeln.webp'
-	import SiteLogo from '#lib/components/header/SiteLogo.svelte'
-	import { socialLinks } from '#lib/components/header/SocialLinks.svelte'
+	import SiteLogo from '#lib/components/header/site-logo.svelte'
+	import { socialLinks } from '#lib/components/header/social-links.svelte'
 
 	interface Props {
 		imprintUrl: string | undefined

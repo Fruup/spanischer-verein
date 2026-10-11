@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { navigating } from '$app/state'
 
-	import Note from '#lib/components/Note.svelte'
-	import Loader from '#lib/components/icons/Loader.svelte'
+	import Note from '#lib/components/note.svelte'
+	import Loader from '#lib/components/icons/loader.svelte'
 
-	import EventsOverview from './EventsOverview.svelte'
-	import { mobileCalendar } from './MobileCalendar.svelte'
+	import EventsOverview from './events-overview.svelte'
+	import { mobileCalendar } from './mobile-calendar.svelte'
 
 	interface Props {
 		events: any[]

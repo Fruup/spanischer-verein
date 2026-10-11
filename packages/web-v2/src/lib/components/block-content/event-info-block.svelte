@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { CustomBlockComponentProps } from '@portabletext/svelte'
-	import EventInfo, { type EventInfoSpec } from '../EventInfo.svelte'
+	import EventInfo, { type EventInfoSpec } from '../event-info.svelte'
 
 	interface Props {
 		portableText: CustomBlockComponentProps<EventInfoSpec>

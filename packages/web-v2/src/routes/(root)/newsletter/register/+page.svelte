@@ -4,8 +4,8 @@
 	import { onMount } from 'svelte'
 	import { toast } from 'svelte-sonner'
 
-	import Button from '#lib/components/Button.svelte'
-	import Loader from '#lib/components/icons/Loader.svelte'
+	import Button from '#lib/components/button.svelte'
+	import Loader from '#lib/components/icons/loader.svelte'
 	import { confirmNewsletterSubscription } from '#lib/mailer/newsletter.remote.js'
 
 	let promise: Promise<unknown> | undefined = $state()

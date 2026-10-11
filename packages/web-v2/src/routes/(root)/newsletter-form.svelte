@@ -2,8 +2,8 @@
 	import { toast } from 'svelte-sonner'
 	import { slide } from 'svelte/transition'
 
-	import Button from '#lib/components/Button.svelte'
-	import IconSend from '#lib/components/icons/IconSend.svelte'
+	import Button from '#lib/components/button.svelte'
+	import IconSend from '#lib/components/icons/icon-send.svelte'
 	import { Checkbox } from '#lib/components/ui/checkbox/index.js'
 	import { subscribeToNewsletter } from '#lib/mailer/newsletter.remote.js'
 

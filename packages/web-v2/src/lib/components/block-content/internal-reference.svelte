@@ -2,8 +2,8 @@
 	import type { MarkComponentProps } from '@portabletext/svelte'
 	import type { InternalLinkMark } from '@spanischer-verein/sanity/schemas/blockContent'
 
-	import IconBulb from '../icons/IconBulb.svelte'
-	import IconCalendar from '../icons/IconCalendar.svelte'
+	import IconBulb from '../icons/icon-bulb.svelte'
+	import IconCalendar from '../icons/icon-calendar.svelte'
 
 	interface Props {
 		portableText: MarkComponentProps<InternalLinkMark>

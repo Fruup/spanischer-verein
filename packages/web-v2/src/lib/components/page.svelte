@@ -2,8 +2,8 @@
 	import type { InputValue } from '@portabletext/svelte'
 	import { fly } from 'svelte/transition'
 
-	import EventInfo, { type EventInfoSpec } from './EventInfo.svelte'
-	import BlockContent from './blockContent/BlockContent.svelte'
+	import EventInfo, { type EventInfoSpec } from './event-info.svelte'
+	import BlockContent from './block-content/block-content.svelte'
 
 	interface Props {
 		title: string

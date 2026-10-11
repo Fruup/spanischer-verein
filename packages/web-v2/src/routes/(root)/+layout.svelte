@@ -4,11 +4,11 @@
 	import { cubicOut } from 'svelte/easing'
 	import { fly } from 'svelte/transition'
 
-	import EventCalendar from '#lib/components/eventCalendar/EventCalendar.svelte'
-	import Header from '#lib/components/header/Header.svelte'
-	import { mobileMenu } from '#lib/components/header/MobileMenu.svelte'
-	import Loader from '#lib/components/icons/Loader.svelte'
-	import MobileNavigationBar from '#lib/components/navigation/MobileNavigationBar.svelte'
+	import EventCalendar from '#lib/components/event-calendar/event-calendar.svelte'
+	import Header from '#lib/components/header/header.svelte'
+	import { mobileMenu } from '#lib/components/header/mobile-menu.svelte'
+	import Loader from '#lib/components/icons/loader.svelte'
+	import MobileNavigationBar from '#lib/components/navigation/mobile-navigation-bar.svelte'
 	import { Toaster } from '#lib/components/ui/sonner/index.js'
 	import { pick } from '#lib/helpers/pick.js'
 	import { getEventUrl, parseMonthFromUrl } from '#lib/helpers/url.js'
@@ -20,10 +20,10 @@
 	} from '#lib/sanity/sanity.remote.js'
 	import { locale } from '#lib/services/locale.svelte.js'
 
-	import Divider from './Divider.svelte'
-	import Footer from './Footer.svelte'
-	import MobileCalendar, { mobileCalendar } from './MobileCalendar.svelte'
-	import ParticipateSection from './ParticipateSection.svelte'
+	import Divider from './divider.svelte'
+	import Footer from './footer.svelte'
+	import MobileCalendar, { mobileCalendar } from './mobile-calendar.svelte'
+	import ParticipateSection from './participate-section.svelte'
 	import type { LayoutProps } from './$types'
 
 	let { children }: LayoutProps = $props()

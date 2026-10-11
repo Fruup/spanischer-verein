@@ -5,8 +5,8 @@
 	import { page } from '$app/state'
 	import { locale } from '#lib/services/locale.svelte.js'
 
-	import IconAngle from '../icons/IconAngle.svelte'
-	import MonthSelector from './MonthSelector.svelte'
+	import IconAngle from '../icons/icon-angle.svelte'
+	import MonthSelector from './month-selector.svelte'
 	import { getEventsForDay, type EventCalendarItem } from './helpers'
 
 	interface Props {

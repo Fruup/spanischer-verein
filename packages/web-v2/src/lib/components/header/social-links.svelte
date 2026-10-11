@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-	import IconSocial from '../icons/IconSocial.svelte'
+	import IconSocial from '../icons/icon-social.svelte'
 </script>
 
 <nav

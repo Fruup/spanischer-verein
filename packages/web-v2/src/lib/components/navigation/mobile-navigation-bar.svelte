@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { cn } from '#lib/utils.js'
 
-	import IconBurger from '../icons/IconBurger.svelte'
-	import IconCalendar from '../icons/IconCalendar.svelte'
+	import IconBurger from '../icons/icon-burger.svelte'
+	import IconCalendar from '../icons/icon-calendar.svelte'
 
 	interface Props {
 		isCalendarOpen?: boolean

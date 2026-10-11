@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { PortableText, type InputValue, type PortableTextComponents } from '@portabletext/svelte'
 
-	import EventInfoBlock from './EventInfoBlock.svelte'
-	import ImageBlock from './ImageBlock.svelte'
-	import InternalReference from './InternalReference.svelte'
+	import EventInfoBlock from './event-info-block.svelte'
+	import ImageBlock from './image-block.svelte'
+	import InternalReference from './internal-reference.svelte'
 
 	interface Props {
 		body: InputValue

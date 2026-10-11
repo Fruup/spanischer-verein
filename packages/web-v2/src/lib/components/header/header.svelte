@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition'
 
-	import MobileMenu from './MobileMenu.svelte'
-	import SiteHeading from './SiteHeading.svelte'
-	import SiteLogo from './SiteLogo.svelte'
-	import SiteMenu from './SiteMenu.svelte'
-	import SocialLinks from './SocialLinks.svelte'
+	import MobileMenu from './mobile-menu.svelte'
+	import SiteHeading from './site-heading.svelte'
+	import SiteLogo from './site-logo.svelte'
+	import SiteMenu from './site-menu.svelte'
+	import SocialLinks from './social-links.svelte'
 	import type { NavigationItem } from './types'
 
 	interface Props {
@@ -42,7 +42,7 @@
 	<SiteMenu {items} />
 	<SocialLinks />
 
-	<!-- {#if leftImageUrl}
+	{#if leftImageUrl}
 		{#each [leftImageUrl] as url (url)}
 			<div
 				in:fly={{
@@ -61,9 +61,9 @@
 				<img src={url} alt="" />
 			</div>
 		{/each}
-	{/if} -->
+	{/if}
 
-	{#if rightImageUrl}
+	<!-- {#if rightImageUrl}
 		{@const delayOffset = transition.duration / 4}
 
 		{#each [rightImageUrl] as url (url)}
@@ -84,7 +84,7 @@
 				<img src={url} alt="" />
 			</div>
 		{/each}
-	{/if}
+	{/if} -->
 </header>
 
 <MobileMenu {items} />

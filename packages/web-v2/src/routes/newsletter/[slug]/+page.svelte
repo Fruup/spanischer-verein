@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state'
 
-	import Page from '#lib/components/Page.svelte'
-	import type { EventInfoSpec } from '#lib/components/EventInfo.svelte'
+	import Page from '#lib/components/page.svelte'
+	import type { EventInfoSpec } from '#lib/components/event-info.svelte'
 	import { getNewsletterEvent } from '#lib/sanity/sanity.remote.js'
 
 	const event = await getNewsletterEvent(page.params.slug ?? '')

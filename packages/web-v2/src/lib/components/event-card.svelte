@@ -6,8 +6,8 @@
 	import { getEventUrl } from '#lib/helpers/url.js'
 	import { cn } from '#lib/utils.js'
 
-	import EventTime from './EventTime.svelte'
-	import IconCalendar from './icons/IconCalendar.svelte'
+	import EventTime from './event-time.svelte'
+	import IconCalendar from './icons/icon-calendar.svelte'
 
 	interface Props {
 		event: {

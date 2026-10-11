@@ -2,7 +2,7 @@
 	import { DropdownMenu } from 'bits-ui'
 	import { tick } from 'svelte'
 
-	import IconAngle from '../icons/IconAngle.svelte'
+	import IconAngle from '../icons/icon-angle.svelte'
 
 	interface Props {
 		value?: { year: number; month: number }

@@ -6,7 +6,7 @@
 	import { parseMonthFromUrl } from '#lib/helpers/url.js'
 	import { getEventsOverview, getPastHighlights } from '#lib/sanity/sanity.remote.js'
 
-	import EventsOverviewPage from '../../EventsOverviewPage.svelte'
+	import EventsOverviewPage from '../../events-overview-page.svelte'
 
 	let { year, month } = $derived(parseMonthFromUrl(page.params))
 

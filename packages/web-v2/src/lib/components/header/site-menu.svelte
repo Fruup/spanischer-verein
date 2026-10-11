@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Button from '../Button.svelte'
-	import IconBurger from '../icons/IconBurger.svelte'
-	import HeaderLinkTop from './HeaderLinkTop.svelte'
-	import { mobileMenu } from './MobileMenu.svelte'
+	import Button from '../button.svelte'
+	import IconBurger from '../icons/icon-burger.svelte'
+	import HeaderLinkTop from './header-link-top.svelte'
+	import { mobileMenu } from './mobile-menu.svelte'
 	import type { NavigationItem } from './types'
 
 	interface Props {

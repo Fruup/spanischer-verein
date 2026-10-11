@@ -13,8 +13,8 @@
 </script>
 
 <script lang="ts">
-	import EventCalendar from '#lib/components/eventCalendar/EventCalendar.svelte'
-	import type { EventCalendarItem } from '#lib/components/eventCalendar/helpers.js'
+	import EventCalendar from '#lib/components/event-calendar/event-calendar.svelte'
+	import type { EventCalendarItem } from '#lib/components/event-calendar/helpers.js'
 	import * as Drawer from '#lib/components/ui/drawer/index.js'
 
 	interface Props {

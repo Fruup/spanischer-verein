@@ -7,10 +7,10 @@
 </script>
 
 <script lang="ts">
-	import EventTime from './EventTime.svelte'
-	import IconCoin from './icons/IconCoin.svelte'
-	import IconPin from './icons/IconPin.svelte'
-	import IconTime from './icons/IconTime.svelte'
+	import EventTime from './event-time.svelte'
+	import IconCoin from './icons/icon-coin.svelte'
+	import IconPin from './icons/icon-pin.svelte'
+	import IconTime from './icons/icon-time.svelte'
 
 	interface Props {
 		eventInfo: EventInfoSpec

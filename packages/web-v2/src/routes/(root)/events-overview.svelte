@@ -1,5 +1,5 @@
 <script lang="ts">
-	import EventCard from '#lib/components/EventCard.svelte'
+	import EventCard from '#lib/components/event-card.svelte'
 
 	interface Props {
 		events: {
