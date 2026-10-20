@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { DropdownMenu } from 'bits-ui'
 
-	import angleUrl from '#assets/angle.svg'
+	import { ChevronDownIcon } from '@lucide/svelte'
 
 	import type { NavigationItem } from './types'
+	import { page } from '$app/state'
 
 	interface Props {
 		navigationItem: NavigationItem
@@ -13,7 +14,8 @@
 
 	let open = $state(false)
 
-	let hasChildren = $derived(!!navigationItem.children?.length)
+	const hasChildren = $derived(!!navigationItem.children?.length)
+	const active = $derived(page.url.pathname === navigationItem.href)
 </script>
 
 <!--
@@ -28,14 +30,15 @@
 					{...props}
 					href={navigationItem.href}
 					onmouseenter={() => (open = hasChildren)}
-					class="relative rounded-sm underline decoration-brand-link decoration-2 underline-offset-4 focus-ring transition-colors hover:text-brand-link"
+					class={[
+						'flex items-center gap-1 rounded-sm text-sm decoration-brand-link focus-ring transition-colors hover:text-brand-link',
+						active && 'text-brand-link',
+					]}
 				>
 					{navigationItem.title}
 
 					{#if hasChildren}
-						<span class="absolute top-[80%] right-0 left-0">
-							<img aria-hidden="true" src={angleUrl} alt="" class="size-[1em]" />
-						</span>
+						<ChevronDownIcon class="size-4" />
 					{/if}
 				</a>
 			{/snippet}

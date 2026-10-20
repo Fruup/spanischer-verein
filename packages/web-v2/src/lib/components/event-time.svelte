@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { locale } from '#lib/services/locale.svelte.js'
+	import { DateFormatter } from '@internationalized/date'
 
 	interface Props {
 		time: string
@@ -7,14 +8,11 @@
 
 	let { time }: Props = $props()
 
-	let date = $derived(new Date(time))
-
-	let dateString = $derived(date.toLocaleDateString(locale.current))
-	let hours = $derived(date.getHours().toString().padStart(2, '0'))
-	let minutes = $derived(date.getMinutes().toString().padStart(2, '0'))
+	const dateFormatter = new DateFormatter(locale.current, { dateStyle: 'medium' })
+	const timeFormatter = new DateFormatter(locale.current, { timeStyle: 'short' })
+	const date = $derived(new Date(time))
 </script>
 
-<time class="flex justify-center gap-2 text-ink-muted" datetime={date.toISOString()}>
-	<span>{dateString}</span>
-	<span>{hours}<sup class="text-[0.75em] underline">{minutes}</sup></span>
-</time>
+<time class="text-ink-muted" datetime={date.toISOString()}
+	>{dateFormatter.format(date)}&nbsp;{timeFormatter.format(date)}</time
+>

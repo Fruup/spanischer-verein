@@ -1,86 +1,30 @@
 <script lang="ts">
-	import { navigating } from '$app/state'
-
-	import Note from '#lib/components/note.svelte'
-	import Loader from '#lib/components/icons/loader.svelte'
+	import { ElementSize } from 'runed'
+	import Button from '#lib/components/ui/button/button.svelte'
 
 	import EventsOverview from './events-overview.svelte'
-	import { mobileCalendar } from './mobile-calendar.svelte'
+	import { browser } from '$app/env'
 
 	interface Props {
+		// TODO: type this
 		events: any[]
-		pastHighlights: any[]
-		year: number
-		month: number
+		year?: number
+		month?: number
 	}
 
-	let { events, pastHighlights, year, month }: Props = $props()
+	let { events }: Props = $props()
 
-	let isPast = $derived(new Date().getTime() > new Date(year, month).getTime())
-
-	// Grace time for events to be considered past
-	const graceTime = 1000 * 60 * 60 * 6 // 6 hours
-
-	let eventsAfterNow = $derived(
-		events.filter(
-			(event) => new Date(event.eventTime).getTime() + graceTime >= new Date().getTime(),
-		),
-	)
-
-	let futureEvents = $derived(isPast ? events : eventsAfterNow)
-
-	let monthString = $derived(
-		new Date(year, month - 1).toLocaleString(undefined, {
-			month: 'long',
-			year: 'numeric',
-		}),
-	)
-
-	function jumpToCalendar() {
-		if (window.matchMedia('(max-width: 768px)').matches) {
-			mobileCalendar.open = true
-		} else {
-			document.querySelector('#calendar')?.scrollIntoView({ behavior: 'smooth' })
-		}
-	}
+	const headerHeight = new ElementSize(() => (browser ? document.querySelector('header') : null))
 </script>
 
-<h3 class="m-0 flex items-center justify-between max-desktop:flex-col max-desktop:gap-2 [&>*]:mt-0">
-	<span class="heading-2 max-desktop:mb-0 max-desktop:self-start">Veranstaltungen</span>
-	<span class="heading-3 max-desktop:self-end">{monthString}</span>
+<h3
+	id="veranstaltungen"
+	style="scroll-margin-top: {headerHeight.height + 20}px"
+	class="mt-8 mb-4 flex items-center justify-between font-serif text-xl font-bold max-desktop:mb-0 max-desktop:flex-col max-desktop:gap-2 max-desktop:self-start"
+>
+	Veranstaltungen & Infos
 </h3>
 
-{#if !futureEvents.length}
-	<Note>
-		In dieser Zeit {isPast ? 'waren' : 'sind'}<br />
-		keine Veranstaltungen geplant...
-	</Note>
-{/if}
+<EventsOverview {events} />
 
-{#await navigating.complete}
-	<div class="flex min-h-[50vh] items-center justify-center [&_svg]:size-20">
-		<Loader />
-	</div>
-{:then}
-	<EventsOverview events={futureEvents} />
-
-	{#if pastHighlights.length > 0}
-		<div class="mt-16 mb-8 flex justify-end [&>*]:m-0">
-			<h3 class="heading-3">Vergangene Highlights</h3>
-		</div>
-
-		<EventsOverview events={pastHighlights} />
-
-		<Note>
-			Um weitere vergangene Events zu entdecken,<br />
-			nutze unseren
-			<button
-				type="button"
-				class="m-0 inline cursor-pointer rounded-sm border-none bg-transparent p-0 text-inherit underline decoration-brand-link decoration-2 underline-offset-4 focus-ring transition-colors hover:text-brand-link"
-				onclick={jumpToCalendar}
-			>
-				Kalender
-			</button>.
-		</Note>
-	{/if}
-{/await}
+<Button class="mt-8">Mehr laden</Button>

@@ -1,14 +1,12 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
-	import { fly } from 'svelte/transition'
-
 	import { fitParent } from '#lib/helpers/fitParent.js'
-	import { duration, motion } from '#lib/helpers/motion.js'
 	import { getEventUrl } from '#lib/helpers/url.js'
 	import { cn } from '#lib/utils.js'
 
 	import EventTime from './event-time.svelte'
-	import IconCalendar from './icons/icon-calendar.svelte'
+	import { MapPinIcon, CalendarIcon, ArrowRightIcon } from '@lucide/svelte'
+	import { parseAbsolute, DateFormatter, getLocalTimeZone } from '@internationalized/date'
+	import type { ClassValue } from 'svelte/elements'
 
 	interface Props {
 		event: {
@@ -24,81 +22,95 @@
 				}
 			}
 		}
-		introDelay: number
+		/** Lay the image beside the content instead of above it. */
 		horizontal?: boolean
-		reverse?: boolean
+		class?: ClassValue
 	}
 
-	let { event, introDelay, horizontal, reverse }: Props = $props()
+	let { event, horizontal = false, class: className }: Props = $props()
 
-	let backgroundColor = $derived(event.mainImageMeta.prominentColor)
+	const backgroundColor = $derived(
+		`oklch(from ${event.mainImageMeta.prominentColor} calc(l * 0.8) c h)`,
+	)
 
-	let href = $derived(getEventUrl(event.slug))
-	let hover = $state(false)
+	const shortMonthFormatter = new DateFormatter(navigator.language, { month: 'short' })
 
-	// Any other link pointing at this event (the calendar, for instance) lights
-	// the card up as well.
-	onMount(() => {
-		const anchors = document.querySelectorAll<HTMLAnchorElement>(`a[href="${href}"]`)
+	const date = $derived(parseAbsolute(event.eventTime, getLocalTimeZone()))
+	const jsDate = $derived(new Date(event.eventTime))
+	const monthShort = $derived(shortMonthFormatter.format(jsDate))
 
-		const on = () => (hover = true)
-		const off = () => (hover = false)
-
-		anchors.forEach((anchor) => {
-			anchor.addEventListener('focus', on)
-			anchor.addEventListener('blur', off)
-			anchor.addEventListener('mouseover', on)
-			anchor.addEventListener('mouseleave', off)
-		})
-
-		return () => {
-			anchors.forEach((anchor) => {
-				anchor.removeEventListener('focus', on)
-				anchor.removeEventListener('blur', off)
-				anchor.removeEventListener('mouseover', on)
-				anchor.removeEventListener('mouseleave', off)
-			})
-		}
-	})
+	const href = $derived(getEventUrl(event.slug))
 </script>
 
 <a
-	in:fly|global={{ y: 24, delay: introDelay, duration: motion(duration.slow) }}
 	{href}
-	class={cn(
-		'group grid min-h-full overflow-hidden rounded-base border border-edge-subtle text-center text-base shadow-raised focus-ring transition-[scale,box-shadow,border-color]',
-		'grid-rows-[auto_auto]',
-		horizontal && 'grid-cols-[auto_auto]',
-		'hover:scale-[1.005] hover:border-brand/60 hover:shadow-lifted',
+	class={[
+		'group relative flex min-h-full overflow-hidden rounded-base border border-edge-subtle bg-background text-base shadow-raised focus-ring transition-[scale,box-shadow,border-color]',
+		'hover:border-brand/60 hover:shadow-lifted',
 		'focus-visible:border-brand/60 focus-visible:shadow-lifted',
-		hover && 'scale-[1.005] border-brand/60 shadow-lifted',
-	)}
+		horizontal ? 'flex-row items-stretch' : 'flex-col',
+		className,
+	]}
 >
-	<img
-		src={event.imageUrl}
-		alt="Title image for an event called '{event.title}'"
-		style:background-color={backgroundColor}
-		class={cn(
-			'm-0 h-auto max-h-none min-h-[50%] w-full object-cover transition-[scale]',
-			'group-hover:scale-[1.03] group-focus-visible:scale-[1.03]',
-			reverse && 'order-1',
-			hover && 'scale-[1.03]',
-		)}
-	/>
-
-	<div class="m-6 flex flex-grow flex-col items-center justify-center gap-4">
+	<div
+		class={['relative', horizontal ? 'aspect-square h-auto min-w-40' : 'w-full']}
+		style:--aspect={event.mainImageMeta.dimensions.width / event.mainImageMeta.dimensions.height}
+	>
 		<div
-			class="m-0 flex items-center justify-center gap-[1ch] rounded-full bg-brand-translucent px-[0.7em] py-[0.2em] text-xs tracking-label [&_*]:text-brand-contrast"
+			class={cn(
+				'absolute top-0 left-0 z-1 flex flex-col items-center gap-0.5 rounded-xl bg-background shadow-sm *:leading-none',
+				'm-4 p-2 px-4',
+			)}
 		>
-			<IconCalendar />
+			<span class="text-sm font-bold">{date.day}</span>
+			<span class="text-xs text-ink/70">{monthShort}</span>
+		</div>
+
+		{#if !horizontal}
+			<div
+				class="absolute top-0 right-0 z-1 m-4 rounded-full bg-foreground px-2 py-1.5 text-2xs leading-none font-bold tracking-tight text-background shadow-sm"
+			>
+				Veranstaltung
+			</div>
+		{/if}
+
+		<img
+			src={event.imageUrl}
+			alt="Title image for an event called '{event.title}'"
+			style:background-color={backgroundColor}
+			class={cn(
+				'm-0 transition-[scale]',
+				'group-focus-visible:scale-[1.03]',
+				horizontal
+					? 'absolute inset-0 size-full object-cover'
+					: 'aspect-4/3 h-auto w-full object-contain',
+			)}
+		/>
+	</div>
+
+	<div class={cn('flex min-w-0 grow flex-col', horizontal ? 'gap-1.5 p-3' : 'gap-2 p-5')}>
+		<div class="flex items-center gap-1.5 text-xs text-nowrap text-ink/70">
+			<CalendarIcon class="size-4" />
 			<EventTime time={event.eventTime} />
 		</div>
 
+		<!-- use:fitParent={{ strategy: 'fontSize' }} -->
 		<h4
-			use:fitParent={{ strategy: 'fontSize' }}
-			class="m-0 w-fit font-serif text-lg tracking-tight text-balance"
+			class="m-0 w-fit font-serif text-md leading-tight font-semibold tracking-tight text-balance"
 		>
 			{event.title}
 		</h4>
+
+		<div class="flex items-center gap-1.5 text-xs text-nowrap text-ink/70">
+			<MapPinIcon class="size-4" />
+			Centro Machado
+		</div>
+
+		<div class="flex grow items-end">
+			<div class="flex items-center gap-1.5 text-xs text-nowrap text-brand group-hover:underline">
+				<span>Mehr erfahren</span>
+				<ArrowRightIcon class="size-4" />
+			</div>
+		</div>
 	</div>
 </a>

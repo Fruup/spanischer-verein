@@ -20,9 +20,9 @@
 	--surface-raised: #fcfcfc; /* cards, menus, the calendar */
 	--surface-1: #efefef; /* filled controls, menu item hover */
 
-	/* Stadt Köln red. Named `brand` so it never collides with Tailwind's
+	/* Spanish flag red. Named `brand` so it never collides with Tailwind's
 	   `accent-*` utilities or shadcn's `--accent` token. */
-	--brand: #ef0000; /* fills, borders, outlines */
+	--brand: #aa151b; /* fills, borders, outlines */
 	--brand-hover: #bc0000; /* hover state of a brand fill */
 	--brand-translucent: rgb(213 0 0 / 0.85); /* the event card's date pill */
 	--brand-contrast: #ffffff; /* text sitting on a brand fill */
@@ -31,7 +31,7 @@
 	/* Brand red as *foreground* text: link colour, underline decorations,
 	   hover text. Pure red on a dark page is too dim to read, so dark mode
 	   lifts this well above `--brand` while keeping the hue. */
-	--brand-link: #d40000;
+	--brand-link: #aa151b;
 
 	/* PayPal blue, used by the donation call to action. */
 	--donate: #0070e0;
@@ -117,8 +117,8 @@
 	--breakpoint-tablet: 787px;
 	--breakpoint-desktop: 1201px;
 
-	--font-sans: 'Lato', 'Helvetica', 'Arial', sans-serif;
-	--font-serif: 'PT Serif', 'Old Standard TT', Georgia, serif;
+	--font-sans: 'Figtree', 'Helvetica', 'Arial', sans-serif;
+	--font-serif: 'Bricolage Grotesque', 'Helvetica Neue', 'Arial', sans-serif;
 
 	/* Type scale. Sizes are `rem` against a 16px root, so they respect the
 	   visitor's browser font size; `--text-base` resolves to the 21px body the
@@ -133,7 +133,7 @@
 	--text-xs--line-height: 1.5;
 	--text-sm: 1.0625rem; /* 17px */
 	--text-sm--line-height: 1.6;
-	--text-base: 1.3125rem; /* 21px — body */
+	--text-base: 1.3rem; /* 21px — body */
 	--text-base--line-height: 1.66;
 	--text-md: 1.5rem; /* 24px */
 	--text-md--line-height: 1.4;
@@ -315,7 +315,7 @@
 	:root {
 		/* No px root: the visitor's browser font size is respected, and every
 		   `rem` in the type scale means what it says. */
-		font-size: 100%;
+		font-size: 15px;
 
 		/* The gap between a text box and its glyphs. */
 		--font-offset: -6px;

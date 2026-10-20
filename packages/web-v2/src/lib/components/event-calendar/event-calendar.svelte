@@ -1,80 +1,94 @@
 <script lang="ts">
-	import { CalendarDate } from '@internationalized/date'
+	import { DateFormatter, getLocalTimeZone, now } from '@internationalized/date'
 	import { Calendar } from 'bits-ui'
-
 	import { page } from '$app/state'
 	import { locale } from '#lib/services/locale.svelte.js'
-
-	import IconAngle from '../icons/icon-angle.svelte'
-	import MonthSelector from './month-selector.svelte'
 	import { getEventsForDay, type EventCalendarItem } from './helpers'
+	import { ChevronLeftIcon, ChevronRightIcon } from '@lucide/svelte'
+	import { Debounced } from 'runed'
 
-	interface Props {
-		events: EventCalendarItem[]
+	const wrap = <T,>(promise: Promise<T>) => {
+		let current = $state<T>()
+		let error = $state<unknown>()
+		let loading = $state(true)
+
+		promise
+			.then((value) => {
+				current = value
+			})
+			.catch((e) => {
+				error = e
+			})
+			.finally(() => {
+				loading = false
+			})
+
+		return {
+			get current() {
+				return current
+			},
+			get error() {
+				return error
+			},
+			get loading() {
+				return loading
+			},
+		}
 	}
 
-	let { events }: Props = $props()
+	interface Props {
+		getEvents: (year: number, month: number) => Promise<EventCalendarItem[]>
+	}
 
-	let selected = $derived({
-		year: Number(page.params.year) || new Date().getFullYear(),
-		month: Number(page.params.month) || new Date().getMonth() + 1,
-	})
+	let { getEvents }: Props = $props()
 
-	let next = $derived({
-		year: selected.month === 12 ? selected.year + 1 : selected.year,
-		month: selected.month === 12 ? 1 : selected.month + 1,
-	})
-
-	let prev = $derived({
-		year: selected.month === 1 ? selected.year - 1 : selected.year,
-		month: selected.month === 1 ? 12 : selected.month - 1,
-	})
-
-	/** Navigation happens through the URL, so the view follows the route. */
-	let placeholder = $derived(new CalendarDate(selected.year, selected.month, 1))
-
-	const archiveUrl = (value: { year: number; month: number }) =>
-		`/archiv/${value.year}-${value.month.toString().padStart(2, '0')}`
-
-	const navButtonClasses =
-		'focus-ring grid aspect-square h-auto w-(--cell-width) cursor-pointer place-content-center rounded-base border-none bg-brand p-0 text-brand-contrast transition-colors hover:bg-brand-hover'
+	let placeholder = $state(now(getLocalTimeZone()))
 
 	const dayClasses =
-		'grid aspect-square h-auto place-content-center rounded-base transition-colors data-[outside-month]:opacity-40 data-today:font-bold data-today:text-brand-link'
+		'grid h-full w-full place-content-center rounded-base transition-colors data-[outside-month]:opacity-40 data-today:font-bold data-today:text-brand-link'
+
+	const monthFormatter = new DateFormatter(locale.current, { month: 'long' })
+
+	const debouncedPlaceholder = new Debounced(
+		() => [placeholder.year, placeholder.month] as const,
+		300,
+	)
+	const eventsPromise = $derived(getEvents(...debouncedPlaceholder.current))
+	const events = $derived(wrap(eventsPromise))
 </script>
 
 <Calendar.Root
 	type="single"
-	readonly
 	fixedWeeks
 	locale={locale.current}
 	calendarLabel="Veranstaltungskalender"
-	{placeholder}
+	weekStartsOn={1}
+	bind:placeholder
 	data-event-calendar
-	class="w-fit rounded-base border border-edge-subtle bg-surface-raised p-[1em] text-xs text-ink shadow-raised [--cell-gap:0.125em] [--cell-width:2.1em]"
+	class="@container w-full rounded-base border border-edge-subtle bg-surface-raised p-4 text-ink shadow-raised select-none [--cell-gap:0.125em]"
 >
 	{#snippet children({ months, weekdays })}
-		<div class="flex items-stretch justify-between gap-1">
-			<a href={archiveUrl(prev)} data-sveltekit-noscroll class={navButtonClasses}>
-				<IconAngle direction="left" />
-			</a>
+		<div class="flex items-stretch justify-between gap-1 text-xs">
+			<Calendar.PrevButton>
+				<ChevronLeftIcon class="size-4" />
+			</Calendar.PrevButton>
 
-			<MonthSelector value={selected} />
+			<div class={['font-semibold', events.loading && 'shimmer']}>
+				{monthFormatter.format(placeholder.toDate())}
+			</div>
 
-			<a href={archiveUrl(next)} data-sveltekit-noscroll class={navButtonClasses}>
-				<IconAngle direction="right" />
-			</a>
+			<Calendar.NextButton>
+				<ChevronRightIcon class="size-4" />
+			</Calendar.NextButton>
 		</div>
 
 		{#each months as month (month.value.toString())}
-			<Calendar.Grid class="w-fit border-collapse select-none">
+			<Calendar.Grid class="mt-2 w-full border-collapse text-xs select-none">
 				<Calendar.GridHead>
-					<Calendar.GridRow
-						class="my-2 bg-hairline [&>th:first-child]:rounded-l-base [&>th:last-child]:rounded-r-base"
-					>
+					<Calendar.GridRow class="grid w-full grid-cols-[repeat(7,1fr)] rounded-base bg-hairline">
 						{#each weekdays as weekday, weekdayIndex (weekdayIndex)}
 							<Calendar.HeadCell
-								class="w-(--cell-width) p-(--cell-gap) text-center text-2xs font-normal tracking-label text-ink-muted"
+								class="w-auto min-w-0 p-(--cell-gap) text-center text-2xs font-normal tracking-label text-ink-muted"
 							>
 								{weekday}
 							</Calendar.HeadCell>
@@ -82,14 +96,18 @@
 					</Calendar.GridRow>
 				</Calendar.GridHead>
 
-				<Calendar.GridBody>
+				<Calendar.GridBody class="w-full">
 					{#each month.weeks as week, weekIndex (weekIndex)}
-						<Calendar.GridRow>
+						<Calendar.GridRow class="grid w-full grid-cols-[repeat(7,1fr)]">
 							{#each week as date (date.toString())}
-								{@const eventsForDay = getEventsForDay(date, events)}
-								{@const event = eventsForDay[0]}
+								{@const eventsForDay = getEventsForDay(date, events.current ?? [])}
+								{@const event = eventsForDay.at(0)}
 
-								<Calendar.Cell {date} month={month.value} class="w-(--cell-width) p-(--cell-gap)">
+								<Calendar.Cell
+									{date}
+									month={month.value}
+									class="block aspect-square h-auto w-auto min-w-0 p-(--cell-gap)"
+								>
 									<Calendar.Day>
 										{#snippet child({ props, day })}
 											{#if event}
@@ -97,10 +115,12 @@
 													{...props}
 													href={event.url}
 													data-sveltekit-noscroll
-													class="focus-ring {dayClasses} font-bold ring-2 ring-brand/70 transition-colors ring-inset hover:bg-brand/10 {page
-														.url.pathname === event.url
-														? 'bg-brand text-brand-contrast ring-brand hover:bg-brand'
-														: ''}"
+													class={[
+														'font-bold ring-2 ring-brand/70 focus-ring transition-colors ring-inset hover:bg-brand/10',
+														dayClasses,
+														page.url.pathname === event.url &&
+															'bg-brand text-brand-contrast ring-brand hover:bg-brand',
+													]}
 												>
 													{day}
 												</a>

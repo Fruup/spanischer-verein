@@ -1,8 +1,4 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition'
-
-	import { duration, motion } from '#lib/helpers/motion.js'
-
 	import MobileMenu from './mobile-menu.svelte'
 	import SiteHeading from './site-heading.svelte'
 	import SiteLogo from './site-logo.svelte'
@@ -10,88 +6,83 @@
 	import SocialLinks from './social-links.svelte'
 	import ThemeToggle from '../theme-toggle.svelte'
 	import type { NavigationItem } from './types'
+	import type { SanityImageWithMeta } from '#lib/sanity/types.ts'
+	import Carousel from './carousel/carousel.svelte'
+	import CarouselItem from './carousel/carousel-item.svelte'
+	import EventCard from '../event-card.svelte'
+	import { isMainPage } from './helpers.svelte'
 
 	interface Props {
 		items: NavigationItem[]
-		leftImageUrl?: string | undefined
-		rightImageUrl?: string | undefined
+		headerImages: SanityImageWithMeta[]
+		highlightedEvents: any[] // TODO: type
 	}
 
-	let { items: _items, leftImageUrl = undefined, rightImageUrl = undefined }: Props = $props()
+	let { items: _items, headerImages, highlightedEvents }: Props = $props()
 
-	const homeItem: NavigationItem = {
-		title: 'Home',
-		href: '/',
-	}
-
-	let items = $derived([homeItem, ..._items])
-
-	const transition = {
-		x: 100,
-		duration: motion(duration.ambient),
-		opacity: 0,
-	}
-
-	const imageClasses =
-		'absolute inset-0 left-auto -z-[1000] h-full max-w-[var(--max-width)] [--max-width:33%] max-desktop:[--max-width:20%] [&>img]:size-full [&>img]:object-cover'
+	const items: NavigationItem[] = $derived([
+		{
+			title: 'Startseite',
+			href: '/',
+		},
+		..._items,
+	])
 </script>
 
 <header
-	class="relative max-h-[100svh] overflow-visible overflow-x-clip p-8 pb-16 text-center [&_.social-links]:absolute [&_.social-links]:right-[var(--gap)] [&_.social-links]:bottom-[var(--gap)] [&_.social-links]:[--gap:2rem] max-desktop:[&_.social-links]:[--gap:1rem]"
+	class="sticky top-0 z-10 grid h-20 grid-cols-[1fr_auto_1fr] overflow-visible overflow-x-clip bg-background text-center shadow"
 >
-	<SiteLogo />
-	<div id="scroll-to-marker" class="invisible h-0"></div>
-	<SiteHeading />
-	<SiteMenu {items} />
-	<SocialLinks />
+	<div class="flex items-center">
+		<div class="grid aspect-square h-full w-auto place-content-center">
+			<SiteLogo height="3rem" />
+		</div>
 
-	<div class="absolute top-6 right-6 z-10 max-desktop:top-4 max-desktop:right-4">
-		<ThemeToggle />
+		<span class="text-sm font-semibold">Centro Machado</span>
 	</div>
 
-	{#if leftImageUrl}
-		{#each [leftImageUrl] as url (url)}
-			<div
-				in:fly={{
-					x: -transition.x,
-					duration: transition.duration,
-					delay: transition.duration / 2,
-					opacity: transition.opacity,
-				}}
-				out:fly={{
-					duration: transition.duration,
-					delay: 0,
-					opacity: transition.opacity,
-				}}
-				class="{imageClasses} right-auto left-0 after:absolute after:inset-0 after:z-[1000] after:content-[''] after:[background:linear-gradient(to_left,var(--header-fade),transparent_75%)] max-desktop:hidden"
-			>
-				<img src={url} alt="" />
-			</div>
-		{/each}
-	{/if}
+	<div class="flex items-center">
+		<div id="scroll-to-marker" class="invisible h-0"></div>
+		<SiteMenu {items} />
+		<SocialLinks />
+	</div>
 
-	<!-- {#if rightImageUrl}
-		{@const delayOffset = transition.duration / 4}
-
-		{#each [rightImageUrl] as url (url)}
-			<div
-				in:fly={{
-					x: transition.x,
-					duration: transition.duration,
-					delay: transition.duration / 2 + delayOffset,
-					opacity: transition.opacity,
-				}}
-				out:fly={{
-					duration: transition.duration,
-					delay: delayOffset,
-					opacity: transition.opacity,
-				}}
-				class="{imageClasses} after:absolute after:inset-0 after:z-[1000] after:content-[''] after:[background:linear-gradient(to_right,var(--header-fade),transparent_75%)] max-desktop:w-full max-desktop:[mask-image:linear-gradient(to_bottom,white,transparent_80%)] max-desktop:[--max-width:100%] max-desktop:after:hidden"
-			>
-				<img src={url} alt="" />
-			</div>
-		{/each}
-	{/if} -->
+	<div class="grid place-content-center">
+		<ThemeToggle />
+	</div>
 </header>
+
+<div class="flex w-full justify-center bg-[#F5F2ED] py-20">
+	<div
+		class="container mx-auto grid grid-cols-[1fr_1fr] place-content-center items-center justify-center gap-10"
+	>
+		<SiteHeading />
+
+		{#if isMainPage()}
+			<!-- TODO: add upcoming events. mark them with badge -->
+
+			<Carousel autoplay class="p-2 contain-content">
+				{#each highlightedEvents as event, index (index)}
+					<CarouselItem class="size-fit">
+						<EventCard class="w-auto" horizontal {event}></EventCard>
+					</CarouselItem>
+				{/each}
+
+				{#each headerImages as image, index (index)}
+					<CarouselItem
+						class="h-auto"
+						style="
+    					    background-color: {image.prominentColor};
+    						width: min(300px, {image.width}px);
+    						max-height: {image.height}px;
+    						aspect-ratio: {image.width / image.height};
+    					"
+					>
+						<img class="size-full" src={image.url} alt="" loading="lazy" />
+					</CarouselItem>
+				{/each}
+			</Carousel>
+		{/if}
+	</div>
+</div>
 
 <MobileMenu {items} />

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import CallToAction from '#lib/components/call-to-action.svelte'
+	import Button from '#lib/components/ui/button/button.svelte'
 
 	import Card from './card.svelte'
 	import NewsletterForm from './newsletter-form.svelte'
@@ -35,17 +36,18 @@
 >
 	<Card>
 		{#snippet heading()}
-			<p>Du möchtest den Verein und unsere Arbeit finanziell unterstützen?</p>
+			Du möchtest den Verein und unsere Arbeit finanziell unterstützen?
 		{/snippet}
 
 		<p>Wir freuen uns über jede Spende!</p>
 
-		<CallToAction href={donationLink}>Spenden via PayPal</CallToAction>
+		<!-- <CallToAction href={donationLink}>Spenden via PayPal</CallToAction> -->
+		<Button href={donationLink} target="_blank">Spenden via PayPal</Button>
 
 		{#if ibanParts}
 			<p>Oder per Überweisung an:</p>
 
-			<p class="text-xs">
+			<p class="font-mono text-2xs">
 				<span>Sparkasse KoelnBonn</span>
 				<br />
 
@@ -61,7 +63,7 @@
 
 	<Card>
 		{#snippet heading()}
-			<p>Du möchtest über unsere Angebote auf dem Laufenden bleiben?</p>
+			Du möchtest über unsere Angebote auf dem Laufenden bleiben?
 		{/snippet}
 
 		<p>Melde dich zu unserem Newsletter an!</p>
@@ -72,11 +74,11 @@
 	{#if mail}
 		<Card>
 			{#snippet heading()}
-				<p>Du möchtest selbst einen Kurs oder ein Event anbieten?</p>
+				Du möchtest selbst einen Kurs oder ein Event anbieten?
 			{/snippet}
 
 			<p>
-				Schreib uns an! - <a href="mailto:{mail}"> {mail} </a>
+				Schreib uns 'ne Mail! <a href="mailto:{mail}"> {mail} </a>
 			</p>
 		</Card>
 	{/if}

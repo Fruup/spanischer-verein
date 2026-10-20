@@ -8,6 +8,7 @@ import type { SiteSettingsSchema } from '@spanischer-verein/sanity/schemas/siteS
 import type { NavigationItem } from '#lib/components/header/types.js'
 import { ENABLE_CACHE, SANITY_DATASET, SANITY_PERSPECTIVE, SANITY_TOKEN } from '$app/env/private'
 import { CalendarDateTime } from '@internationalized/date'
+import type { SanityImageWithMeta } from './types'
 
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
@@ -74,6 +75,67 @@ export const sanityApi = {
 			{
 				from: `${from.toDate(timeZone).toISOString()}`,
 				to: `${to.toDate(timeZone).toISOString()}`,
+			},
+		)
+
+		const transformed = events.map((event) => ({
+			...event,
+			imageUrl:
+				event.mainImage &&
+				imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
+		}))
+
+		// Cache the result
+		cache?.setKey(cacheKey, transformed, 10 * 60 * 1000) // 10 minutes
+
+		return transformed
+	},
+
+	async getCurrentEventsOverview(pageIndex: number = 0) {
+		interface Result extends Pick<
+			EventSchema,
+			'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'
+		> {
+			mainImage: SanityImageSource
+			slug: string
+			mainImageMeta: {
+				prominentColor: string
+				dimensions: {
+					height: number
+					width: number
+				}
+			}
+		}
+
+		// Check for cached value
+		const cacheKey = `sanity:getCurrentEventsOverview:${pageIndex}`
+		const cached = cache?.get<typeof transformed>(cacheKey)
+		if (cached) return cached
+
+		const pageSize = 12
+
+		const events = await sanityClient.fetch<Result[]>(
+			`(*[
+				_type == "event" &&
+				(
+					!defined(publishedAt) ||
+					dateTime(now()) >= dateTime(publishedAt)
+				)
+			]{
+				title,
+				"slug": slug.current,
+				eventTime,
+				eventLocation,
+				eventAdmission,
+				mainImage,
+				"mainImageMeta": {
+					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
+					"dimensions": mainImage.asset->metadata.dimensions,
+				},
+			} | order(eventTime asc))[$fromIndex...$toIndex]`,
+			{
+				fromIndex: pageIndex * pageSize,
+				toIndex: (pageIndex + 1) * pageSize,
 			},
 		)
 
@@ -207,7 +269,6 @@ export const sanityApi = {
 				tree[] {
 					_key,
 					parent,
-			
 					"value": value.reference->{
 						_type,
 						"slug": slug.current,
@@ -320,7 +381,14 @@ export const sanityApi = {
 		const settings = await sanityClient.fetch<
 			| (Pick<SiteSettingsSchema, 'donationLink' | 'contactEmail'> & {
 					logo: SanityImageSource
-					headerImages?: SanityImageSource[]
+					headerImages?: {
+						image: SanityImageSource
+						prominentColor: string
+						dimensions: {
+							width: number
+							height: number
+						}
+					}[]
 					imprintPageSlug?: string
 					privacyPageSlug?: string
 			  })
@@ -328,7 +396,11 @@ export const sanityApi = {
 		>(`
 			*[_id == "siteSettings"][0]{
 				logo,
-				headerImages,
+				"headerImages": headerImages[]{
+				  "image": {...},
+					"prominentColor": asset->metadata.palette.dominant.background,
+					"dimensions": asset->metadata.dimensions,
+				},
 				donationLink,
 				"imprintPageSlug": imprintPage->slug.current,
 				"privacyPageSlug": privacyPage->slug.current,
@@ -343,8 +415,13 @@ export const sanityApi = {
 			imprintPageSlug: settings.imprintPageSlug,
 			privacyPageSlug: settings.privacyPageSlug,
 			contactEmail: settings.contactEmail,
-			headerImageUrls: settings.headerImages?.map((image) =>
-				imageUrlBuilder.image(image).height(512).format('webp').url(),
+			headerImages: settings.headerImages?.map(
+				({ image, dimensions, prominentColor }) =>
+					({
+						url: imageUrlBuilder.image(image).height(512).format('webp').url(),
+						prominentColor,
+						...dimensions,
+					}) satisfies SanityImageWithMeta,
 			),
 			logoUrl: imageUrlBuilder.image(settings.logo).height(400).format('webp').url(),
 		}

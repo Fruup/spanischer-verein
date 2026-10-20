@@ -17,21 +17,34 @@ export const fontPlugin = (options: { url: string | string[] }): Plugin => {
 			throw new Error('Only Google Fonts are supported at the current time... Sorry!')
 		}
 
-		let fontFamily = new URL(url).searchParams.get('family')!
-		if (!fontFamily) {
-			throw new Error('Could not find the font family in the URL. (?family=<...>)')
+		const family = new URL(url).searchParams.get('family')
+		if (!family) {
+			throw new Error(`Could not find the font family in the URL. (?family=<...>): ${url}`)
 		}
-		fontFamily = fontFamily.slice(0, fontFamily.indexOf(':'))
 
-		let text = await fetch(url, {
+		// `family` is either `Figtree` or `Figtree:ital,wght@0,300..900`. Only the
+		// name goes in the directory path.
+		const axesAt = family.indexOf(':')
+		const fontFamily = axesAt === -1 ? family : family.slice(0, axesAt)
+
+		const response = await fetch(url, {
 			headers: {
 				// Without this, not all fonts are returned.
 				'User-Agent':
 					'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
 			},
-		}).then((response) => response.text())
+		})
 
-		const regex = /src:\s+url\(([^\)]+)\)/g
+		if (!response.ok) {
+			throw new Error(`Failed to fetch font stylesheet (${response.status}): ${url}`)
+		}
+
+		let text = await response.text()
+
+		const regex = /src:\s+url\(([^)]+)\)/g
+
+		/** Every font file download, so startup can wait for all of them. */
+		const downloads: Promise<void>[] = []
 
 		Array.from(text.matchAll(regex))
 			.toReversed()
@@ -39,19 +52,9 @@ export const fontPlugin = (options: { url: string | string[] }): Plugin => {
 				const fontFileUrl = match[1]
 				const location = [match.index, match.index + match[0].length]
 				const filename = path.basename(fontFileUrl)
+				const fontFilePath = path.join(publicDir, '_fonts', fontFamily, filename)
 
-				fetch(fontFileUrl).then(async (response) => {
-					if (!response.ok) {
-						throw new Error(`Failed to fetch font file: ${fontFileUrl}`)
-					}
-
-					const fontFile = await response.text()
-					const fontFilePath = path.join(publicDir, '_fonts', fontFamily, filename)
-
-					// save font file
-					fs.mkdirSync(path.dirname(fontFilePath), { recursive: true })
-					fs.writeFileSync(fontFilePath, fontFile)
-				})
+				downloads.push(downloadFontFile(fontFileUrl, fontFilePath))
 
 				// replace
 				text =
@@ -60,11 +63,34 @@ export const fontPlugin = (options: { url: string | string[] }): Plugin => {
 					text.slice(location[1])
 			})
 
-		const fontFilePath = path.join(publicDir, '_fonts', fontFamily, 'index.css')
-		fs.mkdirSync(path.dirname(fontFilePath), { recursive: true })
-		fs.writeFileSync(fontFilePath, text)
+		// Without this the stylesheet can reference files that are still in
+		// flight, so the first page load of a cold start gets no font at all.
+		await Promise.all(downloads)
+
+		const stylesheetPath = path.join(publicDir, '_fonts', fontFamily, 'index.css')
+		fs.mkdirSync(path.dirname(stylesheetPath), { recursive: true })
+		fs.writeFileSync(stylesheetPath, text)
 
 		stylesheets.set(fontFamily, text)
+	}
+
+	async function downloadFontFile(url: string, destination: string) {
+		// Google's font file names are content-addressed, so an existing file is
+		// always the right one and a changed axis range yields a new name.
+		if (fs.existsSync(destination)) return
+
+		const response = await fetch(url)
+		if (!response.ok) {
+			throw new Error(`Failed to fetch font file (${response.status}): ${url}`)
+		}
+
+		// `response.text()` would decode the woff2 as UTF-8 and replace every
+		// byte sequence that isn't valid, which silently corrupts the font while
+		// leaving its ASCII `wOF2` header intact.
+		const bytes = new Uint8Array(await response.arrayBuffer())
+
+		fs.mkdirSync(path.dirname(destination), { recursive: true })
+		fs.writeFileSync(destination, bytes)
 	}
 
 	let publicDir = 'static'
@@ -100,8 +126,10 @@ export const fontPlugin = (options: { url: string | string[] }): Plugin => {
 			}
 		},
 		async options() {
-			// This runs once on startup.
-			await Promise.allSettled(urls.map(processUrl))
+			// This runs once on startup. A failure here has to be loud: swallowing
+			// it leaves the site with a stylesheet pointing at files that are not
+			// there, which looks like a font that simply does not apply.
+			await Promise.all(urls.map(processUrl))
 		},
 	}
 }

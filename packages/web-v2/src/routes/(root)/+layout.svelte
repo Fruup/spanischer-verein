@@ -1,84 +1,65 @@
 <script lang="ts">
-	import { afterNavigate, beforeNavigate } from '$app/navigation'
-	import { page } from '$app/state'
 	import EventCalendar from '#lib/components/event-calendar/event-calendar.svelte'
 	import Header from '#lib/components/header/header.svelte'
 	import { mobileMenu } from '#lib/components/header/mobile-menu.svelte'
 	import MobileNavigationBar from '#lib/components/navigation/mobile-navigation-bar.svelte'
 	import { Toaster } from '#lib/components/ui/sonner/index.js'
-	import { pick } from '#lib/helpers/pick.js'
-	import { getEventUrl, parseMonthFromUrl } from '#lib/helpers/url.js'
+	import { getEventUrl } from '#lib/helpers/url.js'
 	import {
 		getEventsOverview,
-		getHeaderImageIndices,
 		getNavigationTree,
+		getPastHighlights,
 		getSiteSettings,
 	} from '#lib/sanity/sanity.remote.js'
 	import { locale } from '#lib/services/locale.svelte.js'
 	import Divider from './divider.svelte'
 	import Footer from './footer.svelte'
-	import MobileCalendar, { mobileCalendar } from './mobile-calendar.svelte'
+	import { mobileCalendar } from './mobile-calendar.svelte'
 	import ParticipateSection from './participate-section.svelte'
 	import type { LayoutProps } from './$types'
 	import NavigationIndicator from './navigation-indicator.svelte'
+	import { CalendarIcon, UsersIcon } from '@lucide/svelte'
+	import SidebarHeading from './sidebar-heading.svelte'
 
 	let { children }: LayoutProps = $props()
 
 	const siteSettings = await getSiteSettings()
 	const navigationTree = await getNavigationTree()
-	const headerImageIndices = await getHeaderImageIndices()
 
-	// The calendar follows the month in the URL, so the archive routes can drive it.
-	let events = $derived(await getEventsOverview(parseMonthFromUrl(page.params)))
-
-	let calendarEvents = $derived(
-		events.map((event) => ({
+	const currentMonth = (() => {
+		const now = new Date()
+		return { year: now.getFullYear(), month: now.getMonth() + 1 }
+	})()
+	const events = $derived.by(async () => {
+		const e = await getEventsOverview(currentMonth)
+		return e.map((event) => ({
 			name: event.title,
 			url: getEventUrl(event.slug),
 			date: new Date(event.eventTime),
-		})),
-	)
-
-	let headerImages = $derived(siteSettings?.headerImageUrls ?? [])
-	let mail = $derived(siteSettings?.contactEmail ?? 'info@spanischer-verein.com')
-	let imprintUrl = $derived(siteSettings?.imprintPageSlug && `/${siteSettings.imprintPageSlug}`)
-	let privacyUrl = $derived(siteSettings?.privacyPageSlug && `/${siteSettings.privacyPageSlug}`)
-
-	/**
-	 * Rotate header images on page navigation.
-	 */
-
-	let imageIndexLeft = $state(headerImageIndices.left)
-	let imageIndexRight = $state(headerImageIndices.right)
-
-	let leftImageUrl = $derived(headerImages.at(imageIndexLeft))
-	let rightImageUrl = $derived(headerImages.at(imageIndexRight))
-
-	const changeImageOn = ['/(root)', '/(root)/[...pageUrl]', '/(root)/event/[slug]']
-
-	beforeNavigate(({ from, to }) => {
-		if (from?.url.toString() === to?.url.toString()) return
-		if (!to?.route?.id || !changeImageOn.includes(to.route.id)) return
-
-		const exclude = [imageIndexLeft, imageIndexRight]
-		imageIndexLeft = pick(headerImages, exclude)?.index ?? imageIndexLeft
-		exclude.push(imageIndexLeft)
-		imageIndexRight = pick(headerImages, exclude)?.index ?? imageIndexRight
+		}))
 	})
 
-	afterNavigate(({ type, to }) => {
-		if (!(['goto', 'link'] as (typeof type)[]).includes(type)) return
-
-		// Do not scroll to top when navigating using the calendar.
-		if (to?.url.pathname.startsWith('/archiv')) return
-
-		const marker = document.querySelector('#scroll-to-marker')
-		marker?.scrollIntoView({ behavior: 'smooth' })
-	})
+	const mail = $derived(siteSettings?.contactEmail ?? 'info@spanischer-verein.com')
+	const imprintUrl = $derived(siteSettings?.imprintPageSlug && `/${siteSettings.imprintPageSlug}`)
+	const privacyUrl = $derived(siteSettings?.privacyPageSlug && `/${siteSettings.privacyPageSlug}`)
 
 	$effect(() => {
 		locale.set(navigator.language)
 	})
+
+	const getCalendarEvents = async (year: number, month: number) => {
+		if (year === currentMonth.year && month === currentMonth.month) {
+			return events
+		}
+
+		const results = await getEventsOverview({ year, month })
+
+		return results.map(({ title, eventTime, slug }) => ({
+			name: title,
+			date: new Date(eventTime),
+			url: getEventUrl(slug),
+		}))
+	}
 </script>
 
 <svelte:head>
@@ -92,7 +73,11 @@
 <Toaster position="bottom-center" />
 <NavigationIndicator />
 
-<Header items={navigationTree} {leftImageUrl} {rightImageUrl} />
+<Header
+	items={navigationTree}
+	headerImages={siteSettings?.headerImages ?? []}
+	highlightedEvents={await getPastHighlights()}
+/>
 <MobileNavigationBar
 	bind:isCalendarOpen={mobileCalendar.open}
 	bind:isFlyoutOpen={mobileMenu.open}
@@ -114,21 +99,30 @@
 			class="sticky top-8 flex flex-col gap-4 max-desktop:mx-auto max-desktop:max-w-[500px] max-desktop:items-center"
 		>
 			<!-- The desktop calendar; on narrow screens it moves into a drawer. -->
-			<div class="contents max-desktop:hidden">
-				<h3 id="calendar" class="heading-3 mb-0">Kalender</h3>
+			<div class="max-desktop:hidden">
+				<SidebarHeading icon={CalendarIcon}>
+					Kalender
 
-				<p class="m-0 text-xs text-ink-muted">
-					💡 Navigiere im Kalender, um vergangene Veranstaltungen zu durchstöbern.
-				</p>
+					{#snippet description()}
+						Finde passende Veranstaltungen
+					{/snippet}
+				</SidebarHeading>
 
-				<EventCalendar events={calendarEvents} />
+				<EventCalendar getEvents={getCalendarEvents} />
 			</div>
 
-			<MobileCalendar events={calendarEvents} />
+			<!-- <MobileCalendar {events} /> -->
+			<div class="mt-4">
+				<SidebarHeading icon={UsersIcon}>
+					Mitmachen
 
-			<h3 class="heading-2 mb-0">Mitmachen</h3>
+					{#snippet description()}
+						Du willst uns unterstützen oder dich selbst einbringen?
+					{/snippet}
+				</SidebarHeading>
 
-			<ParticipateSection {mail} {privacyUrl} donationLink={siteSettings?.donationLink} />
+				<ParticipateSection {mail} {privacyUrl} donationLink={siteSettings?.donationLink} />
+			</div>
 		</div>
 	</aside>
 </div>

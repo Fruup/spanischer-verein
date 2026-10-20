@@ -3,6 +3,7 @@ import { error } from '@sveltejs/kit'
 import { NEWSLETTER_SLUG } from '$app/env/private'
 import { pick } from '#lib/helpers/pick.js'
 import { sanityApi } from './client'
+import { z } from 'zod'
 
 export const getSiteSettings = query(() => sanityApi.getSiteSettings())
 
@@ -10,8 +11,14 @@ export const getNavigationTree = query(() => sanityApi.getNavigationTree())
 
 export const getPastHighlights = query(() => sanityApi.getPastHighlights())
 
-export const getEventsOverview = query('unchecked', (month: { year: number; month: number }) =>
+export const getEventsOverview = query(z.object({ year: z.number(), month: z.number() }), (month) =>
 	sanityApi.getEventsOverview(month),
+)
+
+export const getCurrentEventsOverview = query(() =>
+	sanityApi.getCurrentEventsOverview(
+		// TODO: pagination
+	),
 )
 
 /**
