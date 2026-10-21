@@ -1,3 +1,8 @@
+<script lang="ts" module>
+	let headerHeight = $state(0)
+	export const getHeaderHeight = () => headerHeight
+</script>
+
 <script lang="ts">
 	import MobileMenu from './mobile-menu.svelte'
 	import SiteHeading from './site-heading.svelte'
@@ -28,9 +33,16 @@
 		},
 		..._items,
 	])
+
+	let headerContainer = $state<HTMLElement>()
+	$effect(() => {
+		if (!headerContainer) return
+		headerHeight = headerContainer.getBoundingClientRect().height
+	})
 </script>
 
 <header
+	bind:this={headerContainer}
 	class="sticky top-0 z-10 grid h-20 grid-cols-[1fr_auto_1fr] overflow-visible overflow-x-clip bg-background/70 text-center shadow backdrop-blur-md"
 >
 	<div class="flex items-center">
