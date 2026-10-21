@@ -18,24 +18,23 @@
 
 	let { events: events_ }: Props = $props()
 
-	$inspect(events_)
+	const events = $derived(events_)
+	// const events = $derived.by(() => {
+	// 	return events_.toSorted(
+	// 		(a, b) => new Date(b.eventTime).getTime() - new Date(a.eventTime).getTime(),
+	// 	)
 
-	const events = $derived.by(() => {
-		return events_.toSorted(
-			(a, b) => new Date(b.eventTime).getTime() - new Date(a.eventTime).getTime(),
-		)
+	// 	const events2 = events_.map((x) => structuredClone(x))
 
-		const events2 = events_.map((x) => structuredClone(x))
+	// 	const foo = [...events2, ...events2, ...events2].map((e, i) => ({
+	// 		...e,
+	// 		eventTime: new Date(
+	// 			new Date(2026, 4, 10).getTime() - i * 1000 * 60 * 60 * 24 * 3,
+	// 		).toISOString(),
+	// 	}))
 
-		const foo = [...events2, ...events2, ...events2].map((e, i) => ({
-			...e,
-			eventTime: new Date(
-				new Date(2026, 4, 10).getTime() - i * 1000 * 60 * 60 * 24 * 3,
-			).toISOString(),
-		}))
-
-		return foo
-	})
+	// 	return foo
+	// })
 
 	const showYear = (eventIndex: number) => {
 		if (eventIndex === 0) return true

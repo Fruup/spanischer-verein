@@ -8,7 +8,14 @@
 		children,
 		autoplay: _autoplay = true,
 		class: className,
-	}: { children: Snippet; autoplay?: boolean; class?: ClassValue } = $props()
+		contentClass = 'max-w-48',
+	}: {
+		children: Snippet
+		autoplay?: boolean
+		class?: ClassValue
+		/** Width constraint of the stack the items are laid out in. */
+		contentClass?: ClassValue
+	} = $props()
 
 	let internalAutoplay = $state(true)
 	let currentIndex = $state(0)
@@ -68,31 +75,36 @@
 	}}
 	onblur={() => (internalAutoplay = true)}
 >
-	<div class="grid max-w-48 place-content-center items-center *:col-1 *:row-1">
+	<div class={['grid w-full place-content-center items-center *:col-1 *:row-1', contentClass]}>
 		{@render children()}
 	</div>
 
-	<div class="flex w-fit">
-		{#each Array.from({ length: numItems }) as _, index (index)}
-			{@const current = index === currentIndex}
+	{#if numItems > 1}
+		<div
+			class="mt-1 flex w-fit items-center rounded-full border border-edge-subtle bg-surface-0/60 px-1.5 py-1 backdrop-blur-sm"
+		>
+			{#each Array.from({ length: numItems }) as _, index (index)}
+				{@const current = index === currentIndex}
 
-			<button
-				title="See highlight number {index + 1}"
-				type="button"
-				onclick={() => {
-					currentIndex = index
-					internalAutoplay = false
-				}}
-				class={['grid size-3 cursor-pointer place-content-center']}
-				onblur={() => (internalAutoplay = true)}
-			>
-				<div
-					class={[
-						'size-1.5 rounded-full border border-ink-muted bg-background transition-[background-color,transform]',
-						current && 'scale-[1.5] bg-ink-muted shadow-sm',
-					]}
-				></div>
-			</button>
-		{/each}
-	</div>
+				<button
+					aria-label="Highlight {index + 1} von {numItems} anzeigen"
+					aria-current={current ? 'true' : undefined}
+					type="button"
+					onclick={() => {
+						currentIndex = index
+						internalAutoplay = false
+					}}
+					class="group grid h-5 cursor-pointer place-content-center rounded-full px-1 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand"
+					onblur={() => (internalAutoplay = true)}
+				>
+					<div
+						class={[
+							'h-1.5 rounded-full transition-[width,background-color]',
+							current ? 'w-4 bg-brand' : 'w-1.5 bg-ink/25 group-hover:bg-ink/50',
+						]}
+					></div>
+				</button>
+			{/each}
+		</div>
+	{/if}
 </div>

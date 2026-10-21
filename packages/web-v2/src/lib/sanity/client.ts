@@ -13,7 +13,8 @@ import type { SanityImageWithMeta } from './types'
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
 	projectId: '6a1nd7zb',
-	perspective: (SANITY_PERSPECTIVE as any) || (import.meta.env.PROD ? 'published' : 'drafts'),
+	// perspective: (SANITY_PERSPECTIVE as any) || (import.meta.env.PROD ? 'published' : 'drafts'),
+	perspective: 'published',
 	apiHost: 'https://api.sanity.io',
 	dataset: SANITY_DATASET || (import.meta.env.PROD ? 'production' : 'development'),
 	useCdn: import.meta.env.PROD,
@@ -132,7 +133,7 @@ export const sanityApi = {
 					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
 					"dimensions": mainImage.asset->metadata.dimensions,
 				},
-			} | order(eventTime asc))[$fromIndex...$toIndex]`,
+			} | order(eventTime desc))[$fromIndex...$toIndex]`,
 			{
 				fromIndex: pageIndex * pageSize,
 				toIndex: (pageIndex + 1) * pageSize,
@@ -211,9 +212,23 @@ export const sanityApi = {
 		const cached = cache?.get<typeof transformed>(cacheKey)
 		if (cached) return cached
 
-		const result = await sanityClient.fetch<EventSchema | undefined>(
+		interface Result extends EventSchema {
+			mainImageMeta?: {
+				prominentColor: string
+				dimensions: {
+					height: number
+					width: number
+				}
+			}
+		}
+
+		const result = await sanityClient.fetch<Result | undefined>(
 			`*[_type == "event" && slug.current == "${slug}"][0]{
 				...,
+				"mainImageMeta": {
+					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
+					"dimensions": mainImage.asset->metadata.dimensions,
+				},
 				"body": body[]{
 					...,
 					asset->,
@@ -238,6 +253,11 @@ export const sanityApi = {
 		const transformed = {
 			...result,
 			body,
+			// The detail page shows the poster at full column width, so this is
+			// rendered larger than the 512px the overview cards ask for.
+			imageUrl:
+				result.mainImage &&
+				imageUrlBuilder.image(result.mainImage).width(1200).format('webp').url(),
 		}
 
 		// Cache the result
@@ -281,6 +301,8 @@ export const sanityApi = {
 		if (!result) return []
 
 		const { tree: flatTree } = result
+
+		console.log(flatTree, '***flatTree')
 
 		type TreeItem = NavigationItem & { _key: string }
 

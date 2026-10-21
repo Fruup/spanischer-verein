@@ -29,12 +29,7 @@
 	style:transform
 	style:opacity={d < 0 ? 0 : 1.5 * t}
 	style:z-index={100 - index}
-	class={[
-		'origin-bottom-right overflow-clip rounded-lg transition-all',
-		d === 0 && 'shadow',
-		d !== 0 && 'inert pointer-events-none',
-		className,
-	]}
+	class={['origin-bottom-right transition-all', d !== 0 && 'inert pointer-events-none', className]}
 	{...rest}
 >
 	{@render children()}

@@ -11,6 +11,7 @@
 	import CarouselItem from './carousel/carousel-item.svelte'
 	import EventCard from '../event-card.svelte'
 	import { isMainPage } from './helpers.svelte'
+	import { slide } from 'svelte/transition'
 
 	interface Props {
 		items: NavigationItem[]
@@ -30,7 +31,7 @@
 </script>
 
 <header
-	class="sticky top-0 z-10 grid h-20 grid-cols-[1fr_auto_1fr] overflow-visible overflow-x-clip bg-background text-center shadow"
+	class="sticky top-0 z-10 grid h-20 grid-cols-[1fr_auto_1fr] overflow-visible overflow-x-clip bg-background/70 text-center shadow backdrop-blur-md"
 >
 	<div class="flex items-center">
 		<div class="grid aspect-square h-full w-auto place-content-center">
@@ -51,27 +52,31 @@
 	</div>
 </header>
 
-<div class="flex w-full justify-center bg-[#F5F2ED] py-20">
-	<div
-		class="container mx-auto grid grid-cols-[1fr_1fr] place-content-center items-center justify-center gap-10"
-	>
-		<SiteHeading />
+<!--
+	The pitch band only belongs on the landing pages. Subpages carry their own
+	`<h1>` (the event or page title), so showing it here would give them two.
+-->
+{#if isMainPage()}
+	<div out:slide={{ axis: 'y' }} class="flex w-full justify-center bg-[#F5F2ED] py-20">
+		<div
+			class="container mx-auto grid max-w-5xl grid-cols-[1fr_1fr] place-content-center items-center justify-center gap-10"
+		>
+			<SiteHeading />
 
-		{#if isMainPage()}
 			<!-- TODO: add upcoming events. mark them with badge -->
 
-			<Carousel autoplay class="p-2 contain-content">
+			<Carousel autoplay class="p-2 contain-content" contentClass="max-w-sm">
 				{#each highlightedEvents as event, index (index)}
-					<CarouselItem class="size-fit">
-						<EventCard class="w-auto" horizontal {event}></EventCard>
+					<CarouselItem class="w-full">
+						<EventCard class="w-full" horizontal {event}></EventCard>
 					</CarouselItem>
 				{/each}
 
 				{#each headerImages as image, index (index)}
 					<CarouselItem
-						class="h-auto"
+						class="h-auto bg-white p-3 pb-6 shadow"
 						style="
-    					    background-color: {image.prominentColor};
+    					    /*background-color: {image.prominentColor};*/
     						width: min(300px, {image.width}px);
     						max-height: {image.height}px;
     						aspect-ratio: {image.width / image.height};
@@ -81,8 +86,8 @@
 					</CarouselItem>
 				{/each}
 			</Carousel>
-		{/if}
+		</div>
 	</div>
-</div>
+{/if}
 
 <MobileMenu {items} />

@@ -2,6 +2,7 @@
 	import { page } from '$app/state'
 
 	import Page from '#lib/components/page.svelte'
+	import type { HeroImageSpec } from '#lib/components/event-hero.svelte'
 	import type { EventInfoSpec } from '#lib/components/event-info.svelte'
 	import { getEvent } from '#lib/sanity/sanity.remote.js'
 
@@ -12,10 +13,18 @@
 		time: event.eventTime,
 		location: event.eventLocation,
 	}
+
+	const image: HeroImageSpec | undefined = event.imageUrl
+		? {
+				url: event.imageUrl,
+				prominentColor: event.mainImageMeta?.prominentColor,
+				dimensions: event.mainImageMeta?.dimensions,
+			}
+		: undefined
 </script>
 
 <svelte:head>
 	<title>{event.title} - Spanischer Verein Köln</title>
 </svelte:head>
 
-<Page title={event.title} body={event.body} {eventInfo} />
+<Page title={event.title} body={event.body} {eventInfo} {image} backHref="/#veranstaltungen" />

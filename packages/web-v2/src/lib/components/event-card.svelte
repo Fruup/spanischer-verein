@@ -7,6 +7,7 @@
 	import { MapPinIcon, CalendarIcon, ArrowRightIcon } from '@lucide/svelte'
 	import { parseAbsolute, DateFormatter, getLocalTimeZone } from '@internationalized/date'
 	import type { ClassValue } from 'svelte/elements'
+	import { insertWordBreaks } from '#lib/helpers/insert-word-breaks.ts'
 
 	interface Props {
 		event: {
@@ -48,27 +49,31 @@
 		'group relative flex min-h-full overflow-hidden rounded-base border border-edge-subtle bg-background text-base shadow-raised focus-ring transition-[scale,box-shadow,border-color]',
 		'hover:border-brand/60 hover:shadow-lifted',
 		'focus-visible:border-brand/60 focus-visible:shadow-lifted',
-		horizontal ? 'flex-row items-stretch' : 'flex-col',
+		horizontal ? 'w-full flex-row items-stretch' : 'flex-col',
 		className,
 	]}
 >
 	<div
-		class={['relative', horizontal ? 'aspect-square h-auto min-w-40' : 'w-full']}
+		class={['relative', horizontal ? 'w-2/5 max-w-48 min-w-28 shrink-0' : 'w-full']}
 		style:--aspect={event.mainImageMeta.dimensions.width / event.mainImageMeta.dimensions.height}
 	>
 		<div
-			class={cn(
-				'absolute top-0 left-0 z-1 flex flex-col items-center gap-0.5 rounded-xl bg-background shadow-sm *:leading-none',
-				'm-4 p-2 px-4',
-			)}
+			class={[
+				'absolute top-0 left-0 z-1 flex flex-col items-center gap-0.5 rounded bg-background shadow-sm *:leading-none',
+				'm-2 px-2 py-1.5',
+				'transition-opacity group-hover:opacity-50',
+			]}
 		>
-			<span class="text-sm font-bold">{date.day}</span>
+			<span class="font-bold">{date.day}</span>
 			<span class="text-xs text-ink/70">{monthShort}</span>
 		</div>
 
 		{#if !horizontal}
 			<div
-				class="absolute top-0 right-0 z-1 m-4 rounded-full bg-foreground px-2 py-1.5 text-2xs leading-none font-bold tracking-tight text-background shadow-sm"
+				class={[
+					'absolute top-0 right-2 z-1 rounded-b bg-foreground px-2 py-1.5 text-2xs leading-none font-bold tracking-tight text-background shadow-sm',
+					'transition-opacity group-hover:opacity-50',
+				]}
 			>
 				Veranstaltung
 			</div>
@@ -88,25 +93,36 @@
 		/>
 	</div>
 
-	<div class={cn('flex min-w-0 grow flex-col', horizontal ? 'gap-1.5 p-3' : 'gap-2 p-5')}>
+	<div class={['flex min-w-0 grow flex-col', horizontal ? 'gap-1 p-4' : 'gap-1.5 p-5']}>
 		<div class="flex items-center gap-1.5 text-xs text-nowrap text-ink/70">
 			<CalendarIcon class="size-4" />
 			<EventTime time={event.eventTime} />
 		</div>
 
-		<!-- use:fitParent={{ strategy: 'fontSize' }} -->
 		<h4
-			class="m-0 w-fit font-serif text-md leading-tight font-semibold tracking-tight text-balance"
+			class={[
+				'w-fit font-serif leading-tight font-semibold tracking-tight text-balance group-hover:text-brand group-focus:text-brand',
+				horizontal ? 'line-clamp-3 text-sm' : 'text-md',
+			]}
 		>
-			{event.title}
+			<!-- TODO: escape HTML -->
+			<!-- TODO: limit to 60 characters -->
+			{@html insertWordBreaks(event.title)}
 		</h4>
+
+		{#if !horizontal}
+			<!-- TODO: description -->
+			<!-- <div class="text-xs leading-snug tracking-tight text-ink/70">
+				Lorem ipsum dolor sit, amet consectetur adipisicing elit
+			</div> -->
+		{/if}
 
 		<div class="flex items-center gap-1.5 text-xs text-nowrap text-ink/70">
 			<MapPinIcon class="size-4" />
 			Centro Machado
 		</div>
 
-		<div class="flex grow items-end">
+		<div class={['flex grow items-end', horizontal && 'pt-1']}>
 			<div class="flex items-center gap-1.5 text-xs text-nowrap text-brand group-hover:underline">
 				<span>Mehr erfahren</span>
 				<ArrowRightIcon class="size-4" />

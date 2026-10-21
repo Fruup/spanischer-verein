@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { DropdownMenu } from 'bits-ui'
-
 	import { ChevronDownIcon } from '@lucide/svelte'
 
+	import * as NavigationMenu from '../ui/navigation-menu'
 	import type { NavigationItem } from './types'
 	import { page } from '$app/state'
+	import { cn } from '#lib/utils.ts'
 
 	interface Props {
 		navigationItem: NavigationItem
@@ -12,64 +12,61 @@
 
 	let { navigationItem }: Props = $props()
 
-	let open = $state(false)
-
 	const hasChildren = $derived(!!navigationItem.children?.length)
 	const active = $derived(page.url.pathname === navigationItem.href)
 </script>
 
 <!--
-	The top level entry is a real link, and the submenu opens on hover, so the
-	dropdown is controlled rather than trigger-driven.
+	The top level entry is a real link even when it has a submenu, so the trigger
+	renders as an `<a>`. Hovering opens the submenu, clicking navigates.
 -->
-<div role="none" onmouseleave={() => (open = false)}>
-	<DropdownMenu.Root bind:open>
-		<DropdownMenu.Trigger>
+<NavigationMenu.Item value={navigationItem.href}>
+	{#if hasChildren}
+		<NavigationMenu.Trigger
+			class="h-auto gap-1 rounded-sm bg-transparent p-0 text-sm font-normal decoration-brand-link focus-ring transition-colors hover:bg-transparent hover:text-brand-link focus:bg-transparent data-open:bg-transparent data-open:text-brand-link data-open:hover:bg-transparent"
+		>
 			{#snippet child({ props })}
 				<a
 					{...props}
 					href={navigationItem.href}
-					onmouseenter={() => (open = hasChildren)}
-					class={[
-						'flex items-center gap-1 rounded-sm text-sm decoration-brand-link focus-ring transition-colors hover:text-brand-link',
-						active && 'text-brand-link',
-					]}
+					class={cn(props.class as string, active && 'text-brand-link')}
 				>
 					{navigationItem.title}
 
-					{#if hasChildren}
-						<ChevronDownIcon class="size-4" />
-					{/if}
+					<ChevronDownIcon
+						class="size-4 transition-transform duration-200 group-data-open/navigation-menu-trigger:rotate-180"
+					/>
 				</a>
 			{/snippet}
-		</DropdownMenu.Trigger>
+		</NavigationMenu.Trigger>
 
-		{#if hasChildren}
-			<DropdownMenu.Content
-				side="bottom"
-				sideOffset={4}
-				class="z-[1000] min-w-[12ch] rounded-base border border-edge bg-surface-raised p-2 shadow-floating data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-top-2"
-			>
-				<DropdownMenu.Arrow class="border-t border-l border-edge" />
-
-				<ul class="m-0 p-0">
-					{#each navigationItem.children ?? [] as item (item._key ?? item.href)}
-						<li class="list-none">
-							<DropdownMenu.Item>
-								{#snippet child({ props })}
-									<a
-										{...props}
-										href={item.href}
-										class="block rounded-base px-2 py-1 text-sm focus-ring transition-colors hover:bg-edge-subtle"
-									>
-										{item.title}
-									</a>
-								{/snippet}
-							</DropdownMenu.Item>
-						</li>
-					{/each}
-				</ul>
-			</DropdownMenu.Content>
-		{/if}
-	</DropdownMenu.Root>
-</div>
+		<NavigationMenu.Content
+			class="z-50 min-w-[12ch] rounded-base border border-edge bg-surface-raised p-2 shadow-floating"
+		>
+			<ul class="m-0 p-0">
+				{#each navigationItem.children ?? [] as item (item._key ?? item.href)}
+					<li class="list-none">
+						<NavigationMenu.Link
+							href={item.href}
+							active={page.url.pathname === item.href}
+							class="rounded-base px-2 py-1 text-sm focus-ring transition-colors hover:bg-edge-subtle"
+						>
+							{item.title}
+						</NavigationMenu.Link>
+					</li>
+				{/each}
+			</ul>
+		</NavigationMenu.Content>
+	{:else}
+		<NavigationMenu.Link
+			href={navigationItem.href}
+			{active}
+			class={cn(
+				'rounded-sm bg-transparent p-0 text-sm decoration-brand-link focus-ring transition-colors hover:bg-transparent hover:text-brand-link data-[active=true]:bg-transparent data-[active=true]:hover:bg-transparent',
+				active && 'text-brand-link',
+			)}
+		>
+			{navigationItem.title}
+		</NavigationMenu.Link>
+	{/if}
+</NavigationMenu.Item>
