@@ -15,10 +15,8 @@ export const getEventsOverview = query(z.object({ year: z.number(), month: z.num
 	sanityApi.getEventsOverview(month),
 )
 
-export const getCurrentEventsOverview = query(() =>
-	sanityApi.getCurrentEventsOverview(
-		// TODO: pagination
-	),
+export const getCurrentEventsOverview = query(z.number().int().min(0).max(100), (pageIndex) =>
+	sanityApi.getCurrentEventsOverview(pageIndex),
 )
 
 /**

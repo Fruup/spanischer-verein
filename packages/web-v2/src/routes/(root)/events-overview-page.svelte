@@ -8,11 +8,13 @@
 	interface Props {
 		// TODO: type this
 		events: any[]
-		year?: number
-		month?: number
+		/** Whether a further `?page=` exists behind "Mehr laden". */
+		hasMore?: boolean
+		/** Zero-based index of the page being shown; `?page=1` is `/`. */
+		pageIndex?: number
 	}
 
-	let { events }: Props = $props()
+	let { events, hasMore = false, pageIndex = 0 }: Props = $props()
 
 	const headerHeight = new ElementSize(() => (browser ? document.querySelector('header') : null))
 </script>
@@ -27,4 +29,11 @@
 
 <EventsOverview {events} />
 
-<Button class="mt-8">Mehr laden</Button>
+{#if hasMore}
+	<!--
+		A link, not a button: the next page is a real URL, which is what makes the
+		back catalogue crawlable now that the month archive is gone. Each page is a
+		superset of the previous one, so following it reads as an append.
+	-->
+	<Button href="?page={pageIndex + 2}" data-sveltekit-noscroll class="mt-8">Mehr laden</Button>
+{/if}

@@ -92,6 +92,12 @@ export const sanityApi = {
 		return transformed
 	},
 
+	/**
+	 * The newest events from the start of the list through page `pageIndex`. Each
+	 * page is a superset of the one before it, so "Mehr laden" can be a plain link
+	 * to the next `?page=` — crawlable, and still an append from the reader's
+	 * point of view.
+	 */
 	async getCurrentEventsOverview(pageIndex: number = 0) {
 		interface Result extends Pick<
 			EventSchema,
@@ -110,10 +116,11 @@ export const sanityApi = {
 
 		// Check for cached value
 		const cacheKey = `sanity:getCurrentEventsOverview:${pageIndex}`
-		const cached = cache?.get<typeof transformed>(cacheKey)
+		const cached = cache?.get<typeof result>(cacheKey)
 		if (cached) return cached
 
 		const pageSize = 12
+		const count = (pageIndex + 1) * pageSize
 
 		const events = await sanityClient.fetch<Result[]>(
 			`(*[
@@ -133,24 +140,27 @@ export const sanityApi = {
 					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
 					"dimensions": mainImage.asset->metadata.dimensions,
 				},
-			} | order(eventTime desc))[$fromIndex...$toIndex]`,
+			} | order(eventTime desc))[0...$limit]`,
 			{
-				fromIndex: pageIndex * pageSize,
-				toIndex: (pageIndex + 1) * pageSize,
+				// One document past the page, to find out whether a next page exists.
+				limit: count + 1,
 			},
 		)
 
-		const transformed = events.map((event) => ({
-			...event,
-			imageUrl:
-				event.mainImage &&
-				imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
-		}))
+		const result = {
+			events: events.slice(0, count).map((event) => ({
+				...event,
+				imageUrl:
+					event.mainImage &&
+					imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
+			})),
+			hasMore: events.length > count,
+		}
 
 		// Cache the result
-		cache?.setKey(cacheKey, transformed, 10 * 60 * 1000) // 10 minutes
+		cache?.setKey(cacheKey, result, 10 * 60 * 1000) // 10 minutes
 
-		return transformed
+		return result
 	},
 
 	async getPastHighlights() {
@@ -452,6 +462,47 @@ export const sanityApi = {
 		cache?.setKey(cacheKey, transformed, 10 * 60 * 1000) // 10 minutes
 
 		return transformed
+	},
+
+	/**
+	 * Every URL the sitemap should list, as Sanity knows them: one entry per
+	 * published event and per content page. Pages live at their position in the
+	 * navigation tree, so this returns slugs and leaves path building to the
+	 * caller.
+	 */
+	async getSitemapDocuments() {
+		interface Result {
+			events: { slug: string; updatedAt: string }[]
+			pages: { slug: string; updatedAt: string }[]
+		}
+
+		// Check for cached value
+		const cacheKey = `sanity:getSitemapDocuments`
+		const cached = cache?.get<Result>(cacheKey)
+		if (cached) return cached
+
+		const documents = await sanityClient.fetch<Result>(`{
+			"events": *[
+				_type == "event" &&
+				defined(slug.current) &&
+				(
+					!defined(publishedAt) ||
+					dateTime(now()) >= dateTime(publishedAt)
+				)
+			]{
+				"slug": slug.current,
+				"updatedAt": _updatedAt,
+			},
+			"pages": *[_type == "page" && defined(slug.current)]{
+				"slug": slug.current,
+				"updatedAt": _updatedAt,
+			},
+		}`)
+
+		// Cache the result
+		cache?.setKey(cacheKey, documents, 60 * 60 * 1000) // 1 hour
+
+		return documents
 	},
 
 	async getNewsletterSubscriptionRecipient() {

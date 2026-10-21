@@ -13,14 +13,15 @@
 		event: {
 			title: string
 			slug: string
-			imageUrl: string
+			/** Absent on events saved without a poster. */
+			imageUrl?: string
 			eventTime: string
 			mainImageMeta: {
-				prominentColor: string
+				prominentColor: string | null
 				dimensions: {
 					width: number
 					height: number
-				}
+				} | null
 			}
 		}
 		/** Lay the image beside the content instead of above it. */
@@ -30,8 +31,15 @@
 
 	let { event, horizontal = false, class: className }: Props = $props()
 
+	// An event can be published without a poster — the overview reaches back far
+	// enough for that to be common — so every image-derived value falls back
+	// instead of assuming the metadata is there.
+	const dimensions = $derived(event.mainImageMeta?.dimensions)
+	const aspectRatio = $derived(dimensions ? dimensions.width / dimensions.height : 4 / 3)
+
+	const prominentColor = $derived(event.mainImageMeta?.prominentColor)
 	const backgroundColor = $derived(
-		`oklch(from ${event.mainImageMeta.prominentColor} calc(l * 0.8) c h)`,
+		prominentColor ? `oklch(from ${prominentColor} calc(l * 0.8) c h)` : undefined,
 	)
 
 	const shortMonthFormatter = new DateFormatter(navigator.language, { month: 'short' })
@@ -55,7 +63,7 @@
 >
 	<div
 		class={['relative', horizontal ? 'w-2/5 max-w-48 min-w-28 shrink-0' : 'w-full']}
-		style:--aspect={event.mainImageMeta.dimensions.width / event.mainImageMeta.dimensions.height}
+		style:--aspect={aspectRatio}
 	>
 		<div
 			class={[
@@ -79,18 +87,28 @@
 			</div>
 		{/if}
 
-		<img
-			src={event.imageUrl}
-			alt="Title image for an event called '{event.title}'"
-			style:background-color={backgroundColor}
-			class={cn(
-				'm-0 transition-[scale]',
-				'group-focus-visible:scale-[1.03]',
-				horizontal
-					? 'absolute inset-0 size-full object-cover'
-					: 'aspect-4/3 h-auto w-full object-contain',
-			)}
-		/>
+		{#if event.imageUrl}
+			<img
+				src={event.imageUrl}
+				alt="Title image for an event called '{event.title}'"
+				style:background-color={backgroundColor}
+				class={cn(
+					'm-0 transition-[scale]',
+					'group-focus-visible:scale-[1.03]',
+					horizontal
+						? 'absolute inset-0 size-full object-cover'
+						: 'aspect-4/3 h-auto w-full object-contain',
+				)}
+			/>
+		{:else}
+			<!-- Keeps the card's proportions when there is no poster to show. -->
+			<div
+				class={cn(
+					'bg-chip',
+					horizontal ? 'absolute inset-0 size-full' : 'aspect-4/3 h-auto w-full',
+				)}
+			></div>
+		{/if}
 	</div>
 
 	<div class={['flex min-w-0 grow flex-col', horizontal ? 'gap-1 p-4' : 'gap-1.5 p-5']}>

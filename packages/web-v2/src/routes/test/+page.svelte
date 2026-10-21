@@ -3,7 +3,7 @@
 	import { getCurrentEventsOverview } from '#lib/sanity/sanity.remote.ts'
 	import { DragGesture } from '@use-gesture/vanilla'
 
-	const events = await getCurrentEventsOverview()
+	const { events } = await getCurrentEventsOverview(0)
 	const event = events[0]
 
 	const createDragContainer = () => {
