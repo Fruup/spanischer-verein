@@ -27,9 +27,10 @@
 		/** Lay the image beside the content instead of above it. */
 		horizontal?: boolean
 		class?: ClassValue
+		imageClass?: ClassValue
 	}
 
-	let { event, horizontal = false, class: className }: Props = $props()
+	let { event, horizontal = false, class: className, imageClass }: Props = $props()
 
 	// An event can be published without a poster — the overview reaches back far
 	// enough for that to be common — so every image-derived value falls back
@@ -92,13 +93,14 @@
 				src={event.imageUrl}
 				alt="Title image for an event called '{event.title}'"
 				style:background-color={backgroundColor}
-				class={cn(
+				class={[
 					'm-0 transition-[scale]',
 					'group-focus-visible:scale-[1.03]',
 					horizontal
 						? 'absolute inset-0 size-full object-cover'
 						: 'aspect-4/3 h-auto w-full object-contain',
-				)}
+					imageClass,
+				]}
 			/>
 		{:else}
 			<!-- Keeps the card's proportions when there is no poster to show. -->

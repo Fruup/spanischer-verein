@@ -80,7 +80,8 @@
 			<Carousel autoplay class="p-2 contain-content" contentClass="max-w-sm">
 				{#each highlightedEvents as event, index (index)}
 					<CarouselItem class="w-full">
-						<EventCard class="w-full" horizontal {event}></EventCard>
+						<!-- <EventCard class="w-full" horizontal {event}></EventCard> -->
+						<EventCard class="w-auto max-w-[500px]" imageClass="max-h-[200px]!" {event}></EventCard>
 					</CarouselItem>
 				{/each}
 

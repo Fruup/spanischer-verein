@@ -255,7 +255,7 @@ export const sanityApi = {
 				block._type === 'image' &&
 				imageUrlBuilder
 					.image((block as any).asset)
-					.width(500)
+					.width(1200)
 					.format('webp')
 					.url(),
 		}))
@@ -393,7 +393,7 @@ export const sanityApi = {
 				block._type === 'image' &&
 				imageUrlBuilder
 					.image((block as any).asset)
-					.width(500)
+					.width(1200)
 					.format('webp')
 					.url(),
 		}))
