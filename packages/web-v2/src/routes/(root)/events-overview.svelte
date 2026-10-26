@@ -81,11 +81,11 @@
 						'rounded-full h-6 flex items-center px-2.5 text-2xs shadow-sm font-bold tracking-tight leading-none'}
 
 					{#if showYearLabel}
-						<span class="{classes} bg-foreground text-background">{date.getFullYear()}</span>
+						<span class={['bg-foreground text-background', classes]}>{date.getFullYear()}</span>
 					{/if}
 
 					{#if showMonthLabel}
-						<span class="{classes} bg-brand text-brand-contrast">{monthLong}</span>
+						<span class={['bg-brand text-brand-contrast', classes]}>{monthLong}</span>
 					{/if}
 				</div>
 
