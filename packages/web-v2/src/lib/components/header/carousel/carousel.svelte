@@ -57,36 +57,65 @@
 			else autoplayInterval.pause()
 		},
 	)
+
+	let buttons = $state<Record<number, HTMLButtonElement | undefined>>({})
 </script>
 
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
-	class={['flex flex-col items-center gap-2', className]}
+	class={[
+		'flex flex-col items-center gap-2 rounded-base',
+		'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand',
+		className,
+	]}
 	tabindex="0"
 	role="region"
 	aria-roledescription="carousel"
 	onkeydown={(e) => {
-		if (e.key === 'ArrowLeft') {
+		const direction = e.key === 'ArrowLeft' ? -1 : e.key === 'ArrowRight' ? 1 : 0
+		if (!direction) return
+
+		e.preventDefault()
+
+		if (direction < 0) {
 			currentIndex = (currentIndex - 1 + numItems) % numItems
-		} else if (e.key === 'ArrowRight') {
+		} else if (direction > 0) {
 			currentIndex = (currentIndex + 1) % numItems
 		}
+
+		buttons[currentIndex]?.focus()
+		internalAutoplay = false
 	}}
 	onblur={() => (internalAutoplay = true)}
 >
-	<div class={['grid w-full place-content-center items-center *:col-1 *:row-1', contentClass]}>
+	<!--
+		The waiting cards fan down and to the right, so the stack keeps padding on
+		those two sides: it both stops an ancestor from clipping the fanned edges
+		and pushes the deck back up and left, which leaves the front card — the
+		one that is actually being read — centred.
+	-->
+	<div
+		class={[
+			'grid w-full place-content-center items-center pr-10 pb-6 *:col-1 *:row-1',
+			contentClass,
+		]}
+	>
 		{@render children()}
 	</div>
 
 	{#if numItems > 1}
-		<div
-			class="mt-1 flex w-fit items-center rounded-full border border-edge-subtle bg-surface-0/60 px-1.5 py-1 backdrop-blur-sm"
-		>
+		<!--
+			The band behind the carousel is a fixed cream in both modes, so the
+			inactive dots are a fixed ink rather than the themed `ink` token,
+			which would turn near-white — and invisible — in dark mode.
+		-->
+		<div class="flex w-fit items-center gap-0.5">
 			{#each Array.from({ length: numItems }) as _, index (index)}
 				{@const current = index === currentIndex}
 
 				<button
+					bind:this={buttons[index]}
 					aria-label="Highlight {index + 1} von {numItems} anzeigen"
 					aria-current={current ? 'true' : undefined}
 					type="button"
@@ -94,13 +123,13 @@
 						currentIndex = index
 						internalAutoplay = false
 					}}
-					class="group grid h-5 cursor-pointer place-content-center rounded-full px-1 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand"
+					class="group grid size-6 cursor-pointer place-content-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand"
 					onblur={() => (internalAutoplay = true)}
 				>
 					<div
 						class={[
 							'h-1.5 rounded-full transition-[width,background-color]',
-							current ? 'w-4 bg-brand' : 'w-1.5 bg-ink/25 group-hover:bg-ink/50',
+							current ? 'w-5 bg-brand' : 'w-1.5 bg-[#0f0f0f]/20 group-hover:bg-[#0f0f0f]/45',
 						]}
 					></div>
 				</button>

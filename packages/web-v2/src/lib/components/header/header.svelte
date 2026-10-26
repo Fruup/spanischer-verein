@@ -77,7 +77,7 @@
 
 			<!-- TODO: add upcoming events. mark them with badge -->
 
-			<Carousel autoplay class="p-2 contain-content" contentClass="max-w-sm">
+			<Carousel autoplay contentClass="max-w-sm">
 				{#each highlightedEvents as event, index (index)}
 					<CarouselItem class="w-full">
 						<!-- <EventCard class="w-full" horizontal {event}></EventCard> -->
@@ -85,17 +85,25 @@
 					</CarouselItem>
 				{/each}
 
+				<!--
+					The photo frames take the full width of the stack, the same as the
+					event cards next to them in the deck, so the two kinds of card read
+					as one size. The aspect ratio sits on the image rather than the
+					frame — the frame's mount is uneven (wider at the bottom), so an
+					aspect ratio on the frame would squash the photo by that much — and
+					the height cap keeps a portrait poster from towering over an event
+					card, with `object-contain` mounting it inside the frame instead of
+					cropping it.
+				-->
 				{#each headerImages as image, index (index)}
-					<CarouselItem
-						class="h-auto bg-white p-3 pb-6 shadow"
-						style="
-    					    /*background-color: {image.prominentColor};*/
-    						width: min(300px, {image.width}px);
-    						max-height: {image.height}px;
-    						aspect-ratio: {image.width / image.height};
-    					"
-					>
-						<img class="size-full" src={image.url} alt="" loading="lazy" />
+					<CarouselItem class="h-auto w-full bg-white p-3 pb-6 shadow">
+						<img
+							class="max-h-[300px] w-full object-contain"
+							style="aspect-ratio: {image.width / image.height};"
+							src={image.url}
+							alt=""
+							loading="lazy"
+						/>
 					</CarouselItem>
 				{/each}
 			</Carousel>
