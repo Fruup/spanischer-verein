@@ -1,9 +1,18 @@
 import { getEventUrl } from '#lib/helpers/url.js'
 import { sanityApi } from '#lib/sanity/client.js'
 import type { NavigationItem } from '#lib/components/header/types.js'
+import { ENABLE_CACHE } from '$app/env/private'
 import type { RequestHandler } from './$types'
 
 const origin = 'https://spanischer-verein.com'
+
+/** Matches the `max-age` below, so a cached body is never staler than what a
+ * client holding on to the same response would have. */
+const cacheDuration = 60 * 60 * 1000
+
+/** The rendered document, kept per server process. Crawlers hit this route in
+ * bursts and the body only changes when Sanity content does. */
+let cached: { body: string; expiresAt: number } | null = null
 
 /** Routes that exist as files rather than as Sanity documents. */
 const staticPaths = ['/', '/newsletter/register']
@@ -25,6 +34,8 @@ const escapeXml = (value: string) =>
  * `/archiv/<year>-<month>` pages as the entry point into the back catalogue.
  */
 export const GET: RequestHandler = async () => {
+	if (ENABLE_CACHE && cached && cached.expiresAt > Date.now()) return respond(cached.body)
+
 	const [documents, navigationTree] = await Promise.all([
 		sanityApi.getSitemapDocuments(),
 		sanityApi.getNavigationTree(),
@@ -68,10 +79,15 @@ ${urls}
 </urlset>
 `
 
-	return new Response(body, {
+	if (ENABLE_CACHE) cached = { body, expiresAt: Date.now() + cacheDuration }
+
+	return respond(body)
+}
+
+const respond = (body: string) =>
+	new Response(body, {
 		headers: {
 			'content-type': 'application/xml; charset=utf-8',
 			'cache-control': 'public, max-age=3600',
 		},
 	})
-}
