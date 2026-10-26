@@ -97,7 +97,8 @@
 	-->
 	<div
 		class={[
-			'grid w-full place-content-center items-center pr-10 pb-6 *:col-1 *:row-1',
+			'grid w-full place-content-center items-center *:col-1 *:row-1',
+			'pr-10 pb-6', // make room for card stack
 			contentClass,
 		]}
 	>
