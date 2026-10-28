@@ -1,11 +1,44 @@
+import { getRequestEvent } from '$app/server'
 import { error } from '@sveltejs/kit'
 
+// TODO: implement blocking
 export const createRateLimiter = (options: { bucketSize: number; refillPerSecond: number }) => {
-	let bucket = options.bucketSize
+	const buckets = new Map<string, ReturnType<typeof createBucket>>()
+
+	return ({ throwError }: { throwError?: () => {} }) => {
+		const ip = getIp()
+
+		let bucket = buckets.get(ip)
+		if (!bucket) {
+			bucket = createBucket(options)
+			buckets.set(ip, bucket)
+		}
+
+		// Prune full buckets
+		for (const [key, other] of buckets) {
+			if (key === ip) continue
+			other.fill()
+			if (other.full) buckets.delete(key)
+		}
+
+		if (!bucket.run()) {
+			if (throwError) {
+				throwError()
+			} else {
+				error(429, 'Too many requests', {
+					errorCode: 'TOO_MANY_REQUESTS',
+				})
+			}
+		}
+	}
+}
+
+const createBucket = (options: { bucketSize: number; refillPerSecond: number }) => {
+	let count = options.bucketSize
 	let lastTimestamp: number = 0
 
 	const update = (delta: number) => {
-		bucket = Math.min(Math.max(bucket + delta, 0), options.bucketSize)
+		count = Math.min(Math.max(count + delta, 0), options.bucketSize)
 	}
 
 	const fill = () => {
@@ -22,22 +55,18 @@ export const createRateLimiter = (options: { bucketSize: number; refillPerSecond
 		lastTimestamp += fullSeconds * 1000
 	}
 
-	const run = () => {
-		fill()
-		if (bucket <= 0) return false
-		update(-1)
-		return true
-	}
-
-	return ({ throwError }: { throwError?: () => {} }) => {
-		if (!run()) {
-			if (throwError) {
-				throwError()
-			} else {
-				error(429, 'Too many requests', {
-					errorCode: 'TOO_MANY_REQUESTS',
-				})
-			}
-		}
+	return {
+		fill,
+		run: () => {
+			fill()
+			if (count < 1) return false
+			update(-1)
+			return true
+		},
+		get full() {
+			return count >= options.bucketSize
+		},
 	}
 }
+
+const getIp = () => getRequestEvent().getClientAddress()

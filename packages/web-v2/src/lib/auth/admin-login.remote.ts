@@ -38,7 +38,7 @@ type CurrentSessionToken = {
 }
 
 export const sendLoginOTP = form(sendLoginOTPSchema, async (params, issue) => {
-	rateLimit({ throwError: () => invalid(issue('Too many requests')) })
+	rateLimitSend({ throwError: () => invalid(issue('Too many requests')) })
 
 	if (params.email !== ADMIN_MAIL_ADDRESS) {
 		// We do not want to say that the email was incorrect.
@@ -70,7 +70,7 @@ export const sendLoginOTP = form(sendLoginOTPSchema, async (params, issue) => {
 })
 
 export const verifyLoginOTP = form(verifyLoginOTPSchema, async ({ otp }, issue) => {
-	rateLimit({ throwError: () => invalid(issue('Too many requests')) })
+	rateLimitVerify({ throwError: () => invalid(issue('Too many requests')) })
 
 	const currentOtp = cache.get<CurrentOtp | undefined>('currentOtp')
 	if (!currentOtp) invalid(issue.otp('OTP flow not started or expired'))
@@ -134,7 +134,8 @@ const checkAuth = async () => {
 	return true
 }
 
-const rateLimit = createRateLimiter({ bucketSize: 5, refillPerSecond: 1 })
+const rateLimitSend = createRateLimiter({ bucketSize: 5, refillPerSecond: 1 / (2 * 60) })
+const rateLimitVerify = createRateLimiter({ bucketSize: 5, refillPerSecond: 1 / (10 * 60) })
 
 const safeEqual = (a: string, b: string) => {
 	const ba = Buffer.from(a)
