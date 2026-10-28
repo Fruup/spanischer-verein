@@ -7,7 +7,7 @@
 	import MobileMenu from './mobile-menu.svelte'
 	import SiteHeading from './site-heading.svelte'
 	import SiteLogo from './site-logo.svelte'
-	import SiteMenu from './site-menu.svelte'
+	import HeaderNav from './header-nav.svelte'
 	import SocialLinks from './social-links.svelte'
 	import ThemeToggle from '../theme-toggle.svelte'
 	import type { NavigationItem } from './types'
@@ -55,7 +55,7 @@
 
 	<div class="flex items-center">
 		<div id="scroll-to-marker" class="invisible h-0"></div>
-		<SiteMenu {items} />
+		<HeaderNav {items} />
 		<SocialLinks />
 	</div>
 

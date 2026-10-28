@@ -9,6 +9,7 @@ import type { NavigationItem } from '#lib/components/header/types.js'
 import { ENABLE_CACHE, SANITY_DATASET, SANITY_PERSPECTIVE, SANITY_TOKEN } from '$app/env/private'
 import { CalendarDateTime } from '@internationalized/date'
 import type { SanityImageWithMeta } from './types'
+import { dev } from '$app/env'
 
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
@@ -23,7 +24,9 @@ export const sanityClient = createClient({
 
 const imageUrlBuilder = createImageUrlBuilder(sanityClient)
 
-const cache = ENABLE_CACHE ? createCache() : null
+const cache = ENABLE_CACHE
+	? createCache(dev ? { persistInterval: 10_000, cacheDir: '.cache' } : {})
+	: null
 
 export const sanityApi = {
 	async getEventsOverview(options: { year: number; month: number }) {
@@ -311,8 +314,6 @@ export const sanityApi = {
 		if (!result) return []
 
 		const { tree: flatTree } = result
-
-		console.log(flatTree, '***flatTree')
 
 		type TreeItem = NavigationItem & { _key: string }
 

@@ -3,6 +3,7 @@
 		"**/.git": true,
 		"**/.svn": true,
 		"**/.hg": true,
+		"**/.jj": true,
 		"**/.DS_Store": true,
 		"**/Thumbs.db": true,
 		"**/CVS": true
@@ -17,6 +18,7 @@
 		"archiv",
 		"Eventinformation",
 		"Eventinformationen",
+		"hostinger",
 		"iban",
 		"keepfocus",
 		"kurse",

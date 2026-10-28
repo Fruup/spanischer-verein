@@ -1,54 +1,51 @@
-import { sanityApi } from '#lib/sanity/client.js'
-import { createTransport, type Transporter } from 'nodemailer'
-import { generateRegistrationRequestHtml } from './template'
-import { getMailingInfo } from './credentials'
+import { AccountApi, SendApi, Configuration, type V1SendRequest } from 'hostinger-mail-api-sdk'
+import {
+	HOSTINGER_MAIL_ADDRESS,
+	HOSTINGER_MAIL_SENDER,
+	HOSTINGER_MAIL_API_TOKEN,
+} from '$app/env/private'
 
-let transporter: Transporter
-let recipient: string | undefined
-let sender: string | undefined
+export const mailer = {
+	async send({ html, to, subject }: { html: string; to: string; subject: string }) {
+		const { mailboxResourceId, send } = await get()
 
-export async function sendNewsletterSubscriptionRequest(mail: string) {
-	await init()
-	await initRecipient()
-
-	if (!recipient) throw Error(`No newsletter subscription recipient set.`)
-	if (!sender) throw Error(`No sender email set.`)
-
-	const html = generateRegistrationRequestHtml(mail)
-
-	console.log(`Sending newsletter subscription request to ${recipient}...`)
-
-	await transporter.sendMail({
-		from: sender,
-		to: recipient,
-		subject: 'Spanischer Verein - Neue Newsletteranmeldung',
-		html,
-	})
+		// TODO: move to raw fetch to remove dependency
+		await send.sendEmail(
+			mailboxResourceId,
+			// @ts-expect-error - V1SendRequest requires ALL properties, which is wrong
+			{
+				displayName: HOSTINGER_MAIL_SENDER,
+				to: [to],
+				html,
+				subject,
+			} as Partial<V1SendRequest>,
+		)
+	},
 }
 
-async function init() {
-	if (!transporter) {
-		const { user, password: pass, host, port } = await getMailingInfo()
+let instance: { account: AccountApi; send: SendApi; mailboxResourceId: string } | null = null
 
-		sender = user
-
-		transporter = createTransport({
-			host,
-			port,
-			auth: {
-				user,
-				pass,
-			},
+const get = async () => {
+	if (!instance) {
+		const configuration = new Configuration({
+			accessToken: HOSTINGER_MAIL_API_TOKEN,
 		})
+		const account = new AccountApi(configuration)
+		const send = new SendApi(configuration)
 
-		if (!(await transporter.verify())) {
-			throw Error(`Failed to verify connection to mail server.`)
+		const { data } = await account.getCurrentAccount()
+
+		const mailboxResourceId = data.data.mailboxes.find(
+			({ address }) => address === HOSTINGER_MAIL_ADDRESS,
+		)?.resourceId
+		if (!mailboxResourceId) throw new Error('Mailbox not found')
+
+		instance = {
+			account,
+			send,
+			mailboxResourceId,
 		}
 	}
-}
 
-async function initRecipient() {
-	if (!recipient) {
-		recipient = await sanityApi.getNewsletterSubscriptionRecipient()
-	}
+	return instance!
 }

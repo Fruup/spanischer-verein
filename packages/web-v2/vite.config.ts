@@ -61,7 +61,9 @@ export default defineConfig({
 
 		imagetools(),
 	],
-
+	server: {
+		watch: { ignored: [import.meta.dirname + '/.cache/**/*'] },
+	},
 	test: {
 		expect: { requireAssertions: true },
 		projects: [

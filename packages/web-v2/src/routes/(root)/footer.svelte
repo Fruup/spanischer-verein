@@ -5,6 +5,7 @@
 	import supporter3 from '#assets/interkulturelle-zentren-koeln.webp'
 	import SiteLogo from '#lib/components/header/site-logo.svelte'
 	import SocialLinks from '#lib/components/header/social-links.svelte'
+	import AdminLogin from '#lib/auth/admin-login.svelte'
 
 	interface Props {
 		imprintUrl: string | undefined
@@ -41,7 +42,7 @@
 -->
 <footer class="text-sm">
 	<div
-		class="mx-auto box-content max-w-[1200px] px-10 pt-14 pb-10 max-tablet:px-4 max-tablet:pt-10 max-desktop:pb-28"
+		class="mx-auto box-content max-w-[1200px] px-10 pt-14 pb-10 max-desktop:pb-28 max-tablet:px-4 max-tablet:pt-10"
 	>
 		<div
 			class="grid grid-cols-[1fr_auto_auto] gap-x-16 gap-y-10 max-desktop:grid-cols-2 max-tablet:grid-cols-1"
@@ -60,6 +61,8 @@
 				<div class="w-fit">
 					<SocialLinks />
 				</div>
+
+				<AdminLogin />
 			</div>
 
 			<!-- Navigation -->

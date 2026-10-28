@@ -2,7 +2,7 @@
 	import Button from '../button.svelte'
 	import IconBurger from '../icons/icon-burger.svelte'
 	import * as NavigationMenu from '../ui/navigation-menu'
-	import HeaderLinkTop from './header-link-top.svelte'
+	import HeaderNavItem from './header-nav-item.svelte'
 	import { mobileMenu } from './mobile-menu.svelte'
 	import type { NavigationItem } from './types'
 
@@ -18,9 +18,9 @@
 	instead of morphing one shared panel.
 -->
 <NavigationMenu.Root viewport={false} class="max-desktop:hidden">
-	<NavigationMenu.List class="mx-auto w-full max-w-[800px] flex-wrap gap-8 px-8">
+	<NavigationMenu.List class="mx-auto w-full max-w-[800px] flex-wrap gap-1 px-8">
 		{#each items as item (item._key ?? item.href)}
-			<HeaderLinkTop navigationItem={item} />
+			<HeaderNavItem navigationItem={item} />
 		{/each}
 	</NavigationMenu.List>
 </NavigationMenu.Root>

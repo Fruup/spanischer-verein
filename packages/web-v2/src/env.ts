@@ -1,4 +1,5 @@
 import { defineEnvVars } from '@sveltejs/kit/env'
+import z from 'zod'
 
 /**
  * SvelteKit 3 replaced `$env/static|dynamic/*` with an explicit declaration
@@ -19,14 +20,6 @@ export const variables = defineEnvVars({
 		description: 'Sanity read token.',
 		schema: (value) => value,
 	},
-	MAIL_CREDENTIALS: {
-		description: 'SMTP credentials as `user:password`.',
-		schema: (value) => value,
-	},
-	MAIL_SERVER: {
-		description: 'SMTP server as `host:port`.',
-		schema: (value) => value,
-	},
 	ENABLE_CACHE: {
 		description: 'Set to `true` to cache Sanity responses on disk.',
 		schema: (value) => value?.toLowerCase() === 'true',
@@ -40,5 +33,25 @@ export const variables = defineEnvVars({
 	NEWSLETTER_SLUG: {
 		description: 'The event slug the newsletter build prerenders.',
 		schema: (value) => value,
+	},
+	ORIGIN: {
+		public: false,
+		schema: z.url(),
+	},
+	HOSTINGER_MAIL_API_TOKEN: {
+		public: false,
+		schema: z.string().min(1),
+	},
+	HOSTINGER_MAIL_ADDRESS: {
+		public: false,
+		schema: z.email(),
+	},
+	HOSTINGER_MAIL_SENDER: {
+		public: false,
+		schema: z.string().min(1),
+	},
+	ADMIN_MAIL_ADDRESS: {
+		public: false,
+		schema: z.email(),
 	},
 })

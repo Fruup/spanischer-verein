@@ -4,7 +4,7 @@
 	import Page from '#lib/components/page.svelte'
 	import { getPage } from '#lib/sanity/sanity.remote.js'
 
-	const page = await getPage(pageState.params.pageUrl ?? '')
+	const page = $derived(await getPage(pageState.params.pageUrl ?? ''))
 </script>
 
 <svelte:head>

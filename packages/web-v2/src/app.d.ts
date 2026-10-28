@@ -3,7 +3,8 @@
 declare global {
 	namespace App {
 		interface Error {
-			errorCode: 'NOT_FOUND' | 'SEND_EMAIL_FAILED' | 'INVALID_PARAMETERS'
+			errorCode?:
+				'UNKNOWN' | 'NOT_FOUND' | 'SEND_EMAIL_FAILED' | 'INVALID_PARAMETERS' | 'TOO_MANY_REQUESTS'
 		}
 
 		// interface Locals {}
