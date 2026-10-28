@@ -1,4 +1,4 @@
-import { form, getRequestEvent, query } from '$app/server'
+import { form, getRequestEvent } from '$app/server'
 import { error, invalid } from '@sveltejs/kit'
 import { OTP_LENGTH, sendLoginOTPSchema, verifyLoginOTPSchema } from './admin-login'
 import { create as createCache } from 'flat-cache'
@@ -7,14 +7,16 @@ import { mailer } from '../mailer'
 import { generateOtpEmailHtml } from './otp-email'
 import { createRateLimiter } from './rate-limit'
 import { ADMIN_MAIL_ADDRESS } from '$app/env/private'
+import { timingSafeEqual } from 'node:crypto'
 
 const MAX_OTP_AGE_MS = 2 * 60 * 1000
 const MAX_SESSION_AGE_MS = 7 * 24 * 60 * 60 * 1000
+const MAX_OTP_ATTEMPTS = 3
 const COOKIE_OPTS = {
 	httpOnly: true,
 	secure: true,
 	path: '/',
-	sameSite: 'lax',
+	sameSite: 'strict',
 	// domain: 'spanischer-verein.com',
 } as const
 
@@ -26,6 +28,8 @@ const cache = createCache({
 
 type CurrentOtp = {
 	otp: string
+	attempts: number
+	expiresAt: number
 }
 
 type CurrentSessionToken = {
@@ -36,7 +40,11 @@ type CurrentSessionToken = {
 export const sendLoginOTP = form(sendLoginOTPSchema, async (params, issue) => {
 	rateLimit({ throwError: () => invalid(issue('Too many requests')) })
 
-	if (params.email !== ADMIN_MAIL_ADDRESS) invalid(issue.email('Unbekannte E-Mail'))
+	if (params.email !== ADMIN_MAIL_ADDRESS) {
+		// We do not want to say that the email was incorrect.
+		// We just don't send an email.
+		return true
+	}
 
 	const otp = crypto
 		.getRandomValues(new Uint8Array(OTP_LENGTH))
@@ -45,7 +53,6 @@ export const sendLoginOTP = form(sendLoginOTPSchema, async (params, issue) => {
 			(x) => x % 10,
 		)
 		.join('')
-		.padStart(OTP_LENGTH, '0')
 
 	await mailer.send({
 		html: generateOtpEmailHtml({ otp, expiresInMinutes: MAX_OTP_AGE_MS / 60_000 }),
@@ -53,7 +60,11 @@ export const sendLoginOTP = form(sendLoginOTPSchema, async (params, issue) => {
 		subject: `${otp} - Login Code für spanischer-verein.com`,
 	})
 
-	cache.set('currentOtp', { otp } satisfies CurrentOtp, MAX_OTP_AGE_MS)
+	cache.set(
+		'currentOtp',
+		{ otp, attempts: 0, expiresAt: Date.now() + MAX_OTP_AGE_MS } satisfies CurrentOtp,
+		MAX_OTP_AGE_MS,
+	)
 
 	return true
 })
@@ -61,11 +72,27 @@ export const sendLoginOTP = form(sendLoginOTPSchema, async (params, issue) => {
 export const verifyLoginOTP = form(verifyLoginOTPSchema, async ({ otp }, issue) => {
 	rateLimit({ throwError: () => invalid(issue('Too many requests')) })
 
-	const currentOtp = cache.get<CurrentOtp>('currentOtp')
+	const currentOtp = cache.get<CurrentOtp | undefined>('currentOtp')
 	if (!currentOtp) invalid(issue.otp('OTP flow not started or expired'))
-	if (otp !== currentOtp.otp) invalid(issue.otp('OTP invalid')) // timing-safe equals is unnecessary here - length is known
 
-	// Checks passed
+	const now = Date.now()
+	if (now >= currentOtp.expiresAt) {
+		cache.delete('currentOtp')
+		invalid(issue.otp('OTP flow expired'))
+	}
+
+	if (!safeEqual(otp, currentOtp.otp)) {
+		const attempts = currentOtp.attempts + 1
+		if (attempts >= MAX_OTP_ATTEMPTS) cache.delete('currentOtp')
+		else cache.set('currentOtp', { ...currentOtp, attempts } satisfies CurrentOtp, MAX_OTP_AGE_MS)
+
+		invalid(issue.otp('OTP invalid'))
+	}
+
+	// Checks passed. Remove OTP
+	cache.delete('currentOtp')
+
+	// Create session
 	const sessionToken = Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString('hex')
 	const expiresAt = Date.now() + MAX_SESSION_AGE_MS
 
@@ -91,20 +118,26 @@ export const verifyLoginOTP = form(verifyLoginOTPSchema, async ({ otp }, issue) 
 	})
 })
 
-export const checkAuth = query(async () => {
+const checkAuth = async () => {
 	const { cookies } = getRequestEvent()
 	const sessionToken = cookies.get('SESSION_TOKEN')
 	if (!sessionToken) error(401, 'Unauthorized')
 
 	const currentSessionToken = cache.get<CurrentSessionToken>('currentSessionToken')
 	if (!currentSessionToken) error(401, 'Unauthorized')
-	if (currentSessionToken.token !== sessionToken) error(401, 'Unauthorized')
+	if (!safeEqual(currentSessionToken.token, sessionToken)) error(401, 'Unauthorized')
 
 	const now = Date.now()
 	if (now >= currentSessionToken.expiresAt) error(401, 'Unauthorized')
 	// TODO: refresh
 
 	return true
-})
+}
 
 const rateLimit = createRateLimiter({ bucketSize: 5, refillPerSecond: 1 })
+
+const safeEqual = (a: string, b: string) => {
+	const ba = Buffer.from(a)
+	const bb = Buffer.from(b)
+	return ba.length === bb.length && timingSafeEqual(ba, bb)
+}

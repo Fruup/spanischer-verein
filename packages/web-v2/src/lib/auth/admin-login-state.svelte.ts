@@ -14,7 +14,7 @@ class AdminLoginState {
 	update() {
 		if (!browser) return
 
-		this.#authenticated = document.cookie.includes('SESSION_TOKEN_PLACEHOLDER=')
+		this.#authenticated = /(?:^|;\s*)SESSION_TOKEN_PLACEHOLDER=/.test(document.cookie)
 	}
 }
 

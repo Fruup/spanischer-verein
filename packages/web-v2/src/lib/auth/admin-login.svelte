@@ -3,13 +3,7 @@
 	import * as Dialog from '#lib/components/ui/dialog/index.ts'
 	import * as InputOTP from '#lib/components/ui/input-otp/index.ts'
 	import * as Tooltip from '#lib/components/ui/tooltip/index.ts'
-	import {
-		CheckCircle2Icon,
-		CheckCircleIcon,
-		CircleCheckIcon,
-		InfoIcon,
-		UserStarIcon,
-	} from '@lucide/svelte'
+	import { CircleCheckIcon, InfoIcon, UserStarIcon } from '@lucide/svelte'
 
 	import { sendLoginOTP, verifyLoginOTP } from './admin-login.remote'
 	import { OTP_LENGTH, sendLoginOTPSchema, verifyLoginOTPSchema } from './admin-login'
