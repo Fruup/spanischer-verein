@@ -2,6 +2,10 @@
   "name": "spanischer-verein",
   "version": "1.2.0",
   "workspaces": ["packages/*"],
+  "scripts": {
+    "prepare": "git config core.hooksPath .githooks || true",
+    "scan:secrets": "gitleaks git --redact --no-banner --verbose"
+  },
   "devDependencies": {
     "prettier": "^3.2.5",
     "prettier-plugin-svelte": "^3.1.2"
