@@ -6,6 +6,8 @@ import { error } from '@sveltejs/kit'
 
 const MAX_SESSION_AGE_MS = 7 * 24 * 60 * 60 * 1000
 const SESSION_REFRESH_MIN_AGE_MS = 1 * 24 * 60 * 60 * 1000
+// Do not allow refreshing sessions past this point
+const REQUIRE_LOGIN_AFTER_MS = 90 * 24 * 60 * 60 * 1000
 const COOKIE_OPTS = {
 	httpOnly: true,
 	secure: true,
@@ -14,15 +16,17 @@ const COOKIE_OPTS = {
 	// domain: 'spanischer-verein.com',
 } as const
 
-export const createSession = async () => {
+export const createSession = () => {
+	const now = Date.now()
 	const sessionToken = Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString('hex')
-	const expiresAt = Date.now() + MAX_SESSION_AGE_MS
+	const expiresAt = now + MAX_SESSION_AGE_MS
 
 	adminLoginCache.set(
 		'currentSessionToken',
 		{
 			token: sessionToken,
 			expiresAt,
+			createdAt: now,
 		} satisfies CurrentSessionToken,
 		MAX_SESSION_AGE_MS,
 	)
@@ -54,40 +58,42 @@ export const removeSessionCookie = () => {
 	})
 }
 
-export const touchSession = async (): Promise<App.Locals['session']> => {
+/**
+ * Checks and refreshes the admin session
+ * @returns whether the admin session is valid
+ */
+export const touchSession = (): boolean => {
 	const { cookies } = getRequestEvent()
 	const sessionToken = cookies.get('SESSION_TOKEN')
-	if (!sessionToken) return undefined
+	if (!sessionToken) return false
 
 	const currentSessionToken = adminLoginCache.get<CurrentSessionToken>('currentSessionToken')
-	if (!currentSessionToken) return undefined
-	if (!safeEqual(currentSessionToken.token, sessionToken)) return undefined
+	if (!currentSessionToken) return false
+	if (!safeEqual(currentSessionToken.token, sessionToken)) return false
 
 	const now = Date.now()
-	if (now >= currentSessionToken.expiresAt) return undefined
+	if (now >= currentSessionToken.expiresAt) return false
+	if (now >= currentSessionToken.createdAt + REQUIRE_LOGIN_AFTER_MS) return false
 
 	if (now >= currentSessionToken.expiresAt - MAX_SESSION_AGE_MS + SESSION_REFRESH_MIN_AGE_MS) {
 		// Refresh session lifetime.
 		// We do not rotate the token to avoid a race condition with multiple in-flight requests.
-		currentSessionToken.expiresAt = now + MAX_SESSION_AGE_MS
+		const expiresAt = now + MAX_SESSION_AGE_MS
 
 		adminLoginCache.set(
 			'currentSessionToken',
-			currentSessionToken satisfies CurrentSessionToken,
+			{ ...currentSessionToken, expiresAt } satisfies CurrentSessionToken,
 			MAX_SESSION_AGE_MS,
 		)
 
 		setSessionCookie(sessionToken, currentSessionToken.expiresAt)
 	}
 
-	return {
-		token: sessionToken,
-		expiresAt: currentSessionToken.expiresAt,
-	}
+	return true
 }
 
 export const requireAuth = () => {
-	if (!getRequestEvent().locals.session) error(401, 'Unauthorized')
+	if (!getRequestEvent().locals.isAdmin) error(401, 'Unauthorized')
 }
 
 export const adminLoginCache = createCache({
@@ -99,6 +105,7 @@ export const adminLoginCache = createCache({
 export type CurrentSessionToken = {
 	token: string
 	expiresAt: number
+	createdAt: number
 }
 
 export const safeEqual = (a: string, b: string) => {

@@ -90,11 +90,12 @@ export const verifyLoginOTP = form(verifyLoginOTPSchema, async ({ otp }, issue) 
 	adminLoginCache.delete('currentOtp')
 
 	// Create session
-	await createSession()
+	createSession()
 })
 
 export const logout = form(() => {
 	removeSessionCookie()
+	requireAuth() // !!
 	adminLoginCache.delete('currentSessionToken')
 })
 
