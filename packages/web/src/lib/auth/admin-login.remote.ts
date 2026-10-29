@@ -27,6 +27,7 @@ type CurrentOtp = {
 
 export const sendLoginOTP = form(sendLoginOTPSchema, async (params, issue) => {
 	await verifyAltcha(issue)
+	rateLimitGlobalSend({ throwError: () => invalid(issue('Too many requests')) })
 	rateLimitSend({ throwError: () => invalid(issue('Too many requests')) })
 
 	if (params.email !== ADMIN_MAIL_ADDRESS) {
@@ -62,6 +63,7 @@ export const sendLoginOTP = form(sendLoginOTPSchema, async (params, issue) => {
 export const verifyLoginOTP = form(verifyLoginOTPSchema, async ({ otp }, issue) => {
 	// We don't require a captcha here because the user would have to calculate a new one.
 	// They have already done that in the step before this one, so we'll leave it at that.
+	rateLimitGlobalVerify({ throwError: () => invalid(issue('Too many requests')) })
 	rateLimitVerify({ throwError: () => invalid(issue('Too many requests')) })
 
 	const currentOtp = adminLoginCache.get<CurrentOtp | undefined>('currentOtp')
@@ -98,6 +100,21 @@ export const logout = form(() => {
 	removeSessionCookie()
 })
 
+// Sized against OTP brute force, not against mail volume: guesses are bounded by
+// MAX_OTP_ATTEMPTS per send, so ~1 send/minute leaves a 6-digit OTP ~115 days of
+// expected search. A tighter rate buys little and makes it trivial for a single
+// actor to hold this bucket at zero and lock the admin out, which per-IP blocking
+// (see rate-limit.ts) has to cover instead.
+const rateLimitGlobalSend = createRateLimiter({
+	bucketSize: 5,
+	refillPerSecond: 1 / 60,
+	groupBy: 'global',
+})
+const rateLimitGlobalVerify = createRateLimiter({
+	bucketSize: 10,
+	refillPerSecond: 1 / 30,
+	groupBy: 'global',
+})
 const rateLimitSend = createRateLimiter({ bucketSize: 5, refillPerSecond: 1 / (2 * 60) })
 const rateLimitVerify = createRateLimiter({ bucketSize: 5, refillPerSecond: 1 / (10 * 60) })
 

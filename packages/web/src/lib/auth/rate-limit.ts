@@ -1,24 +1,42 @@
 import { getRequestEvent } from '$app/server'
 import { error } from '@sveltejs/kit'
+import { CappedMap } from 'altcha-lib/frameworks/sveltekit'
+
+const PRUNE_INTERVAL_MS = 60_000
 
 // TODO: implement blocking
-export const createRateLimiter = (options: { bucketSize: number; refillPerSecond: number }) => {
-	const buckets = new Map<string, ReturnType<typeof createBucket>>()
+export const createRateLimiter = (options: {
+	bucketSize: number
+	refillPerSecond: number
+	/** @default 'ip' */
+	groupBy?: 'global' | 'ip'
+}) => {
+	const { groupBy = 'ip' } = options
 
-	return ({ throwError }: { throwError?: () => {} }) => {
-		const ip = getIp()
+	// Caps memory only. Eviction is FIFO on insertion order, not LRU, and an evicted
+	// group gets a fresh full bucket, so this is not a limit in itself.
+	const buckets = new CappedMap<string, ReturnType<typeof createBucket>>({ maxSize: 10_000 })
+	let lastPrune = 0
 
-		let bucket = buckets.get(ip)
+	return ({ throwError }: { throwError?: () => never }) => {
+		const group = groupBy === 'global' ? 'global' : getIp()
+
+		let bucket = buckets.get(group)
 		if (!bucket) {
 			bucket = createBucket(options)
-			buckets.set(ip, bucket)
+			buckets.set(group, bucket)
 		}
 
-		// Prune full buckets
-		for (const [key, other] of buckets) {
-			if (key === ip) continue
-			other.fill()
-			if (other.full) buckets.delete(key)
+		// Prune full buckets. A full bucket carries no state worth keeping, so this is
+		// pure garbage collection. Throttled because it scans every bucket.
+		const now = Date.now()
+		if (now - lastPrune >= PRUNE_INTERVAL_MS) {
+			lastPrune = now
+			for (const [key, other] of buckets) {
+				if (key === group) continue
+				other.fill()
+				if (other.full) buckets.delete(key)
+			}
 		}
 
 		if (!bucket.run()) {

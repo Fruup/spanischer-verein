@@ -1,13 +1,11 @@
 import { create, deriveHmacKeySecret, randomInt, CappedMap } from 'altcha-lib/frameworks/sveltekit'
 import { deriveKey } from 'altcha-lib/algorithms/pbkdf2'
-
-// Define your HMAC secret
-const HMAC_SECRET = 'secret.key'
+import { ALTCHA_SECRET } from '$app/env/private'
 
 export const altcha = create({
 	// Verification HMAC secrets
-	hmacSignatureSecret: HMAC_SECRET,
-	hmacKeySignatureSecret: await deriveHmacKeySecret(HMAC_SECRET),
+	hmacSignatureSecret: ALTCHA_SECRET,
+	hmacKeySignatureSecret: await deriveHmacKeySecret(ALTCHA_SECRET),
 
 	// Adjust challenge parameters
 	createChallengeParameters: () => {
