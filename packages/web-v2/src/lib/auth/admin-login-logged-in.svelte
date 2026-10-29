@@ -4,6 +4,7 @@
 	import { logout } from './admin-login.remote'
 	import { toast } from 'svelte-sonner'
 	import { adminLoginState } from './admin-login-state.svelte'
+	import { runConfirmationDialog } from '../components/confirmation-dialog'
 
 	interface Props {
 		open: boolean
@@ -24,6 +25,14 @@
 	<Dialog.Footer>
 		<form
 			{...logout.enhance(async (form) => {
+				if (
+					!(await runConfirmationDialog({
+						title: 'Wirklich ausloggen?',
+					}))
+				) {
+					return
+				}
+
 				if (await form.submit()) {
 					handleLogoutSuccess()
 				}

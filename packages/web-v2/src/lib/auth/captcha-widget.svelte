@@ -1,7 +1,9 @@
 <script lang="ts">
-	import { page } from '$app/state'
+	import { locale } from '#lib/locale/state.svelte.ts'
 
-	$inspect(page.data.locale)
+	import 'altcha'
+	import 'altcha/i18n/de'
+	import 'altcha/i18n/es-es'
 
 	let verified = $state(false)
 
@@ -11,14 +13,15 @@
 
 <altcha-widget
 	style="--altcha-max-width: 100%"
-	debug
 	challenge="/altcha/challenge"
 	auto="onload"
-	language={page.data.locale}
-	onverified={() => {
-		verified = true
-
-		const checkbox = document.querySelector<HTMLInputElement>('input[id^="altcha-checkbox-"]')
-		if (checkbox) checkbox.disabled = true
+	language={locale.current}
+	onstatechange={(
+		e: CustomEvent<{
+			state: 'verifying' | 'verified' | 'unverified'
+		}>,
+	) => {
+		const { state } = e.detail
+		verified = state === 'verified'
 	}}
 ></altcha-widget>
