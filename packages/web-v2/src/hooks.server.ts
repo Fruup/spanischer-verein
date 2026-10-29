@@ -23,8 +23,8 @@ const localeHandler: Handle = async ({ event, resolve }) => {
 }
 
 const authHandler: Handle = async ({ event, resolve }) => {
-	event.locals.session = await touchSession()
+	event.locals.isAdmin = touchSession()
 	return resolve(event)
 }
 
-export const handle: Handle = sequence(archiveHandler, localeHandler, authHandler)
+export const handle: Handle = sequence(authHandler, archiveHandler, localeHandler)

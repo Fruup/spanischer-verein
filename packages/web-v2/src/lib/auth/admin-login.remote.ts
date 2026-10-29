@@ -9,9 +9,9 @@ import { ADMIN_MAIL_ADDRESS } from '$app/env/private'
 import { altcha } from './captcha'
 import {
 	adminLoginCache,
+	checkAuth,
 	createSession,
 	removeSessionCookie,
-	requireAuth,
 	safeEqual,
 } from './admin-login.server'
 import type { StandardSchemaV1 } from '@sveltejs/kit/internal/types'
@@ -94,9 +94,8 @@ export const verifyLoginOTP = form(verifyLoginOTPSchema, async ({ otp }, issue) 
 })
 
 export const logout = form(() => {
+	if (checkAuth()) adminLoginCache.delete('currentSessionToken')
 	removeSessionCookie()
-	requireAuth() // !!
-	adminLoginCache.delete('currentSessionToken')
 })
 
 const rateLimitSend = createRateLimiter({ bucketSize: 5, refillPerSecond: 1 / (2 * 60) })

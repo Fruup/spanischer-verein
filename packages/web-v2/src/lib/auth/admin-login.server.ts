@@ -73,7 +73,10 @@ export const touchSession = (): boolean => {
 
 	const now = Date.now()
 	if (now >= currentSessionToken.expiresAt) return false
-	if (now >= currentSessionToken.createdAt + REQUIRE_LOGIN_AFTER_MS) return false
+	if (now >= currentSessionToken.createdAt + REQUIRE_LOGIN_AFTER_MS) {
+		adminLoginCache.delete('currentSessionToken')
+		return false
+	}
 
 	if (now >= currentSessionToken.expiresAt - MAX_SESSION_AGE_MS + SESSION_REFRESH_MIN_AGE_MS) {
 		// Refresh session lifetime.
@@ -86,14 +89,15 @@ export const touchSession = (): boolean => {
 			MAX_SESSION_AGE_MS,
 		)
 
-		setSessionCookie(sessionToken, currentSessionToken.expiresAt)
+		setSessionCookie(sessionToken, expiresAt)
 	}
 
 	return true
 }
 
+export const checkAuth = () => getRequestEvent().locals.isAdmin
 export const requireAuth = () => {
-	if (!getRequestEvent().locals.isAdmin) error(401, 'Unauthorized')
+	if (!checkAuth) error(401, 'Unauthorized')
 }
 
 export const adminLoginCache = createCache({
