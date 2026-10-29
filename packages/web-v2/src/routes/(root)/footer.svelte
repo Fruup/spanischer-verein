@@ -5,7 +5,7 @@
 	import supporter3 from '#assets/interkulturelle-zentren-koeln.webp'
 	import SiteLogo from '#lib/components/header/site-logo.svelte'
 	import SocialLinks from '#lib/components/header/social-links.svelte'
-	import AdminLogin from '#lib/auth/admin-login.svelte'
+	import AdminLoginRoot from '#lib/auth/admin-login-root.svelte'
 
 	interface Props {
 		imprintUrl: string | undefined
@@ -62,7 +62,7 @@
 					<SocialLinks />
 				</div>
 
-				<AdminLogin />
+				<AdminLoginRoot />
 			</div>
 
 			<!-- Navigation -->

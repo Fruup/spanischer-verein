@@ -2,10 +2,10 @@
 	import { DateFormatter, getLocalTimeZone, now } from '@internationalized/date'
 	import { Calendar } from 'bits-ui'
 	import { page } from '$app/state'
-	import { locale } from '#lib/services/locale.svelte.js'
 	import { getEventsForDay, type EventCalendarItem } from './helpers'
 	import { ChevronLeftIcon, ChevronRightIcon } from '@lucide/svelte'
 	import { Debounced } from 'runed'
+	import { locale } from '#lib/locale/state.svelte.ts'
 
 	const wrap = <T,>(promise: Promise<T>) => {
 		let current = $state<T>()
@@ -47,7 +47,7 @@
 	const dayClasses =
 		'grid h-full w-full place-content-center rounded-base transition-colors data-[outside-month]:opacity-40 data-today:font-bold data-today:text-brand-link'
 
-	const monthFormatter = new DateFormatter(locale.current, { month: 'long' })
+	const monthFormatter = $derived(new DateFormatter(locale.current, { month: 'long' }))
 
 	const debouncedPlaceholder = new Debounced(
 		() => [placeholder.year, placeholder.month] as const,
@@ -114,7 +114,7 @@
 												<a
 													{...props}
 													href={event.url}
-													data-sveltekit-noscroll
+													data-sveltekit-reset="false"
 													class={[
 														'font-bold ring-2 ring-brand/70 focus-ring transition-colors ring-inset hover:bg-brand/10',
 														dayClasses,

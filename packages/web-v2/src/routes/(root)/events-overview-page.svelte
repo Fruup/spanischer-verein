@@ -33,7 +33,6 @@
 	-->
 	<Button
 		href="?page={pageIndex + 2}"
-		data-sveltekit-noscroll
 		class="mt-8"
 		onclick={(e) => {
 			// In case of enabled JavaScript, load the events directly

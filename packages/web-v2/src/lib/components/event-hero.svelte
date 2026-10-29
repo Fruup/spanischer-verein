@@ -9,8 +9,7 @@
 <script lang="ts">
 	import { ArrowLeftIcon } from '@lucide/svelte'
 	import { DateFormatter } from '@internationalized/date'
-
-	import { locale } from '#lib/services/locale.svelte.js'
+	import { locale } from '#lib/locale/state.svelte.ts'
 
 	interface Props {
 		title: string

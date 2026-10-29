@@ -11,8 +11,7 @@
 	import { DateFormatter } from '@internationalized/date'
 	import type { Component, Snippet } from 'svelte'
 	import type { ClassValue } from 'svelte/elements'
-
-	import { locale } from '#lib/services/locale.svelte.js'
+	import { locale } from '#lib/locale/state.svelte.ts'
 
 	interface Props {
 		eventInfo: EventInfoSpec

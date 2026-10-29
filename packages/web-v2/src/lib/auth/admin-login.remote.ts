@@ -8,6 +8,7 @@ import { generateOtpEmailHtml } from './otp-email'
 import { createRateLimiter } from './rate-limit'
 import { ADMIN_MAIL_ADDRESS } from '$app/env/private'
 import { timingSafeEqual } from 'node:crypto'
+import { altcha } from './captcha'
 
 const MAX_OTP_AGE_MS = 2 * 60 * 1000
 const MAX_SESSION_AGE_MS = 7 * 24 * 60 * 60 * 1000
@@ -38,6 +39,7 @@ type CurrentSessionToken = {
 }
 
 export const sendLoginOTP = form(sendLoginOTPSchema, async (params, issue) => {
+	await verifyAltcha()
 	rateLimitSend({ throwError: () => invalid(issue('Too many requests')) })
 
 	if (params.email !== ADMIN_MAIL_ADDRESS) {
@@ -54,7 +56,8 @@ export const sendLoginOTP = form(sendLoginOTPSchema, async (params, issue) => {
 		)
 		.join('')
 
-	await mailer.send({
+	// Intentionally not await to not block the request and to not give away that the email was correct.
+	void mailer.send({
 		html: generateOtpEmailHtml({ otp, expiresInMinutes: MAX_OTP_AGE_MS / 60_000 }),
 		to: ADMIN_MAIL_ADDRESS,
 		subject: `${otp} - Login Code für spanischer-verein.com`,
@@ -70,6 +73,8 @@ export const sendLoginOTP = form(sendLoginOTPSchema, async (params, issue) => {
 })
 
 export const verifyLoginOTP = form(verifyLoginOTPSchema, async ({ otp }, issue) => {
+	// We don't require a captcha here because the user would have to calculate a new one.
+	// They have already done that in the step before this one, so we'll leave it at that.
 	rateLimitVerify({ throwError: () => invalid(issue('Too many requests')) })
 
 	const currentOtp = cache.get<CurrentOtp | undefined>('currentOtp')
@@ -118,6 +123,16 @@ export const verifyLoginOTP = form(verifyLoginOTPSchema, async ({ otp }, issue) 
 	})
 })
 
+export const logout = form(async () => {
+	const event = getRequestEvent()
+	event.cookies.delete('SESSION_TOKEN', COOKIE_OPTS)
+	event.cookies.delete('SESSION_TOKEN_PLACEHOLDER', {
+		...COOKIE_OPTS,
+		secure: false,
+		httpOnly: false,
+	})
+})
+
 const checkAuth = async () => {
 	const { cookies } = getRequestEvent()
 	const sessionToken = cookies.get('SESSION_TOKEN')
@@ -141,4 +156,9 @@ const safeEqual = (a: string, b: string) => {
 	const ba = Buffer.from(a)
 	const bb = Buffer.from(b)
 	return ba.length === bb.length && timingSafeEqual(ba, bb)
+}
+
+const verifyAltcha = async () => {
+	const result = await altcha.verifyEvent(getRequestEvent())
+	if (result.error) error(403, 'Failed to verify captcha')
 }

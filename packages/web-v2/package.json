@@ -52,6 +52,7 @@
 		"@portabletext/types": "^4.0.2",
 		"@sanity/client": "^8.9.0",
 		"@sanity/image-url": "^2.1.1",
+		"altcha-lib": "^2.8.0",
 		"bits-ui": "^2.20.0",
 		"cn": "^0.3.0",
 		"drizzle-orm": "^1.0.0-rc.5",

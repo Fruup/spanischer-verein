@@ -11,7 +11,6 @@
 		getPastHighlights,
 		getSiteSettings,
 	} from '#lib/sanity/sanity.remote.js'
-	import { locale } from '#lib/services/locale.svelte.js'
 	import Divider from './divider.svelte'
 	import Footer from './footer.svelte'
 	import { mobileCalendar } from './mobile-calendar.svelte'
@@ -20,6 +19,7 @@
 	import NavigationIndicator from './navigation-indicator.svelte'
 	import { CalendarIcon, UsersIcon } from '@lucide/svelte'
 	import SidebarHeading from './sidebar-heading.svelte'
+	import { t } from '#lib/messages/index.ts'
 
 	let { children }: LayoutProps = $props()
 
@@ -42,10 +42,6 @@
 	const mail = $derived(siteSettings?.contactEmail ?? 'info@spanischer-verein.com')
 	const imprintUrl = $derived(siteSettings?.imprintPageSlug && `/${siteSettings.imprintPageSlug}`)
 	const privacyUrl = $derived(siteSettings?.privacyPageSlug && `/${siteSettings.privacyPageSlug}`)
-
-	$effect(() => {
-		locale.set(navigator.language)
-	})
 
 	const getCalendarEvents = async (year: number, month: number) => {
 		if (year === currentMonth.year && month === currentMonth.month) {
@@ -101,7 +97,7 @@
 			<!-- The desktop calendar; on narrow screens it moves into a drawer. -->
 			<div class="max-desktop:hidden">
 				<SidebarHeading icon={CalendarIcon}>
-					Kalender
+					{t('calendar')}
 
 					{#snippet description()}
 						Finde passende Veranstaltungen

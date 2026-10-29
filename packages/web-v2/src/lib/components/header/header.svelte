@@ -17,6 +17,7 @@
 	import EventCard from '../event-card.svelte'
 	import { isMainPage } from './helpers.svelte'
 	import { slide } from 'svelte/transition'
+	import LocaleSelector from '#lib/locale/locale-selector.svelte'
 
 	interface Props {
 		items: NavigationItem[]
@@ -59,8 +60,9 @@
 		<SocialLinks />
 	</div>
 
-	<div class="grid place-content-center">
+	<div class="flex items-center gap-2">
 		<ThemeToggle />
+		<LocaleSelector />
 	</div>
 </header>
 
