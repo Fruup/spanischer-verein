@@ -97,7 +97,7 @@ export const touchSession = (): boolean => {
 
 export const checkAuth = () => getRequestEvent().locals.isAdmin
 export const requireAuth = () => {
-	if (!checkAuth) error(401, 'Unauthorized')
+	if (!checkAuth()) error(401, 'Unauthorized')
 }
 
 export const adminLoginCache = createCache({
