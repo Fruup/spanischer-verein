@@ -68,14 +68,6 @@
 <div class="flex flex-col gap-2">
 	<CaptchaWidget bind:this={captchaWidget} />
 
-	<!-- <p class="text-xs text-muted-foreground">
-		{#if loginOtp.sent}
-			Dir wurde eine E-Mail mit einem Code geschickt. Tippe ihn hier ein, um dich einzuloggen.
-		{:else}
-			Bitte gib deine E-Mail-Adresse ein, um fortzufahren.
-		{/if}
-	</p> -->
-
 	{#if loginOtp.sent}
 		{@const otpProps = verifyLoginOTP.fields.otp.as('text')}
 

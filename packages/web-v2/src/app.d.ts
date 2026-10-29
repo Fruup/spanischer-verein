@@ -9,6 +9,10 @@ declare global {
 
 		interface Locals {
 			locale: Locale
+			session?: {
+				token: string
+				expiresAt: number
+			}
 		}
 
 		interface PageData {
