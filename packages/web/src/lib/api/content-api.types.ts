@@ -42,11 +42,12 @@ export namespace ContentApi {
 	}
 
 	export interface SiteSettings {
-		donationLink?: string
-		imprintPageSlug?: string
-		privacyPageSlug?: string
-		headerImages?: Image[]
-		logo?: Image
+		donationLink: string | null
+		imprintPageSlug: string | null
+		privacyPageSlug: string | null
+		aboutPageSlug: string | null
+		headerImages: Image[] | null
+		logo: Image | null
 	}
 
 	export interface Event {

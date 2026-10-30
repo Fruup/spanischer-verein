@@ -1,5 +1,4 @@
 <script lang="ts">
-	import CallToAction from '#lib/components/call-to-action.svelte'
 	import Button from '#lib/components/ui/button/button.svelte'
 
 	import Card from './card.svelte'
@@ -8,8 +7,8 @@
 
 	interface Props {
 		mail: string
-		privacyUrl: string | undefined
-		donationLink: string | undefined
+		privacyUrl: string | undefined | null
+		donationLink: string | undefined | null
 	}
 
 	let { mail, privacyUrl, donationLink }: Props = $props()
@@ -42,7 +41,6 @@
 
 		<p>{t('donation_intro')}</p>
 
-		<!-- <CallToAction href={donationLink}>{t('donate_via_paypal')}</CallToAction> -->
 		<Button href={donationLink} target="_blank">{t('donate_via_paypal')}</Button>
 
 		{#if ibanParts}

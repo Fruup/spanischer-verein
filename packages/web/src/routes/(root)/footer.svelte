@@ -10,8 +10,8 @@
 	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
-		imprintUrl: string | undefined
-		privacyUrl: string | undefined
+		imprintUrl: string | undefined | null
+		privacyUrl: string | undefined | null
 	}
 
 	let { imprintUrl, privacyUrl }: Props = $props()
@@ -125,7 +125,8 @@
 			<SimpleAnalyticsBadge />
 
 			<p class="m-0">
-				{t('developed_by')} <a
+				{t('developed_by')}
+				<a
 					href="https://leonscherer.com/"
 					target="_blank"
 					class="rounded-sm underline decoration-brand-link decoration-2 underline-offset-4 focus-ring transition-colors hover:text-brand-link"

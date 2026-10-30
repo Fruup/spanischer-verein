@@ -475,6 +475,14 @@ export const sanityApi = {
 							width: number
 						}
 					}
+					headerImages: {
+						image: SanityImageSource
+						prominentColor: string
+						dimensions: {
+							height: number
+							width: number
+						}
+					}[]
 					imprintPageSlug?: string
 					privacyPageSlug?: string
 			  })
@@ -486,6 +494,11 @@ export const sanityApi = {
 					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
 					"dimensions": mainImage.asset->metadata.dimensions,
 				},
+				"headerImages": headerImages[]{
+				  "image": {...},
+					"prominentColor": asset->metadata.palette.dominant.background,
+					"dimensions": asset->metadata.dimensions,
+				},
 				donationLink,
 				"imprintPageSlug": imprintPage->slug.current,
 				"privacyPageSlug": privacyPage->slug.current,
@@ -495,14 +508,20 @@ export const sanityApi = {
 		if (!settings) return null
 
 		const transformed: ContentApi.SiteSettings = {
-			donationLink: settings.donationLink,
-			imprintPageSlug: settings.imprintPageSlug,
-			privacyPageSlug: settings.privacyPageSlug,
+			donationLink: settings.donationLink || null,
+			imprintPageSlug: settings.imprintPageSlug || null,
+			privacyPageSlug: settings.privacyPageSlug || null,
 			logo: {
 				url: imageUrlBuilder.image(settings.logo).height(400).format('webp').url(),
 				prominentColor: settings.logoMeta.prominentColor,
 				...settings.logoMeta.dimensions,
 			},
+			headerImages: settings.headerImages?.map(({ image, dimensions, prominentColor }) => ({
+				url: imageUrlBuilder.image(image).height(512).format('webp').url(),
+				prominentColor,
+				...dimensions,
+			})),
+			aboutPageSlug: null,
 		}
 
 		// Cache the result

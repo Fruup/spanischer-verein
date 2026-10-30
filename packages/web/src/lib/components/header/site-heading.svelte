@@ -1,6 +1,9 @@
 <script lang="ts">
 	import Button from '../ui/button/button.svelte'
 	import { t } from '#lib/messages/index.ts'
+	import { getSiteSettings } from '#lib/api/content-api.remote.ts'
+
+	const aboutPageSlug = $derived((await getSiteSettings())?.aboutPageSlug)
 </script>
 
 <div class="max-w-prose">
@@ -22,6 +25,9 @@
 
 	<div class="flex gap-2 pt-4">
 		<Button href="/#veranstaltungen">{t('view_upcoming_events')}</Button>
-		<Button variant="secondary" href="/ueber-uns">{t('about_us')}</Button>
+
+		{#if aboutPageSlug}
+			<Button variant="secondary" href="/{aboutPageSlug}">{t('about_us')}</Button>
+		{/if}
 	</div>
 </div>
