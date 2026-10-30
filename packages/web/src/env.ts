@@ -24,16 +24,6 @@ export const variables = defineEnvVars({
 		description: 'Set to `true` to cache Sanity responses on disk.',
 		schema: (value) => value?.toLowerCase() === 'true',
 	},
-	PUBLIC_RENDERING_NEWSLETTER: {
-		public: true,
-		static: true,
-		description: 'Set to `true` by the newsletter build.',
-		schema: (value) => value === 'true',
-	},
-	NEWSLETTER_SLUG: {
-		description: 'The event slug the newsletter build prerenders.',
-		schema: (value) => value,
-	},
 	ORIGIN: {
 		public: false,
 		schema: z.url(),

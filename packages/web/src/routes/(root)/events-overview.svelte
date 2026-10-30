@@ -1,3 +1,24 @@
+<script lang="ts" module>
+	/**
+	 * Used for intro animation delay.
+	 * When loading new events on the overview page,
+	 * the delay of the first added event should be 0.
+	 */
+	const popIndex = (() => {
+		let _index = 0
+		let _timer: ReturnType<typeof setTimeout> | undefined
+
+		return () => {
+			const result = _index++
+
+			clearTimeout(_timer)
+			_timer = setTimeout(() => (_index = 0), 500)
+
+			return result
+		}
+	})()
+</script>
+
 <script lang="ts">
 	import EventCard from '#lib/components/event-card.svelte'
 	import { fly } from 'svelte/transition'
@@ -19,22 +40,6 @@
 	let { events: events_ }: Props = $props()
 
 	const events = $derived(events_)
-	// const events = $derived.by(() => {
-	// 	return events_.toSorted(
-	// 		(a, b) => new Date(b.eventTime).getTime() - new Date(a.eventTime).getTime(),
-	// 	)
-
-	// 	const events2 = events_.map((x) => structuredClone(x))
-
-	// 	const foo = [...events2, ...events2, ...events2].map((e, i) => ({
-	// 		...e,
-	// 		eventTime: new Date(
-	// 			new Date(2026, 4, 10).getTime() - i * 1000 * 60 * 60 * 24 * 3,
-	// 		).toISOString(),
-	// 	}))
-
-	// 	return foo
-	// })
 
 	const showYear = (eventIndex: number) => {
 		if (eventIndex === 0) return true
@@ -64,9 +69,8 @@
 	<ul
 		class="grid w-full grid-cols-[repeat(auto-fill,minmax(230px,1fr))] gap-6 p-0 max-tablet:grid-cols-1"
 	>
-		<!-- {#each events as event, i (event.slug)} -->
-		{#each events as event, i}
-			{const introDelay = i * 100}
+		{#each events as event, i (event.slug)}
+			{const introDelay = popIndex() * 100}
 			{const showYearLabel = showYear(i)}
 			{const showMonthLabel = showMonth(i)}
 			{const date = new Date(event.eventTime)}

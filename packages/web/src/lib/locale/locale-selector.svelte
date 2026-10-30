@@ -15,7 +15,7 @@
 	}
 </script>
 
-<div role="radiogroup" class="flex items-center divide-x text-xs">
+<div role="radiogroup" class="flex items-center divide-x text-xs" title="Sprachauswahl">
 	{#each locales as locale}
 		{@const active = locale === get()}
 

@@ -404,42 +404,7 @@
 /* -------------------------------------------------------------------------- */
 
 @layer components {
-	/* The brand pills. They read as labels rather than prose, so they keep the
-	   open tracking the rest of the headings gave up. */
-	.heading-2,
-	.heading-3 {
-		width: fit-content;
-		height: fit-content;
-		margin: 2rem 0;
-		padding: 0.3em 0.85em;
-		font-weight: 700;
-		letter-spacing: var(--tracking-label);
-		text-align: center;
-		border: 2px solid var(--brand);
-		border-radius: var(--radius-base);
-	}
-
-	.heading-2 {
-		background-color: var(--brand);
-		color: var(--brand-contrast);
-	}
-
-	.heading-3 {
-		background-color: var(--heading-3-surface);
-		color: var(--heading-3-ink);
-	}
-
 	.no-scroll {
 		overflow: hidden;
-	}
-
-	.surface-0 {
-		color: var(--ink);
-		background-color: var(--surface-0);
-	}
-
-	.surface-1 {
-		color: var(--ink);
-		background-color: var(--surface-1);
 	}
 }

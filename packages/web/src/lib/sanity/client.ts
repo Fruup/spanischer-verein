@@ -25,7 +25,7 @@ export const sanityClient = createClient({
 const imageUrlBuilder = createImageUrlBuilder(sanityClient)
 
 const cache = ENABLE_CACHE
-	? createCache(dev ? { persistInterval: 10_000, cacheDir: '.cache' } : {})
+	? createCache(dev ? { persistInterval: 10_000, cacheDir: '.cache', cacheId: 'sanity' } : {})
 	: null
 
 export const sanityApi = {
@@ -95,12 +95,6 @@ export const sanityApi = {
 		return transformed
 	},
 
-	/**
-	 * The newest events from the start of the list through page `pageIndex`. Each
-	 * page is a superset of the one before it, so "Mehr laden" can be a plain link
-	 * to the next `?page=` — crawlable, and still an append from the reader's
-	 * point of view.
-	 */
 	async getCurrentEventsOverview(pageIndex: number = 0) {
 		interface Result extends Pick<
 			EventSchema,
@@ -123,7 +117,8 @@ export const sanityApi = {
 		if (cached) return cached
 
 		const pageSize = 12
-		const count = (pageIndex + 1) * pageSize
+		const fromIndex = pageIndex * pageSize
+		const toIndex = fromIndex + pageSize
 
 		const events = await sanityClient.fetch<Result[]>(
 			`(*[
@@ -143,21 +138,22 @@ export const sanityApi = {
 					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
 					"dimensions": mainImage.asset->metadata.dimensions,
 				},
-			} | order(eventTime desc))[0...$limit]`,
+			} | order(eventTime desc))[$fromIndex...$toIndex]`,
 			{
+				fromIndex,
 				// One document past the page, to find out whether a next page exists.
-				limit: count + 1,
+				toIndex: toIndex + 1,
 			},
 		)
 
 		const result = {
-			events: events.slice(0, count).map((event) => ({
+			events: events.slice(0, pageSize).map((event) => ({
 				...event,
 				imageUrl:
 					event.mainImage &&
 					imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
 			})),
-			hasMore: events.length > count,
+			hasMore: events.length > pageSize,
 		}
 
 		// Cache the result

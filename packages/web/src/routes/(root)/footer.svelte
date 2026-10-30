@@ -41,7 +41,7 @@
 	two and then one. The legal line sits below a hairline so the colophon reads
 	as a footnote to the footer rather than another column.
 -->
-<footer class="text-sm">
+<footer class="bg-[#F5F2ED] text-sm">
 	<div
 		class="mx-auto box-content max-w-[1200px] px-10 pt-14 pb-10 max-desktop:pb-28 max-tablet:px-4 max-tablet:pt-10"
 	>

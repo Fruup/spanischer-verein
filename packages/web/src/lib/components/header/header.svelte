@@ -54,14 +54,10 @@
 		<span class="text-sm font-semibold">Centro Machado</span>
 	</div>
 
-	<div class="flex items-center">
-		<div id="scroll-to-marker" class="invisible h-0"></div>
-		<HeaderNav {items} />
-		<SocialLinks />
-	</div>
+	<HeaderNav {items} />
 
-	<div class="flex items-center gap-2">
-		<ThemeToggle />
+	<div class="flex items-center gap-4 justify-self-end pr-8">
+		<SocialLinks />
 		<LocaleSelector />
 	</div>
 </header>
