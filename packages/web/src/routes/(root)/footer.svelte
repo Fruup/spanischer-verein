@@ -6,6 +6,7 @@
 	import SiteLogo from '#lib/components/header/site-logo.svelte'
 	import SocialLinks from '#lib/components/header/social-links.svelte'
 	import AdminLoginRoot from '#lib/auth/admin-login-root.svelte'
+	import SimpleAnalyticsBadge from '#lib/components/simple-analytics-badge.svelte'
 
 	interface Props {
 		imprintUrl: string | undefined
@@ -118,6 +119,8 @@
 			class="mt-12 flex flex-row flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-hairline pt-6 text-2xs text-ink-muted max-tablet:flex-col max-tablet:justify-center max-tablet:text-center"
 		>
 			<p class="m-0">© {year} Spanischer Verein Köln e.V.</p>
+
+			<SimpleAnalyticsBadge />
 
 			<p class="m-0">
 				Entwickelt von <a
