@@ -3,10 +3,10 @@
 	import EventsOverview from './events-overview.svelte'
 	import { getHeaderHeight } from '#lib/components/header/header.svelte'
 	import { t } from '#lib/messages/index.ts'
+	import type { ContentApi } from '#lib/api/content-api.types.ts'
 
 	interface Props {
-		// TODO: type this
-		events: any[]
+		events: ContentApi.Event[]
 		/** Whether a further page exists behind "Mehr laden". */
 		hasMore: boolean
 		loadMore: () => unknown

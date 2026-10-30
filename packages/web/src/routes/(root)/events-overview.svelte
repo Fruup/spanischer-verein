@@ -23,18 +23,11 @@
 	import EventCard from '#lib/components/event-card.svelte'
 	import { fly } from 'svelte/transition'
 	import { duration, motion } from '#lib/helpers/motion.js'
+	import type { ContentApi } from '#lib/api/content-api.types.ts'
+	import { locale } from '#lib/locale/state.svelte.ts'
 
 	interface Props {
-		events: {
-			title: string
-			slug: string
-			imageUrl: string
-			eventTime: string
-			mainImageMeta: {
-				prominentColor: string
-				dimensions: { width: number; height: number }
-			}
-		}[]
+		events: ContentApi.Event[]
 	}
 
 	let { events: events_ }: Props = $props()
@@ -74,7 +67,7 @@
 			{const showYearLabel = showYear(i)}
 			{const showMonthLabel = showMonth(i)}
 			{const date = new Date(event.eventTime)}
-			{const monthLong = new Intl.DateTimeFormat('de', { month: 'long' }).format(date)}
+			{const monthLong = new Intl.DateTimeFormat(locale.current, { month: 'long' }).format(date)}
 
 			<li
 				in:fly|global={{ y: 24, delay: introDelay, duration: motion(duration.slow) }}
