@@ -3,6 +3,7 @@
 	import { setCarouselContext } from './context'
 	import { useInterval, watch } from 'runed'
 	import type { ClassValue } from 'svelte/elements'
+	import { ChevronLeftIcon } from '@lucide/svelte'
 
 	let {
 		children,
@@ -112,6 +113,19 @@
 			which would turn near-white — and invisible — in dark mode.
 		-->
 		<div class="flex w-fit items-center gap-0.5">
+			<button
+				aria-label="Vorheriges Highlight anzeigen"
+				type="button"
+				onclick={() => {
+					prev()
+					internalAutoplay = false
+				}}
+				class="group grid size-6 cursor-pointer place-content-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand"
+				onblur={() => (internalAutoplay = true)}
+			>
+				<ChevronLeftIcon class="size-4 text-[#0f0f0f]/20 group-hover:text-[#0f0f0f]/45" />
+			</button>
+
 			{#each Array.from({ length: numItems }) as _, index (index)}
 				{@const current = index === currentIndex}
 
@@ -135,6 +149,21 @@
 					></div>
 				</button>
 			{/each}
+
+			<button
+				aria-label="Nächstes Highlight anzeigen"
+				type="button"
+				onclick={() => {
+					next()
+					internalAutoplay = false
+				}}
+				class="group grid size-6 cursor-pointer place-content-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand"
+				onblur={() => (internalAutoplay = true)}
+			>
+				<ChevronLeftIcon
+					class="size-4 rotate-180 text-[#0f0f0f]/20 group-hover:text-[#0f0f0f]/45"
+				/>
+			</button>
 		</div>
 	{/if}
 </div>
