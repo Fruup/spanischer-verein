@@ -17,7 +17,7 @@
 		{@render heading?.()}
 	</p>
 
-	<div class="*:leading-snug">
+	<div class="flex flex-col gap-3 *:leading-snug">
 		{@render children?.()}
 	</div>
 </div>

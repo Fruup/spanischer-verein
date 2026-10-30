@@ -93,7 +93,7 @@
 
 	<aside class="mt-10 mb-16 [&_h3:first-of-type]:mt-0">
 		<div
-			class="sticky top-8 flex flex-col gap-4 max-desktop:mx-auto max-desktop:max-w-[500px] max-desktop:items-center"
+			class="sticky top-8 flex w-[280px] flex-col gap-4 max-desktop:mx-auto max-desktop:w-full max-desktop:max-w-[500px] max-desktop:items-center"
 		>
 			<!-- The desktop calendar; on narrow screens it moves into a drawer. -->
 			<div class="max-desktop:hidden">

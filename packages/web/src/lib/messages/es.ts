@@ -54,6 +54,7 @@ export const es = {
 	donation_intro: '¡Agradecemos cualquier donación!',
 	donate_via_paypal: 'Donar vía PayPal',
 	or_via_bank_transfer: 'O por transferencia bancaria a:',
+	bank_label: 'Banco',
 	stay_updated_heading: '¿Quieres estar al día de nuestras actividades?',
 	newsletter_signup_intro: '¡Suscríbete a nuestro boletín!',
 	offer_course_heading: '¿Quieres ofrecer tú mismo un curso o un evento?',

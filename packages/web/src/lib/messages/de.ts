@@ -54,6 +54,7 @@ export const de = {
 	donation_intro: 'Wir freuen uns über jede Spende!',
 	donate_via_paypal: 'Spenden via PayPal',
 	or_via_bank_transfer: 'Oder per Überweisung an:',
+	bank_label: 'Bank',
 	stay_updated_heading: 'Du möchtest über unsere Angebote auf dem Laufenden bleiben?',
 	newsletter_signup_intro: 'Melde dich zu unserem Newsletter an!',
 	offer_course_heading: 'Du möchtest selbst einen Kurs oder ein Event anbieten?',

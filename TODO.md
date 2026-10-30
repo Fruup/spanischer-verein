@@ -13,3 +13,4 @@
 - [ ] Media Library
   - [ ] imgproxy or [imagor](https://docs.imagor.net/), serving local images on shared volume
     - imagor supports caching
+    - imagor avg color: https://docs.imagor.net/metadata-and-exif#avgcolor

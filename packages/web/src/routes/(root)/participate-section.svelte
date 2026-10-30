@@ -32,7 +32,7 @@
 </script>
 
 <div
-	class="flex flex-col gap-4 [&_a]:underline [&_a]:decoration-brand-link [&_a]:underline-offset-4 [&_a:focus]:text-brand-link [&_a:hover]:text-brand-link [&_p]:mt-0 [&_p]:text-sm [&_p:last-child]:mb-0 [&>*]:my-0"
+	class="flex flex-col gap-4 [&_a]:underline [&_a]:decoration-brand-link [&_a]:underline-offset-4 [&_a:focus]:text-brand-link [&_a:hover]:text-brand-link [&_p]:my-0 [&_p]:text-sm [&>*]:my-0"
 >
 	<Card>
 		{#snippet heading()}
@@ -46,17 +46,18 @@
 		{#if ibanParts}
 			<p>{t('or_via_bank_transfer')}</p>
 
-			<p class="font-mono text-2xs">
-				<span>Sparkasse KoelnBonn</span>
-				<br />
+			<dl class="m-0 grid grid-cols-[auto_auto] items-baseline gap-x-3 gap-y-1.5 font-mono text-2xs">
+				<dt class="text-ink-muted uppercase tracking-label">{t('bank_label')}</dt>
+				<dd class="m-0">Sparkasse KoelnBonn</dd>
 
-				<span class="tabular-nums [&>span]:mr-[0.5ch]">
+				<dt class="text-ink-muted uppercase tracking-label">IBAN</dt>
+				<dd class="m-0 tabular-nums [&>span]:mr-[0.5ch]">
 					{#each ibanParts as part, partIndex (partIndex)}<span>{part}</span>{/each}
-				</span>
-				<br />
+				</dd>
 
-				<span>SWIFT-BIC: COLSDE33</span>
-			</p>
+				<dt class="text-ink-muted uppercase tracking-label">BIC</dt>
+				<dd class="m-0">COLSDE33</dd>
+			</dl>
 		{/if}
 	</Card>
 
