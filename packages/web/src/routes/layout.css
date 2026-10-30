@@ -117,8 +117,9 @@
 	--breakpoint-tablet: 787px;
 	--breakpoint-desktop: 1201px;
 
-	--font-sans: 'Figtree', 'Helvetica', 'Arial', sans-serif;
-	--font-serif: 'Bricolage Grotesque', 'Helvetica Neue', 'Arial', sans-serif;
+	--font-sans: 'Figtree', 'Figtree Fallback', 'Helvetica', 'Arial', sans-serif;
+	--font-serif:
+		'Bricolage Grotesque', 'Bricolage Grotesque Fallback', 'Helvetica Neue', 'Arial', sans-serif;
 
 	/* Type scale. Sizes are `rem` against a 16px root, so they respect the
 	   visitor's browser font size; `--text-base` resolves to the 21px body the

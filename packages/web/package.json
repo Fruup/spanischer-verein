@@ -17,6 +17,7 @@
 		"build-newsletter": "PUBLIC_RENDERING_NEWSLETTER=true bunx --bun vite build"
 	},
 	"devDependencies": {
+		"@capsizecss/metrics": "^4.4.0",
 		"@spanischer-verein/sanity": "../sanity",
 		"@sveltejs/adapter-auto": "^8.0.0",
 		"@sveltejs/adapter-static": "^4.0.0",

@@ -34,8 +34,8 @@
         "typescript": "^6.0.3",
       },
     },
-    "packages/web-v2": {
-      "name": "@spanischer-verein/web-v2",
+    "packages/web": {
+      "name": "@spanischer-verein/web",
       "version": "0.0.1",
       "dependencies": {
         "@hostinger/sdk": "^2.5.1",
@@ -59,6 +59,7 @@
         "vaul-svelte": "^1.0.0-next.7",
       },
       "devDependencies": {
+        "@capsizecss/metrics": "^4.4.0",
         "@spanischer-verein/sanity": "../sanity",
         "@sveltejs/adapter-auto": "^8.0.0",
         "@sveltejs/adapter-static": "^4.0.0",
@@ -324,6 +325,8 @@
     "@cacheable/memory": ["@cacheable/memory@2.2.0", "", { "dependencies": { "@cacheable/utils": "^2.5.0", "@keyv/bigmap": "^1.3.1", "hookified": "^1.15.1", "keyv": "^5.6.0" } }, "sha512-CTLKqLItRCEixEAewD3/j9DB3/o96gpTPD4eJ1v+DGOlxZRZncRQkGYqqnAGCscYd6RNeXfGeiuCphsPtqyIfQ=="],
 
     "@cacheable/utils": ["@cacheable/utils@2.5.0", "", { "dependencies": { "hashery": "^1.5.1", "keyv": "^5.6.0" } }, "sha512-buipgOVDkkPXNR5+xBpDw7Zk2n1EvU7qBJCNUcL7rhQ//kfpOXPAvQ511Os0vpLYJ1pZnvudNytkQt2hst3wqA=="],
+
+    "@capsizecss/metrics": ["@capsizecss/metrics@4.4.0", "", {}, "sha512-c2hY6gnHsHdt41zKv2RAbUM3v1m9TnBGKOWv0ksdScBMlwE5AdZPt+hjZEIziEiYUpdyytZ/ct07WqjzdBOIJw=="],
 
     "@codemirror/autocomplete": ["@codemirror/autocomplete@6.20.3", "", { "dependencies": { "@codemirror/language": "^6.0.0", "@codemirror/state": "^6.0.0", "@codemirror/view": "^6.17.0", "@lezer/common": "^1.0.0" } }, "sha512-tlosUqb+3BbxCxZdu4tKeRghPFC+QM7q4X5YhKV2eCmPG+1r2F3f4AaSz5sCrFqUtX4Jh20VFTKecl16MgiV9g=="],
 
@@ -825,7 +828,7 @@
 
     "@spanischer-verein/sanity": ["@spanischer-verein/sanity@workspace:packages/sanity"],
 
-    "@spanischer-verein/web-v2": ["@spanischer-verein/web-v2@workspace:packages/web-v2"],
+    "@spanischer-verein/web": ["@spanischer-verein/web@workspace:packages/web"],
 
     "@standard-schema/spec": ["@standard-schema/spec@1.1.0", "", {}, "sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w=="],
 
@@ -2325,9 +2328,9 @@
 
     "@sanity/workflow-engine/groq-js": ["groq-js@1.30.3", "", { "dependencies": { "debug": "^4.3.4" } }, "sha512-X3Zppy8KO/mDLSu5RylcO9zON+IwxV6y6aeIWsfNNBz0PaRboUmsTVgk3Zndqp9TgWCTFvCk+Z2W0uu0R3i5DA=="],
 
-    "@spanischer-verein/web-v2/@spanischer-verein/sanity": ["@spanischer-verein/sanity@file:packages/sanity", { "dependencies": { "@sanity/cli": "^8.16.0", "@sanity/hierarchical-document-list": "^4.0.6", "@sanity/icons": "^5.2.3", "@sanity/studio-secrets": "^4.0.21", "@sanity/ui": "^4.4.0", "@sanity/vision": "^6.18.0", "react": "^19.2.2", "react-dom": "^19.2.2", "sanity": "^6.18.0", "styled-components": "^6.1.15" }, "devDependencies": { "@portabletext/types": "^4.0.2", "@sanity/eslint-config-studio": "^7.0.0", "@types/react": "^19.2.2", "@types/react-dom": "^19.2.2", "eslint": "^10.12.0", "prettier": "^3.8.3", "typescript": "^6.0.3" } }],
+    "@spanischer-verein/web/@spanischer-verein/sanity": ["@spanischer-verein/sanity@file:packages/sanity", { "dependencies": { "@sanity/cli": "^8.16.0", "@sanity/hierarchical-document-list": "^4.0.6", "@sanity/icons": "^5.2.3", "@sanity/studio-secrets": "^4.0.21", "@sanity/ui": "^4.4.0", "@sanity/vision": "^6.18.0", "react": "^19.2.2", "react-dom": "^19.2.2", "sanity": "^6.18.0", "styled-components": "^6.1.15" }, "devDependencies": { "@portabletext/types": "^4.0.2", "@sanity/eslint-config-studio": "^7.0.0", "@types/react": "^19.2.2", "@types/react-dom": "^19.2.2", "eslint": "^10.12.0", "prettier": "^3.8.3", "typescript": "^6.0.3" } }],
 
-    "@spanischer-verein/web-v2/prettier-plugin-svelte": ["prettier-plugin-svelte@4.1.1", "", { "peerDependencies": { "prettier": "^3.0.0", "svelte": "^5.0.0" } }, "sha512-wXvbXMjSvb4C9ENWTHXyd+ihakKCsJ6rJhLP6/8HFNj4GkZr48jqL9PoKsl2sk7SyCZRTnJ7O2TTowUpOxP/KA=="],
+    "@spanischer-verein/web/prettier-plugin-svelte": ["prettier-plugin-svelte@4.1.1", "", { "peerDependencies": { "prettier": "^3.0.0", "svelte": "^5.0.0" } }, "sha512-wXvbXMjSvb4C9ENWTHXyd+ihakKCsJ6rJhLP6/8HFNj4GkZr48jqL9PoKsl2sk7SyCZRTnJ7O2TTowUpOxP/KA=="],
 
     "@sveltejs/vite-plugin-svelte/obug": ["obug@2.2.1", "", {}, "sha512-XrsrhT5sybtKI6wakr2SPOlGZWWYbUXZ7a0jT8/QOeAPau+1X/bSegNe5YR75oJmEZQbKningirmGOEJCIk61Q=="],
 
