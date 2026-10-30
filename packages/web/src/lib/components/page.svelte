@@ -8,6 +8,7 @@
 	import EventInfo, { type EventInfoSpec } from './event-info.svelte'
 	import BlockContent from './block-content/block-content.svelte'
 	import type { ContentApi } from '#lib/api/content-api.types.ts'
+	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
 		title: string
@@ -50,7 +51,7 @@
 				class="group inline-flex items-center gap-1.5 rounded text-xs text-ink-muted focus-ring transition-colors hover:text-brand"
 			>
 				<ArrowLeftIcon class="size-4 transition-transform group-hover:-translate-x-0.5" />
-				Alle Veranstaltungen
+				{t('all_events')}
 			</a>
 		</footer>
 	{/if}

@@ -7,6 +7,7 @@
 	import SocialLinks from '#lib/components/header/social-links.svelte'
 	import AdminLoginRoot from '#lib/auth/admin-login-root.svelte'
 	import SimpleAnalyticsBadge from '#lib/components/simple-analytics-badge.svelte'
+	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
 		imprintUrl: string | undefined
@@ -55,8 +56,7 @@
 				</div>
 
 				<p class="m-0 max-w-[32ch] text-xs leading-snug text-ink-muted max-tablet:text-center">
-					Spanischer Verein Köln — Centro Cultural Antonio Machado. Sprache, Kultur und Begegnung
-					mitten in Köln.
+					{t('footer_description')}
 				</p>
 
 				<div class="w-fit">
@@ -68,20 +68,22 @@
 
 			<!-- Navigation -->
 			<nav class="max-tablet:text-center">
-				<h2 class="m-0 mb-4 text-2xs font-bold tracking-label text-ink-muted uppercase">Links</h2>
+				<h2 class="m-0 mb-4 text-2xs font-bold tracking-label text-ink-muted uppercase">
+					{t('links')}
+				</h2>
 
 				<ul
 					class="m-0 flex list-none flex-col gap-2 p-0 [&_a]:rounded-sm [&_a]:focus-ring [&_a]:transition-colors [&_a:hover]:text-brand-link"
 				>
 					<!-- TODO(v2): make this configurable -->
-					<li><a href="/">Home</a></li>
+					<li><a href="/">{t('footer_home')}</a></li>
 
 					{#if imprintUrl}
-						<li><a href={imprintUrl}>Impressum</a></li>
+						<li><a href={imprintUrl}>{t('imprint')}</a></li>
 					{/if}
 
 					{#if privacyUrl}
-						<li><a href={privacyUrl}>Datenschutz</a></li>
+						<li><a href={privacyUrl}>{t('privacy')}</a></li>
 					{/if}
 				</ul>
 			</nav>
@@ -89,7 +91,7 @@
 			<!-- Supporters -->
 			<div class="max-desktop:col-span-2 max-tablet:col-span-1 max-tablet:text-center">
 				<h2 class="m-0 mb-4 text-2xs font-bold tracking-label text-ink-muted uppercase">
-					Unterstützer
+					{t('supporters')}
 				</h2>
 
 				<ul class="m-0 flex list-none flex-wrap items-center gap-3 p-0 max-tablet:justify-center">
@@ -118,12 +120,12 @@
 		<div
 			class="mt-12 flex flex-row flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-hairline pt-6 text-2xs text-ink-muted max-tablet:flex-col max-tablet:justify-center max-tablet:text-center"
 		>
-			<p class="m-0">© {year} Spanischer Verein Köln e.V.</p>
+			<p class="m-0">{t('footer_copyright', { year })}</p>
 
 			<SimpleAnalyticsBadge />
 
 			<p class="m-0">
-				Entwickelt von <a
+				{t('developed_by')} <a
 					href="https://leonscherer.com/"
 					target="_blank"
 					class="rounded-sm underline decoration-brand-link decoration-2 underline-offset-4 focus-ring transition-colors hover:text-brand-link"

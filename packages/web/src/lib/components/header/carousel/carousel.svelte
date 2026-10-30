@@ -4,6 +4,7 @@
 	import { useInterval, watch } from 'runed'
 	import type { ClassValue } from 'svelte/elements'
 	import { ChevronLeftIcon } from '@lucide/svelte'
+	import { t } from '#lib/messages/index.ts'
 
 	let {
 		children,
@@ -114,7 +115,7 @@
 		-->
 		<div class="flex w-fit items-center gap-0.5">
 			<button
-				aria-label="Vorheriges Highlight anzeigen"
+				aria-label={t('carousel_prev')}
 				type="button"
 				onclick={() => {
 					prev()
@@ -131,7 +132,7 @@
 
 				<button
 					bind:this={buttons[index]}
-					aria-label="Highlight {index + 1} von {numItems} anzeigen"
+					aria-label={t('carousel_dot', { index: index + 1, numItems })}
 					aria-current={current ? 'true' : undefined}
 					type="button"
 					onclick={() => {
@@ -151,7 +152,7 @@
 			{/each}
 
 			<button
-				aria-label="Nächstes Highlight anzeigen"
+				aria-label={t('carousel_next')}
 				type="button"
 				onclick={() => {
 					next()

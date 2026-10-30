@@ -8,6 +8,7 @@
 	import type { ClassValue } from 'svelte/elements'
 	import { insertWordBreaks } from '#lib/helpers/insert-word-breaks.ts'
 	import type { ContentApi } from '#lib/api/content-api.types.ts'
+	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
 		event: ContentApi.Event
@@ -73,14 +74,14 @@
 					'transition-opacity group-hover:opacity-50',
 				]}
 			>
-				Veranstaltung
+				{t('event_badge')}
 			</div>
 		{/if}
 
 		{#if event.mainImage?.url}
 			<img
 				src={event.mainImage?.url}
-				alt="Title image for an event called '{event.title}'"
+				alt={t('event_card_image_alt', { title: event.title })}
 				style:background-color={backgroundColor}
 				class={[
 					'm-0 transition-[scale]',
@@ -133,7 +134,7 @@
 
 		<div class={['flex grow items-end', horizontal && 'pt-1']}>
 			<div class="flex items-center gap-1.5 text-xs text-nowrap text-brand group-hover:underline">
-				<span>Mehr erfahren</span>
+				<span>{t('learn_more')}</span>
 				<ArrowRightIcon class="size-4" />
 			</div>
 		</div>

@@ -1,5 +1,7 @@
 import { escapeHtml, highlightBox, paragraph, link, renderEmailLayout } from './layout'
 import { ORIGIN } from '$app/env/private'
+import type { Locale } from '#lib/locale/index.ts'
+import { t } from '#lib/messages/index.ts'
 
 export function generateNewsletterRegistrationRequestHtml(mail: string) {
 	return renderEmailLayout({
@@ -12,16 +14,17 @@ export function generateNewsletterRegistrationRequestHtml(mail: string) {
 	})
 }
 
-export function generateNewsletterRegistrationConfirmationHtml(token: string) {
+export function generateNewsletterRegistrationConfirmationHtml(token: string, locale: Locale) {
 	const linkUrl = url(`/newsletter/register?token=${escapeHtml(token)}`)
 
 	return renderEmailLayout({
-		title: 'Newsletter-Anmeldung',
+		title: t('newsletter_registration_title', undefined, locale),
 		preheader: ``,
-		heading: 'Newsletter-Anmeldung Spanischer Verein',
-		intro: paragraph('Klicke diesen Link, um dich zu unserem Newsletter anzumelden:'),
-		highlight: highlightBox(`${link(linkUrl, 'Zum Newsletter anmelden')}`),
+		heading: t('email_confirm_heading', undefined, locale),
+		intro: paragraph(t('email_confirm_intro', undefined, locale)),
+		highlight: highlightBox(`${link(linkUrl, t('email_confirm_link_text', undefined, locale))}`),
 		footerNote: '',
+		lang: locale,
 	})
 }
 

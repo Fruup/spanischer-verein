@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cn } from '#lib/utils.js'
+	import { t } from '#lib/messages/index.ts'
 
 	import IconBurger from '../icons/icon-burger.svelte'
 	import IconCalendar from '../icons/icon-calendar.svelte'
@@ -23,7 +24,7 @@
 	<button
 		class="size-10 border-none bg-brand text-base text-brand-contrast focus-ring transition-colors hover:bg-brand-hover"
 		onclick={() => (isCalendarOpen = !isCalendarOpen)}
-		title="Öffne Kalender"
+		title={t('open_calendar')}
 	>
 		<IconCalendar />
 	</button>
@@ -31,7 +32,7 @@
 	<button
 		class="size-10 border-none bg-surface-raised text-base text-brand-link focus-ring transition-colors hover:bg-surface-1"
 		onclick={() => (isFlyoutOpen = !isFlyoutOpen)}
-		title="Öffne Navigation"
+		title={t('open_navigation')}
 	>
 		<IconBurger />
 	</button>

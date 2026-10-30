@@ -12,6 +12,7 @@
 	import type { Component, Snippet } from 'svelte'
 	import type { ClassValue } from 'svelte/elements'
 	import { locale } from '#lib/locale/state.svelte.ts'
+	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
 		eventInfo: EventInfoSpec
@@ -39,6 +40,7 @@
 	)
 
 	const date = $derived(eventTime ? new Date(eventTime) : undefined)
+	const timeSuffix = $derived(t('time_suffix'))
 </script>
 
 <!--
@@ -74,15 +76,15 @@
 		]}
 	>
 		{#if date}
-			{@render row(CalendarClockIcon, 'Termin', dateValue)}
+			{@render row(CalendarClockIcon, t('date_label'), dateValue)}
 		{/if}
 
 		{#if location}
-			{@render row(MapPinIcon, 'Ort', locationValue)}
+			{@render row(MapPinIcon, t('location_label'), locationValue)}
 		{/if}
 
 		{#if admission}
-			{@render row(TicketIcon, 'Eintritt', admissionValue)}
+			{@render row(TicketIcon, t('admission_label'), admissionValue)}
 		{/if}
 	</dl>
 {/if}
@@ -90,7 +92,7 @@
 {#snippet dateValue()}
 	{#if date}
 		<time datetime={date.toISOString()}>
-			{dateFormatter.format(date)} · {timeFormatter.format(date)} Uhr
+			{dateFormatter.format(date)} · {timeFormatter.format(date)}{timeSuffix ? ` ${timeSuffix}` : ''}
 		</time>
 	{/if}
 {/snippet}

@@ -6,6 +6,7 @@
 	import { ChevronLeftIcon, ChevronRightIcon } from '@lucide/svelte'
 	import { Debounced } from 'runed'
 	import { locale } from '#lib/locale/state.svelte.ts'
+	import { t } from '#lib/messages/index.ts'
 
 	const wrap = <T,>(promise: Promise<T>) => {
 		let current = $state<T>()
@@ -61,7 +62,7 @@
 	type="single"
 	fixedWeeks
 	locale={locale.current}
-	calendarLabel="Veranstaltungskalender"
+	calendarLabel={t('event_calendar_label')}
 	weekStartsOn={1}
 	bind:placeholder
 	data-event-calendar

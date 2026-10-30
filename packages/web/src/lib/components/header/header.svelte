@@ -17,6 +17,7 @@
 	import { isMainPage } from './helpers.svelte'
 	import { slide } from 'svelte/transition'
 	import LocaleSelector from '#lib/locale/locale-selector.svelte'
+	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
 		items: ContentApi.NavigationItem[]
@@ -29,7 +30,7 @@
 	const items: ContentApi.NavigationItem[] = $derived([
 		{
 			_key: 'home',
-			title: 'Startseite',
+			title: t('nav_home'),
 			href: '/',
 		},
 		..._items,

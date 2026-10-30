@@ -2,6 +2,7 @@
 	import * as NavigationMenu from '../ui/navigation-menu'
 	import type { NavigationItem } from './types'
 	import { page } from '$app/state'
+	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
 		navigationItem: NavigationItem
@@ -33,7 +34,7 @@
 						active={page.url.pathname === navigationItem.href}
 						class="rounded-base px-2 py-1 text-sm focus-ring transition-colors hover:bg-edge-subtle"
 					>
-						Übersicht
+						{t('overview')}
 					</NavigationMenu.Link>
 				</li>
 

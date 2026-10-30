@@ -9,6 +9,7 @@
 	import { subscribeToNewsletter } from '#lib/mailer/newsletter.remote.js'
 	import Input from '#lib/components/ui/input/input.svelte'
 	import { CircleCheckIcon, SendIcon } from '@lucide/svelte'
+	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
 		privacyUrl: string | undefined
@@ -34,7 +35,7 @@
 				// toast.success('🎉 Deine Anmeldung ist eingegangen. Vielen Dank!', { id, duration: 5000 })
 				success = true
 			} else {
-				toast.error('Da ist etwas schiefgegangen...\nVersuche es später erneut.', {
+				toast.error(t('newsletter_generic_error'), {
 					// id,
 					duration: 5000,
 				})
@@ -45,7 +46,7 @@
 		<Input
 			{...subscribeToNewsletter.fields.email.as('email')}
 			class="h-10 w-full rounded-base border border-edge bg-surface-0 px-3 text-sm text-ink focus-ring transition-colors placeholder:text-ink-muted hover:border-brand/60 focus-visible:border-brand"
-			placeholder="Deine Email..."
+			placeholder={t('email_placeholder')}
 			disabled={success || !!subscribeToNewsletter.pending}
 		/>
 
@@ -64,17 +65,17 @@
 					/>
 
 					<label for="acceptPrivacy" class="leading-snug hyphens-auto">
-						Ich möchte den Newsletter erhalten und akzeptiere die
+						{t('newsletter_consent')}
 						{#if privacyUrl}
-							<a href={privacyUrl} target="_blank">Datenschutzrichtlinien</a>.
+							<a href={privacyUrl} target="_blank">{t('privacy_policy_link_text')}</a>.
 						{:else}
-							Datenschutzrichtlinien.
+							{t('privacy_policy_link_text')}.
 						{/if}
 					</label>
 				</div>
 
 				<Button size="sm" type="submit" disabled={success || !!subscribeToNewsletter.pending}>
-					Absenden <SendIcon />
+					{t('submit')} <SendIcon />
 				</Button>
 			</div>
 		{/if}
@@ -83,12 +84,11 @@
 	{#if success}
 		<div in:slide={{ axis: 'y' }} class="space-y-1 *:text-xs! *:leading-snug">
 			<p class="font-semibold">
-				Perfekt!
+				{t('perfect')}
 				<CircleCheckIcon class="text-success inline size-4" />
 			</p>
 			<p>
-				Wir haben einen Anmeldungslink an deine Email geschickt. Bitte klicke darauf, um deine
-				Anmeldung zu betätigen.
+				{t('newsletter_success_description')}
 			</p>
 		</div>
 	{/if}

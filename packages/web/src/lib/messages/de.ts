@@ -1,3 +1,90 @@
 export const de = {
 	calendar: 'Kalender',
+	calendar_description: 'Finde passende Veranstaltungen',
+	get_involved: 'Mitmachen',
+	get_involved_description: 'Du willst uns unterstützen oder dich selbst einbringen?',
+	event_calendar_label: 'Veranstaltungskalender',
+
+	nav_home: 'Startseite',
+	overview: 'Übersicht',
+	navigation_label: 'Navigation',
+	open_calendar: 'Öffne Kalender',
+	open_navigation: 'Öffne Navigation',
+	language_selection: 'Sprachauswahl',
+
+	event_badge: 'Veranstaltung',
+	past: 'Vergangen',
+	all_events: 'Alle Veranstaltungen',
+	learn_more: 'Mehr erfahren',
+	event_card_image_alt: "Titelbild für eine Veranstaltung namens '{title}'",
+	event_hero_image_alt: 'Titelbild der Veranstaltung „{title}“',
+	date_label: 'Termin',
+	location_label: 'Ort',
+	admission_label: 'Eintritt',
+	time_suffix: 'Uhr',
+
+	hero_title_line1: 'Spanische Kultur,',
+	hero_title_line2: 'mitten in Köln',
+	hero_description:
+		'Tanz, Kino, Küche und Sprache – wir bringen Spanierinnen, Spanier und alle Freunde Spaniens zusammen! Hier findest du unsere nächsten Termine und Neuigkeiten aus dem Verein.',
+	view_upcoming_events: 'Anstehende Termine ansehen',
+	about_us: 'Über uns',
+
+	events_heading: 'Veranstaltungen & Infos',
+	load_more: 'Mehr laden',
+	no_more_events: 'Keine weiteren Veranstaltungen.',
+
+	error_not_found: 'Der Inhalt konnte leider nicht gefunden werden... 😢',
+	error_invalid_parameters: 'Die Anfrage war fehlerhaft... 😢',
+	error_send_email_failed: 'Die E-Mail konnte nicht gesendet werden... 😢',
+	error_unknown: 'Ein unbekannter Fehler ist aufgetreten...',
+	back: 'Zurück',
+
+	footer_description:
+		'Spanischer Verein Köln — Centro Cultural Antonio Machado. Sprache, Kultur und Begegnung mitten in Köln.',
+	links: 'Links',
+	footer_home: 'Home',
+	imprint: 'Impressum',
+	privacy: 'Datenschutz',
+	supporters: 'Unterstützer',
+	footer_copyright: '© {year} Spanischer Verein Köln e.V.',
+	developed_by: 'Entwickelt von',
+
+	support_us_heading: 'Du möchtest den Verein und unsere Arbeit finanziell unterstützen?',
+	donation_intro: 'Wir freuen uns über jede Spende!',
+	donate_via_paypal: 'Spenden via PayPal',
+	or_via_bank_transfer: 'Oder per Überweisung an:',
+	stay_updated_heading: 'Du möchtest über unsere Angebote auf dem Laufenden bleiben?',
+	newsletter_signup_intro: 'Melde dich zu unserem Newsletter an!',
+	offer_course_heading: 'Du möchtest selbst einen Kurs oder ein Event anbieten?',
+	write_us_mail: "Schreib uns 'ne Mail!",
+
+	email_placeholder: 'Deine Email...',
+	newsletter_generic_error: 'Da ist etwas schiefgegangen...\nVersuche es später erneut.',
+	newsletter_consent: 'Ich möchte den Newsletter erhalten und akzeptiere die',
+	privacy_policy_link_text: 'Datenschutzrichtlinien',
+	submit: 'Absenden',
+	perfect: 'Perfekt!',
+	newsletter_success_description:
+		'Wir haben einen Anmeldungslink an deine Email geschickt. Bitte klicke darauf, um deine Anmeldung zu betätigen.',
+
+	newsletter_registration_title: 'Newsletter-Anmeldung',
+	newsletter_confirmed_thanks_1: 'Vielen Dank!',
+	newsletter_confirmed_thanks_2: 'Wir fügen Dich gerne zu unserer Liste hinzu 😊',
+	newsletter_error_heading: 'Da ist etwas schiefgegangen... 😕',
+	newsletter_error_retry_1: 'Versuche es bitte später erneut,',
+	newsletter_error_retry_2: "oder schreib' uns eine Mail an",
+	back_to_home: 'Zurück zur Startseite',
+
+	carousel_prev: 'Vorheriges Highlight anzeigen',
+	carousel_next: 'Nächstes Highlight anzeigen',
+	carousel_dot: 'Highlight {index} von {numItems} anzeigen',
+
+	invalid_email: 'Ungültige E-Mail-Adresse',
+	newsletter_privacy_required: 'Bitte akzeptiere die Datenschutzrichtlinien.',
+	newsletter_send_failed: 'Fehler beim Senden der Email.',
+
+	email_confirm_heading: 'Newsletter-Anmeldung Spanischer Verein',
+	email_confirm_intro: 'Klicke diesen Link, um dich zu unserem Newsletter anzumelden:',
+	email_confirm_link_text: 'Zum Newsletter anmelden',
 } as const

@@ -21,6 +21,7 @@
 	import MobileMenuTree from './mobile-menu-tree.svelte'
 	import { MOBILE_MENU_CONTEXT, type MobileMenuContext } from './context'
 	import type { NavigationItem } from './types'
+	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
 		items: NavigationItem[]
@@ -42,7 +43,7 @@
 	<Drawer.Content class="rounded-t-panel border-t border-edge-subtle shadow-floating">
 		<nav class="flex w-full flex-col gap-4 overflow-auto p-6">
 			<Drawer.Header class="flex items-center justify-between p-0">
-				<Drawer.Title class="m-0 text-md">Navigation</Drawer.Title>
+				<Drawer.Title class="m-0 text-md">{t('navigation_label')}</Drawer.Title>
 			</Drawer.Header>
 
 			<ul class="m-0 flex flex-col gap-2 p-0">

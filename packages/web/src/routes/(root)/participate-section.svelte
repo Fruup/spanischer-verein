@@ -4,6 +4,7 @@
 
 	import Card from './card.svelte'
 	import NewsletterForm from './newsletter-form.svelte'
+	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
 		mail: string
@@ -36,16 +37,16 @@
 >
 	<Card>
 		{#snippet heading()}
-			Du möchtest den Verein und unsere Arbeit finanziell unterstützen?
+			{t('support_us_heading')}
 		{/snippet}
 
-		<p>Wir freuen uns über jede Spende!</p>
+		<p>{t('donation_intro')}</p>
 
-		<!-- <CallToAction href={donationLink}>Spenden via PayPal</CallToAction> -->
-		<Button href={donationLink} target="_blank">Spenden via PayPal</Button>
+		<!-- <CallToAction href={donationLink}>{t('donate_via_paypal')}</CallToAction> -->
+		<Button href={donationLink} target="_blank">{t('donate_via_paypal')}</Button>
 
 		{#if ibanParts}
-			<p>Oder per Überweisung an:</p>
+			<p>{t('or_via_bank_transfer')}</p>
 
 			<p class="font-mono text-2xs">
 				<span>Sparkasse KoelnBonn</span>
@@ -63,10 +64,10 @@
 
 	<Card>
 		{#snippet heading()}
-			Du möchtest über unsere Angebote auf dem Laufenden bleiben?
+			{t('stay_updated_heading')}
 		{/snippet}
 
-		<p>Melde dich zu unserem Newsletter an!</p>
+		<p>{t('newsletter_signup_intro')}</p>
 
 		<NewsletterForm {privacyUrl} />
 	</Card>
@@ -74,11 +75,11 @@
 	{#if mail}
 		<Card>
 			{#snippet heading()}
-				Du möchtest selbst einen Kurs oder ein Event anbieten?
+				{t('offer_course_heading')}
 			{/snippet}
 
 			<p>
-				Schreib uns 'ne Mail! <a href="mailto:{mail}"> {mail} </a>
+				{t('write_us_mail')} <a href="mailto:{mail}"> {mail} </a>
 			</p>
 		</Card>
 	{/if}

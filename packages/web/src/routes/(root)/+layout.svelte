@@ -101,7 +101,7 @@
 					{t('calendar')}
 
 					{#snippet description()}
-						Finde passende Veranstaltungen
+						{t('calendar_description')}
 					{/snippet}
 				</SidebarHeading>
 
@@ -111,10 +111,10 @@
 			<!-- <MobileCalendar {events} /> -->
 			<div class="mt-4">
 				<SidebarHeading icon={UsersIcon}>
-					Mitmachen
+					{t('get_involved')}
 
 					{#snippet description()}
-						Du willst uns unterstützen oder dich selbst einbringen?
+						{t('get_involved_description')}
 					{/snippet}
 				</SidebarHeading>
 

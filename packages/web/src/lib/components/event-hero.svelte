@@ -2,6 +2,7 @@
 	import { ArrowLeftIcon } from '@lucide/svelte'
 	import { DateFormatter } from '@internationalized/date'
 	import { locale } from '#lib/locale/state.svelte.ts'
+	import { t } from '#lib/messages/index.ts'
 	import type { ContentApi } from '#lib/api/content-api.types.ts'
 
 	interface Props {
@@ -19,8 +20,10 @@
 		time = undefined,
 		image = undefined,
 		backHref = undefined,
-		backLabel = 'Alle Veranstaltungen',
+		backLabel = undefined,
 	}: Props = $props()
+
+	const label = $derived(backLabel ?? t('all_events'))
 
 	const date = $derived(time ? new Date(time) : undefined)
 
@@ -55,7 +58,7 @@
 			class="group mb-6 inline-flex items-center gap-1.5 rounded text-xs text-ink-muted focus-ring transition-colors hover:text-brand"
 		>
 			<ArrowLeftIcon class="size-4 transition-transform group-hover:-translate-x-0.5" />
-			{backLabel}
+			{label}
 		</a>
 	{/if}
 
@@ -79,7 +82,7 @@
 
 			<img
 				src={image.url}
-				alt="Titelbild der Veranstaltung „{title}“"
+				alt={t('event_hero_image_alt', { title })}
 				width={image.width}
 				height={image.height}
 				class="relative m-px max-h-[32rem] w-auto max-w-full object-contain"
@@ -102,7 +105,7 @@
 						isPast ? 'bg-background/90 text-ink-muted' : 'bg-brand/90 text-brand-contrast',
 					]}
 				>
-					{isPast ? 'Vergangen' : 'Veranstaltung'}
+					{isPast ? t('past') : t('event_badge')}
 				</span>
 			{/if}
 		</div>

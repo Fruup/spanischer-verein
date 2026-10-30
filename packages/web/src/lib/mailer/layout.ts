@@ -36,6 +36,7 @@ export function renderEmailLayout({
 	highlight,
 	note,
 	footerNote,
+	lang = 'de',
 }: {
 	title: string
 	/** Inbox preview line. Hidden inside the body. */
@@ -48,9 +49,10 @@ export function renderEmailLayout({
 	/** Optional small line under the highlight. */
 	note?: string
 	footerNote: string
+	lang?: string
 }) {
 	return `<!doctype html>
-<html lang="de">
+<html lang="${lang}">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />

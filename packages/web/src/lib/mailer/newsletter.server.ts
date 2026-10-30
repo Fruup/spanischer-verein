@@ -7,6 +7,8 @@ import {
 import { mailer } from '.'
 import z from 'zod'
 import { createRateLimiter } from '#lib/auth/rate-limit.ts'
+import type { Locale } from '#lib/locale/index.ts'
+import { t } from '#lib/messages/index.ts'
 
 const MAX_TOKEN_AGE_MS = 1 * 60 * 60 * 1000
 
@@ -14,16 +16,16 @@ interface StoredToken {
 	mail: string
 }
 
-export const sendNewsletterRegistrationConfirmationLink = async (mail: string) => {
+export const sendNewsletterRegistrationConfirmationLink = async (mail: string, locale: Locale) => {
 	rateLimit({})
 
 	const token = crypto.randomUUID()
 	cache.set(`token:${token}`, { mail } satisfies StoredToken, MAX_TOKEN_AGE_MS)
 
 	await mailer.send({
-		html: generateNewsletterRegistrationConfirmationHtml(token),
+		html: generateNewsletterRegistrationConfirmationHtml(token, locale),
 		to: mail,
-		subject: 'Newsletter-Anmeldung Spanischer Verein',
+		subject: t('email_confirm_heading', undefined, locale),
 	})
 }
 

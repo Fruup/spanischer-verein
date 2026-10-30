@@ -1,3 +1,90 @@
 export const es = {
 	calendar: 'Calendario',
+	calendar_description: 'Encuentra eventos que te interesen',
+	get_involved: 'Participa',
+	get_involved_description: '¿Quieres apoyarnos o colaborar tú mismo?',
+	event_calendar_label: 'Calendario de eventos',
+
+	nav_home: 'Inicio',
+	overview: 'Resumen',
+	navigation_label: 'Navegación',
+	open_calendar: 'Abrir calendario',
+	open_navigation: 'Abrir navegación',
+	language_selection: 'Selección de idioma',
+
+	event_badge: 'Evento',
+	past: 'Pasado',
+	all_events: 'Todos los eventos',
+	learn_more: 'Más información',
+	event_card_image_alt: "Imagen del evento '{title}'",
+	event_hero_image_alt: 'Imagen del evento «{title}»',
+	date_label: 'Fecha',
+	location_label: 'Lugar',
+	admission_label: 'Entrada',
+	time_suffix: '',
+
+	hero_title_line1: 'Cultura española,',
+	hero_title_line2: 'en el corazón de Colonia',
+	hero_description:
+		'Baile, cine, cocina e idioma: ¡unimos a españoles y a todos los amigos de España! Aquí encontrarás nuestras próximas fechas y noticias de la asociación.',
+	view_upcoming_events: 'Ver próximos eventos',
+	about_us: 'Sobre nosotros',
+
+	events_heading: 'Eventos e información',
+	load_more: 'Cargar más',
+	no_more_events: 'No hay más eventos.',
+
+	error_not_found: 'El contenido no se pudo encontrar... 😢',
+	error_invalid_parameters: 'La solicitud era incorrecta... 😢',
+	error_send_email_failed: 'No se pudo enviar el correo electrónico... 😢',
+	error_unknown: 'Se ha producido un error desconocido...',
+	back: 'Volver',
+
+	footer_description:
+		'Spanischer Verein Köln — Centro Cultural Antonio Machado. Idioma, cultura y encuentro en el corazón de Colonia.',
+	links: 'Enlaces',
+	footer_home: 'Inicio',
+	imprint: 'Aviso legal',
+	privacy: 'Privacidad',
+	supporters: 'Colaboradores',
+	footer_copyright: '© {year} Spanischer Verein Köln e.V.',
+	developed_by: 'Desarrollado por',
+
+	support_us_heading: '¿Quieres apoyar económicamente a la asociación y nuestro trabajo?',
+	donation_intro: '¡Agradecemos cualquier donación!',
+	donate_via_paypal: 'Donar vía PayPal',
+	or_via_bank_transfer: 'O por transferencia bancaria a:',
+	stay_updated_heading: '¿Quieres estar al día de nuestras actividades?',
+	newsletter_signup_intro: '¡Suscríbete a nuestro boletín!',
+	offer_course_heading: '¿Quieres ofrecer tú mismo un curso o un evento?',
+	write_us_mail: '¡Escríbenos un correo!',
+
+	email_placeholder: 'Tu correo electrónico...',
+	newsletter_generic_error: 'Algo salió mal...\nInténtalo de nuevo más tarde.',
+	newsletter_consent: 'Quiero recibir el boletín y acepto la',
+	privacy_policy_link_text: 'política de privacidad',
+	submit: 'Enviar',
+	perfect: '¡Perfecto!',
+	newsletter_success_description:
+		'Te hemos enviado un enlace de confirmación a tu correo electrónico. Haz clic en él para confirmar tu suscripción.',
+
+	newsletter_registration_title: 'Suscripción al boletín',
+	newsletter_confirmed_thanks_1: '¡Muchas gracias!',
+	newsletter_confirmed_thanks_2: 'Con gusto te añadimos a nuestra lista 😊',
+	newsletter_error_heading: 'Algo salió mal... 😕',
+	newsletter_error_retry_1: 'Por favor, inténtalo de nuevo más tarde,',
+	newsletter_error_retry_2: 'o escríbenos un correo a',
+	back_to_home: 'Volver al inicio',
+
+	carousel_prev: 'Mostrar destacado anterior',
+	carousel_next: 'Mostrar siguiente destacado',
+	carousel_dot: 'Mostrar destacado {index} de {numItems}',
+
+	invalid_email: 'Dirección de correo electrónico no válida',
+	newsletter_privacy_required: 'Por favor, acepta la política de privacidad.',
+	newsletter_send_failed: 'Error al enviar el correo electrónico.',
+
+	email_confirm_heading: 'Suscripción al boletín Spanischer Verein',
+	email_confirm_intro: 'Haz clic en este enlace para suscribirte a nuestro boletín:',
+	email_confirm_link_text: 'Suscribirme al boletín',
 } as const

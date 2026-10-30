@@ -16,6 +16,7 @@
 	import EventCalendar from '#lib/components/event-calendar/event-calendar.svelte'
 	import type { EventCalendarItem } from '#lib/components/event-calendar/helpers.js'
 	import * as Drawer from '#lib/components/ui/drawer/index.js'
+	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
 		events: EventCalendarItem[]
@@ -29,8 +30,8 @@
 		class="items-center rounded-t-panel border-t border-edge-subtle pb-6 shadow-floating"
 	>
 		<Drawer.Header class="sr-only">
-			<Drawer.Title>Kalender</Drawer.Title>
-			<Drawer.Description>Veranstaltungskalender</Drawer.Description>
+			<Drawer.Title>{t('calendar')}</Drawer.Title>
+			<Drawer.Description>{t('event_calendar_label')}</Drawer.Description>
 		</Drawer.Header>
 
 		<!-- Inside the drawer the calendar sits on the drawer's own surface. -->

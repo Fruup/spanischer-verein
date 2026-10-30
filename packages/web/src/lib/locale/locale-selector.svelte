@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { locales, type Locale } from '.'
 	import { locale } from './state.svelte'
+	import { t } from '#lib/messages/index.ts'
 
 	const get = () => locale.current
 
@@ -15,7 +16,7 @@
 	}
 </script>
 
-<div role="radiogroup" class="flex items-center divide-x text-xs" title="Sprachauswahl">
+<div role="radiogroup" class="flex items-center divide-x text-xs" title={t('language_selection')}>
 	{#each locales as locale}
 		{@const active = locale === get()}
 
