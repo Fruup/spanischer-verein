@@ -9,9 +9,8 @@
 	import SiteLogo from './site-logo.svelte'
 	import HeaderNav from './header-nav.svelte'
 	import SocialLinks from './social-links.svelte'
-	import ThemeToggle from '../theme-toggle.svelte'
-	import type { NavigationItem } from './types'
-	import type { SanityImageWithMeta } from '#lib/sanity/types.ts'
+	import type { ContentApi } from '#lib/api/content-api.types.ts'
+	import type { SanityImageWithMeta } from '#lib/api/sanity/types.ts'
 	import Carousel from './carousel/carousel.svelte'
 	import CarouselItem from './carousel/carousel-item.svelte'
 	import EventCard from '../event-card.svelte'
@@ -20,15 +19,16 @@
 	import LocaleSelector from '#lib/locale/locale-selector.svelte'
 
 	interface Props {
-		items: NavigationItem[]
+		items: ContentApi.NavigationItem[]
 		headerImages: SanityImageWithMeta[]
 		highlightedEvents: any[] // TODO: type
 	}
 
 	let { items: _items, headerImages, highlightedEvents }: Props = $props()
 
-	const items: NavigationItem[] = $derived([
+	const items: ContentApi.NavigationItem[] = $derived([
 		{
+			_key: 'home',
 			title: 'Startseite',
 			href: '/',
 		},

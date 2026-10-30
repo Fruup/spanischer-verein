@@ -1,26 +1,26 @@
 <script lang="ts">
-	import type { InputValue } from '@portabletext/svelte'
 	import { ArrowLeftIcon } from '@lucide/svelte'
 	import { fly } from 'svelte/transition'
 
 	import { duration, motion } from '#lib/helpers/motion.js'
 
-	import EventHero, { type HeroImageSpec } from './event-hero.svelte'
+	import EventHero from './event-hero.svelte'
 	import EventInfo, { type EventInfoSpec } from './event-info.svelte'
 	import BlockContent from './block-content/block-content.svelte'
+	import type { ContentApi } from '#lib/api/content-api.types.ts'
 
 	interface Props {
 		title: string
-		body: InputValue
+		content: ContentApi.Content
 		eventInfo?: EventInfoSpec | undefined
-		image?: HeroImageSpec | undefined
+		image?: ContentApi.Image | undefined
 		/** Shown as a back link above and below the article. */
 		backHref?: string | undefined
 	}
 
 	let {
 		title,
-		body,
+		content,
 		eventInfo = undefined,
 		image = undefined,
 		backHref = undefined,
@@ -37,7 +37,11 @@
 		<EventInfo {eventInfo} />
 	{/if}
 
-	<BlockContent {body} />
+	{#if content.type === 'sanity'}
+		<BlockContent body={content.value} />
+		<!-- TODO:  -->
+		<!-- {:else if content.type === 'tiptap'} -->
+	{/if}
 
 	{#if backHref}
 		<footer class="mt-12 border-t border-hairline pt-6">

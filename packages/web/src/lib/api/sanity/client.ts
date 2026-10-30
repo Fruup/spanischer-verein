@@ -2,20 +2,18 @@ import { create as createCache } from 'flat-cache'
 import { createClient } from '@sanity/client'
 import type { EventSchema } from '@spanischer-verein/sanity/schemas/event'
 import { createImageUrlBuilder, type SanityImageSource } from '@sanity/image-url'
-import type { PortableTextMarkDefinition } from '@portabletext/types'
+import type { PortableTextBlock, PortableTextMarkDefinition } from '@portabletext/types'
 import type { PageSchema } from '@spanischer-verein/sanity/schemas/page'
 import type { SiteSettingsSchema } from '@spanischer-verein/sanity/schemas/siteSettings'
-import type { NavigationItem } from '#lib/components/header/types.js'
+import type { ContentApi, IContentApi } from '#lib/api/content-api.types.ts'
 import { ENABLE_CACHE, SANITY_DATASET, SANITY_PERSPECTIVE, SANITY_TOKEN } from '$app/env/private'
 import { CalendarDateTime } from '@internationalized/date'
-import type { SanityImageWithMeta } from './types'
 import { dev } from '$app/env'
 
 export const sanityClient = createClient({
 	apiVersion: 'v2022-03-07',
 	projectId: '6a1nd7zb',
-	// perspective: (SANITY_PERSPECTIVE as any) || (import.meta.env.PROD ? 'published' : 'drafts'),
-	perspective: 'published',
+	perspective: (SANITY_PERSPECTIVE as any) || (import.meta.env.PROD ? 'published' : 'drafts'),
 	apiHost: 'https://api.sanity.io',
 	dataset: SANITY_DATASET || (import.meta.env.PROD ? 'production' : 'development'),
 	useCdn: import.meta.env.PROD,
@@ -29,12 +27,16 @@ const cache = ENABLE_CACHE
 	: null
 
 export const sanityApi = {
+	/**
+	 * Includes the previous and next month.
+	 * TODO: it shouldn't. client should store already requested months and just append
+	 */
 	async getEventsOverview(options: { year: number; month: number }) {
 		interface Result extends Pick<
 			EventSchema,
 			'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'
 		> {
-			mainImage: SanityImageSource
+			mainImage: SanityImageSource | null
 			slug: string
 			mainImageMeta: {
 				prominentColor: string
@@ -50,8 +52,8 @@ export const sanityApi = {
 		const cached = cache?.get<typeof transformed>(cacheKey)
 		if (cached) return cached
 
-		const from = new CalendarDateTime(options.year, options.month, 1)
-		const to = from.copy().add({ months: 1 })
+		const from = new CalendarDateTime(options.year, options.month, 1).subtract({ months: 1 })
+		const to = from.copy().add({ months: 3 })
 
 		const timeZone = 'Europe/Berlin'
 
@@ -82,11 +84,24 @@ export const sanityApi = {
 			},
 		)
 
-		const transformed = events.map((event) => ({
-			...event,
-			imageUrl:
-				event.mainImage &&
-				imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
+		const transformed = events.map<ContentApi.Event>((event) => ({
+			title: event.title,
+			slug: event.slug,
+			eventTime: event.eventTime,
+			eventLocation: event.eventLocation,
+			eventAdmission: event.eventAdmission,
+			mainImage: event.mainImage
+				? {
+						url: imageUrlBuilder
+							.image(event.mainImage)
+							.width(512)
+							.crop('focalpoint')
+							.format('webp')
+							.url(),
+						prominentColor: event.mainImageMeta.prominentColor,
+						...event.mainImageMeta.dimensions,
+					}
+				: undefined,
 		}))
 
 		// Cache the result
@@ -113,7 +128,7 @@ export const sanityApi = {
 
 		// Check for cached value
 		const cacheKey = `sanity:getCurrentEventsOverview:${pageIndex}`
-		const cached = cache?.get<typeof result>(cacheKey)
+		const cached = cache?.get<{ events: ContentApi.Event[]; hasMore: boolean }>(cacheKey)
 		if (cached) return cached
 
 		const pageSize = 12
@@ -147,11 +162,24 @@ export const sanityApi = {
 		)
 
 		const result = {
-			events: events.slice(0, pageSize).map((event) => ({
-				...event,
-				imageUrl:
-					event.mainImage &&
-					imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
+			events: events.slice(0, pageSize).map<ContentApi.Event>((event) => ({
+				title: event.title,
+				slug: event.slug,
+				eventTime: event.eventTime,
+				eventLocation: event.eventLocation,
+				eventAdmission: event.eventAdmission,
+				mainImage: event.mainImage
+					? {
+							url: imageUrlBuilder
+								.image(event.mainImage)
+								.width(512)
+								.crop('focalpoint')
+								.format('webp')
+								.url(),
+							prominentColor: event.mainImageMeta.prominentColor,
+							...event.mainImageMeta.dimensions,
+						}
+					: undefined,
 			})),
 			hasMore: events.length > pageSize,
 		}
@@ -180,7 +208,7 @@ export const sanityApi = {
 
 		// Check for cached value
 		const cacheKey = `sanity:getPastHighlights`
-		const cached = cache?.get<typeof transformed>(cacheKey)
+		const cached = cache?.get<ContentApi.Event[]>(cacheKey)
 		if (cached) return cached
 
 		const events = await sanityClient.fetch<Result[]>(
@@ -202,11 +230,24 @@ export const sanityApi = {
 			} | order(eventTime desc)`,
 		)
 
-		const transformed = events.map((event) => ({
-			...event,
-			imageUrl:
-				event.mainImage &&
-				imageUrlBuilder.image(event.mainImage).width(512).crop('focalpoint').format('webp').url(),
+		const transformed = events.map<ContentApi.Event>((event) => ({
+			title: event.title,
+			slug: event.slug,
+			eventTime: event.eventTime,
+			eventLocation: event.eventLocation,
+			eventAdmission: event.eventAdmission,
+			mainImage: event.mainImage
+				? {
+						url: imageUrlBuilder
+							.image(event.mainImage)
+							.width(512)
+							.crop('focalpoint')
+							.format('webp')
+							.url(),
+						prominentColor: event.mainImageMeta.prominentColor,
+						...event.mainImageMeta.dimensions,
+					}
+				: undefined,
 		}))
 
 		// Cache the result
@@ -218,10 +259,11 @@ export const sanityApi = {
 	async getEvent(slug: string) {
 		// Check for cached value
 		const cacheKey = `sanity:getEvent:${slug}`
-		const cached = cache?.get<typeof transformed>(cacheKey)
+		const cached = cache?.get<ContentApi.Event & { content: ContentApi.Content }>(cacheKey)
 		if (cached) return cached
 
-		interface Result extends EventSchema {
+		type Result = EventSchema & {
+			slug: string
 			mainImageMeta?: {
 				prominentColor: string
 				dimensions: {
@@ -231,9 +273,10 @@ export const sanityApi = {
 			}
 		}
 
-		const result = await sanityClient.fetch<Result | undefined>(
+		const event = await sanityClient.fetch<Result | undefined>(
 			`*[_type == "event" && slug.current == "${slug}"][0]{
 				...,
+				"slug": slug.current,
 				"mainImageMeta": {
 					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
 					"dimensions": mainImage.asset->metadata.dimensions,
@@ -245,28 +288,38 @@ export const sanityApi = {
 			}`,
 		)
 
-		if (!result) return
+		if (!event) return null
 
 		// Events may be saved without a body.
-		const body = (result.body ?? []).map((block) => ({
+		const body = (event.body ?? []).map((block) => ({
 			...block,
 			transformedImageUrl:
-				block._type === 'image' &&
-				imageUrlBuilder
-					.image((block as any).asset)
-					.width(1200)
-					.format('webp')
-					.url(),
-		}))
+				block._type === 'image'
+					? imageUrlBuilder
+							.image((block as any).asset)
+							.width(1200)
+							.format('webp')
+							.url()
+					: undefined,
+		})) as PortableTextBlock[]
 
-		const transformed = {
-			...result,
-			body,
+		const transformed: ContentApi.Event & { content: ContentApi.Content } = {
+			title: event.title,
+			slug: event.slug,
+			eventTime: event.eventTime,
+			eventLocation: event.eventLocation,
+			eventAdmission: event.eventAdmission,
+			content: { type: 'sanity', value: body },
 			// The detail page shows the poster at full column width, so this is
 			// rendered larger than the 512px the overview cards ask for.
-			imageUrl:
-				result.mainImage &&
-				imageUrlBuilder.image(result.mainImage).width(1200).format('webp').url(),
+			mainImage:
+				event.mainImage && event.mainImageMeta
+					? {
+							url: imageUrlBuilder.image(event.mainImage).width(1200).format('webp').url(),
+							prominentColor: event.mainImageMeta.prominentColor,
+							...event.mainImageMeta.dimensions,
+						}
+					: undefined,
 		}
 
 		// Cache the result
@@ -311,7 +364,7 @@ export const sanityApi = {
 
 		const { tree: flatTree } = result
 
-		type TreeItem = NavigationItem & { _key: string }
+		type TreeItem = ContentApi.NavigationItem & { _key: string }
 
 		function buildSubTree(flatTree: FlatTreeItem[], parent: TreeItem | null): TreeItem[] {
 			const children: FlatTreeItem[] = []
@@ -345,13 +398,13 @@ export const sanityApi = {
 		return tree
 	},
 
-	async getPage(pathname: string) {
+	async getPage(path: string[]) {
 		// Check for cached value
-		const cacheKey = `sanity:getPage:${pathname}`
-		const cached = cache?.get<typeof page>(cacheKey)
+		const cacheKey = `sanity:getPage:${path.join('.')}`
+		const cached = cache?.get<ContentApi.Page | undefined>(cacheKey)
 		if (cached) return cached
 
-		const slug = pathname.split('/').at(-1)
+		const slug = path.at(-1)
 
 		const page = await sanityClient.fetch<PageSchema | undefined>(`
 			*[_type == "page" && slug.current == "${slug}"][0]{
@@ -363,7 +416,7 @@ export const sanityApi = {
 			}
 		`)
 
-		if (!page?.body) return
+		if (!page?.body.length) return null
 
 		const promises = page.body.flatMap((block) =>
 			(block.markDefs as PortableTextMarkDefinition[])?.map(async (markDef) => {
@@ -373,18 +426,18 @@ export const sanityApi = {
 						_type: string
 						slug: string
 					}>(`
-						*[_id == "${markDef._ref}"][0]{
-							_type,
-							"slug": slug.current,
-						}
-					`)
+							*[_id == "${markDef._ref}"][0]{
+								_type,
+								"slug": slug.current,
+								}
+								`)
 				}
 			}),
 		)
 
 		await Promise.all(promises)
 
-		page.body = page.body.map((block) => ({
+		const body = page.body.map((block) => ({
 			...block,
 			transformedImageUrl:
 				block._type === 'image' &&
@@ -393,31 +446,35 @@ export const sanityApi = {
 					.width(1200)
 					.format('webp')
 					.url(),
-		}))
+		})) as PortableTextBlock[]
+
+		const result: ContentApi.Page = {
+			title: page.title,
+			content: { type: 'sanity', value: body },
+		}
 
 		// Cache the result
-		cache?.setKey(cacheKey, page, 10 * 60 * 1000) // 10 minutes
+		cache?.setKey(cacheKey, result, 10 * 60 * 1000) // 10 minutes
 
-		return page
+		return result
 	},
 
 	async getSiteSettings() {
 		// Check for cached value
 		const cacheKey = `sanity:getSiteSettings`
-		const cached = cache?.get<typeof transformed>(cacheKey)
+		const cached = cache?.get<ContentApi.SiteSettings>(cacheKey)
 		if (cached) return cached
 
 		const settings = await sanityClient.fetch<
-			| (Pick<SiteSettingsSchema, 'donationLink' | 'contactEmail'> & {
+			| (Pick<SiteSettingsSchema, 'donationLink'> & {
 					logo: SanityImageSource
-					headerImages?: {
-						image: SanityImageSource
+					logoMeta: {
 						prominentColor: string
 						dimensions: {
-							width: number
 							height: number
+							width: number
 						}
-					}[]
+					}
 					imprintPageSlug?: string
 					privacyPageSlug?: string
 			  })
@@ -425,34 +482,27 @@ export const sanityApi = {
 		>(`
 			*[_id == "siteSettings"][0]{
 				logo,
-				"headerImages": headerImages[]{
-				  "image": {...},
-					"prominentColor": asset->metadata.palette.dominant.background,
-					"dimensions": asset->metadata.dimensions,
+				"logoMeta": {
+					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
+					"dimensions": mainImage.asset->metadata.dimensions,
 				},
 				donationLink,
 				"imprintPageSlug": imprintPage->slug.current,
 				"privacyPageSlug": privacyPage->slug.current,
-				contactEmail,
 			}
 		`)
 
 		if (!settings) return null
 
-		const transformed = {
+		const transformed: ContentApi.SiteSettings = {
 			donationLink: settings.donationLink,
 			imprintPageSlug: settings.imprintPageSlug,
 			privacyPageSlug: settings.privacyPageSlug,
-			contactEmail: settings.contactEmail,
-			headerImages: settings.headerImages?.map(
-				({ image, dimensions, prominentColor }) =>
-					({
-						url: imageUrlBuilder.image(image).height(512).format('webp').url(),
-						prominentColor,
-						...dimensions,
-					}) satisfies SanityImageWithMeta,
-			),
-			logoUrl: imageUrlBuilder.image(settings.logo).height(400).format('webp').url(),
+			logo: {
+				url: imageUrlBuilder.image(settings.logo).height(400).format('webp').url(),
+				prominentColor: settings.logoMeta.prominentColor,
+				...settings.logoMeta.dimensions,
+			},
 		}
 
 		// Cache the result
@@ -501,17 +551,4 @@ export const sanityApi = {
 
 		return documents
 	},
-
-	async getNewsletterSubscriptionRecipient() {
-		const settings = await sanityClient.fetch<Pick<
-			SiteSettingsSchema,
-			'newsletterSubscriptionRecipient'
-		> | null>(`
-			*[_id == "siteSettings"][0]{
-				newsletterSubscriptionRecipient,
-			}
-		`)
-
-		return settings?.newsletterSubscriptionRecipient
-	},
-}
+} satisfies IContentApi

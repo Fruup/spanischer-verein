@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getCurrentEventsOverview } from '#lib/sanity/sanity.remote.js'
+	import { getCurrentEventsOverview } from '#lib/api/content-api.remote.js'
 
 	import EventsOverviewPage from './events-overview-page.svelte'
 

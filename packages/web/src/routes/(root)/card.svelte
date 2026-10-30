@@ -13,9 +13,11 @@
 <div
 	class="rounded-base border border-edge-subtle bg-surface-raised p-5 text-ink-muted shadow-raised [&>*:first-child]:mt-(--font-offset) [&>*:last-child]:mb-0"
 >
-	<p class="mb-2 text-sm leading-snug font-bold">
+	<p class="mb-2 text-sm leading-snug font-semibold">
 		{@render heading?.()}
 	</p>
 
-	{@render children?.()}
+	<div class="*:leading-snug">
+		{@render children?.()}
+	</div>
 </div>

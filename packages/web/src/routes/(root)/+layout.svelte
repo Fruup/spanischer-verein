@@ -10,7 +10,7 @@
 		getNavigationTree,
 		getPastHighlights,
 		getSiteSettings,
-	} from '#lib/sanity/sanity.remote.js'
+	} from '#lib/api/content-api.remote.js'
 	import Divider from './divider.svelte'
 	import Footer from './footer.svelte'
 	import { mobileCalendar } from './mobile-calendar.svelte'
@@ -20,6 +20,7 @@
 	import { CalendarIcon, UsersIcon } from '@lucide/svelte'
 	import SidebarHeading from './sidebar-heading.svelte'
 	import { t } from '#lib/messages/index.ts'
+	import { ADMIN_MAIL_ADDRESS } from '$app/env/public'
 
 	let { children }: LayoutProps = $props()
 
@@ -39,7 +40,7 @@
 		}))
 	})
 
-	const mail = $derived(siteSettings?.contactEmail ?? 'info@spanischer-verein.com')
+	const mail = ADMIN_MAIL_ADDRESS
 	const imprintUrl = $derived(siteSettings?.imprintPageSlug && `/${siteSettings.imprintPageSlug}`)
 	const privacyUrl = $derived(siteSettings?.privacyPageSlug && `/${siteSettings.privacyPageSlug}`)
 
@@ -61,8 +62,8 @@
 <svelte:head>
 	<title>Spanischer Verein Köln</title>
 
-	{#if siteSettings?.logoUrl}
-		<link rel="icon" href={siteSettings.logoUrl} />
+	{#if siteSettings?.logo}
+		<link rel="icon" href={siteSettings.logo.url} />
 	{/if}
 </svelte:head>
 

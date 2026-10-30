@@ -4,10 +4,10 @@
 	import * as NavigationMenu from '../ui/navigation-menu'
 	import HeaderNavItem from './header-nav-item.svelte'
 	import { mobileMenu } from './mobile-menu.svelte'
-	import type { NavigationItem } from './types'
+	import type { ContentApi } from '#lib/api/content-api.types.ts'
 
 	interface Props {
-		items: NavigationItem[]
+		items: ContentApi.NavigationItem[]
 	}
 
 	let { items }: Props = $props()

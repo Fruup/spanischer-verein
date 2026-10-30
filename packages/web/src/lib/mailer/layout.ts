@@ -24,6 +24,10 @@ export function highlightBox(html: string, { mono = false } = {}) {
 	return `<p style="margin:0;font-family:${mono ? MONO : SANS};font-size:${mono ? '28px' : '17px'};line-height:1.2;font-weight:700;color:${INK};${mono ? 'letter-spacing:8px;text-indent:8px;' : ''}white-space:nowrap;">${html}</p>`
 }
 
+export function link(href: string, text: string) {
+	return `<a href="${href}" style="color:${BRAND};text-decoration:none;">${text}</a>`
+}
+
 export function renderEmailLayout({
 	title,
 	preheader,

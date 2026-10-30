@@ -41,7 +41,7 @@ export const variables = defineEnvVars({
 		schema: z.string().min(1),
 	},
 	ADMIN_MAIL_ADDRESS: {
-		public: false,
+		public: true,
 		schema: z.email(),
 	},
 	ALTCHA_SECRET: {

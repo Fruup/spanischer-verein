@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { fitParent } from '#lib/helpers/fitParent.js'
 	import { getEventUrl } from '#lib/helpers/url.js'
 	import { cn } from '#lib/utils.js'
 
@@ -8,22 +7,10 @@
 	import { parseAbsolute, DateFormatter, getLocalTimeZone } from '@internationalized/date'
 	import type { ClassValue } from 'svelte/elements'
 	import { insertWordBreaks } from '#lib/helpers/insert-word-breaks.ts'
+	import type { ContentApi } from '#lib/api/content-api.types.ts'
 
 	interface Props {
-		event: {
-			title: string
-			slug: string
-			/** Absent on events saved without a poster. */
-			imageUrl?: string
-			eventTime: string
-			mainImageMeta: {
-				prominentColor: string | null
-				dimensions: {
-					width: number
-					height: number
-				} | null
-			}
-		}
+		event: ContentApi.Event
 		/** Lay the image beside the content instead of above it. */
 		horizontal?: boolean
 		class?: ClassValue
@@ -35,10 +22,12 @@
 	// An event can be published without a poster — the overview reaches back far
 	// enough for that to be common — so every image-derived value falls back
 	// instead of assuming the metadata is there.
-	const dimensions = $derived(event.mainImageMeta?.dimensions)
+	const dimensions = $derived(
+		event.mainImage && { width: event.mainImage.width, height: event.mainImage.height },
+	)
 	const aspectRatio = $derived(dimensions ? dimensions.width / dimensions.height : 4 / 3)
 
-	const prominentColor = $derived(event.mainImageMeta?.prominentColor)
+	const prominentColor = $derived(event.mainImage?.prominentColor)
 	const backgroundColor = $derived(
 		prominentColor ? `oklch(from ${prominentColor} calc(l * 0.8) c h)` : undefined,
 	)
@@ -88,9 +77,9 @@
 			</div>
 		{/if}
 
-		{#if event.imageUrl}
+		{#if event.mainImage?.url}
 			<img
-				src={event.imageUrl}
+				src={event.mainImage?.url}
 				alt="Title image for an event called '{event.title}'"
 				style:background-color={backgroundColor}
 				class={[

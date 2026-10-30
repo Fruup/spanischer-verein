@@ -1,6 +1,6 @@
 import { query } from '$app/server'
 import { error } from '@sveltejs/kit'
-import { sanityApi } from './client'
+import { sanityApi } from './sanity/client'
 import { z } from 'zod'
 
 export const getSiteSettings = query(() => sanityApi.getSiteSettings())
@@ -17,8 +17,8 @@ export const getCurrentEventsOverview = query(z.number().int().min(0).max(100), 
 	sanityApi.getCurrentEventsOverview(pageIndex),
 )
 
-export const getPage = query(z.string(), async (pageUrl: string) => {
-	const page = await sanityApi.getPage(pageUrl)
+export const getPage = query(z.string().array(), async (path: string[]) => {
+	const page = await sanityApi.getPage(path)
 	if (!page) error(404, 'Page not found', { errorCode: 'NOT_FOUND' })
 
 	return page

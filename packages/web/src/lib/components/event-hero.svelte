@@ -1,21 +1,14 @@
-<script module lang="ts">
-	export interface HeroImageSpec {
-		url: string
-		prominentColor?: string | undefined
-		dimensions?: { width: number; height: number } | undefined
-	}
-</script>
-
 <script lang="ts">
 	import { ArrowLeftIcon } from '@lucide/svelte'
 	import { DateFormatter } from '@internationalized/date'
 	import { locale } from '#lib/locale/state.svelte.ts'
+	import type { ContentApi } from '#lib/api/content-api.types.ts'
 
 	interface Props {
 		title: string
 		/** ISO timestamp. Absent on plain pages, which get the title only. */
 		time?: string | undefined
-		image?: HeroImageSpec | undefined
+		image?: ContentApi.Image | undefined
 		/** Rendered as a back link above the hero when given. */
 		backHref?: string | undefined
 		backLabel?: string
@@ -87,8 +80,8 @@
 			<img
 				src={image.url}
 				alt="Titelbild der Veranstaltung „{title}“"
-				width={image.dimensions?.width}
-				height={image.dimensions?.height}
+				width={image.width}
+				height={image.height}
 				class="relative m-px max-h-[32rem] w-auto max-w-full object-contain"
 			/>
 

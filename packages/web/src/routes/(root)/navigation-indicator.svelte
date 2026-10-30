@@ -22,9 +22,6 @@
 		}
 	})
 
-	$inspect(isNavigating, 'isNavigating')
-	$inspect(!!navigating.complete, 'navigating.complete')
-
 	$effect(() => {
 		const changed = previousIsNavigating !== isNavigating
 		previousIsNavigating = isNavigating
@@ -51,7 +48,7 @@
 	const current = $derived(Math.max(Math.min(progress.current, 1), 0))
 </script>
 
-<div class="fixed top-0 z-10 h-1 w-screen" aria-hidden="true">
+<div class="fixed top-0 z-100 h-1 w-screen" aria-hidden="true">
 	<div
 		style:width="{current * 100}%"
 		style:opacity={opacity.current}
