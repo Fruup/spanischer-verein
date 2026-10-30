@@ -5,6 +5,7 @@
 	import supporter3 from '$assets/interkulturelle-zentren-koeln.webp'
 	import SiteLogo from '$lib/components/header/SiteLogo.svelte'
 	import { socialLinks } from '$lib/components/header/SocialLinks.svelte'
+	import SimpleAnalyticsBadge from '$lib/components/SimpleAnalyticsBadge.svelte'
 
 	interface Props {
 		imprintUrl: string | undefined
@@ -81,6 +82,8 @@
 
 	<div>
 		<SiteLogo />
+
+		<SimpleAnalyticsBadge />
 
 		<div class="attribution">
 			Entwickelt von <a href="https://leonscherer.com/" target="_blank">Leon</a>
