@@ -1,11 +1,11 @@
 <script lang="ts">
 	import * as NavigationMenu from '../ui/navigation-menu'
-	import type { NavigationItem } from './types'
+	import type { ContentApi } from '#lib/api/content-api.types.ts'
 	import { page } from '$app/state'
 	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
-		navigationItem: NavigationItem
+		navigationItem: ContentApi.NavigationItem
 	}
 
 	let { navigationItem }: Props = $props()
@@ -24,9 +24,7 @@
 			{navigationItem.title}
 		</NavigationMenu.Trigger>
 
-		<NavigationMenu.Content
-			class="z-50 min-w-[20ch] rounded-base border border-edge p-2 shadow-floating"
-		>
+		<NavigationMenu.Content class="z-50 rounded-base p-2 shadow-floating">
 			<ul class="m-0 p-0 *:list-none">
 				<li>
 					<NavigationMenu.Link

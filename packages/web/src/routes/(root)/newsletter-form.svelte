@@ -12,7 +12,7 @@
 	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
-		privacyUrl: string | undefined
+		privacyUrl: string | undefined | null
 	}
 
 	let { privacyUrl }: Props = $props()
@@ -75,7 +75,8 @@
 				</div>
 
 				<Button size="sm" type="submit" disabled={success || !!subscribeToNewsletter.pending}>
-					{t('submit')} <SendIcon />
+					{t('submit')}
+					<SendIcon />
 				</Button>
 			</div>
 		{/if}
