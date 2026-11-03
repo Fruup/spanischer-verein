@@ -45,8 +45,7 @@
 
 	const { upcomingEvents, pastEvents } = $derived.by(() => {
 		const now = Date.now()
-		// const pivot = events.findIndex(({ eventTime }) => new Date(eventTime).valueOf() < now)
-		const pivot = 0
+		const pivot = events.findIndex(({ eventTime }) => new Date(eventTime).valueOf() < now)
 		return {
 			upcomingEvents: events.slice(0, pivot).toReversed(),
 			pastEvents: events.slice(pivot),
