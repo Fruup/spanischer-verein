@@ -61,7 +61,7 @@
 		{/if}
 	</Card>
 
-	<Card>
+	<Card id="newsletter">
 		{#snippet heading()}
 			{t('stay_updated_heading')}
 		{/snippet}

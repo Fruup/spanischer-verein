@@ -2,15 +2,16 @@
 	import type { Snippet } from 'svelte'
 
 	interface Props {
+		id?: string
 		heading?: Snippet
 		children?: Snippet
 	}
 
-	let { heading, children }: Props = $props()
+	let { id, heading, children }: Props = $props()
 </script>
 
-<!-- TODO: maybe a small color touch in the top corner? ne kleine rote Ecke -->
 <div
+	{id}
 	class="rounded-base border border-edge-subtle bg-surface-raised p-5 text-ink-muted shadow-raised"
 >
 	<p class="mb-3! text-sm leading-snug font-semibold">

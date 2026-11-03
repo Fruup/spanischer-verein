@@ -33,8 +33,18 @@ export const de = {
 	events_heading: 'Veranstaltungen & Infos',
 	load_more: 'Mehr laden',
 	no_more_events: 'Keine weiteren Veranstaltungen.',
-	no_upcoming_events: 'Zur Zeit gibt es keine anstehenden Veranstaltungen.',
+	no_upcoming_events: 'Aktuell gibt es keine anstehenden Veranstaltungen',
+	// One sentence wrapped around two inline links:
+	// "{_1} {calendar_link_text} {_2} {newsletter_link_text}{_3}" — `_3` carries its own
+	// leading punctuation, so it is appended without a space.
+	no_upcoming_events_1: 'Nutze in der Zwischenzeit den',
+	calendar_link_text: 'Kalender',
+	no_upcoming_events_2: 'oder abonniere unseren',
+	newsletter_link_text: 'Newsletter',
+	no_upcoming_events_3: ', um keine Neuigkeiten zu verpassen!',
 	past_events: 'Vergangene Veranstaltungen',
+	past_events_description:
+		'Ab hier findest du alle vergangenen Events. Schau dich um und entdecke, was wir schon alles organisiert haben!',
 
 	error_not_found: 'Der Inhalt konnte leider nicht gefunden werden... 😢',
 	error_invalid_parameters: 'Die Anfrage war fehlerhaft... 😢',

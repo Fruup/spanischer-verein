@@ -33,8 +33,15 @@ export const es = {
 	events_heading: 'Eventos e información',
 	load_more: 'Cargar más',
 	no_more_events: 'No hay más eventos.',
-	no_upcoming_events: 'Por el momento no hay eventos próximos.',
+	no_upcoming_events: 'Actualmente no hay eventos próximos',
+	no_upcoming_events_1: 'Mientras tanto, consulta nuestro',
+	calendar_link_text: 'calendario',
+	no_upcoming_events_2: 'o suscríbete a nuestro',
+	newsletter_link_text: 'boletín',
+	no_upcoming_events_3: ', ¡así no te perderás ninguna novedad!',
 	past_events: 'Eventos pasados',
+	past_events_description:
+		'Aquí empiezan todos los eventos pasados. ¡Echa un vistazo y descubre todo lo que ya hemos organizado!',
 
 	error_not_found: 'El contenido no se pudo encontrar... 😢',
 	error_invalid_parameters: 'La solicitud era incorrecta... 😢',

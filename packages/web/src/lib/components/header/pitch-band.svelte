@@ -22,8 +22,8 @@
 {#if isMainPage()}
 	<div
 		out:slide={{ axis: 'y' }}
-		class="flex w-full justify-center contain-content"
-		style="background-color: #F5F2ED; background-image: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.03) 0 1px, transparent 1px 28px);"
+		class="flex w-full justify-center bg-pitch contain-content"
+		style="background-image: repeating-linear-gradient(45deg, var(--pitch-weave) 0 1px, transparent 1px 28px);"
 	>
 		<div class="container mx-auto grid max-w-5xl grid-cols-[1fr_1fr] place-content-center py-20">
 			<div class="grid place-content-center">

@@ -31,6 +31,7 @@
 </script>
 
 <Calendar.Root
+	id="calendar"
 	type="single"
 	fixedWeeks
 	locale={locale.current}
