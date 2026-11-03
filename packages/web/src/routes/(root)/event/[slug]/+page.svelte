@@ -5,13 +5,12 @@
 	import type { EventInfoSpec } from '#lib/components/event-info.svelte'
 	import { getEvent } from '#lib/api/content-api.remote.js'
 
-	const event = await getEvent(page.params.slug ?? '')
-
-	const eventInfo: EventInfoSpec = {
+	const event = $derived(await getEvent(page.params.slug ?? ''))
+	const eventInfo: EventInfoSpec = $derived({
 		admission: event.eventAdmission,
 		time: event.eventTime,
 		location: event.eventLocation,
-	}
+	})
 </script>
 
 <svelte:head>

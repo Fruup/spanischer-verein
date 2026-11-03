@@ -7,35 +7,7 @@
 	import { Debounced } from 'runed'
 	import { locale } from '#lib/locale/state.svelte.ts'
 	import { t } from '#lib/messages/index.ts'
-
-	const wrap = <T,>(promise: Promise<T>) => {
-		let current = $state<T>()
-		let error = $state<unknown>()
-		let loading = $state(true)
-
-		promise
-			.then((value) => {
-				current = value
-			})
-			.catch((e) => {
-				error = e
-			})
-			.finally(() => {
-				loading = false
-			})
-
-		return {
-			get current() {
-				return current
-			},
-			get error() {
-				return error
-			},
-			get loading() {
-				return loading
-			},
-		}
-	}
+	import { createPromiseState } from '#lib/utils/index.svelte.ts'
 
 	interface Props {
 		getEvents: (year: number, month: number) => Promise<EventCalendarItem[]>
@@ -55,7 +27,7 @@
 		300,
 	)
 	const eventsPromise = $derived(getEvents(...debouncedPlaceholder.current))
-	const events = $derived(wrap(eventsPromise))
+	const events = $derived(createPromiseState(eventsPromise))
 </script>
 
 <Calendar.Root
@@ -86,7 +58,9 @@
 		{#each months as month (month.value.toString())}
 			<Calendar.Grid class="mt-2 w-full border-collapse text-xs select-none">
 				<Calendar.GridHead>
-					<Calendar.GridRow class="grid w-full grid-cols-[repeat(7,1fr)] rounded-base bg-hairline">
+					<Calendar.GridRow
+						class="mb-1 grid w-full grid-cols-[repeat(7,1fr)] rounded-base bg-hairline"
+					>
 						{#each weekdays as weekday, weekdayIndex (weekdayIndex)}
 							<Calendar.HeadCell
 								class="w-auto min-w-0 p-(--cell-gap) text-center text-2xs font-normal tracking-label text-ink-muted"
@@ -112,15 +86,15 @@
 									<Calendar.Day>
 										{#snippet child({ props, day })}
 											{#if event}
+												{const active = page.url.pathname === event.url}
+
 												<a
 													{...props}
 													href={event.url}
-													data-sveltekit-reset="false"
 													class={[
-														'font-bold ring-2 ring-brand/70 focus-ring transition-colors ring-inset hover:bg-brand/10',
+														'bg-brand font-bold text-brand-contrast ring-2 ring-brand focus-ring transition-colors ring-inset',
+														active && 'bg-brand-contrast text-foreground',
 														dayClasses,
-														page.url.pathname === event.url &&
-															'bg-brand text-brand-contrast ring-brand hover:bg-brand',
 													]}
 												>
 													{day}

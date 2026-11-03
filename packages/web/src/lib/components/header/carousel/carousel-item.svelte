@@ -58,9 +58,7 @@
 </script>
 
 <div
-	style:transform
-	style:opacity
-	style:z-index={zIndex}
+	style="transform: {transform}; opacity: {opacity}; z-index: {zIndex};"
 	inert={!front}
 	class={[
 		'origin-bottom transition-[transform,opacity] duration-500 ease-out will-change-[transform,opacity]',
