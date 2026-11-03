@@ -58,19 +58,17 @@
 			<span class="text-xs text-ink/70">{monthShort}</span>
 		</div>
 
-		<div
-			class={[
-				'absolute top-0 right-2 z-1 rounded-b px-2 py-1.5 text-2xs leading-none font-bold tracking-tight text-background shadow-sm',
-				'transition-opacity group-hover:opacity-50',
-				highlight ? 'bg-brand text-brand-contrast' : 'text-ink-contrast bg-ink',
-			]}
-		>
-			{#if highlight}
+		{#if highlight}
+			<div
+				class={[
+					'absolute top-0 right-2 z-1 rounded-b px-2 py-1.5 text-2xs leading-none font-bold tracking-tight text-background shadow-sm',
+					'transition-opacity group-hover:opacity-50',
+					'bg-brand text-brand-contrast',
+				]}
+			>
 				Highlight
-			{:else}
-				{t('event_badge')}
-			{/if}
-		</div>
+			</div>
+		{/if}
 
 		{#if event.mainImage?.url}
 			<img
