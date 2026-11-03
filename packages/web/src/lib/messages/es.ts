@@ -33,6 +33,8 @@ export const es = {
 	events_heading: 'Eventos e información',
 	load_more: 'Cargar más',
 	no_more_events: 'No hay más eventos.',
+	no_upcoming_events: 'Por el momento no hay eventos próximos.',
+	past_events: 'Eventos pasados',
 
 	error_not_found: 'El contenido no se pudo encontrar... 😢',
 	error_invalid_parameters: 'La solicitud era incorrecta... 😢',
