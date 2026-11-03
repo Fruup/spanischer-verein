@@ -45,7 +45,8 @@
 
 	const { upcomingEvents, pastEvents } = $derived.by(() => {
 		const now = Date.now()
-		const pivot = events.findIndex(({ eventTime }) => new Date(eventTime).valueOf() < now)
+		// const pivot = events.findIndex(({ eventTime }) => new Date(eventTime).valueOf() < now)
+		const pivot = 0
 		return {
 			upcomingEvents: events.slice(0, pivot).toReversed(),
 			pastEvents: events.slice(pivot),
@@ -118,9 +119,15 @@
 		<div class="mb-2 flex h-6 items-center gap-1"></div>
 
 		<article
-			class="relative flex grow flex-col justify-between gap-3 overflow-clip rounded-base border border-edge-subtle bg-pitch p-6 shadow-raised contain-strict"
+			class="relative z-0 flex grow flex-col justify-between gap-3 overflow-clip rounded-base bg-pitch p-6 shadow-raised"
 		>
-			<div class="pointer-events-none absolute inset-0 -z-10">
+			<div class="absolute inset-0 rounded-base border border-edge-subtle"></div>
+
+			<div
+				class="absolute top-0 left-0 size-12 rounded-tl-base border-t border-l border-brand mask-linear-135 mask-linear-from-0 mask-linear-to-transparent mask-linear-to-50%"
+			></div>
+
+			<div class="pointer-events-none absolute inset-0 -z-10 rounded-base">
 				<div
 					class="absolute inset-0 bg-radial-[at_top_right] from-background/70 to-transparent to-70%"
 				></div>
