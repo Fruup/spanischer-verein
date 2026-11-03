@@ -17,9 +17,10 @@
 		horizontal?: boolean
 		class?: ClassValue
 		imageClass?: ClassValue
+		highlight?: boolean
 	}
 
-	let { event, horizontal = false, class: className, imageClass }: Props = $props()
+	let { event, horizontal, class: className, imageClass, highlight }: Props = $props()
 
 	const prominentColor = $derived(event.mainImage?.prominentColor)
 	const backgroundColor = $derived(
@@ -57,16 +58,19 @@
 			<span class="text-xs text-ink/70">{monthShort}</span>
 		</div>
 
-		{#if !horizontal}
-			<div
-				class={[
-					'absolute top-0 right-2 z-1 rounded-b bg-foreground px-2 py-1.5 text-2xs leading-none font-bold tracking-tight text-background shadow-sm',
-					'transition-opacity group-hover:opacity-50',
-				]}
-			>
+		<div
+			class={[
+				'absolute top-0 right-2 z-1 rounded-b px-2 py-1.5 text-2xs leading-none font-bold tracking-tight text-background shadow-sm',
+				'transition-opacity group-hover:opacity-50',
+				highlight ? 'bg-brand text-brand-contrast' : 'text-ink-contrast bg-ink',
+			]}
+		>
+			{#if highlight}
+				Highlight
+			{:else}
 				{t('event_badge')}
-			</div>
-		{/if}
+			{/if}
+		</div>
 
 		{#if event.mainImage?.url}
 			<img

@@ -36,8 +36,12 @@
 				<Carousel autoplay contentClass="max-w-sm">
 					{#each highlightedEvents as event, index (index)}
 						<CarouselItem class="w-full">
-							<EventCard class="w-auto max-w-[500px]" imageClass="max-h-[200px]!" {event}
-							></EventCard>
+							<EventCard
+								class="w-auto max-w-[500px]"
+								imageClass="max-h-[200px]!"
+								{event}
+								highlight
+							/>
 						</CarouselItem>
 					{/each}
 
