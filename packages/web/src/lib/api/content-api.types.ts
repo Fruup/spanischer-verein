@@ -57,6 +57,7 @@ export namespace ContentApi {
 		eventLocation?: string
 		eventAdmission?: string
 		mainImage?: Image
+		cancelled?: boolean
 	}
 
 	export interface Page {
