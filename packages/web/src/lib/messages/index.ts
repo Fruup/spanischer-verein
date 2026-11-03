@@ -2,6 +2,7 @@ import { locale } from '#lib/locale/state.svelte.ts'
 import type { Locale } from '#lib/locale/index.ts'
 import { de } from './de'
 import { es } from './es'
+import { building } from '$app/env'
 
 const messages = {
 	de,
@@ -21,7 +22,11 @@ export const t = (
 	locale_: Locale = locale.current,
 ) => {
 	const message = messages[locale_][key]
-	if (!message) return `{${key} not found}`
+	if (!message) {
+		if (building) throw new Error(`Missing message for key "${key}" in locale "${locale_}"`)
+		if (locale_ !== 'de') return t(key, params, 'de')
+		return `{${key} not found}`
+	}
 	if (!params) return message
 	return message.replace(/\{(\w+)\}/g, (match, name) => String(params[name] ?? match))
 }
