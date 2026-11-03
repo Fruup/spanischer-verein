@@ -25,16 +25,26 @@
 	import { duration, motion } from '#lib/helpers/motion.js'
 	import type { ContentApi } from '#lib/api/content-api.types.ts'
 	import { locale } from '#lib/locale/state.svelte.ts'
+	import { t } from '#lib/messages/index.ts'
+	import { DateFormatter } from '@internationalized/date'
 
 	interface Props {
+		/** MUST be sorted by `eventTime` descending */
 		events: ContentApi.Event[]
 	}
 
 	let { events: events_ }: Props = $props()
 
-	const events = $derived(events_)
+	const { upcomingEvents, pastEvents } = $derived.by(() => {
+		const now = Date.now()
+		const pivot = events_.findIndex(({ eventTime }) => new Date(eventTime).valueOf() < now)
+		return {
+			upcomingEvents: events_.slice(0, pivot).toReversed(),
+			pastEvents: events_.slice(pivot),
+		}
+	})
 
-	const showYear = (eventIndex: number) => {
+	const showYear = (events: ContentApi.Event[], eventIndex: number) => {
 		if (eventIndex === 0) return true
 
 		const event = events[eventIndex]
@@ -46,7 +56,7 @@
 		)
 	}
 
-	const showMonth = (eventIndex: number) => {
+	const showMonth = (events: ContentApi.Event[], eventIndex: number) => {
 		if (eventIndex <= 0) return true
 		if (eventIndex >= events.length) return false
 
@@ -58,20 +68,50 @@
 	}
 </script>
 
-<nav class="w-full">
+<nav class="w-full space-y-4">
+	{#if upcomingEvents.length === 0}
+		<p class="text-xs text-ink-muted">{t('no_upcoming_events')}</p>
+	{:else}
+		<ul
+			class={[
+				'grid w-full grid-cols-[repeat(3,minmax(230px,1fr))] gap-6 p-0 *:list-none max-tablet:grid-cols-1',
+			]}
+		>
+			{#each upcomingEvents as event (event.slug)}
+				{const introDelay = popIndex() * 100}
+				{const horizontal = $derived(upcomingEvents.length < 3)}
+
+				<li
+					in:fly|global={{ y: 24, delay: introDelay, duration: motion(duration.slow) }}
+					class={['flex flex-col', horizontal && 'col-span-3']}
+				>
+					<article class="grow">
+						<EventCard {event} {horizontal} />
+					</article>
+				</li>
+			{/each}
+		</ul>
+	{/if}
+
+	<div class="my-8 h-px w-2/3 bg-brand"></div>
+
+	<h2 class="font-serif text-lg font-bold">Vergangene Veranstaltungen</h2>
+
 	<ul
-		class="grid w-full grid-cols-[repeat(auto-fill,minmax(230px,1fr))] gap-6 p-0 max-tablet:grid-cols-1"
+		class="max-tablet:grid-cols-1*:list-none grid w-full grid-cols-[repeat(3,minmax(230px,1fr))] gap-6 p-0"
 	>
-		{#each events as event, i (event.slug)}
+		{#each pastEvents as event, i (event.slug)}
 			{const introDelay = popIndex() * 100}
-			{const showYearLabel = showYear(i)}
-			{const showMonthLabel = showMonth(i)}
-			{const date = new Date(event.eventTime)}
-			{const monthLong = new Intl.DateTimeFormat(locale.current, { month: 'long' }).format(date)}
+			{const showYearLabel = $derived(showYear(pastEvents, i))}
+			{const showMonthLabel = $derived(showMonth(pastEvents, i))}
+			{const date = $derived(new Date(event.eventTime))}
+			{const monthLong = $derived(
+				new DateFormatter(locale.current, { month: 'long' }).format(date),
+			)}
 
 			<li
 				in:fly|global={{ y: 24, delay: introDelay, duration: motion(duration.slow) }}
-				class="flex list-none flex-col"
+				class="flex flex-col"
 			>
 				<div class="mb-2 flex h-6 items-center gap-1">
 					{const classes =

@@ -46,16 +46,16 @@
 		{#if ibanParts}
 			<p>{t('or_via_bank_transfer')}</p>
 
-			<dl class="m-0 grid grid-cols-[auto_auto] items-baseline gap-x-3 gap-y-1.5 font-mono text-2xs">
-				<dt class="text-ink-muted uppercase tracking-label">{t('bank_label')}</dt>
+			<dl class="m-0 grid grid-cols-[auto_auto] items-baseline gap-x-3 gap-y-1 font-mono text-2xs">
+				<dt class="tracking-label text-ink-muted uppercase">{t('bank_label')}</dt>
 				<dd class="m-0">Sparkasse KoelnBonn</dd>
 
-				<dt class="text-ink-muted uppercase tracking-label">IBAN</dt>
+				<dt class="tracking-label text-ink-muted uppercase">IBAN</dt>
 				<dd class="m-0 tabular-nums [&>span]:mr-[0.5ch]">
 					{#each ibanParts as part, partIndex (partIndex)}<span>{part}</span>{/each}
 				</dd>
 
-				<dt class="text-ink-muted uppercase tracking-label">BIC</dt>
+				<dt class="tracking-label text-ink-muted uppercase">BIC</dt>
 				<dd class="m-0">COLSDE33</dd>
 			</dl>
 		{/if}

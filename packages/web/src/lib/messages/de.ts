@@ -33,6 +33,7 @@ export const de = {
 	events_heading: 'Veranstaltungen & Infos',
 	load_more: 'Mehr laden',
 	no_more_events: 'Keine weiteren Veranstaltungen.',
+	no_upcoming_events: 'Zur Zeit gibt es keine anstehenden Veranstaltungen.',
 
 	error_not_found: 'Der Inhalt konnte leider nicht gefunden werden... 😢',
 	error_invalid_parameters: 'Die Anfrage war fehlerhaft... 😢',

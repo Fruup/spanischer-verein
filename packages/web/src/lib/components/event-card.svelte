@@ -9,6 +9,7 @@
 	import { insertWordBreaks } from '#lib/helpers/insert-word-breaks.ts'
 	import type { ContentApi } from '#lib/api/content-api.types.ts'
 	import { t } from '#lib/messages/index.ts'
+	import { locale } from '#lib/locale/state.svelte.ts'
 
 	interface Props {
 		event: ContentApi.Event
@@ -20,20 +21,12 @@
 
 	let { event, horizontal = false, class: className, imageClass }: Props = $props()
 
-	// An event can be published without a poster — the overview reaches back far
-	// enough for that to be common — so every image-derived value falls back
-	// instead of assuming the metadata is there.
-	const dimensions = $derived(
-		event.mainImage && { width: event.mainImage.width, height: event.mainImage.height },
-	)
-	const aspectRatio = $derived(dimensions ? dimensions.width / dimensions.height : 4 / 3)
-
 	const prominentColor = $derived(event.mainImage?.prominentColor)
 	const backgroundColor = $derived(
 		prominentColor ? `oklch(from ${prominentColor} calc(l * 0.8) c h)` : undefined,
 	)
 
-	const shortMonthFormatter = new DateFormatter(navigator.language, { month: 'short' })
+	const shortMonthFormatter = $derived(new DateFormatter(locale.current, { month: 'short' }))
 
 	const date = $derived(parseAbsolute(event.eventTime, getLocalTimeZone()))
 	const jsDate = $derived(new Date(event.eventTime))
@@ -52,10 +45,7 @@
 		className,
 	]}
 >
-	<div
-		class={['relative', horizontal ? 'w-2/5 max-w-48 min-w-28 shrink-0' : 'w-full']}
-		style:--aspect={aspectRatio}
-	>
+	<div class={['relative', horizontal ? 'w-2/5 min-w-28 shrink-0' : 'w-full']}>
 		<div
 			class={[
 				'absolute top-0 left-0 z-1 flex flex-col items-center gap-0.5 rounded bg-background shadow-sm *:leading-none',
@@ -86,33 +76,32 @@
 				class={[
 					'm-0 transition-[scale]',
 					'group-focus-visible:scale-[1.03]',
-					horizontal
-						? 'absolute inset-0 size-full object-cover'
-						: 'aspect-4/3 h-auto w-full object-contain',
+					'aspect-4/3 h-auto w-full object-contain',
 					imageClass,
 				]}
 			/>
 		{:else}
 			<!-- Keeps the card's proportions when there is no poster to show. -->
-			<div
-				class={cn(
-					'bg-chip',
-					horizontal ? 'absolute inset-0 size-full' : 'aspect-4/3 h-auto w-full',
-				)}
-			></div>
+			<div class={cn('bg-chip', 'aspect-4/3 h-auto w-full')}></div>
 		{/if}
 	</div>
 
 	<div class={['flex min-w-0 grow flex-col', horizontal ? 'gap-1 p-4' : 'gap-1.5 p-5']}>
-		<div class="flex items-center gap-1.5 text-xs text-nowrap text-ink/70">
-			<CalendarIcon class="size-4" />
+		<div
+			class={[
+				'flex items-center gap-1.5 text-nowrap text-ink/70',
+				horizontal ? 'text-sm' : 'text-xs',
+			]}
+		>
+			<CalendarIcon class="size-[1.1em]" />
 			<EventTime time={event.eventTime} />
 		</div>
 
 		<h4
 			class={[
 				'w-fit font-serif leading-tight font-semibold tracking-tight text-balance group-hover:text-brand group-focus:text-brand',
-				horizontal ? 'line-clamp-3 text-sm' : 'text-md',
+				// horizontal ? 'line-clamp-3' : '',
+				horizontal ? 'text-lg' : 'text-md',
 			]}
 		>
 			<!-- TODO: escape HTML -->
@@ -127,13 +116,23 @@
 			</div> -->
 		{/if}
 
-		<div class="flex items-center gap-1.5 text-xs text-nowrap text-ink/70">
-			<MapPinIcon class="size-4" />
+		<div
+			class={[
+				'flex items-center gap-1.5 text-nowrap text-ink/70',
+				horizontal ? 'text-sm' : 'text-xs',
+			]}
+		>
+			<MapPinIcon class="size-[1.1em]" />
 			Centro Machado
 		</div>
 
 		<div class={['flex grow items-end', horizontal && 'pt-1']}>
-			<div class="flex items-center gap-1.5 text-xs text-nowrap text-brand group-hover:underline">
+			<div
+				class={[
+					'flex items-center gap-1.5 text-nowrap text-brand group-hover:underline',
+					horizontal ? 'text-sm' : 'text-xs',
+				]}
+			>
 				<span>{t('learn_more')}</span>
 				<ArrowRightIcon class="size-4" />
 			</div>
