@@ -6,7 +6,7 @@ import {schemaTypes} from './schemas'
 import {MenuIcon} from '@sanity/icons/Menu'
 import {CalendarIcon} from '@sanity/icons/Calendar'
 import {
-  createDeskHierarchy,
+  createStructureHierarchy,
   hierarchicalDocumentList,
   hierarchyTree,
 } from '@sanity/hierarchical-document-list'
@@ -60,7 +60,7 @@ const shared = {
             S.documentTypeListItem('page'),
 
             // Page hierarchy
-            createDeskHierarchy({
+            createStructureHierarchy({
               //prop drill S and context:
               S,
               context,
@@ -110,7 +110,13 @@ const shared = {
   scheduledPublishing: {
     enabled: false,
   },
-  unstable_tasks: {
+  scheduledDrafts: {
+    enabled: false,
+  },
+  tasks: {
+    enabled: false,
+  },
+  releases: {
     enabled: false,
   },
 } satisfies Partial<Config>
@@ -137,6 +143,8 @@ const defaultWorkspace = defineConfig({
   name: 'default',
   title: 'Spanischer Verein',
   basePath: '/_',
+
+  releases: {enabled: false},
 })
 
 const advancedWorkspace = defineConfig({

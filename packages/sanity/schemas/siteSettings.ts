@@ -36,8 +36,7 @@ export default defineType({
     defineField({
       name: 'headerImages',
       title: 'Header-Bilder',
-      description:
-        'Diese Bilder werden links und rechts im Header der Seite angezeigt. Sie rotieren zufällig durch.',
+      description: 'Diese Bilder werden im Header der Seite angezeigt.',
       type: 'array',
       group: 'header',
       of: [
