@@ -13,6 +13,7 @@
 		/** Rendered as a back link above the hero when given. */
 		backHref?: string | undefined
 		backLabel?: string
+		cancelled: boolean
 	}
 
 	let {
@@ -21,6 +22,7 @@
 		image = undefined,
 		backHref = undefined,
 		backLabel = undefined,
+		cancelled,
 	}: Props = $props()
 
 	const label = $derived(backLabel ?? t('all_events'))
@@ -65,8 +67,17 @@
 	{#if image}
 		<div
 			style:background-color={backgroundColor}
-			class="relative mb-8 flex max-h-[32rem] justify-center overflow-hidden rounded-panel shadow-raised"
+			style:aspect-ratio="{image.width} / {image.height}"
+			class="relative mb-8 flex max-h-[32rem] w-full justify-center overflow-hidden rounded-panel shadow-raised contain-strict"
 		>
+			{#if cancelled}
+				<div
+					class="absolute top-1/2 z-10 w-[200%] origin-center -translate-y-1/2 -rotate-10 bg-brand py-4 text-center text-lg font-bold text-brand-contrast shadow-raised"
+				>
+					<span class="uppercase">{t('cancelled')}</span>
+				</div>
+			{/if}
+
 			<!--
 				Posters arrive in whatever shape they were designed in, and a
 				portrait one leaves wide bands either side of the column. The same
@@ -85,7 +96,7 @@
 				alt={t('event_hero_image_alt', { title })}
 				width={image.width}
 				height={image.height}
-				class="relative m-px max-h-[32rem] w-auto max-w-full object-contain"
+				class="relative m-px max-h-full w-auto max-w-full object-contain"
 			/>
 
 			{#if date}
@@ -113,7 +124,11 @@
 
 	{#if date}
 		<p class="mb-2 text-2xs font-bold tracking-label text-brand uppercase">
-			{fullFormatter.format(date)}
+			<span class={[cancelled && 'line-through']}>{fullFormatter.format(date)}</span>
+
+			{#if cancelled}
+				{t('cancelled')}
+			{/if}
 		</p>
 	{/if}
 

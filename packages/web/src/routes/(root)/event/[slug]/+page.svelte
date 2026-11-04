@@ -10,6 +10,7 @@
 		admission: event.eventAdmission,
 		time: event.eventTime,
 		location: event.eventLocation,
+		cancelled: event.cancelled,
 	})
 </script>
 

@@ -63,7 +63,9 @@
 					<SocialLinks />
 				</div>
 
-				<AdminLoginRoot />
+				{#if false}
+					<AdminLoginRoot />
+				{/if}
 			</div>
 
 			<!-- Navigation -->
@@ -75,7 +77,6 @@
 				<ul
 					class="m-0 flex list-none flex-col gap-2 p-0 [&_a]:rounded-sm [&_a]:focus-ring [&_a]:transition-colors [&_a:hover]:text-brand-link"
 				>
-					<!-- TODO(v2): make this configurable -->
 					<li><a href="/">{t('footer_home')}</a></li>
 
 					{#if imprintUrl}

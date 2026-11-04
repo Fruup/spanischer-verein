@@ -5,7 +5,7 @@ import { OTP_LENGTH, sendLoginOTPSchema, verifyLoginOTPSchema } from './admin-lo
 import { mailer } from '../mailer'
 import { generateOtpEmailHtml } from './otp-email'
 import { createRateLimiter } from './rate-limit'
-import { ADMIN_MAIL_ADDRESS } from '$app/env/private'
+import { ADMIN_MAIL_ADDRESS } from '$app/env/public'
 import { altcha } from './captcha'
 import {
 	adminLoginCache,

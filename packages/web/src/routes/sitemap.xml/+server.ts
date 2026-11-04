@@ -1,6 +1,6 @@
 import { getEventUrl } from '#lib/helpers/url.js'
-import { sanityApi } from '#lib/sanity/client.js'
-import type { NavigationItem } from '#lib/components/header/types.js'
+import { sanityApi } from '#lib/api/sanity/client.js'
+import type { ContentApi } from '#lib/api/content-api.types.ts'
 import { ENABLE_CACHE } from '$app/env/private'
 import type { RequestHandler } from './$types'
 
@@ -17,7 +17,7 @@ let cached: { body: string; expiresAt: number } | null = null
 /** Routes that exist as files rather than as Sanity documents. */
 const staticPaths = ['/', '/newsletter/register']
 
-const flattenNavigation = (items: NavigationItem[]): string[] =>
+const flattenNavigation = (items: ContentApi.NavigationItem[]): string[] =>
 	items.flatMap((item) => [item.href, ...flattenNavigation(item.children ?? [])])
 
 const escapeXml = (value: string) =>

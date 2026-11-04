@@ -2,6 +2,8 @@
 	import { locales, type Locale } from '.'
 	import { locale } from './state.svelte'
 	import { t } from '#lib/messages/index.ts'
+	import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.ts'
+	import { GlobeIcon } from '@lucide/svelte'
 
 	const get = () => locale.current
 
@@ -16,18 +18,19 @@
 	}
 </script>
 
-<div role="radiogroup" class="flex items-center divide-x text-xs" title={t('language_selection')}>
-	{#each locales as locale}
-		{@const active = locale === get()}
+<DropdownMenu.Root>
+	<DropdownMenu.Trigger title={t('language_selection')}>
+		<GlobeIcon class="size-4" />
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content>
+		<DropdownMenu.RadioGroup bind:value={get, set}>
+			{#each locales as locale}
+				{@const active = locale === get()}
 
-		<button
-			type="button"
-			role="radio"
-			aria-checked={active}
-			onclick={() => set(locale)}
-			class={[active && 'font-bold', 'cursor-pointer px-1 first:pl-0 last:pr-0']}
-		>
-			{locale.toUpperCase()}
-		</button>
-	{/each}
-</div>
+				<DropdownMenu.RadioItem value={locale} class={['text-xs', active && 'font-bold']}>
+					{locale.toUpperCase()}
+				</DropdownMenu.RadioItem>
+			{/each}
+		</DropdownMenu.RadioGroup>
+	</DropdownMenu.Content>
+</DropdownMenu.Root>

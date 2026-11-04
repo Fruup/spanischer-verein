@@ -15,7 +15,8 @@ export const sanityClient = createClient({
 	projectId: '6a1nd7zb',
 	perspective: (SANITY_PERSPECTIVE as any) || (import.meta.env.PROD ? 'published' : 'drafts'),
 	apiHost: 'https://api.sanity.io',
-	dataset: SANITY_DATASET || (import.meta.env.PROD ? 'production' : 'development'),
+	// dataset: SANITY_DATASET || (import.meta.env.PROD ? 'production' : 'development'),
+	dataset: 'development',
 	useCdn: import.meta.env.PROD,
 	token: SANITY_TOKEN,
 })
@@ -34,7 +35,7 @@ export const sanityApi = {
 	async getEventsOverview(options: { year: number; month: number }) {
 		interface Result extends Pick<
 			EventSchema,
-			'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'
+			'title' | 'description' | 'eventTime' | 'eventLocation' | 'eventAdmission' | 'cancelled'
 		> {
 			mainImage: SanityImageSource | null
 			slug: string
@@ -68,6 +69,7 @@ export const sanityApi = {
 				dateTime(eventTime) < dateTime($to)
 			]{
 				title,
+				description,
 				"slug": slug.current,
 				eventTime,
 				eventLocation,
@@ -77,6 +79,7 @@ export const sanityApi = {
 					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
 					"dimensions": mainImage.asset->metadata.dimensions,
 				},
+				cancelled,
 			} | order(eventTime asc)`,
 			{
 				from: `${from.toDate(timeZone).toISOString()}`,
@@ -86,6 +89,7 @@ export const sanityApi = {
 
 		const transformed = events.map<ContentApi.Event>((event) => ({
 			title: event.title,
+			description: event.description || null,
 			slug: event.slug,
 			eventTime: event.eventTime,
 			eventLocation: event.eventLocation,
@@ -102,6 +106,7 @@ export const sanityApi = {
 						...event.mainImageMeta.dimensions,
 					}
 				: undefined,
+			cancelled: event.cancelled ?? false,
 		}))
 
 		// Cache the result
@@ -113,7 +118,7 @@ export const sanityApi = {
 	async getCurrentEventsOverview(pageIndex: number = 0) {
 		interface Result extends Pick<
 			EventSchema,
-			'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'
+			'title' | 'description' | 'eventTime' | 'eventLocation' | 'eventAdmission' | 'cancelled'
 		> {
 			mainImage: SanityImageSource
 			slug: string
@@ -144,6 +149,7 @@ export const sanityApi = {
 				)
 			]{
 				title,
+				description,
 				"slug": slug.current,
 				eventTime,
 				eventLocation,
@@ -153,6 +159,7 @@ export const sanityApi = {
 					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
 					"dimensions": mainImage.asset->metadata.dimensions,
 				},
+				cancelled,
 			} | order(eventTime desc))[$fromIndex...$toIndex]`,
 			{
 				fromIndex,
@@ -164,6 +171,7 @@ export const sanityApi = {
 		const result = {
 			events: events.slice(0, pageSize).map<ContentApi.Event>((event) => ({
 				title: event.title,
+				description: event.description || null,
 				slug: event.slug,
 				eventTime: event.eventTime,
 				eventLocation: event.eventLocation,
@@ -180,6 +188,7 @@ export const sanityApi = {
 							...event.mainImageMeta.dimensions,
 						}
 					: undefined,
+				cancelled: event.cancelled ?? false,
 			})),
 			hasMore: events.length > pageSize,
 		}
@@ -193,7 +202,7 @@ export const sanityApi = {
 	async getPastHighlights() {
 		interface Result extends Pick<
 			EventSchema,
-			'title' | 'eventTime' | 'eventLocation' | 'eventAdmission'
+			'title' | 'description' | 'eventTime' | 'eventLocation' | 'eventAdmission' | 'cancelled'
 		> {
 			mainImage: SanityImageSource
 			slug: string
@@ -218,6 +227,7 @@ export const sanityApi = {
 				dateTime(eventTime) < dateTime(now())
 			]{
 				title,
+				description,
 				"slug": slug.current,
 				eventTime,
 				eventLocation,
@@ -227,11 +237,13 @@ export const sanityApi = {
 					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
 					"dimensions": mainImage.asset->metadata.dimensions,
 				},
+				cancelled,
 			} | order(eventTime desc)`,
 		)
 
 		const transformed = events.map<ContentApi.Event>((event) => ({
 			title: event.title,
+			description: null,
 			slug: event.slug,
 			eventTime: event.eventTime,
 			eventLocation: event.eventLocation,
@@ -248,6 +260,7 @@ export const sanityApi = {
 						...event.mainImageMeta.dimensions,
 					}
 				: undefined,
+			cancelled: event.cancelled ?? false,
 		}))
 
 		// Cache the result
@@ -305,6 +318,7 @@ export const sanityApi = {
 
 		const transformed: ContentApi.Event & { content: ContentApi.Content } = {
 			title: event.title,
+			description: event.description || null,
 			slug: event.slug,
 			eventTime: event.eventTime,
 			eventLocation: event.eventLocation,
@@ -320,6 +334,7 @@ export const sanityApi = {
 							...event.mainImageMeta.dimensions,
 						}
 					: undefined,
+			cancelled: event.cancelled ?? false,
 		}
 
 		// Cache the result

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '#lib/components/ui/button/button.svelte'
+	import { Button } from '#lib/components/ui/button/index.ts'
 
 	import Card from './card.svelte'
 	import NewsletterForm from './newsletter-form.svelte'
@@ -31,9 +31,7 @@
 	})
 </script>
 
-<div
-	class="flex flex-col gap-4 [&_a]:underline [&_a]:decoration-brand-link [&_a]:underline-offset-4 [&_a:focus]:text-brand-link [&_a:hover]:text-brand-link [&_p]:my-0 [&_p]:text-sm [&>*]:my-0"
->
+<div class="flex flex-col gap-4 [&_p]:my-0 [&_p]:text-sm [&>*]:my-0">
 	<Card>
 		{#snippet heading()}
 			{t('support_us_heading')}

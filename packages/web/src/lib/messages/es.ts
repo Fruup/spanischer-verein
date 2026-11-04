@@ -97,4 +97,6 @@ export const es = {
 	email_confirm_heading: 'Suscripción al boletín Spanischer Verein',
 	email_confirm_intro: 'Haz clic en este enlace para suscribirte a nuestro boletín:',
 	email_confirm_link_text: 'Suscribirme al boletín',
+
+	cancelled: 'Cancelado',
 } as const

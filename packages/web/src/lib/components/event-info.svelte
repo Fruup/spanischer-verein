@@ -3,6 +3,7 @@
 		admission?: string
 		time?: string
 		location?: string
+		cancelled: boolean
 	}
 </script>
 
@@ -21,9 +22,10 @@
 
 	let { eventInfo, class: className }: Props = $props()
 
-	let admission = $derived(eventInfo.admission)
-	let eventTime = $derived(eventInfo.time)
-	let location = $derived(eventInfo.location)
+	const admission = $derived(eventInfo.admission)
+	const eventTime = $derived(eventInfo.time)
+	const location = $derived(eventInfo.location)
+	const cancelled = $derived(eventInfo.cancelled)
 
 	const dateFormatter = $derived(
 		new DateFormatter(locale.current, {
@@ -91,9 +93,15 @@
 
 {#snippet dateValue()}
 	{#if date}
-		<time datetime={date.toISOString()}>
-			{dateFormatter.format(date)} · {timeFormatter.format(date)}{timeSuffix ? ` ${timeSuffix}` : ''}
+		<time datetime={date.toISOString()} class={[cancelled && 'line-through']}>
+			{dateFormatter.format(date)} · {timeFormatter.format(date)}{timeSuffix
+				? ` ${timeSuffix}`
+				: ''}
 		</time>
+
+		{#if cancelled}
+			<span class="font-bold text-brand uppercase">{t('cancelled')}</span>
+		{/if}
 	{/if}
 {/snippet}
 

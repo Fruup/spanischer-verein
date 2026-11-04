@@ -52,12 +52,13 @@ export namespace ContentApi {
 
 	export interface Event {
 		title: string
+		description: string | null
 		slug: string
 		eventTime: string // ISO timestamp
 		eventLocation?: string
 		eventAdmission?: string
 		mainImage?: Image
-		cancelled?: boolean
+		cancelled: boolean
 	}
 
 	export interface Page {

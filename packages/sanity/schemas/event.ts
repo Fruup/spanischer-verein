@@ -13,10 +13,10 @@ import {MAX_HIGHLIGHTED_EVENTS} from '../components/constants'
 const mainFields = [
   defineField({
     name: 'title',
-    title: 'Title',
+    title: 'Titel',
     group: 'main',
     type: 'string',
-    validation: (Rule) => Rule.required(),
+    validation: (Rule) => [Rule.required(), Rule.min(3), Rule.max(75)],
   }),
   defineField({
     name: 'slug',
@@ -32,6 +32,13 @@ const mainFields = [
     validation: (Rule) => Rule.required(),
   }),
   defineField({
+    name: 'description',
+    title: 'Kurzbeschreibung',
+    group: 'main',
+    type: 'string',
+    validation: (Rule) => [Rule.max(75)],
+  }),
+  defineField({
     name: 'mainImage',
     title: 'Bild',
     group: 'main',
@@ -45,6 +52,14 @@ const mainFields = [
     title: 'Inhalt',
     group: 'main',
     type: 'blockContent',
+  }),
+  defineField({
+    name: 'cancelled',
+    title: 'Abgesagt',
+    description:
+      'Wenn aktiviert, wird dieses Event als abgesagt markiert und auf der Website entsprechend angezeigt.',
+    group: 'main',
+    type: 'boolean',
   }),
 ]
 
@@ -132,9 +147,11 @@ export interface EventSchema extends SanityDocument {
   _type: 'event'
 
   title: string
+  description?: string
   slug: Slug
   mainImage?: Image
   body: PortableTextBlock[]
+  cancelled?: boolean
 
   // Event
   eventTime: string

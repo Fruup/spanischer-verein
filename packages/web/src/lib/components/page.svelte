@@ -32,7 +32,13 @@
 	in:fly={{ y: 10, duration: motion(duration.slow) }}
 	class="mx-auto w-full max-w-[52rem] pb-4"
 >
-	<EventHero {title} {image} {backHref} time={eventInfo?.time} />
+	<EventHero
+		{title}
+		{image}
+		{backHref}
+		time={eventInfo?.time}
+		cancelled={eventInfo?.cancelled ?? false}
+	/>
 
 	{#if eventInfo}
 		<EventInfo {eventInfo} />

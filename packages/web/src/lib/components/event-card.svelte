@@ -103,6 +103,7 @@
 			class={[
 				'flex items-center gap-1.5 text-nowrap text-ink/70',
 				horizontal ? 'text-sm' : 'text-xs',
+				event.cancelled && 'line-through',
 			]}
 		>
 			<CalendarIcon class="size-[1.1em]" />
@@ -111,21 +112,19 @@
 
 		<h4
 			class={[
-				'w-fit font-serif leading-tight font-semibold tracking-tight text-balance group-hover:text-brand group-focus:text-brand',
+				'w-fit font-serif leading-tight font-semibold tracking-tight text-balance hyphens-auto group-hover:text-brand group-focus:text-brand',
 				// horizontal ? 'line-clamp-3' : '',
 				horizontal ? 'text-lg' : 'text-md',
 			]}
 		>
 			<!-- TODO: escape HTML -->
-			<!-- TODO: limit to 60 characters -->
 			{@html insertWordBreaks(event.title)}
 		</h4>
 
-		{#if !horizontal}
-			<!-- TODO: description -->
-			<!-- <div class="text-xs leading-snug tracking-tight text-ink/70">
-				Lorem ipsum dolor sit, amet consectetur adipisicing elit
-			</div> -->
+		{#if event.description}
+			<div class="text-xs leading-snug hyphens-auto text-ink/70">
+				{@html event.description}
+			</div>
 		{/if}
 
 		<div

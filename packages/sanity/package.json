@@ -16,15 +16,15 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/cli": "^8.16.0",
-    "@sanity/hierarchical-document-list": "^4.0.6",
+    "@sanity/cli": "^8.27.0",
+    "@sanity/hierarchical-document-list": "^4.0.9",
     "@sanity/icons": "^5.2.3",
-    "@sanity/studio-secrets": "^4.0.21",
+    "@sanity/studio-secrets": "^4.0.24",
     "@sanity/ui": "^4.4.0",
-    "@sanity/vision": "^6.18.0",
+    "@sanity/vision": "^6.22.0",
     "react": "^19.2.2",
     "react-dom": "^19.2.2",
-    "sanity": "^6.18.0",
+    "sanity": "^6.22.0",
     "styled-components": "^6.1.15"
   },
   "devDependencies": {

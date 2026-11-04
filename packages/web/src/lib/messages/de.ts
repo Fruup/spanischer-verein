@@ -100,4 +100,6 @@ export const de = {
 	email_confirm_heading: 'Newsletter-Anmeldung Spanischer Verein',
 	email_confirm_intro: 'Klicke diesen Link, um dich zu unserem Newsletter anzumelden:',
 	email_confirm_link_text: 'Zum Newsletter anmelden',
+
+	cancelled: 'Abgesagt',
 } as const
