@@ -15,22 +15,59 @@
 <script lang="ts">
 	import { setContext } from 'svelte'
 	import { SvelteSet } from 'svelte/reactivity'
+	import { XIcon } from '@lucide/svelte'
+
+	import { page } from '$app/state'
 
 	import * as Drawer from '#lib/components/ui/drawer/index.js'
 
 	import MobileMenuTree from './mobile-menu-tree.svelte'
 	import { MOBILE_MENU_CONTEXT, type MobileMenuContext } from './context'
-	import type { NavigationItem } from './types'
+	import type { ContentApi } from '#lib/api/content-api.types.ts'
 	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
-		items: NavigationItem[]
+		items: ContentApi.NavigationItem[]
 	}
 
 	let { items }: Props = $props()
 
 	// Replaces melt-ui's `createTreeView`; the tree is a plain set of expanded ids.
 	const expanded = new SvelteSet<string>()
+
+	/**
+	 * Ids of every branch between the root and the page being viewed. Opening
+	 * the drawer somewhere three levels down should show where that page sits,
+	 * not a collapsed list the visitor has to re-open by hand.
+	 */
+	const ancestorsOfCurrentPage = $derived.by(() => {
+		const path = page.url.pathname
+		const ids: string[] = []
+
+		// Collects on the way back up, so a node is recorded only when the page
+		// was found somewhere below it.
+		const walk = (nodes: ContentApi.NavigationItem[]): boolean =>
+			nodes.some((node) => {
+				if (node.href === path) return true
+
+				if (walk(node.children ?? [])) {
+					ids.push(node.title + node.href)
+					return true
+				}
+
+				return false
+			})
+
+		walk(items)
+
+		return ids
+	})
+
+	$effect(() => {
+		if (!mobileMenu.open) return
+
+		for (const id of ancestorsOfCurrentPage) expanded.add(id)
+	})
 
 	setContext<MobileMenuContext>(MOBILE_MENU_CONTEXT, {
 		isExpanded: (id) => expanded.has(id),
@@ -40,13 +77,28 @@
 </script>
 
 <Drawer.Root bind:open={mobileMenu.open}>
-	<Drawer.Content class="rounded-t-panel border-t border-edge-subtle shadow-floating">
-		<nav class="flex w-full flex-col gap-4 overflow-auto p-6">
-			<Drawer.Header class="flex items-center justify-between p-0">
-				<Drawer.Title class="m-0 text-md">{t('navigation_label')}</Drawer.Title>
-			</Drawer.Header>
+	<Drawer.Content class="max-h-[85vh] rounded-t-panel border-t border-edge-subtle shadow-floating">
+		<Drawer.Header
+			class="flex shrink-0 flex-row items-center justify-between gap-4 border-b border-hairline px-4 pt-3 pb-3"
+		>
+			<Drawer.Title class="m-0 font-serif text-md">{t('navigation_label')}</Drawer.Title>
 
-			<ul class="m-0 flex flex-col gap-2 p-0">
+			<Drawer.Close
+				aria-label={t('close')}
+				class="grid size-10 shrink-0 cursor-pointer place-content-center rounded-full text-ink-muted focus-ring transition-colors hover:bg-surface-1"
+			>
+				<XIcon class="size-5" />
+			</Drawer.Close>
+		</Drawer.Header>
+
+		<!--
+			The list scrolls on its own so the header stays put on a long tree, and
+			the bottom padding clears the home indicator on phones that have one.
+		-->
+		<nav
+			class="w-full overflow-y-auto overscroll-contain px-4 pt-2 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
+		>
+			<ul class="m-0 flex flex-col p-0">
 				<MobileMenuTree {items} />
 			</ul>
 		</nav>

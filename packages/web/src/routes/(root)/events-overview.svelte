@@ -114,8 +114,12 @@
 	{const delay = popIndex() * 100}
 
 	<li in:fly|global={{ y: 24, delay, duration: motion(duration.slow) }} class="flex flex-col">
-		<!-- Empty stand-in for the year/month label row, so the card top-aligns with the events. -->
-		<div class="mb-2 flex h-6 items-center gap-1"></div>
+		<!--
+			Empty stand-in for the year/month label row, so the card top-aligns with
+			the events beside it. There is nothing to line up with in the single
+			column a phone gets, so it goes.
+		-->
+		<div class="mb-2 flex h-6 items-center gap-1 max-tablet:hidden"></div>
 
 		<article
 			class="relative z-0 flex grow flex-col justify-between gap-3 overflow-clip rounded-base bg-pitch p-6 shadow-raised"
@@ -166,7 +170,13 @@
 		in:fly|global={{ y: 24, delay: introDelay, duration: motion(duration.slow) }}
 		class="flex flex-col"
 	>
-		<div class="mb-2 flex h-6 items-center gap-1">
+		<!-- Same stand-in as above: only the labelled rows keep it on a phone. -->
+		<div
+			class={[
+				'mb-2 flex h-6 items-center gap-1',
+				!showYearLabel && !showMonthLabel && 'max-tablet:hidden',
+			]}
+		>
 			{const classes =
 				'rounded-full h-6 flex items-center px-2.5 text-2xs shadow-sm font-bold tracking-tight leading-none'}
 

@@ -1,16 +1,19 @@
 <script lang="ts">
 	import { getContext } from 'svelte'
+	import { slide } from 'svelte/transition'
 
 	import { goto } from '$app/navigation'
+	import { page } from '$app/state'
 
-	import Button from '../button.svelte'
 	import IconAngle from '../icons/icon-angle.svelte'
 	import MobileMenuTree from './mobile-menu-tree.svelte'
 	import { MOBILE_MENU_CONTEXT, type MobileMenuContext } from './context'
-	import type { NavigationItem } from './types'
+	import { duration, motion } from '#lib/helpers/motion.js'
+	import type { ContentApi } from '#lib/api/content-api.types.ts'
+	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
-		items: NavigationItem[]
+		items: ContentApi.NavigationItem[]
 		level?: number
 	}
 
@@ -30,25 +33,48 @@
 {#each items as { _key, href, title, children }, index (_key ?? href)}
 	{@const id = title + href}
 	{@const hasChildren = !!children?.length}
+	{@const expanded = hasChildren && menu.isExpanded(id)}
+	{@const current = page.url.pathname === href}
 
-	<li style:--index={index} class="list-none">
-		<div class="flex flex-row gap-[1ch]">
+	<li style:--index={index} class="list-none border-b border-hairline last:border-b-0">
+		<!--
+			The row is a link plus, where there are children, a separate disclosure
+			button: tapping the title goes to the section's own page, tapping the
+			chevron opens it. Both targets are a full 48px tall, which is why the
+			row is sized rather than padded.
+		-->
+		<div class="flex items-stretch gap-1">
 			<a
 				{href}
-				aria-expanded={hasChildren ? menu.isExpanded(id) : undefined}
+				aria-current={current ? 'page' : undefined}
 				onclick={(event) => navigate(event, href)}
-				class="rounded-sm underline decoration-brand-link decoration-2 underline-offset-4 focus-ring"
+				class={[
+					'flex min-h-12 grow items-center rounded-base px-2 focus-ring transition-colors',
+					level > 1 ? 'text-sm' : 'text-base',
+					current ? 'font-semibold text-brand-link' : 'hover:bg-surface-1',
+				]}
 			>
 				{title}
 			</a>
 
 			{#if hasChildren}
-				<Button size="s" tabindex={-1} icon={IconAngle} onClick={() => menu.toggle(id)} />
+				<button
+					type="button"
+					aria-expanded={expanded}
+					aria-label={expanded ? t('collapse_submenu', { title }) : t('expand_submenu', { title })}
+					onclick={() => menu.toggle(id)}
+					class="grid min-h-12 w-12 shrink-0 cursor-pointer place-content-center rounded-base text-ink-muted focus-ring transition-colors hover:bg-surface-1"
+				>
+					<IconAngle direction={expanded ? 'up' : 'down'} transition />
+				</button>
 			{/if}
 		</div>
 
-		{#if hasChildren && menu.isExpanded(id)}
-			<ul class="m-0 ml-8 p-0">
+		{#if expanded}
+			<ul
+				transition:slide={{ duration: motion(duration.fast) }}
+				class="m-0 mb-2 ml-2 border-l-2 border-hairline p-0 pl-2"
+			>
 				<MobileMenuTree level={level + 1} items={children ?? []} />
 			</ul>
 		{/if}

@@ -13,7 +13,7 @@
 	} from '#lib/api/content-api.remote.js'
 	import Divider from './divider.svelte'
 	import Footer from './footer.svelte'
-	import { mobileCalendar } from './mobile-calendar.svelte'
+	import MobileCalendar, { mobileCalendar } from './mobile-calendar.svelte'
 	import ParticipateSection from './participate-section.svelte'
 	import type { LayoutProps } from './$types'
 	import NavigationIndicator from './navigation-indicator.svelte'
@@ -80,6 +80,8 @@
 	bind:isFlyoutOpen={mobileMenu.open}
 />
 
+<MobileCalendar getEvents={getCalendarEvents} />
+
 <Divider />
 
 <div
@@ -108,7 +110,6 @@
 				<EventCalendar getEvents={getCalendarEvents} />
 			</div>
 
-			<!-- <MobileCalendar {events} /> -->
 			<div class="mt-4">
 				<SidebarHeading icon={UsersIcon}>
 					{t('get_involved')}
