@@ -15,6 +15,8 @@
 <script lang="ts">
 	import { XIcon } from '@lucide/svelte'
 
+	import { afterNavigate } from '$app/navigation'
+
 	import EventCalendar from '#lib/components/event-calendar/event-calendar.svelte'
 	import type { EventCalendarItem } from '#lib/components/event-calendar/helpers.js'
 	import * as Drawer from '#lib/components/ui/drawer/index.js'
@@ -25,6 +27,11 @@
 	}
 
 	let { getEvents }: Props = $props()
+
+	// Following a marked day leaves the page the drawer is sitting on, so the
+	// drawer goes with it. Closing it on the click instead would tear the
+	// calendar out from under the router before it had handled the link.
+	afterNavigate(() => (mobileCalendar.open = false))
 </script>
 
 <Drawer.Root bind:open={mobileCalendar.open}>
@@ -51,17 +58,12 @@
 		<!--
 			Inside the drawer the calendar sits on the drawer's own surface, and it
 			takes the full width it is given: a day cell is square, so the wider the
-			sheet the bigger the tap target. Following a marked day leaves the page
-			the drawer is sitting on, so the drawer closes with it.
+			sheet the bigger the tap target.
 		-->
 		<div
-			role="presentation"
-			onclick={(event) => {
-				if ((event.target as HTMLElement).closest('a')) mobileCalendar.open = false
-			}}
 			class="w-full overflow-y-auto overscroll-contain px-4 pt-3 pb-[calc(1.5rem+env(safe-area-inset-bottom))] [&_[data-event-calendar]]:border-0 [&_[data-event-calendar]]:bg-transparent [&_[data-event-calendar]]:p-0 [&_[data-event-calendar]]:shadow-none"
 		>
-			<EventCalendar {getEvents} />
+			<EventCalendar {getEvents} swipeable />
 
 			<p class="mt-3 flex items-center justify-center gap-2 text-2xs text-ink-muted">
 				<span aria-hidden="true" class="size-3 rounded-sm bg-brand"></span>

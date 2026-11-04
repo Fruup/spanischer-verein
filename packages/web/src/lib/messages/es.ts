@@ -4,7 +4,7 @@ export const es = {
 	get_involved: 'Participa',
 	get_involved_description: '¿Quieres apoyarnos o colaborar tú mismo?',
 	event_calendar_label: 'Calendario de eventos',
-	calendar_tap_hint: 'Toca un día marcado.',
+	calendar_tap_hint: 'Desliza para cambiar de mes, toca un día marcado.',
 	calendar_legend: 'Día con evento',
 
 	nav_home: 'Inicio',
