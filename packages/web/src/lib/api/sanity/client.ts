@@ -15,8 +15,7 @@ export const sanityClient = createClient({
 	projectId: '6a1nd7zb',
 	perspective: (SANITY_PERSPECTIVE as any) || (import.meta.env.PROD ? 'published' : 'drafts'),
 	apiHost: 'https://api.sanity.io',
-	// dataset: SANITY_DATASET || (import.meta.env.PROD ? 'production' : 'development'),
-	dataset: 'development',
+	dataset: SANITY_DATASET || (import.meta.env.PROD ? 'production' : 'development'),
 	useCdn: import.meta.env.PROD,
 	token: SANITY_TOKEN,
 })
