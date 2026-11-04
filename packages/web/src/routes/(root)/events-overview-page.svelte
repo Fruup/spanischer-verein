@@ -19,7 +19,7 @@
 <h3
 	id="veranstaltungen"
 	style="scroll-margin-top: {getHeaderHeight() + 20}px"
-	class="mt-8 mb-4 flex items-center justify-between font-serif text-xl font-bold"
+	class="mt-8 mb-4 flex items-center justify-between font-serif text-xl font-bold max-tablet:mt-4 max-tablet:text-lg"
 >
 	{t('events_heading')}
 </h3>

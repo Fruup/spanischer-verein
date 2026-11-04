@@ -83,15 +83,15 @@
 <Divider />
 
 <div
-	class="mx-auto box-content grid max-w-[1200px] [grid-template-columns:1fr_min-content_min-content] gap-10 px-10 max-desktop:grid-cols-1 max-tablet:px-4"
+	class="mx-auto box-content grid max-w-[1200px] [grid-template-columns:1fr_min-content_min-content] gap-10 px-10 max-desktop:grid-cols-1 max-tablet:gap-6 max-tablet:px-4"
 >
-	<main class="mt-10 mb-16 max-desktop:mb-0 [&_h3:first-of-type]:mt-0">
+	<main class="mt-10 mb-16 max-desktop:mb-0 max-tablet:mt-6 [&_h3:first-of-type]:mt-0">
 		{@render children?.()}
 	</main>
 
 	<div class="h-full w-[2px] bg-hairline max-desktop:h-[2px] max-desktop:w-auto"></div>
 
-	<aside class="mt-10 mb-16 [&_h3:first-of-type]:mt-0">
+	<aside class="mt-10 mb-16 max-tablet:mt-6 max-tablet:mb-10 [&_h3:first-of-type]:mt-0">
 		<div
 			class="sticky top-8 flex w-[280px] flex-col gap-4 max-desktop:mx-auto max-desktop:w-full max-desktop:max-w-[500px] max-desktop:items-center"
 		>

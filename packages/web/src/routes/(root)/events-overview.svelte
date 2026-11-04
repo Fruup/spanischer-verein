@@ -79,7 +79,7 @@
 </script>
 
 <ul
-	class="grid w-full grid-cols-[repeat(3,minmax(230px,1fr))] gap-6 p-0 *:list-none max-tablet:grid-cols-1"
+	class="grid w-full grid-cols-[repeat(3,minmax(230px,1fr))] gap-6 p-0 *:list-none max-tablet:grid-cols-1 max-tablet:gap-4"
 >
 	{#each upcomingEvents as event, i (event.slug)}
 		{@render _event(event, i)}
@@ -180,7 +180,7 @@
 		</div>
 
 		<article class="grow">
-			<EventCard {event} />
+			<EventCard {event} compactOnMobile />
 		</article>
 	</li>
 {/snippet}

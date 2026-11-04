@@ -53,11 +53,11 @@
 	})
 </script>
 
-<header class="mb-8">
+<header class="mb-8 max-tablet:mb-6">
 	{#if backHref}
 		<a
 			href={backHref}
-			class="group mb-6 inline-flex items-center gap-1.5 rounded text-xs text-ink-muted focus-ring transition-colors hover:text-brand"
+			class="group mb-6 inline-flex items-center gap-1.5 rounded text-xs text-ink-muted focus-ring transition-colors hover:text-brand max-tablet:mb-4"
 		>
 			<ArrowLeftIcon class="size-4 transition-transform group-hover:-translate-x-0.5" />
 			{label}
@@ -68,7 +68,7 @@
 		<div
 			style:background-color={backgroundColor}
 			style:aspect-ratio="{image.width} / {image.height}"
-			class="relative mb-8 flex max-h-[32rem] w-full justify-center overflow-hidden rounded-panel shadow-raised contain-strict"
+			class="relative mb-8 flex max-h-[32rem] w-full justify-center overflow-hidden rounded-panel shadow-raised contain-strict max-tablet:mb-6 max-tablet:max-h-[20rem]"
 		>
 			{#if cancelled}
 				<div
@@ -132,7 +132,9 @@
 		</p>
 	{/if}
 
-	<h1 class="m-0 font-serif text-xl leading-tight font-bold tracking-tight text-balance">
+	<h1
+		class="m-0 font-serif text-xl leading-tight font-bold tracking-tight text-balance max-tablet:text-lg"
+	>
 		{title}
 	</h1>
 
