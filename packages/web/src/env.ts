@@ -10,15 +10,15 @@ import z from 'zod'
 export const variables = defineEnvVars({
 	SANITY_PERSPECTIVE: {
 		description: "Sanity perspective; defaults to 'published' in production.",
-		schema: (value) => value,
+		schema: z.string().optional(),
 	},
 	SANITY_DATASET: {
 		description: "Sanity dataset; defaults to 'production' in production.",
-		schema: (value) => value,
+		schema: z.string().optional(),
 	},
 	SANITY_TOKEN: {
 		description: 'Sanity read token.',
-		schema: (value) => value,
+		schema: z.string().min(1),
 	},
 	ENABLE_CACHE: {
 		description: 'Set to `true` to cache Sanity responses on disk.',
