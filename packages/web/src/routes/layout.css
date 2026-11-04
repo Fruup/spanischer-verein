@@ -341,10 +341,10 @@
 		color-scheme: dark;
 	}
 
-	:root,
-	body {
-		scroll-behavior: smooth;
-	}
+	/* No `scroll-behavior: smooth` here. It applies to the router's own jump to
+	   the top after a navigation, which turns an instant reset into a visible
+	   glide — the new page renders still scrolled into its middle and then
+	   slides up under the reader. There are no in-page anchors to smooth. */
 
 	* {
 		min-width: 0;
@@ -382,20 +382,15 @@
 		place-content: center;
 	}
 
-	/* Transitions and smooth scrolling are decoration, so they go. The loader
-	   animation stays — it reports that something is happening. Svelte's own
-	   JS-driven transitions are gated separately, in `helpers/motion.ts`. */
+	/* Transitions are decoration, so they go. The loader animation stays — it
+	   reports that something is happening. Svelte's own JS-driven transitions
+	   are gated separately, in `helpers/motion.ts`. */
 	@media (prefers-reduced-motion: reduce) {
 		*,
 		*::before,
 		*::after {
 			transition-duration: 1ms !important;
 			transition-delay: 0ms !important;
-		}
-
-		:root,
-		body {
-			scroll-behavior: auto;
 		}
 	}
 }

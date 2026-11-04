@@ -4,7 +4,6 @@
 	import CarouselItem from './carousel/carousel-item.svelte'
 	import EventCard from '../event-card.svelte'
 	import { isMainPage } from './helpers.svelte'
-	import { slide } from 'svelte/transition'
 	import type { ContentApi } from '#lib/api/content-api.types.ts'
 
 	interface Props {
@@ -18,10 +17,15 @@
 <!--
 	The pitch band only belongs on the landing pages. Subpages carry their own
 	`<h1>` (the event or page title), so showing it here would give them two.
+
+	It leaves without a transition on purpose. Collapsing ~650px at the very top
+	of the document is the one place an exit animation cannot be free: the
+	router has just reset the scroll, and shrinking everything above the reader
+	drags the viewport with it, so the subpage appears to scroll on its own
+	before it settles.
 -->
 {#if isMainPage()}
 	<div
-		out:slide={{ axis: 'y' }}
 		class="flex w-full justify-center bg-pitch contain-content"
 		style="background-image: repeating-linear-gradient(45deg, var(--pitch-weave) 0 1px, transparent 1px 28px);"
 	>

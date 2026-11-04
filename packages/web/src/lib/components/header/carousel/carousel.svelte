@@ -113,7 +113,14 @@
 			inactive dots are a fixed ink rather than the themed `ink` token,
 			which would turn near-white — and invisible — in dark mode.
 		-->
-		<div class="flex w-fit items-center gap-0.5">
+		<!--
+			One dot per item, so a long highlight list makes a row far wider than a
+			phone: at 17 items the row is ~460px against a 360px stack, and the
+			ancestor's `contain-content` clips the overflow rather than scrolling
+			it, which hides the arrows and often the active dot itself. It wraps
+			onto as many centred lines as it needs instead.
+		-->
+		<div class="flex w-full flex-wrap items-center justify-center gap-0.5">
 			<button
 				aria-label={t('carousel_prev')}
 				type="button"
