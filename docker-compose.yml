@@ -5,6 +5,13 @@ services:
       context: .
       dockerfile: .docker/web/Dockerfile
       target: production
+      args:
+        ORIGIN: ${ORIGIN}
+        HOSTINGER_MAIL_API_TOKEN: ${HOSTINGER_MAIL_API_TOKEN}
+        HOSTINGER_MAIL_ADDRESS: ${HOSTINGER_MAIL_ADDRESS}
+        HOSTINGER_MAIL_SENDER: ${HOSTINGER_MAIL_SENDER}
+        ADMIN_MAIL_ADDRESS: ${ADMIN_MAIL_ADDRESS}
+        ALTCHA_SECRET: ${ALTCHA_SECRET}
     ports:
       - ${PORT}:${PORT}
     labels:
