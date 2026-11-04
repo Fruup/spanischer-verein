@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { cn } from '#lib/utils.js'
 	import { t } from '#lib/messages/index.ts'
-
-	import IconBurger from '../icons/icon-burger.svelte'
-	import IconCalendar from '../icons/icon-calendar.svelte'
+	import { CalendarIcon, MenuIcon } from '@lucide/svelte'
 
 	interface Props {
 		isCalendarOpen?: boolean
@@ -26,7 +24,7 @@
 		onclick={() => (isCalendarOpen = !isCalendarOpen)}
 		title={t('open_calendar')}
 	>
-		<IconCalendar />
+		<CalendarIcon class="size-4" />
 	</button>
 
 	<button
@@ -34,6 +32,6 @@
 		onclick={() => (isFlyoutOpen = !isFlyoutOpen)}
 		title={t('open_navigation')}
 	>
-		<IconBurger />
+		<MenuIcon class="size-4" />
 	</button>
 </nav>
