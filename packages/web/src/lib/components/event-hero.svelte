@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { ArrowLeftIcon } from '@lucide/svelte'
 	import { DateFormatter } from '@internationalized/date'
 	import { locale } from '#lib/locale/state.svelte.ts'
 	import { t } from '#lib/messages/index.ts'
 	import type { ContentApi } from '#lib/api/content-api.types.ts'
+	import BackLink from './back-link.svelte'
 
 	interface Props {
 		title: string
@@ -24,8 +24,6 @@
 		backLabel = undefined,
 		cancelled,
 	}: Props = $props()
-
-	const label = $derived(backLabel ?? t('all_events'))
 
 	const date = $derived(time ? new Date(time) : undefined)
 
@@ -55,13 +53,7 @@
 
 <header class="mb-8 max-tablet:mb-6">
 	{#if backHref}
-		<a
-			href={backHref}
-			class="group mb-6 inline-flex items-center gap-1.5 rounded text-xs text-ink-muted focus-ring transition-colors hover:text-brand max-tablet:mb-4"
-		>
-			<ArrowLeftIcon class="size-4 transition-transform group-hover:-translate-x-0.5" />
-			{label}
-		</a>
+		<BackLink href={backHref} label={backLabel} class="mb-6 max-tablet:mb-4" />
 	{/if}
 
 	{#if image}
