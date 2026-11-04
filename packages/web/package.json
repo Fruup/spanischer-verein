@@ -46,7 +46,7 @@
 	"dependencies": {
 		"@hostinger/sdk": "^2.5.1",
 		"@internationalized/date": "^3.12.4",
-		"@lucide/svelte": "^1.62.0",
+		"@lucide/svelte": "^1.68.0",
 		"@portabletext/svelte": "^4.0.0",
 		"@portabletext/types": "^4.0.2",
 		"@sanity/client": "^8.9.0",
@@ -63,8 +63,7 @@
 		"mode-watcher": "^1.1.0",
 		"nodemailer": "^10.1.0",
 		"svelte-sonner": "^1.2.1",
-		"tailwind-variants": "^3.3.1",
-		"vaul-svelte": "^1.0.0-next.7"
+		"tailwind-variants": "^3.3.1"
 	},
 	"imports": {
 		"#lib/*": "./src/lib/*",

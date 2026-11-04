@@ -7,9 +7,14 @@
 </script>
 
 <div class="max-w-prose">
-	<p class="mb-3 flex items-center gap-2 text-2xs font-bold tracking-label text-brand uppercase">
-		<span aria-hidden="true" class="h-px w-6 bg-brand"></span>
-		Deutsch-Spanischer Kulturkreis Machado e.V.
+	<!--
+		The rule keeps to the first line of the label rather than centring against
+		a block that is two lines deep on a phone, and the label itself wraps
+		evenly instead of dropping `e.V.` onto a line of its own.
+	-->
+	<p class="mb-3 flex items-start gap-2 text-2xs font-bold tracking-label text-brand uppercase">
+		<span aria-hidden="true" class="mt-[0.75em] h-px w-6 shrink-0 bg-brand"></span>
+		<span class="text-balance">Deutsch-Spanischer Kulturkreis Machado e.V.</span>
 	</p>
 
 	<h1
