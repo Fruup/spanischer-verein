@@ -1,9 +1,7 @@
 <script lang="ts">
+	import { CalendarIcon, LightbulbIcon } from '@lucide/svelte'
 	import type { MarkComponentProps } from '@portabletext/svelte'
 	import type { InternalLinkMark } from '@spanischer-verein/sanity/schemas/blockContent'
-
-	import IconBulb from '../icons/icon-bulb.svelte'
-	import IconCalendar from '../icons/icon-calendar.svelte'
 
 	interface Props {
 		portableText: MarkComponentProps<InternalLinkMark>
@@ -29,9 +27,9 @@
 >
 	<span class="contents text-[0.8em]">
 		{#if type === 'event'}
-			<IconCalendar />
+			<CalendarIcon class="size-4" />
 		{:else if type === 'page'}
-			<IconBulb />
+			<LightbulbIcon class="size-4" />
 		{/if}
 	</span>
 
