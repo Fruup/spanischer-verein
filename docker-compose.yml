@@ -13,8 +13,15 @@ services:
       - traefik.http.middlewares.redirect-to-non-www.redirectregex.replacement=https://$${1}
       - traefik.http.middlewares.redirect-to-non-www.redirectregex.permanent=true
     environment:
-      - SANITY_PERSPECTIVE=${SANITY_PERSPECTIVE}
-      - SANITY_DATASET=${SANITY_DATASET}
-      - SANITY_TOKEN=${SANITY_TOKEN}
-      - MAIL_CREDENTIALS=${MAIL_CREDENTIALS}
-      - MAIL_SERVER=${MAIL_SERVER}
+      ORIGIN: ${ORIGIN}
+      PORT: ${PORT}
+
+      SANITY_PERSPECTIVE: ${SANITY_PERSPECTIVE}
+      SANITY_DATASET: ${SANITY_DATASET}
+      SANITY_TOKEN: ${SANITY_TOKEN}
+
+      HOSTINGER_MAIL_API_TOKEN: ${HOSTINGER_MAIL_API_TOKEN}
+      HOSTINGER_MAIL_ADDRESS: ${HOSTINGER_MAIL_ADDRESS}
+      HOSTINGER_MAIL_SENDER: ${HOSTINGER_MAIL_SENDER}
+      ADMIN_MAIL_ADDRESS: ${ADMIN_MAIL_ADDRESS}
+      ALTCHA_SECRET: ${ALTCHA_SECRET}
