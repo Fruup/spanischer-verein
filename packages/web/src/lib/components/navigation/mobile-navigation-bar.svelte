@@ -31,7 +31,7 @@
 		onclick={() => (isCalendarOpen = !isCalendarOpen)}
 		title={t('open_calendar')}
 	>
-		<CalendarIcon class="size-4" />
+		<CalendarIcon class="size-6" />
 	</button>
 
 	<button
@@ -40,6 +40,6 @@
 		onclick={() => (isFlyoutOpen = !isFlyoutOpen)}
 		title={t('open_navigation')}
 	>
-		<MenuIcon class="size-4" />
+		<MenuIcon class="size-6" />
 	</button>
 </nav>

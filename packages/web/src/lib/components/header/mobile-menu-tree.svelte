@@ -1,16 +1,14 @@
 <script lang="ts">
 	import { getContext } from 'svelte'
 	import { slide } from 'svelte/transition'
-
 	import { goto } from '$app/navigation'
 	import { page } from '$app/state'
-
-	import IconAngle from '../icons/icon-angle.svelte'
 	import MobileMenuTree from './mobile-menu-tree.svelte'
 	import { MOBILE_MENU_CONTEXT, type MobileMenuContext } from './context'
 	import { duration, motion } from '#lib/helpers/motion.js'
 	import type { ContentApi } from '#lib/api/content-api.types.ts'
 	import { t } from '#lib/messages/index.ts'
+	import { ChevronDownIcon } from '@lucide/svelte'
 
 	interface Props {
 		items: ContentApi.NavigationItem[]
@@ -65,7 +63,7 @@
 					onclick={() => menu.toggle(id)}
 					class="grid min-h-12 w-12 shrink-0 cursor-pointer place-content-center rounded-base text-ink-muted focus-ring transition-colors hover:bg-surface-1"
 				>
-					<IconAngle direction={expanded ? 'up' : 'down'} transition />
+					<ChevronDownIcon class={['size-6 transition-transform', expanded && 'rotate-180']} />
 				</button>
 			{/if}
 		</div>
