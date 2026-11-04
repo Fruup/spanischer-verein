@@ -1,25 +1,9 @@
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitest/config'
-import adapterAuto from '@sveltejs/adapter-auto'
-import adapterStatic from '@sveltejs/adapter-static'
+import adapterNode from '@sveltejs/adapter-node'
 import { imagetools } from 'vite-imagetools'
 import { sveltekit } from '@sveltejs/kit/vite'
 import { fontPlugin } from './src/lib/helpers/fontPlugin.js'
-
-const isRenderingNewsletter = process.env.PUBLIC_RENDERING_NEWSLETTER === 'true'
-const newsletterSlug = process.env.NEWSLETTER_SLUG
-
-const adapter = (() => {
-	if (isRenderingNewsletter) {
-		if (!newsletterSlug) throw Error("Missing env var 'NEWSLETTER_SLUG'")
-
-		return adapterStatic({ strict: false })
-	}
-
-	// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto.
-	// Swap this out once the deployment target is settled.
-	return adapterAuto()
-})()
 
 export default defineConfig({
 	plugins: [
@@ -44,18 +28,11 @@ export default defineConfig({
 				experimental: { async: true },
 			},
 
-			adapter,
+			adapter: adapterNode({}),
 
 			experimental: {
 				// `*.remote.ts` files replace the `+page.server.ts` loads of v1.
 				remoteFunctions: true,
-			},
-
-			outDir: isRenderingNewsletter ? 'newsletter' : undefined,
-
-			prerender: {
-				crawl: false,
-				entries: isRenderingNewsletter ? [`/newsletter/${newsletterSlug}` as const] : undefined,
 			},
 		}),
 
