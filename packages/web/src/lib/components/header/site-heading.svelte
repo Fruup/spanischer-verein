@@ -7,13 +7,18 @@
 </script>
 
 <div class="max-w-prose">
-	<p class="mb-3 flex items-center gap-2 text-2xs font-bold tracking-label text-brand uppercase">
-		<span aria-hidden="true" class="h-px w-6 bg-brand"></span>
-		Deutsch-Spanischer Kulturkreis Machado e.V.
+	<!--
+		The rule keeps to the first line of the label rather than centring against
+		a block that is two lines deep on a phone, and the label itself wraps
+		evenly instead of dropping `e.V.` onto a line of its own.
+	-->
+	<p class="mb-3 flex items-start gap-2 text-2xs font-bold tracking-label text-brand uppercase">
+		<span aria-hidden="true" class="mt-[0.75em] h-px w-6 shrink-0 bg-brand"></span>
+		<span class="text-balance">Deutsch-Spanischer Kulturkreis Machado e.V.</span>
 	</p>
 
 	<h1
-		class="mb-5 font-serif text-[clamp(2.5rem,5.5vw,4rem)]/[1.02] font-black tracking-tight text-balance"
+		class="mb-4 font-serif text-[clamp(2.25rem,5.5vw,4rem)]/[1.05] font-black tracking-tight text-balance"
 	>
 		{t('hero_title_line1')}<br />
 		<span class="text-brand">{t('hero_title_line2')}</span>
@@ -23,7 +28,7 @@
 		{t('hero_description')}
 	</p>
 
-	<div class="flex gap-2 pt-4">
+	<div class="flex flex-wrap gap-2 pt-4">
 		<Button href="/#veranstaltungen">{t('view_upcoming_events')}</Button>
 
 		{#if aboutPageSlug}

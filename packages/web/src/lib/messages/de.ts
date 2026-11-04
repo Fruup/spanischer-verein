@@ -4,12 +4,17 @@ export const de = {
 	get_involved: 'Mitmachen',
 	get_involved_description: 'Du willst uns unterstützen oder dich selbst einbringen?',
 	event_calendar_label: 'Veranstaltungskalender',
+	calendar_tap_hint: 'Wische für einen anderen Monat, tippe auf einen markierten Tag.',
+	calendar_legend: 'Tag mit Veranstaltung',
 
 	nav_home: 'Startseite',
 	overview: 'Übersicht',
 	navigation_label: 'Navigation',
 	open_calendar: 'Öffne Kalender',
 	open_navigation: 'Öffne Navigation',
+	close: 'Schließen',
+	expand_submenu: '„{title}“ aufklappen',
+	collapse_submenu: '„{title}“ zuklappen',
 	language_selection: 'Sprachauswahl',
 
 	event_badge: 'Veranstaltung',

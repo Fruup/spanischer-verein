@@ -25,22 +25,27 @@
 		class="flex w-full justify-center bg-pitch contain-content"
 		style="background-image: repeating-linear-gradient(45deg, var(--pitch-weave) 0 1px, transparent 1px 28px);"
 	>
-		<div class="container mx-auto grid max-w-5xl grid-cols-[1fr_1fr] place-content-center py-20">
-			<div class="grid place-content-center">
+		<div
+			class="container mx-auto grid max-w-5xl grid-cols-[1fr_1fr] place-content-center py-20 max-desktop:px-10 max-tablet:grid-cols-1 max-tablet:gap-6 max-tablet:px-4 max-tablet:py-8"
+		>
+			<div class="grid place-content-center max-tablet:block">
 				<SiteHeading />
 			</div>
 
 			<!-- TODO: add upcoming events. mark them with badge. mark past highlights with a badge as well -->
 
-			<div class="-m-20 grid place-content-center p-20 contain-content">
-				<Carousel autoplay contentClass="max-w-sm">
+			<div
+				class="-m-20 grid place-content-center p-20 contain-content max-tablet:m-0 max-tablet:block max-tablet:p-0"
+			>
+				<Carousel autoplay contentClass="max-w-sm max-tablet:max-w-full">
 					{#each highlightedEvents as event, index (index)}
 						<CarouselItem class="w-full">
 							<EventCard
-								class="w-auto max-w-[500px]"
-								imageClass="max-h-[200px]!"
+								class="w-auto max-w-[500px] max-tablet:w-full"
+								imageClass="max-h-[200px]! max-tablet:max-h-none!"
 								{event}
 								highlight
+								compactOnMobile
 							/>
 						</CarouselItem>
 					{/each}
@@ -58,7 +63,7 @@
 					{#each headerImages as image, index (index)}
 						<CarouselItem class="h-auto w-full bg-white p-3 pb-6 shadow">
 							<img
-								class="max-h-[300px] w-full object-contain"
+								class="max-h-[300px] w-full object-contain max-tablet:max-h-[200px]"
 								style="aspect-ratio: {image.width / image.height};"
 								src={image.url}
 								alt=""

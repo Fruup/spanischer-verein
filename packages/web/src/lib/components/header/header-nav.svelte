@@ -1,9 +1,6 @@
 <script lang="ts">
-	import Button from '../button.svelte'
-	import IconBurger from '../icons/icon-burger.svelte'
 	import * as NavigationMenu from '../ui/navigation-menu'
 	import HeaderNavItem from './header-nav-item.svelte'
-	import { mobileMenu } from './mobile-menu.svelte'
 	import type { ContentApi } from '#lib/api/content-api.types.ts'
 
 	interface Props {
@@ -24,7 +21,3 @@
 		{/each}
 	</NavigationMenu.List>
 </NavigationMenu.Root>
-
-<div class="hidden max-desktop:block">
-	<Button icon={IconBurger} onClick={() => (mobileMenu.open = true)} />
-</div>

@@ -39,20 +39,30 @@
 
 <header
 	bind:this={headerContainer}
-	class="sticky top-0 z-10 grid h-20 grid-cols-[1fr_auto_1fr] overflow-visible overflow-x-clip bg-background/70 text-center shadow backdrop-blur-md"
+	class="sticky top-0 z-10 grid h-20 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] overflow-visible overflow-x-clip bg-background/70 text-center shadow backdrop-blur-md [--header-logo:3rem] max-tablet:h-14 max-tablet:[--header-logo:2rem]"
 >
 	<div class="flex items-center">
 		<div class="grid aspect-square h-full w-auto place-content-center">
-			<SiteLogo height="3rem" />
+			<SiteLogo height="var(--header-logo)" />
 		</div>
 
-		<span class="text-sm font-semibold">Centro Machado</span>
+		<span class="text-sm font-semibold text-nowrap">Centro Machado</span>
 	</div>
 
 	<HeaderNav {items} />
 
-	<div class="flex items-center gap-4 justify-self-end pr-8">
-		<SocialLinks />
+	<!--
+		Pinned to the last column by name. Below desktop the nav in the middle
+		column is `display: none`, which takes it out of the grid flow entirely —
+		without this the social links and the locale selector slide up into the
+		middle and sit against the site name instead of the right edge.
+	-->
+	<div
+		class="col-start-3 flex items-center gap-4 justify-self-end pr-8 max-tablet:gap-2 max-tablet:pr-4"
+	>
+		<div class="max-tablet:hidden">
+			<SocialLinks />
+		</div>
 		<LocaleSelector />
 	</div>
 </header>
