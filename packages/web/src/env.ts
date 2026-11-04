@@ -18,7 +18,7 @@ export const variables = defineEnvVars({
 	},
 	SANITY_TOKEN: {
 		description: 'Sanity read token.',
-		schema: z.string().min(1),
+		schema: z.string().optional(),
 	},
 	ENABLE_CACHE: {
 		description: 'Set to `true` to cache Sanity responses on disk.',
