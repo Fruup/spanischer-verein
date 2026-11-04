@@ -60,7 +60,7 @@
 	--heading-3-ink: #1d1d1d;
 }
 
-.dark {
+.__UNUSED__dark {
 	--ink: oklch(0.95 0 0);
 	--ink-muted: oklch(0.72 0 0);
 
