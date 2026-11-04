@@ -94,6 +94,9 @@
 		<!--
 			The list scrolls on its own so the header stays put on a long tree, and
 			the bottom padding clears the home indicator on phones that have one.
+			Dragging the sheet shut works from the header and the grabber above it;
+			over a list long enough to scroll, a downward drag scrolls the list,
+			which is the behaviour the drawer is built around.
 		-->
 		<nav
 			class="w-full overflow-y-auto overscroll-contain px-4 pt-2 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"

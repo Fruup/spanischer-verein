@@ -114,10 +114,25 @@
 				placeholder = placeholder.add({ months: (dragged ? Math.sign(mx) : dx) < 0 ? 1 : -1 })
 			},
 			{
+				/*
+					Horizontal drags only. A vertical one is left strictly alone — no
+					handling, no `preventDefault` — because it belongs to whatever the
+					calendar is sitting in: in the mobile drawer that is the sheet's own
+					pull-to-dismiss, and claiming the vertical axis here (with a
+					`touch-action` of `pan-y`, say) stops the sheet closing when it is
+					pulled down over the calendar.
+				*/
 				axis: 'x',
 				// A tap on a day is a link, not a one-pixel drag.
 				filterTaps: true,
-				pointer: { touch: true },
+				/*
+					`capture: false` leaves the pointer where it was. The drawer this
+					sits in captures the pointer itself to drive its own drag, and two
+					captures on one gesture means the later one wins and the other
+					component stops hearing about the finger; listening on the document
+					instead keeps both working.
+				*/
+				pointer: { touch: true, capture: false },
 			},
 		)
 
@@ -125,12 +140,7 @@
 	})
 </script>
 
-<!--
-	`touch-pan-y` hands the browser the vertical scroll and keeps the horizontal
-	axis for the gesture above, so swiping the calendar inside the drawer does
-	not also drag the sheet.
--->
-<div bind:this={swipeTarget} class={['w-full', swipeable && 'touch-pan-y']}>
+<div bind:this={swipeTarget} class="w-full">
 	<Calendar.Root
 		id="calendar"
 		type="single"
