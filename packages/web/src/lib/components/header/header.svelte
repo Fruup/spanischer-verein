@@ -39,9 +39,17 @@
 
 <header
 	bind:this={headerContainer}
-	class="sticky top-0 z-10 grid h-20 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] overflow-visible overflow-x-clip bg-background/70 text-center shadow backdrop-blur-md [--header-logo:3rem] max-tablet:h-14 max-tablet:[--header-logo:2rem]"
+	class="sticky top-0 z-10 grid h-20 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] bg-background/70 text-center shadow backdrop-blur-md [--header-logo:3rem] max-tablet:h-14 max-tablet:[--header-logo:2rem]"
 >
-	<div class="flex items-center">
+	<!--
+		The clipping sits on this column rather than on the header: the site name
+		does not wrap, so on a narrow viewport it would otherwise push the page
+		into horizontal scroll. Clipping on the header itself is what broke the
+		nav in Safari — `overflow-x: clip` with `overflow-y: visible` is supposed
+		to leave the vertical axis alone, but Safari clips both, so the submenu
+		panels hanging below the header bar were cut off at its bottom edge.
+	-->
+	<div class="flex items-center overflow-x-clip">
 		<!--
 			A square the size of the header bar, written out as a width rather than
 			as `aspect-square` on an auto width: with `aspect-ratio` the box takes
