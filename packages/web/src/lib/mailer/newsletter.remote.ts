@@ -1,20 +1,13 @@
 import { form, getRequestEvent } from '$app/server'
 import { invalid } from '@sveltejs/kit'
-import z from 'zod'
 import { sendNewsletterRegistrationConfirmationLink } from './newsletter.server'
+import { newsletterSchema } from './newsletter'
 import { t } from '#lib/messages/index.ts'
 
 export const subscribeToNewsletter = form(
-	z.object({
-		email: z.email({ error: () => t('invalid_email', undefined, getRequestEvent().locals.locale) }),
-		acceptPrivacy: z.boolean().optional(),
-	}),
-	async ({ email, acceptPrivacy }, issue) => {
+	newsletterSchema(() => getRequestEvent().locals.locale),
+	async ({ email }, issue) => {
 		const locale = getRequestEvent().locals.locale
-
-		if (!acceptPrivacy) {
-			invalid(issue.acceptPrivacy(t('newsletter_privacy_required', undefined, locale)))
-		}
 
 		if (alreadySent.has(email)) return { alreadySubscribed: true }
 

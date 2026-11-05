@@ -505,8 +505,8 @@ export const sanityApi = {
 			*[_id == "siteSettings"][0]{
 				logo,
 				"logoMeta": {
-					"prominentColor": mainImage.asset->metadata.palette.dominant.background,
-					"dimensions": mainImage.asset->metadata.dimensions,
+					"prominentColor": logo.asset->metadata.palette.dominant.background,
+					"dimensions": logo.asset->metadata.dimensions,
 				},
 				"headerImages": headerImages[]{
 				  "image": {...},

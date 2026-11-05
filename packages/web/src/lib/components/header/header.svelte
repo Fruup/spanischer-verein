@@ -42,7 +42,14 @@
 	class="sticky top-0 z-10 grid h-20 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] overflow-visible overflow-x-clip bg-background/70 text-center shadow backdrop-blur-md [--header-logo:3rem] max-tablet:h-14 max-tablet:[--header-logo:2rem]"
 >
 	<div class="flex items-center">
-		<div class="grid aspect-square h-full w-auto place-content-center">
+		<!--
+			A square the size of the header bar, written out as a width rather than
+			as `aspect-square` on an auto width: with `aspect-ratio` the box takes
+			its width from the logo and derives its height from that, so a logo
+			wider than it is tall makes the box taller than the bar it sits in and
+			the whole row spills out below the header.
+		-->
+		<div class="grid h-full w-20 shrink-0 place-content-center max-tablet:w-14">
 			<SiteLogo height="var(--header-logo)" />
 		</div>
 
