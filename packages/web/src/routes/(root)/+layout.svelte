@@ -24,6 +24,19 @@
 
 	let { children }: LayoutProps = $props()
 
+	/**
+	 * bits-ui holds the page still by setting `overflow: hidden` on `<body>`.
+	 * Safari scrolls the root element and takes its overflow from `<html>`
+	 * alone, so the page carries on scrolling behind an open drawer unless the
+	 * root element is locked too.
+	 */
+	$effect(() => {
+		if (!mobileMenu.open && !mobileCalendar.open) return
+
+		document.documentElement.classList.add('no-scroll')
+		return () => document.documentElement.classList.remove('no-scroll')
+	})
+
 	const siteSettings = await getSiteSettings()
 	const navigationTree = await getNavigationTree()
 
