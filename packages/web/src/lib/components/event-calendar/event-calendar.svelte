@@ -30,8 +30,14 @@
 
 	let placeholder = $state(now(getLocalTimeZone()))
 
+	/**
+	 * The square comes from here rather than from the cell around it: the cell is
+	 * a `<td>` whose width is handed to it by the grid track, and Safari will not
+	 * derive a height from `aspect-ratio` on a box like that. This one has a
+	 * definite `w-full` to work from, so every browser squares it off.
+	 */
 	const dayClasses =
-		'grid h-full w-full place-content-center rounded-base transition-colors data-[outside-month]:opacity-40 data-today:font-bold data-today:text-brand-link'
+		'grid aspect-square w-full place-content-center rounded-base transition-colors data-[outside-month]:opacity-40 data-today:font-bold data-today:text-brand-link'
 
 	const monthFormatter = $derived(new DateFormatter(locale.current, { month: 'long' }))
 
@@ -213,7 +219,7 @@
 											<Calendar.Cell
 												{date}
 												month={month.value}
-												class="block aspect-square h-auto w-auto min-w-0 p-(--cell-gap)"
+												class="block h-auto w-auto min-w-0 p-(--cell-gap)"
 											>
 												<Calendar.Day>
 													{#snippet child({ props, day })}
