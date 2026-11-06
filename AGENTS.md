@@ -1,1 +1,2 @@
+- Using bun as package manager and runtime
 - Dev server usually already running on localhost:5174
