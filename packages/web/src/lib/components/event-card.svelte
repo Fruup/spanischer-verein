@@ -86,7 +86,7 @@
 					'bg-brand text-brand-contrast',
 				]}
 			>
-				Abgesagt!
+				{t('cancelled')}!
 			</div>
 		{:else if highlight}
 			<div
