@@ -135,7 +135,7 @@ export const sanityApi = {
 		const cached = cache?.get<{ events: ContentApi.Event[]; hasMore: boolean }>(cacheKey)
 		if (cached) return cached
 
-		const pageSize = 12
+		const pageSize = 14 // one slot of the 3-column-grid is occupied by the "past events" card
 		const fromIndex = pageIndex * pageSize
 		const toIndex = fromIndex + pageSize
 
