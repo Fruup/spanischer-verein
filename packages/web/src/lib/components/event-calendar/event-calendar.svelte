@@ -37,7 +37,15 @@
 	 * definite `w-full` to work from, so every browser squares it off.
 	 */
 	const dayClasses =
-		'grid aspect-square w-full place-content-center rounded-base transition-colors data-[outside-month]:opacity-40 data-today:font-bold data-today:text-brand-link'
+		'grid aspect-square w-full place-content-center rounded-base transition-colors data-[outside-month]:opacity-40 data-today:font-bold'
+
+	/**
+	 * Today's red lettering only reads on the card's own background, so it stays
+	 * off the days that carry an event: those paint their own fill and pick their
+	 * own contrasting ink below. Left in `dayClasses`, its `data-today` variant
+	 * would outweigh that plain text colour and hide the number in its fill.
+	 */
+	const plainDayClasses = 'data-today:text-brand-link'
 
 	const monthFormatter = $derived(new DateFormatter(locale.current, { month: 'long' }))
 
@@ -230,15 +238,17 @@
 																{...props}
 																href={event.url}
 																class={[
-																	'bg-brand font-bold text-brand-contrast ring-2 ring-brand focus-ring transition-colors ring-inset',
-																	active && 'bg-brand-contrast text-foreground',
+																	'font-bold ring-2 ring-brand focus-ring transition-colors ring-inset',
+																	active
+																		? 'bg-brand-contrast text-foreground'
+																		: 'bg-brand text-brand-contrast',
 																	dayClasses,
 																]}
 															>
 																{day}
 															</a>
 														{:else}
-															<div {...props} class={dayClasses}>{day}</div>
+															<div {...props} class={[dayClasses, plainDayClasses]}>{day}</div>
 														{/if}
 													{/snippet}
 												</Calendar.Day>
