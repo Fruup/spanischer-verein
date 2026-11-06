@@ -50,6 +50,7 @@
 			name: event.title,
 			url: getEventUrl(event.slug),
 			date: new Date(event.eventTime),
+			cancelled: event.cancelled,
 		}))
 	})
 
@@ -64,10 +65,11 @@
 
 		const results = await getEventsOverview({ year, month })
 
-		return results.map(({ title, eventTime, slug }) => ({
+		return results.map(({ title, eventTime, slug, cancelled }) => ({
 			name: title,
 			date: new Date(eventTime),
 			url: getEventUrl(slug),
+			cancelled,
 		}))
 	}
 </script>

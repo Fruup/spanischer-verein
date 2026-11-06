@@ -4,6 +4,7 @@ export interface EventCalendarItem {
 	name: string
 	url: string
 	date: Date
+	cancelled: boolean
 }
 
 export const getEventsForDay = (day: DateValue, events: EventCalendarItem[]): EventCalendarItem[] =>

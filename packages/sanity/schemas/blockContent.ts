@@ -87,5 +87,7 @@ export interface InternalLinkMark extends PortableTextMarkDefinition {
   resolvedReference: {
     _type: 'event' | 'page'
     slug: string
+    /** Events only: lets the link itself say the event is off. */
+    cancelled?: boolean
   }
 }

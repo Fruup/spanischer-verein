@@ -2,6 +2,7 @@
 	import { CalendarIcon, LightbulbIcon } from '@lucide/svelte'
 	import type { MarkComponentProps } from '@portabletext/svelte'
 	import type { InternalLinkMark } from '@spanischer-verein/sanity/schemas/blockContent'
+	import { t } from '#lib/messages/index.ts'
 
 	interface Props {
 		portableText: MarkComponentProps<InternalLinkMark>
@@ -11,6 +12,7 @@
 
 	let resolvedReference = $derived(portableText.value.resolvedReference)
 	let type = $derived(resolvedReference._type)
+	let cancelled = $derived(type === 'event' && resolvedReference.cancelled === true)
 	let href = $derived.by(() => {
 		switch (type) {
 			case 'event':
@@ -33,7 +35,12 @@
 		{/if}
 	</span>
 
-	<span>
+	<span class={[cancelled && 'line-through']}>
 		{portableText.plainTextContent}
 	</span>
+
+	{#if cancelled}
+		<!-- The strikethrough alone says nothing to a screen reader. -->
+		<span class="sr-only">{t('cancelled')}</span>
+	{/if}
 </a>

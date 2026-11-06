@@ -239,13 +239,25 @@
 																href={event.url}
 																class={[
 																	'font-bold ring-2 ring-brand focus-ring transition-colors ring-inset',
+																	// A cancelled day keeps the ring, so the date still reads as
+																	// one that has something on it, but gives up the solid fill:
+																	// struck-through white on brand red looks like a rendering
+																	// fault rather than a cancellation.
 																	active
 																		? 'bg-brand-contrast text-foreground'
-																		: 'bg-brand text-brand-contrast',
+																		: event.cancelled
+																			? 'bg-brand/10 text-brand-link'
+																			: 'bg-brand text-brand-contrast',
+																	event.cancelled && 'line-through',
 																	dayClasses,
 																]}
 															>
 																{day}
+
+																{#if event.cancelled}
+																	<!-- The strikethrough alone says nothing to a screen reader. -->
+																	<span class="sr-only">{t('cancelled')}</span>
+																{/if}
 															</a>
 														{:else}
 															<div {...props} class={[dayClasses, plainDayClasses]}>{day}</div>

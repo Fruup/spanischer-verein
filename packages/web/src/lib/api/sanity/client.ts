@@ -439,10 +439,12 @@ export const sanityApi = {
 					markDef.resolvedReference = await sanityClient.fetch<{
 						_type: string
 						slug: string
+						cancelled?: boolean
 					}>(`
 							*[_id == "${markDef._ref}"][0]{
 								_type,
 								"slug": slug.current,
+								cancelled,
 								}
 								`)
 				}
