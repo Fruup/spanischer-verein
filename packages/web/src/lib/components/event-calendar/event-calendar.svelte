@@ -47,6 +47,16 @@
 	 */
 	const plainDayClasses = 'data-today:text-brand-link'
 
+	/**
+	 * A cancelled day is struck through diagonally rather than with
+	 * `line-through`: a horizontal rule across a single digit reads as part of
+	 * the glyph, and at this size it can swallow it outright. The bar is a
+	 * rotated pseudo-element 120% of the cell wide, which at 45° reaches most of
+	 * the way into the corners without spilling past them.
+	 */
+	const cancelledDayClasses =
+		'relative after:absolute after:top-1/2 after:left-1/2 after:h-0.5 after:w-[120%] after:-translate-x-1/2 after:-translate-y-1/2 after:-rotate-45 after:rounded-full after:bg-current'
+
 	const monthFormatter = $derived(new DateFormatter(locale.current, { month: 'long' }))
 
 	const debouncedPlaceholder = new Debounced(
@@ -248,7 +258,7 @@
 																		: event.cancelled
 																			? 'bg-brand/10 text-brand-link'
 																			: 'bg-brand text-brand-contrast',
-																	event.cancelled && 'line-through',
+																	event.cancelled && cancelledDayClasses,
 																	dayClasses,
 																]}
 															>
