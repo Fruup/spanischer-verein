@@ -1,9 +1,9 @@
 # TODO
 
 - [x] "Mehr laden" Button
-- [ ] Kalender hübsch machen
-- [ ] Seitenleiste hübsch machen
-- [ ] Mobile UI
+- [x] Kalender hübsch machen
+- [x] Seitenleiste hübsch machen
+- [x] Mobile UI
 - [ ] Admin login
   - [x] Login flow via OTP
   - [ ] `ADDRESS_HEADER` / `XFF_DEPTH` für `getClientAddress()` festlegen — ohne das greift das Rate-Limit pro IP nicht: hinter einem Proxy teilen sich alle Requests einen Bucket, mit falscher Tiefe kann der Client den Header fälschen
