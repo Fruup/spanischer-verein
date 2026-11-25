@@ -41,4 +41,7 @@ COPY --from=builder /work/bun.lock /work/
 
 RUN bun install --cwd packages/web --frozen-lockfile --production
 
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+	CMD bun -e "fetch('http://localhost:' + (process.env.PORT || 3000) + '/healthz').then(r => process.exit(r.ok ? 0 : 1), () => process.exit(1))"
+
 CMD ["bun", "run", "--cwd", "./packages/web", "./build"]
