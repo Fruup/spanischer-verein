@@ -1,35 +1,23 @@
-// See https://kit.svelte.dev/docs/types#app
+import type { Locale } from './lib/locale'
 
-import type { PortableTextBlock } from '@portabletext/types'
-
-// for information about these interfaces
 declare global {
 	namespace App {
 		interface Error {
-			errorCode: 'NOT_FOUND' | 'SEND_EMAIL_FAILED' | 'INVALID_PARAMETERS'
+			errorCode?:
+				'UNKNOWN' | 'NOT_FOUND' | 'SEND_EMAIL_FAILED' | 'INVALID_PARAMETERS' | 'TOO_MANY_REQUESTS'
 		}
 
-		// interface Locals {}
-
-		interface PageState {
-			isMainMenuOpen?: boolean
+		interface Locals {
+			locale: Locale
+			isAdmin: boolean
 		}
-
-		// interface Platform {}
 
 		interface PageData {
-			// events: any[]
-			// upcomingEvents: {
-			// 	title: string
-			// 	slug: string
-			// 	eventTime: Date
-			// 	eventLocation?: string
-			// 	eventAdmission?: string
-			// 	imageUrl: string
-			// 	prominentColor: string
-			// 	excerpt: PortableTextBlock[]
-			// }[]
+			locale: Locale
 		}
+
+		// interface PageState {}
+		// interface Platform {}
 	}
 }
 

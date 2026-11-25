@@ -1,14 +1,17 @@
 <script lang="ts">
-	import EventsOverviewPage from './EventsOverviewPage.svelte'
+	import EventsOverviewPage from './events-overview-page.svelte'
+	import { eventsOverviewStore } from './events-overview-store.svelte'
 
-	let { data } = $props()
-
-	const year = new Date().getFullYear()
-	const month = new Date().getMonth() + 1
+	await eventsOverviewStore.init()
 </script>
 
 <svelte:head>
 	<title>Spanischer Verein Köln</title>
 </svelte:head>
 
-<EventsOverviewPage events={data.events} pastHighlights={data.pastHighlights} {year} {month} />
+<EventsOverviewPage
+	events={eventsOverviewStore.events}
+	hasMore={eventsOverviewStore.hasMore}
+	loading={eventsOverviewStore.loading}
+	loadMore={() => eventsOverviewStore.loadMore()}
+/>

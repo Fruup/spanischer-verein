@@ -3,6 +3,19 @@
 Source code for the website https://spanischer-verein.com - a platform representing a nonprofit organization cultivating German-Spanish relations.
 Includes Content Management System (Sanity Studio) and frontend (SvelteKit).
 
+## Secret scanning (pre-commit)
+
+Commits are scanned for secrets with [gitleaks](https://github.com/gitleaks/gitleaks) via `.githooks/pre-commit`.
+
+```sh
+brew install gitleaks   # required once per machine
+bun install             # points git at .githooks (prepare script)
+```
+
+`bun run scan:secrets` scans the whole history. Rules live in `.gitleaks.toml`;
+add verified false positives to its `[allowlist]`. To bypass a single commit:
+`SKIP_GITLEAKS=1 git commit ...`.
+
 ## Notes
 
 - Check if Netlify is building a preview: https://docs.netlify.com/configure-builds/environment-variables/#build-metadata

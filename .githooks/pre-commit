@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+# Scan staged changes for secrets before allowing a commit.
+# Bypass (only when a finding is a verified false positive):
+#   SKIP_GITLEAKS=1 git commit ...
+# Prefer allowlisting false positives in .gitleaks.toml.
+
+[ "$SKIP_GITLEAKS" = "1" ] && exit 0
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+	echo "pre-commit: gitleaks is not installed, cannot scan for secrets." >&2
+	echo "  macOS: brew install gitleaks" >&2
+	echo "  other: https://github.com/gitleaks/gitleaks#installing" >&2
+	echo "  commit anyway: SKIP_GITLEAKS=1 git commit ..." >&2
+	exit 1
+fi
+
+if ! gitleaks git --staged --redact --no-banner --verbose; then
+	echo "" >&2
+	echo "pre-commit: gitleaks found potential secrets in the staged changes (above)." >&2
+	echo "  Remove them, or allowlist a false positive in .gitleaks.toml." >&2
+	exit 1
+fi

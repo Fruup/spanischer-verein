@@ -9,3 +9,9 @@ declare module '*&imagetools' {
 }
 
 declare type ValueOf<T> = T[keyof T]
+
+/** See `fontPlugin.ts`: hrefs of the regular, non-italic, Latin-subset file per family. */
+declare module 'virtual:fonts-preload' {
+	const hrefs: string[]
+	export default hrefs
+}

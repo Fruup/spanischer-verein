@@ -1,20 +1,27 @@
 <script lang="ts">
-	import Page from '$lib/components/Page.svelte'
-	import type { EventInfoSpec } from '$lib/components/EventInfo.svelte'
+	import { page } from '$app/state'
 
-	let { data } = $props()
-	let title = $derived(data.event.title)
-	let body = $derived(data.event.body)
+	import Page from '#lib/components/page.svelte'
+	import type { EventInfoSpec } from '#lib/components/event-info.svelte'
+	import { getEvent } from '#lib/api/content-api.remote.js'
 
-	let eventInfo = $derived({
-		admission: data.event.eventAdmission,
-		time: data.event.eventTime,
-		location: data.event.eventLocation,
-	} satisfies EventInfoSpec)
+	const event = $derived(await getEvent(page.params.slug ?? ''))
+	const eventInfo: EventInfoSpec = $derived({
+		admission: event.eventAdmission,
+		time: event.eventTime,
+		location: event.eventLocation,
+		cancelled: event.cancelled,
+	})
 </script>
 
 <svelte:head>
-	<title>{data.event.title} - Spanischer Verein Köln</title>
+	<title>{event.title} - Spanischer Verein Köln</title>
 </svelte:head>
 
-<Page {title} {body} {eventInfo} />
+<Page
+	title={event.title}
+	content={event.content}
+	{eventInfo}
+	image={event.mainImage}
+	backHref="/#veranstaltungen"
+/>

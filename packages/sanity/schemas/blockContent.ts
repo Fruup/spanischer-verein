@@ -1,5 +1,5 @@
 import {defineType, defineArrayMember} from 'sanity'
-import {GenerateIcon} from '@sanity/icons'
+import {GenerateIcon} from '@sanity/icons/Generate'
 import type {PortableTextMarkDefinition} from '@portabletext/types'
 // import PostReferenceIcon from '../components/PostReferenceIcon'
 
@@ -87,5 +87,7 @@ export interface InternalLinkMark extends PortableTextMarkDefinition {
   resolvedReference: {
     _type: 'event' | 'page'
     slug: string
+    /** Events only: lets the link itself say the event is off. */
+    cancelled?: boolean
   }
 }

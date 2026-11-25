@@ -1,0 +1,68 @@
+import type { PortableTextBlock } from '@portabletext/types'
+
+export interface IContentApi {
+	getEventsOverview(options: { year: number; month: number }): Promise<ContentApi.Event[]>
+	getCurrentEventsOverview(
+		pageIndex: number,
+	): Promise<{ events: ContentApi.Event[]; hasMore: boolean }>
+	getPastHighlights(): Promise<ContentApi.Event[]>
+	getEvent(slug: string): Promise<(ContentApi.Event & { content: ContentApi.Content }) | null>
+	getNavigationTree(): Promise<ContentApi.NavigationItem[]>
+	getPage(path: string[]): Promise<ContentApi.Page | null>
+	getSiteSettings(): Promise<ContentApi.SiteSettings | null>
+	getSitemapDocuments(): Promise<{
+		events: { slug: string; updatedAt: string }[]
+		pages: { slug: string; updatedAt: string }[]
+	}>
+}
+
+type TipTapContent = any // TODO: JSONContent?
+type SanityContent = PortableTextBlock[]
+
+export namespace ContentApi {
+	export type Content =
+		| { type: 'sanity'; value: SanityContent }
+		| {
+				type: 'tiptap'
+				value: TipTapContent
+		  }
+
+	export interface Image {
+		url: string
+		prominentColor: string
+		height: number
+		width: number
+	}
+
+	export interface NavigationItem {
+		_key: string
+		title: string
+		href: string
+		children?: NavigationItem[]
+	}
+
+	export interface SiteSettings {
+		donationLink: string | null
+		imprintPageSlug: string | null
+		privacyPageSlug: string | null
+		aboutPageSlug: string | null
+		headerImages: Image[] | null
+		logo: Image | null
+	}
+
+	export interface Event {
+		title: string
+		description: string | null
+		slug: string
+		eventTime: string // ISO timestamp
+		eventLocation?: string
+		eventAdmission?: string
+		mainImage?: Image
+		cancelled: boolean
+	}
+
+	export interface Page {
+		title: string
+		content: Content
+	}
+}

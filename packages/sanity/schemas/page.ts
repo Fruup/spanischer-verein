@@ -5,7 +5,7 @@ import {
   defineType,
   type Slug,
 } from 'sanity'
-import {TextIcon} from '@sanity/icons'
+import {TextIcon} from '@sanity/icons/Text'
 
 export default defineType({
   name: 'page',
@@ -17,7 +17,7 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => [Rule.required(), Rule.max(75), Rule.min(3)],
     }),
     defineField({
       name: 'slug',

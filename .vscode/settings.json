@@ -3,9 +3,10 @@
 		"**/.git": true,
 		"**/.svn": true,
 		"**/.hg": true,
-		"**/CVS": true,
+		"**/.jj": true,
 		"**/.DS_Store": true,
-		"**/Thumbs.db": true
+		"**/Thumbs.db": true,
+		"**/CVS": true
 	},
 	"hide-files.files": [],
 	"github.copilot.enable": {
@@ -14,9 +15,11 @@
 		"markdown": true
 	},
 	"cSpell.words": [
+		"altcha",
 		"archiv",
 		"Eventinformation",
 		"Eventinformationen",
+		"hostinger",
 		"iban",
 		"keepfocus",
 		"kurse",
@@ -30,6 +33,7 @@
 		"outros",
 		"outrostart",
 		"portabletext",
+		"runed",
 		"Severinsmühlengasse",
 		"sonner",
 		"vaul"

@@ -1,5 +1,5 @@
 import {type SanityDocument, defineField, defineType} from 'sanity'
-import {PinIcon} from '@sanity/icons'
+import {PinIcon} from '@sanity/icons/Pin'
 // import LocationInput from '../components/LocationInput'
 
 export default defineType({

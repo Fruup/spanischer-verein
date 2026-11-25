@@ -1,13 +1,15 @@
 <script lang="ts">
-	import Page from '$lib/components/Page.svelte'
+	import { page as pageState } from '$app/state'
 
-	let { data } = $props()
-	let title = $derived(data.page.title)
-	let body = $derived(data.page.body)
+	import Page from '#lib/components/page.svelte'
+	import { getPage } from '#lib/api/content-api.remote.js'
+	import { t } from '#lib/messages/index.ts'
+
+	const page = $derived(await getPage(pageState.params.pageUrl?.split('/') ?? []))
 </script>
 
 <svelte:head>
-	<title>{title} - Spanischer Verein Köln</title>
+	<title>{page.title} - Spanischer Verein Köln</title>
 </svelte:head>
 
-<Page {title} {body} />
+<Page title={page.title} content={page.content} backHref="/" backLabel={t('back_to_home')} />

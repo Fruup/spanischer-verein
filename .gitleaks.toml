@@ -1,0 +1,10 @@
+# gitleaks config for the pre-commit hook (.githooks/pre-commit).
+# Uses the upstream default rule set; add project-specific exceptions below.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Project false positives"
+paths = [
+  '''bun\.lock$''',
+]

@@ -1,5 +1,5 @@
 import {type ImageAsset, defineField, defineType} from 'sanity'
-import {CogIcon} from '@sanity/icons'
+import {CogIcon} from '@sanity/icons/Cog'
 import type {PageSchema} from './page'
 
 export default defineType({
@@ -36,8 +36,7 @@ export default defineType({
     defineField({
       name: 'headerImages',
       title: 'Header-Bilder',
-      description:
-        'Diese Bilder werden links und rechts im Header der Seite angezeigt. Sie rotieren zufällig durch.',
+      description: 'Diese Bilder werden im Header der Seite angezeigt.',
       type: 'array',
       group: 'header',
       of: [
