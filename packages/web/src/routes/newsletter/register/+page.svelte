@@ -2,6 +2,7 @@
 	import Button from '#lib/components/ui/button/button.svelte'
 	import * as Card from '#lib/components/ui/card/index.ts'
 	import { t } from '#lib/messages/index.ts'
+	import { ADMIN_MAIL_ADDRESS } from '$app/env/public'
 
 	let { data } = $props()
 
@@ -27,7 +28,7 @@
 				<p class="max-w-prose">
 					{t('newsletter_error_retry_1')}<br />
 					{t('newsletter_error_retry_2')}
-					<a href="mailto:info@spanischerverein.com">info@spanischerverein.com</a>.
+					<a href="mailto:{ADMIN_MAIL_ADDRESS}">{ADMIN_MAIL_ADDRESS}</a>.
 				</p>
 			{/if}
 		</Card.Content>

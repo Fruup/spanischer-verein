@@ -9,6 +9,7 @@ import z from 'zod'
 import { createRateLimiter } from '#lib/auth/rate-limit.ts'
 import type { Locale } from '#lib/locale/index.ts'
 import { t } from '#lib/messages/index.ts'
+import { ADMIN_MAIL_ADDRESS } from '$app/env/public'
 
 const MAX_TOKEN_AGE_MS = 1 * 60 * 60 * 1000
 
@@ -44,7 +45,7 @@ export const handleNewsletterRegistrationConfirmation = async (token: string) =>
 	// Send email to admin
 	await mailer.send({
 		html: generateNewsletterRegistrationRequestHtml(cached.mail),
-		to: 'mail@leon.sh', // TODO:
+		to: ADMIN_MAIL_ADDRESS,
 		subject: 'Neue Newsletter-Anmeldung',
 	})
 
